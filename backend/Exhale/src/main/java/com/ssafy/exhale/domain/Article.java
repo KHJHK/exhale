@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,4 +47,11 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @OrderBy("createDate desc")
+    private List<Comment> comments;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<ArticleFile> ArticleFiles;
 }
