@@ -7,11 +7,13 @@
       </RouterLink>
           <RouterLink :to="{name: 'AboutUs'}">날숨은 무엇인가요?</RouterLink>
     
+          <RouterLink :to="{name: 'ReadPost'}">커뮤니티</RouterLink>
+
           <RouterLink :to="{name: 'Login'}">로그인</RouterLink>
     
           <RouterLink :to="{name: 'SignUp'}">회원가입</RouterLink>
       
-      </nav>
+    </nav>
   </div>  
   <div class="contents">
     <RouterView/>
