@@ -12,7 +12,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "board")
+@Table(name = "article")
 public class Article {
     @Id
     @Column(name = "article_id")
