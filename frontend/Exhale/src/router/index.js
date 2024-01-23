@@ -27,6 +27,7 @@ import TestResultPage from '@/views/main/TestResultPage.vue';
 import MainPage from '@/views/main/MainPage.vue';
 import ARCWaitingPage from '@/views/main/ARCWaitingPage.vue';
 import AboutUs from '@/views/main/AboutUs.vue';
+import Home from '@/views/main/Home.vue';
 
 // myPage
 import ARCReport from '@/views/myPage/ARCReport.vue';
@@ -80,6 +81,7 @@ const router = createRouter({
     { path: '/main-page', name: 'MainPage', component: MainPage },
     { path: '/ARC-waiting-page', name:' ARCWaitingPage', component: ARCWaitingPage},
     { path: '/about-us', name: 'AboutUs', component: AboutUs},
+    { path: '/home', name: 'Home', component: Home},
 
     // mypage
     { path: '/ARC-report', name: 'ARCReport', component: ARCReport },
