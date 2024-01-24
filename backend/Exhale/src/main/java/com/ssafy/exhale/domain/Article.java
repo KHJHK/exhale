@@ -48,10 +48,10 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
     @OrderBy("createDate desc")
     private List<Comment> comments;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
-    private List<ArticleFile> ArticleFiles;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
+    private List<ArticleFile> articleFiles;
 }
