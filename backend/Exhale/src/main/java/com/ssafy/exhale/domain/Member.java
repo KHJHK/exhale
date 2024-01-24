@@ -2,17 +2,19 @@ package com.ssafy.exhale.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
-    private long memberId;
+    private int memberId;
     @Column(name="login_id")
     private String loginId;
     private String password;
@@ -23,19 +25,18 @@ public class Member {
     private String emailDomain;
     private String birth;
     private String nickname;
-    @Column(name="profile_img")
+    @Column(name="profile_img", nullable = true)
     private String profileImg;
-    @Column(name="is_active")
+    @Column(name="is_active", nullable = true, columnDefinition = "true")
     private boolean isActive;
+    @Column(name="refresh_value", nullable = true)
+    private String refreshValue;
     @CreatedDate
-    @Column(name="create_date")
+    @Column(name="create_date") 
     private LocalDateTime createDate;
-    @CreatedDate
-    @Column(name="withdrawal_date")
+    @Column(name="withdrawal_date", nullable = true, columnDefinition = "false")
     private LocalDateTime withdrawal_date;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    private String role;
 
 
 
