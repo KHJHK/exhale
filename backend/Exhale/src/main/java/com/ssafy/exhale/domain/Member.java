@@ -29,6 +29,8 @@ public class Member {
     private String profileImg;
     @Column(name="is_active", nullable = true, columnDefinition = "true")
     private boolean isActive;
+    @Column(name="refresh_value", nullable = true)
+    private String refreshValue;
     @CreatedDate
     @Column(name="create_date") 
     private LocalDateTime createDate;
