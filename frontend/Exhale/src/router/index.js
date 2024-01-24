@@ -24,10 +24,9 @@ import AddComment from '@/views/community/AddComment.vue';
 import InitialPage from '@/views/main/InitialPage.vue';
 import InitialTestPage from '@/views/main/InitialTestPage.vue';
 import TestResultPage from '@/views/main/TestResultPage.vue';
-import MainPage from '@/views/main/MainPage.vue';
 import ARCWaitingPage from '@/views/main/ARCWaitingPage.vue';
 import AboutUs from '@/views/main/AboutUs.vue';
-import Home from '@/views/main/Home.vue';
+
 
 // myPage
 import ARCReport from '@/views/myPage/ARCReport.vue';
@@ -48,6 +47,10 @@ import QuestionResults from '@/components/modals/QuestionResults.vue';
 import WaitingArea from '@/components/modals/WaitingArea.vue';
 
 // common
+import Headers from '@/components/common/Headers_Login.vue';
+import Headers2 from '@/components/common/Headers2_MyPage.vue';
+import Headers3 from '@/components/common/Headers3_Review.vue';
+import Footers from '@/components/common/Footers.vue';
 
 
 // Import Common views
@@ -55,6 +58,7 @@ const history = createWebHistory();
 const router = createRouter({
   history,
   routes: [
+
     // auth
     { path: '/signup', name: 'SignUp', component: SignUp  },
     { path: '/login', name:'Login', component: Login },
@@ -78,10 +82,9 @@ const router = createRouter({
     { path: '/initial-page', name: 'InitialPage', component: InitialPage },
     { path: '/initial-test-page', name: 'InitialTestPage', component: InitialTestPage },
     { path: '/test-result-page', name: 'TestResultPage', component: TestResultPage },
-    { path: '/main-page', name: 'MainPage', component: MainPage },
     { path: '/ARC-waiting-page', name:' ARCWaitingPage', component: ARCWaitingPage},
     { path: '/about-us', name: 'AboutUs', component: AboutUs},
-    { path: '/home', name: 'Home', component: Home},
+  
 
     // mypage
     { path: '/ARC-report', name: 'ARCReport', component: ARCReport },
@@ -100,7 +103,11 @@ const router = createRouter({
     { path: '/question-results', name: 'QuestionResults', component: QuestionResults },
     { path: '/waiting-area', name: 'WaitingArea', component: WaitingArea },
 
-
+    //common
+    { path: '/Headers_Login', name: 'Headers', component: Headers_Login},
+    { path: '/Headers_MyPage', name: 'Headers2', component: Headers2_MyPage},
+    { path: '/Headers_Review', name: 'Headers3', component: Headers3_Review},
+    { path: '/Footers', name: 'Footers', component: Footers},
   ],
 });
 

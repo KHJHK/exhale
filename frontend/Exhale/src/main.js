@@ -5,7 +5,7 @@ import App from './App.vue'
 import router from './router/index.js'
 
 const app = createApp(App)
-createApp(App).mount('#app')
+
 app.use(createPinia())
 app.use(router)
 app.mount('#app')

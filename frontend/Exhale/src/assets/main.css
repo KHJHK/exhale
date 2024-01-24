@@ -1,4 +1,4 @@
-@import './base.css';
+
 
 #app {
   display: flex;
@@ -6,17 +6,12 @@
   justify-content: space-between;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: black;
-  transition: 0.4s;
-  padding: 3px;
-}
+
+
 
 @media (hover: hover) {
   a:hover {
-    background-color: gray;
+    display: flex;
   }
 }
 

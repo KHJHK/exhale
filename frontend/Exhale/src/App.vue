@@ -1,54 +1,28 @@
 <template>
-  <header>
-  <div class="container">
-    <nav>
-      <RouterLink :to="{name: 'Home'}">
-        <img src="@/assets/logo_green.png" alt="logo" class="logo" >
-      </RouterLink>
-          <RouterLink :to="{name: 'AboutUs'}">날숨은 무엇인가요?</RouterLink>
-    
-          <RouterLink :to="{name: 'ReadPost'}">커뮤니티</RouterLink>
-
-          <RouterLink :to="{name: 'Login'}">로그인</RouterLink>
-    
-          <RouterLink :to="{name: 'SignUp'}">회원가입</RouterLink>
-      
-    </nav>
-  </div>  
-  <div class="contents">
-    <RouterView/>
+  <Headers/>
+  <div>
+  <RouterView/>
   </div>
-  </header>
+  
 
 </template>
 
-<script>
-// import {createApp, onMounted, ref} from 'vue';
+<script setup>
+import {createApp, onMounted, ref} from 'vue';
 import {reactive} from 'vue';
 import axios from 'axios';
+import Headers from '@/components/common/Headers.vue';
 // import {useRouter} from 'vue-router';
 // import { useCounterStore } from '@/stores/counter'; 
 
 // import { createRouter, createWebHistory } from 'vue-router';
-export default {
-  setup() {
-    const state = reactive({
-      logedin: false
-    });
-
-    axios.get('http://local~/api/account').then((res)=>{
-      console.log(res)
-    })
-    return (state);
-  }
-}
-
-
-
+const state = reactive({
+  logedin: false
+})
 </script>
 
 <style scoped>
-nav {
+/* nav {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -88,5 +62,7 @@ nav a:first-of-type {
 
 .logo {
   position : static ;
-}
+} */
+
+
 </style>
