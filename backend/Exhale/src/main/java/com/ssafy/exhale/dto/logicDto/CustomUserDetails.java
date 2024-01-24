@@ -38,14 +38,6 @@ public class CustomUserDetails implements UserDetails {
         return member.getLoginId();
     }
 
-    public String getName() {
-        return member.getName();
-    }
-
-    public String getNickname() {
-        return member.getNickname();
-    }
-
     public int getMemberId() {
         return member.getMemberId();
     }
