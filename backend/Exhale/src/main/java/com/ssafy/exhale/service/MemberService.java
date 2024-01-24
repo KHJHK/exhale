@@ -35,5 +35,10 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public void saveRefreshToken(int member_id){
+        memberRepository.findByMemberId(member_id);
+
+    }
+
 
 }

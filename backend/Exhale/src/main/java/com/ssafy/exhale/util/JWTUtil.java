@@ -15,6 +15,9 @@ public class JWTUtil {
 
     @Value("${spring.jwt.expiration}")
     private long jwtExpiration;
+
+    @Value("${spring.jwt.refresh-token}")
+    private long refreshTokenExpiration;
     public JWTUtil( @Value("${spring.jwt.secret}") String secret){
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
 
@@ -46,6 +49,17 @@ public class JWTUtil {
                 .claim("role",role)
                 .issuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) // 토큰 소멸시간
+                .signWith(secretKey)
+                .compact();
+    }
+
+    // refresh token 생성
+    public String createRefreshToken(int userId, String role){
+        return Jwts.builder()
+                .claim("user_id",userId)
+                .claim("role",role)
+                .issuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
+                .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiration)) // 토큰 소멸시간
                 .signWith(secretKey)
                 .compact();
     }
