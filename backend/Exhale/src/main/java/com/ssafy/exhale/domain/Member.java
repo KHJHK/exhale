@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Table(name = "member")
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +28,14 @@ public class Member {
     private String nickname;
     @Column(name="profile_img", nullable = true)
     private String profileImg;
-    @Column(name="is_active", nullable = true, columnDefinition = "true")
+    @Column(name="is_active", nullable = true, columnDefinition = "tinyint default true")
     private boolean isActive;
     @Column(name="refresh_value", nullable = true)
     private String refreshValue;
     @CreatedDate
     @Column(name="create_date") 
     private LocalDateTime createDate;
-    @Column(name="withdrawal_date", nullable = true, columnDefinition = "false")
+    @Column(name="withdrawal_date", nullable = true)
     private LocalDateTime withdrawal_date;
     private String role;
 
