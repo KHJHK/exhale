@@ -13,6 +13,8 @@ import java.util.Date;
 public class JWTUtil {
     private SecretKey secretKey;
 
+    @Value("${spring.jwt.expiration}")
+    private long jwtExpiration;
     public JWTUtil( @Value("${spring.jwt.secret}") String secret){
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
 
@@ -37,13 +39,13 @@ public class JWTUtil {
 
 
     // JWT 생성
-    public String createJwt(String loginId, int userId, String role, Long expiredMs){
+    public String createJwt(String loginId, int userId, String role){
         return Jwts.builder()
                 .claim("login_id",loginId)
                 .claim("user_id",userId)
                 .claim("role",role)
                 .issuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
-                .expiration(new Date(System.currentTimeMillis() + expiredMs)) // 토큰 소멸시간
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) // 토큰 소멸시간
                 .signWith(secretKey)
                 .compact();
     }
