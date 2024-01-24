@@ -13,6 +13,8 @@ import java.util.Date;
 public class JWTUtil {
     private SecretKey secretKey;
 
+    @Value("${spring.jwt.expiration}")
+    private long jwtExpiration;
     public JWTUtil( @Value("${spring.jwt.secret}") String secret){
         this.secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
 
@@ -27,15 +29,8 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
-    public String getName(String token){
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("name",String.class);
-    }
-
     public int getUserId(String token){
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("user_id",Integer.class);
-    }
-    public String getNickname(String token){
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("nickname",String.class);
     }
 
     public Boolean isExpired(String token){
@@ -44,15 +39,13 @@ public class JWTUtil {
 
 
     // JWT 생성
-    public String createJwt(String name, String loginId, int userId, String nickname, String role, Long expiredMs){
+    public String createJwt(String loginId, int userId, String role){
         return Jwts.builder()
-                .claim("name",name)
                 .claim("login_id",loginId)
                 .claim("user_id",userId)
-                .claim("nickname", nickname)
                 .claim("role",role)
                 .issuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
-                .expiration(new Date(System.currentTimeMillis() + expiredMs)) // 토큰 소멸시간
+                .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) // 토큰 소멸시간
                 .signWith(secretKey)
                 .compact();
     }

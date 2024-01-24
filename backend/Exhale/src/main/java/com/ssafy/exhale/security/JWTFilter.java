@@ -28,7 +28,6 @@ public class JWTFilter  extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
 
         if(authorization == null || !authorization.startsWith("Bearer ")){
-            System.out.println("token null");
             filterChain.doFilter(request, response);
 
             return;
@@ -42,17 +41,13 @@ public class JWTFilter  extends OncePerRequestFilter {
             return;
         }
 
-        String name = jwtUtil.getName(token);
         String loginId  = jwtUtil.getLoginId(token);
         int userId  = jwtUtil.getUserId(token);
-        String nickname = jwtUtil.getNickname(token);
         String role = jwtUtil.getRole(token);
 
         Member member = new Member();
-        member.setName(name);
         member.setLoginId(loginId);
         member.setMemberId(userId);
-        member.setNickname(nickname);
         member.setRole(role);
 
         CustomUserDetails customUserDetails = new CustomUserDetails(member);
