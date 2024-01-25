@@ -1,6 +1,6 @@
 <template>
   <header>
-    <Headers/>
+    <Headers />
   </header>
     <RouterView/>
   <main>

@@ -1,7 +1,7 @@
 <template>
-    <div>
-
-    </div>
+  <div>
+    <h3>치료후기</h3>
+  </div>
 </template>
 
 <script setup>
