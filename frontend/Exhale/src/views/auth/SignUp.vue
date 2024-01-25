@@ -52,39 +52,9 @@
                 
               </form>
               </div>
-<<<<<<< HEAD
               
             </template>
 <script setup>
-=======
-              <div class="input-with-label">
-                <input v-model="nickName" id="nickname" placeholder="생년월일" type="text" />
-                
-              </div>
-              <div class="input-with-label">
-                <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호" />
-                <button @click="Visibility" class="eye">
-                  <img src="@/assets/eye.png" alt="eye-icon" >
-                </button>
-              </div>
-              <div class="input-with-label">
-                <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인" />
-                <button @click="Visibility" class="eye">
-                  <img src="@/assets/eye.png" alt="eye-icon" >
-                </button>
-              </div>
-              <div class="input-with-label">
-                <input v-model="nickName" id="nickname" placeholder="닉네임" type="text" />
-                
-              </div>
-              <button class="btn-bottom" style="width: 170px;" type="submit">회원가입</button> 
-              <br>
-              <button class="social-sign" style="width: 170px;" type="submit">카카오톡 1초 회원가입</button>
-            </div>
-            
-  </template>
-<!-- <script setup>
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
 import { ref, computed } from 'vue';
 import { onMounted } from 'vue';
 import axios from 'axios';
@@ -116,7 +86,6 @@ const submitForm = () => {
     passwordConfirm: passwordConfirm.value,
     nickName: nickName.value
   }
-<<<<<<< HEAD
   store.signup(payload)
 };
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -151,15 +120,6 @@ const passwordInput = document.getElementById('password');
  
   <!-- <script>
  
-=======
-});
-</script> -->
-
- 
-  <script>
-  import { ref } from 'vue';
-  const passwordInput = document.getElementById('password');
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
   export default {
     data: () => {
         return {
@@ -184,7 +144,6 @@ const passwordInput = document.getElementById('password');
         };
     },
     methods: {
-<<<<<<< HEAD
         submitform() {
             console.log('회원가입완료');
         },
@@ -195,17 +154,6 @@ const passwordInput = document.getElementById('password');
    
 }
   </script> -->
-=======
-      submitform() {
-        console.log('회원가입완료')
-      },
-      Visibility() {
-        this.passwordType = this.text },
-        
-      }
-    }
-  </script>
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
   <style scoped>
 img {
   width: 20px;
