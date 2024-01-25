@@ -26,7 +26,7 @@ import InitialTestPage from '@/views/main/InitialTestPage.vue';
 import TestResultPage from '@/views/main/TestResultPage.vue';
 import ARCWaitingPage from '@/views/main/ARCWaitingPage.vue';
 import AboutUs from '@/views/main/AboutUs.vue';
-
+import MainPage from '@/views/main/MainPage.vue';
 
 // myPage
 import ARCReport from '@/views/myPage/ARCReport.vue';
@@ -47,9 +47,7 @@ import QuestionResults from '@/components/modals/QuestionResults.vue';
 import WaitingArea from '@/components/modals/WaitingArea.vue';
 
 // common
-import Headers from '@/components/common/Headers_Login.vue';
-import Headers2 from '@/components/common/Headers2_MyPage.vue';
-import Headers3 from '@/components/common/Headers3_Review.vue';
+import Headers from '@/components/common/Headers.vue';
 import Footers from '@/components/common/Footers.vue';
 
 
@@ -57,8 +55,8 @@ import Footers from '@/components/common/Footers.vue';
 const history = createWebHistory();
 const router = createRouter({
   history,
-  routes: [
-
+  routes: [       
+    
     // auth
     { path: '/signup', name: 'SignUp', component: SignUp  },
     { path: '/login', name:'Login', component: Login },
@@ -79,20 +77,19 @@ const router = createRouter({
     { path: '/add-comment', name: 'AddComment', component: AddComment },
 
     // main
+    { path:'/', name: 'MainPage', component:MainPage},
     { path: '/initial-page', name: 'InitialPage', component: InitialPage },
     { path: '/initial-test-page', name: 'InitialTestPage', component: InitialTestPage },
     { path: '/test-result-page', name: 'TestResultPage', component: TestResultPage },
     { path: '/ARC-waiting-page', name:' ARCWaitingPage', component: ARCWaitingPage},
     { path: '/about-us', name: 'AboutUs', component: AboutUs},
   
-
     // mypage
     { path: '/ARC-report', name: 'ARCReport', component: ARCReport },
     { path: '/edit-user-profile', name: 'EditUserInfo', component: EditUserInfo },
     { path: '/change-password', name:' ChangePassword', component: ChangePassword },
     { path: '/withdrawal', name: 'Withdrawal', component: Withdrawal },
     
-
     // admin
     { path: '/delete-post', name: 'DeletePost', component: DeletePost },
     { path: '/finding-user', name: 'FindingUser', component: FindingUser },
@@ -103,10 +100,9 @@ const router = createRouter({
     { path: '/question-results', name: 'QuestionResults', component: QuestionResults },
     { path: '/waiting-area', name: 'WaitingArea', component: WaitingArea },
 
-    //common
-    { path: '/Headers_Login', name: 'Headers', component: Headers_Login},
-    { path: '/Headers_MyPage', name: 'Headers2', component: Headers2_MyPage},
-    { path: '/Headers_Review', name: 'Headers3', component: Headers3_Review},
+    // common
+    { path: '/Headers', name: 'Headers', component: Headers},
+  
     { path: '/Footers', name: 'Footers', component: Footers},
   ],
 });

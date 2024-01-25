@@ -1,17 +1,12 @@
-
-
-#app {
+/* #app {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-
+} */
 
 
 @media (hover: hover) {
   a:hover {
-    display: flex;
+    
   }
 }
 

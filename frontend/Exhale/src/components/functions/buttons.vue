@@ -1,0 +1,18 @@
+<template>
+        <button class="enlarge" @click="enlarge">{{ msg }}</button>    
+      <div class="p" :style="{ fontSize: fontSize + 'px' }">
+    </div>
+</template>
+
+<script setup>
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+const enlarge = () => {
+  fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  }};
+</script>
+
+<style lang="scss" scoped>
+
+</style>

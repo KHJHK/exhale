@@ -1,17 +1,23 @@
 <template>
-  <Headers/>
-  <div>
-  <RouterView/>
-  </div>
+  <header>
+    <Headers/>
+  </header>
+    <RouterView/>
+  <main>
+  </main>
+ 
   
 
 </template>
 
 <script setup>
+import { RouterLink, RouterView } from 'vue-router';
 import {createApp, onMounted, ref} from 'vue';
 import {reactive} from 'vue';
 import axios from 'axios';
-import Headers from '@/components/common/Headers.vue';
+import MainPage from './views/main/MainPage.vue';
+import Headers from './components/common/Headers.vue';
+
 // import {useRouter} from 'vue-router';
 // import { useCounterStore } from '@/stores/counter'; 
 

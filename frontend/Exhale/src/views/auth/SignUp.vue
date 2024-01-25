@@ -7,75 +7,93 @@
         </p>
         </div>   
             <div class="form-wrap">
-              <form @submit.prevent="submitform"></form>
-              <div class="input-with-label">
-                <input v-model="nickName" id="nickname" placeholder="아이디" type="text" />
+              <form @submit.prevent="submitform">
+                <div class="input-with-label">
+                  <input v-model.trim="userId" id="userId" placeholder="아이디" type="text" />
+                  
+                </div>
+                <div class="input-with-label">
+                  <input v-model.trim="email" id="email" placeholder="이메일" type="text" />
+                  
+                </div>
+                <div class="input-with-label">
+                  <input v-model.trim="fullname" id="fullname" placeholder="성명" type="text" />
+                  
+                </div>
+                <div class="input-with-label">
+                  <input v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="text" />
+                  
+                </div>
+                <div class="input-with-label">
+                  <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호" />
+                  <button @click="toggleVisibility('passwordConfirm')" class="eye">
+                    <img src="@/assets/eye.png" alt="eye-icon" >
+                  </button>
+                </div>
+                <div class="input-with-label">
+                  <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인" />
+                  <button @click="Visibility" class="eye">
+                    <img src="@/assets/eye.png" alt="eye-icon" >
+                  </button>
+                </div>
+                <div class="input-with-label">
+                  <input v-model="nickName" id="nickname" placeholder="닉네임" type="text" />
+                  
+                </div>
+                <button class="btn-bottom" style="width: 170px;" type="submit">회원가입</button> 
+                <br>
                 
-              </div>
-              <div class="input-with-label">
-                <input v-model="email" id="email" placeholder="이메일" type="text" />
+                <v-card-actions style="justify-content: center">
+                  <button @click="snsLogin('kakao')" style="width: 170px;">
+                    <img src="@/assets/kakao_login.png" alt="login" style="width: 150px;">
+                  </button>
+                </v-card-actions>
                 
-              </div>
-              <div class="input-with-label">
-                <input v-model="nickName" id="nickname" placeholder="성명" type="text" />
                 
+              </form>
               </div>
-              <div class="input-with-label">
-                <input v-model="nickName" id="nickname" placeholder="생년월일" type="text" />
-                
-              </div>
-              <div class="input-with-label">
-                <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호" />
-                <button @click="toggleVisibility('passwordConfirm')" class="eye">
-                  <img src="@/assets/eye.png" alt="eye-icon" >
-                </button>
-              </div>
-              <div class="input-with-label">
-                <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인" />
-                <button @click="Visibility" class="eye">
-                  <img src="@/assets/eye.png" alt="eye-icon" >
-                </button>
-              </div>
-              <div class="input-with-label">
-                <input v-model="nickName" id="nickname" placeholder="닉네임" type="text" />
-                
-              </div>
-              <button class="btn-bottom" style="width: 170px;" type="submit">회원가입</button> 
-              <br>
-              <button class="social-sign" style="width: 170px;" type="submit">카카오톡 1초 회원가입</button>
-            </div>
-            
-  </template>
+              
+            </template>
 <script setup>
 import { ref, computed } from 'vue';
 import { onMounted } from 'vue';
+import axios from 'axios';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
+const store = useAuthStore()
 const fontSize = ref(16);
-const email = ref("");
-const password = ref("");
-const passwordConfirm = ref("");
-const nickName = ref("");
-const isTerm = ref(false);
-const isLoading = ref(false);
-const error = ref({
-  email: false,
-  password: false,
-  nickName: false,
-  passwordConfirm: false,
-  term: false
-});
-const isSubmit = ref(false);
+const router = useRouter();
+
+const userId = ref(null);
+const email = ref(null);
+const fullname = ref(null);
+const birthdate = ref(null);
+const password = ref(null);
+const passwordConfirm = ref(null);
+const nickName = ref(null)
 const passwordType = ref("password");
 const passwordConfirmType = ref("passwordConfirmType");
-const termPopup = ref(false);
+
 
 const submitForm = () => {
-  console.log('회원가입완료');
+  const payload = {
+    userId: userId.value,
+    email: email.value,
+    fullname: fullname.value,
+    birthdate: birthdate.value,
+    password: password.value,
+    passwordConfirm: passwordConfirm.value,
+    nickName: nickName.value
+  }
+  store.signup(payload)
 };
-const msg = computed(() => fontSize.value > 22 ? '글자축소' : '글자확대');
-// enlarge 메서드 추가
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
 const enlarge = () => {
   fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  };
 };
 
 const toggleVisibility = (field) => {
@@ -86,13 +104,17 @@ const toggleVisibility = (field) => {
   }
   };
 
-const passwordInput = document.getElementById('password');
+const kakaoLogin = () => {
+  axios.get('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${64f53b3a322ebb16eabd9859392720c9}&redirect_uri=${http://localhost:5174/modals/LoginComplete}').then((res) => {
+    router.push(res.data.auth_code_url)
+  });
+  return {kakaoLogin}};
 
-onMounted(() => {
-  if (passwordInput.value) {
-   
-  }
-});
+const snsLogin = (type) => {
+    window.location.href = `${store.API_URL}/api/user/login/${type}`;
+};
+
+const passwordInput = document.getElementById('password');
 </script>
 
  
