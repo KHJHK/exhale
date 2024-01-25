@@ -15,10 +15,13 @@ import Fluency from '@/views/ARC/Fluency.vue';
 import Review from '@/views/ARC/Review.vue';
 
 // community
-import ReadPost from '@/views/community/ReadPost.vue';
-import WritePost from '@/views/community/WritePost.vue';
-import PostDetails from '@/views/community/PostDetails.vue';
-import AddComment from '@/views/community/AddComment.vue';
+import PostCreateView from '@/views/community/PostCreateView.vue';
+import PostDetailView from '@/views/community/PostDetailView.vue';
+import PostEditView from '@/views/community/PostEditView.vue';
+import PostWholeListView from '@/views/community/PostWholeListView.vue';
+import PostInfoListView from '@/views/community/PostInfoListView.vue';
+import PostReviewListView from '@/views/community/PostReviewListView.vue';
+import PostStoryListView from '@/views/community/PostStoryListView.vue';
 
 // main
 import InitialPage from '@/views/main/InitialPage.vue';
@@ -69,10 +72,13 @@ const router = createRouter({
     { path: '/review', name: 'Review', component: Review },
 
     // community
-    { path: '/read-post', name: 'ReadPost', component: ReadPost },
-    { path: '/write-post', name: 'WritePost', component: WritePost },
-    { path: '/post-details', name: 'PostDetails', component: PostDetails },
-    { path: '/add-comment', name: 'AddComment', component: AddComment },
+    { path: '/post/create', name: 'PostCreateView', component: PostCreateView },
+    { path: '/post/:articleId', name: 'PostDetailView', component: PostDetailView },
+    { path: '/post/:articleId/edit', name: 'PostEditView', component: PostEditView },
+    { path: '/post-whole-list', name: 'PostWholeListView', component: PostWholeListView },
+    { path: '/post-info-list', name: 'PostInfoListView', component: PostInfoListView },
+    { path: '/post-review-list', name: 'PostReviewListView', component: PostReviewListView },
+    { path: '/post-story-list', name: 'PostStoryListView', component: PostStoryListView },
 
     // main
     { path: '/initial-page', name: 'InitialPage', component: InitialPage },

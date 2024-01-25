@@ -47,7 +47,7 @@
             </div>
             
   </template>
-<script setup>
+<!-- <script setup>
 import { ref, computed } from 'vue';
 
 const fontSize = ref(16);
@@ -90,10 +90,10 @@ onMounted(() => {
     // passwordInput.value를 이용한 로직
   }
 });
-</script>
+</script> -->
 
  
-  <!-- <script>
+  <script>
   import { ref } from 'vue';
   const passwordInput = document.getElementById('password');
   export default {
@@ -129,7 +129,7 @@ onMounted(() => {
         
       }
     }
-  </script> -->
+  </script>
   <style scoped>
 img {
   width: 20px;
