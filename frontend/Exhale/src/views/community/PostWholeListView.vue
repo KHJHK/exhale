@@ -3,7 +3,7 @@
         <h1>날;숨(커뮤니티)</h1>
     </div>
     <div id="breadcrum">
-        <RouterLink :to="{name: 'Home'}">메인 홈</RouterLink>
+        <RouterLink :to="{name: 'MainPage'}">메인 홈</RouterLink>
         >
         <RouterLink :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
         >

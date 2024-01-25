@@ -2,7 +2,7 @@
     <div>
         <h2>게시글 상세</h2>
         <hr class="my-4" />
-        <p>prams: {{ $route.params }}</p>
+        <p>params: {{ $route.params }}</p>
     </div>
 </template>
 
