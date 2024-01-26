@@ -41,7 +41,7 @@
     </form>
     
     <div class="pt-4">
-        <button type="button" class="btn btn-outline-dark me-2">목록</button>
+        <button type="button" class="btn btn-outline-dark me-2" @click="goListPage">목록</button>
         <button type="button" class="btn btn-primary">저장</button>
     </div>
 
@@ -53,7 +53,10 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const goListPage = () => router.push({ name:'PostWholeListView' })
 </script>
 
 <style lang="scss" scoped>
