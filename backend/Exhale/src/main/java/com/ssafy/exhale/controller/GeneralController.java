@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -22,7 +23,8 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class MainController {
+@RequestMapping("/general")
+public class GeneralController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
 
