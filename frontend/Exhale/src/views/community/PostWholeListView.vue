@@ -94,6 +94,10 @@ const fetchPosts = () => {
 
 fetchPosts()
 
+const goPage = (articleId) => {
+  router.push(`/post/${articleId}`)
+}
+
 </script>
 
 <style lang="scss" scoped>
