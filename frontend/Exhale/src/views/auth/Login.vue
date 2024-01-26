@@ -12,8 +12,16 @@
             <br>  
             <input type="password" v-model="loginForm.password" placeholder="비밀번호">
             <br>
-            <button type="submit" style="width:170px">로그인</button>
+            <button type="submit" style=" width:185px">로그인</button>
+            <div class="contents">
+              <button @click="snsLogin('?kakao')" style="margin-top: 20px; width: 170px; border: 0px; background-color: white;">
+                <img src="@/assets/kakao_login.png" alt="login" style="width: 150px;">
+              </button>
+              <RouterLink to="forgot-id">아이디 찾기</RouterLink> /
+              <RouterLink to="forget-password">비밀번호 찾기</RouterLink>
+            </div>
         </div>
+       
     </form>
     </div>
   </template>
@@ -22,7 +30,7 @@
   import { reactive } from 'vue';
   import axios from 'axios';
   import { useAuthStore } from '@/stores/auth'; 
-
+  import { RouterLink } from 'vue-router';
   const authStore = useAuthStore(); 
   const loginForm = reactive({
     userId: '',
@@ -55,6 +63,13 @@
   .loginform {
       margin-left : 700px;
       margin-top: -100px;
+  }
+
+  .contents{
+    display: flex;
+    
+   justify-content: center;
+   
   }
   </style>
   

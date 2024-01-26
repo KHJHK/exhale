@@ -29,67 +29,9 @@ const store = useCounterStore()
 </script>
 
 <style scoped>
-/* nav {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+.navbar-links {
+  margin-left: 60%;
 }
-.container {
-  margin-right: 20px;
-
-}
-.logo {
-  width: 80px;
-  height: auto;
-  margin-right: 20px;
-}
-nav a {
-  
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-  margin-top: 1px;
-  justify-content: end;
-  
-  
-}
-nav a:first-of-type {
-  border: 0;
-}
-
-.contents {
-  border: 0;
-}
-
-.container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  
-}
-
-.logo {
-  position : static ;
-}
-
-img {
-  width: 20px;
-  height: auto;
-}
-.eye {
-  border: white 1px solid;
-}
-.form-wrap {
-    margin-left: 700px;
-    margin-top: 100px;
-}
-.p {
-  margin-left: 150px;
-  margin-top: 100px;
-}
-.enlarge {
-  margin-left: 1000px;
-} */
-
 
 .navbar {
   display: flex;
@@ -134,11 +76,12 @@ nav a:first-of-type {
 }
 
 </style>
+
+
 <style>
 .navbar-logo {
-  width: 100px; 
+  width: 120px; 
   /* margin-right: 800px;  */
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+margin-left: 30px;
 }
 </style>

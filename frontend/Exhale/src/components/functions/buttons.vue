@@ -5,6 +5,8 @@
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
+const fontSize = ref(16)
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
 const enlarge = () => {
   fontSize.value ++;
