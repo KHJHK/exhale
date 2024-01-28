@@ -1,13 +1,5 @@
 <template>
 
-  <PostSlider />
-
-  <br>
-
-  <PostCreateBtn /> <PostSearch />
-
-  <hr>
-
   <h3>전체 글</h3>
 
   <div class="article">
@@ -35,10 +27,6 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
 import { getPosts } from '@/api/posts'
-import PostMenu from '@/components/posts/PostMenu.vue'
-import PostSlider from '@/components/posts/PostSlider.vue'
-import PostSearch from '@/components/posts/PostSearch.vue'
-import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 

@@ -84,7 +84,6 @@ const edit = async () => {
   }
 }
 
-
 const goDetailPage = () => router.push({ name: 'PostDetailView', params: { id } })
 
 </script>
