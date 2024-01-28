@@ -1,7 +1,7 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Member;
-import com.ssafy.exhale.dto.requestDto.JoinRequest;
+import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public void join(JoinRequest joinRequest) {
+    public void join(MemberRequest memberRequest) {
 
-        String loginId = joinRequest.getLogin_id();
-        String password = joinRequest.getPassword();
+        String loginId = memberRequest.getLoginId();
+        String password = memberRequest.getPassword();
 
         Boolean isExist = memberRepository.existsByLoginId(loginId);
         if (isExist) {
@@ -24,10 +24,10 @@ public class MemberService {
         }
 
         Member member = new Member();
-        member.setName(joinRequest.getName());
-        member.setBirth(joinRequest.getBirth());
-        member.setEmailDomain(joinRequest.getEmail_domain());
-        member.setEmailId(joinRequest.getEmail_id());
+        member.setName(memberRequest.getName());
+        member.setBirth(memberRequest.getBirth());
+        member.setEmailDomain(memberRequest.getEmailDomain());
+        member.setEmailId(memberRequest.getEmailId());
         member.setLoginId(loginId);
         member.setPassword(bCryptPasswordEncoder.encode(password));
         member.setRole("ROLE_USER");
@@ -44,10 +44,13 @@ public class MemberService {
     }
 
     public boolean compareRefreshToken(int memberId, String tokenValue){
-        
+
         if(memberRepository.existsByMemberIdAndRefreshValue(memberId, tokenValue))return true;
         return false;
     }
-
+    public boolean checkLoginId(String loginId){
+        if(memberRepository.existsByLoginId(loginId))return true;
+        return false;
+    }
 
 }

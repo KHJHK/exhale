@@ -1,7 +1,7 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
-import com.ssafy.exhale.dto.requestDto.JoinRequest;
+import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
 import com.ssafy.exhale.service.MemberService;
@@ -29,8 +29,8 @@ public class GeneralController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/join")
-    public void join(@RequestBody JoinRequest joinRequest){
-        memberService.join(joinRequest);
+    public void join(@RequestBody MemberRequest memberRequest){
+        memberService.join(memberRequest);
         // todo: 회원가입 응답 구현
     }
 
@@ -68,5 +68,12 @@ public class GeneralController {
         }
 
         return ResponseEntity.ok(responseBody);
+    }
+
+    @PostMapping("/id")
+    public ResponseEntity<?> checkLoginId(@RequestBody MemberRequest memberRequest){
+        System.out.println(memberRequest.getLoginId());
+        if(memberService.checkLoginId(memberRequest.getLoginId()))return ResponseEntity.ok("{result: false}");
+        return ResponseEntity.status(200).body("{result: true}");
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.exhale.dto.requestDto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
@@ -7,12 +8,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class JoinRequest {
-    private String login_id;
+public class MemberRequest {
+    @JsonProperty("login_id")
+    private String loginId;
     private String password;
     private String name;
-    private String email_id;
-    private String email_domain;
+    private String emailId;
+    private String emailDomain;
     private String birth;
     private String nickname;
 }
