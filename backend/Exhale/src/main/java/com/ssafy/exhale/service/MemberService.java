@@ -5,7 +5,10 @@ import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,9 +56,16 @@ public class MemberService {
         return false;
     }
 
-    public boolean checkPassword(int memberId, String password){
-        if(memberRepository.existsByMemberIdAndPassword(memberId, bCryptPasswordEncoder.encode(password))) return true;
-        else return false;
-    }
+    public boolean checkPassword(int memberId, String newPassword){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+        boolean[] isMatch = new boolean[1];
+        memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+            String oldPassword = member.getPassword();
+
+            isMatch[0] = passwordEncoder.matches(newPassword, oldPassword);
+        });
+        return isMatch[0];
+
+    }
 }

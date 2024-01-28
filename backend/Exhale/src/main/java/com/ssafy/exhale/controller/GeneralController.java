@@ -72,7 +72,6 @@ public class GeneralController {
 
     @PostMapping("/id")
     public ResponseEntity<?> checkLoginId(@RequestBody MemberRequest memberRequest){
-        System.out.println(memberRequest.getLoginId());
         if(memberService.checkLoginId(memberRequest.getLoginId()))return ResponseEntity.ok("{result: false}");
         return ResponseEntity.status(200).body("{result: true}");
     }

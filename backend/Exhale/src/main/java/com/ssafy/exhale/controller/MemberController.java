@@ -54,7 +54,7 @@ public class MemberController {
 
     @PostMapping("/check-password")
     public ResponseEntity<?> checkPassword(@RequestBody MemberRequest memberRequest){
-        if(memberService.checkLoginId(memberRequest.getPassword()))return ResponseEntity.ok("{result: true}");
+        if(memberService.checkPassword(tokenPayloadUtil.getMemberId(),memberRequest.getPassword()))return ResponseEntity.ok("{result: true}");
         return ResponseEntity.status(200).body("{result: false}");
     }
 }
