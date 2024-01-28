@@ -14,22 +14,27 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
-@RequiredArgsConstructor
 
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private String usernameParameter = "login_id";
+    private static final AntPathRequestMatcher CUSTOM_ANT_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/general/login", "POST");
 
     private final AuthenticationManager authenticationManager;
+    public LoginFilter(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+        super.setFilterProcessesUrl("/general/login");
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-
+        System.out.println("dd");
 
         String login_id = obtainUsername(request);
         String password = obtainPassword(request);
-
+        System.out.println(login_id);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(login_id, password, null); // JWT를 사용할 것임으로 3번째 인자를 사용하지 않을 거임
 
         return authenticationManager.authenticate(authToken);
