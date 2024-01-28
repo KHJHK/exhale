@@ -35,8 +35,11 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void saveRefreshToken(int member_id){
-        memberRepository.findByMemberId(member_id);
+    public void saveRefreshToken(int member_id, String token){
+        memberRepository.findByMemberId(member_id).ifPresent((member) -> {
+            member.setRefreshValue(token);
+            memberRepository.save(member);
+        });
 
     }
 
