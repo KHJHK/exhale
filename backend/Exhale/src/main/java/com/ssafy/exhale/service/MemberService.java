@@ -43,5 +43,11 @@ public class MemberService {
 
     }
 
+    public boolean compareRefreshToken(int memberId, String tokenValue){
+        
+        if(memberRepository.existsByMemberIdAndRefreshValue(memberId, tokenValue))return true;
+        return false;
+    }
+
 
 }
