@@ -11,13 +11,13 @@
   <h3>환자 이야기</h3>
 
   <div class="article">
-    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.articleId" >
+    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" >
       <PostItem
         :number="pageStartIdx + index + 1"
         :title="post.title"
         :content="post.content"
         :create_date="post.create_date"
-        :articleId="post.articleId"
+        :id="post.id"
         @go-to-detail="goPage"
       ></PostItem>
     </div>
@@ -70,8 +70,8 @@ posts.value = getPosts()
 
 fetchPosts()
 
-const goPage = (articleId) => {
-router.push(`/post/${articleId}`)
+const goPage = (id) => {
+router.push(`/post/${id}`)
 }
 
 </script>

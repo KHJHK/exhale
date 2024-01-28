@@ -27,13 +27,13 @@ const props = defineProps({
   title: String,
   content: String,
   create_date: [String, Date, Number],
-  articleId: Number,
+  id: Number,
 })
 
 
 const emit = defineEmits(['go-to-detail'])
 const handleClick = () => {
-  emit('go-to-detail', props.articleId)
+  emit('go-to-detail', props.id)
 }
 </script>
 

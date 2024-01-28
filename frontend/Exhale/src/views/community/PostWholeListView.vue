@@ -11,13 +11,13 @@
   <h3>전체 글</h3>
 
   <div class="article">
-    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.articleId" >
+    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" >
       <PostItem
         :number="pageStartIdx + index + 1"
         :title="post.title"
         :content="post.content"
         :create_date="post.create_date"
-        :articleId="post.articleId"
+        :id="post.id"
         @go-to-detail="goPage"
       ></PostItem>
     </div>
@@ -63,15 +63,24 @@ const articles = new Array(111)
 curPage.value = data;
 };
 
-const fetchPosts = () => {
-posts.value = getPosts()
-
+const fetchPosts = async () => {
+  try {
+    const { data } = await getPosts()
+    posts.value = data
+  } catch (error) {
+    console.error(error)
+  }
+  // console.dir(response)
+  // getPosts().then(response => {
+  //   console.log('response:', response)
+  // }).catch(error => {
+  //   console.log('error:', error)
+  // })
 };
-
 fetchPosts()
 
-const goPage = (articleId) => {
-router.push(`/post/${articleId}`)
+const goPage = (id) => {
+router.push(`/posts/${id}`)
 }
 
 </script>
