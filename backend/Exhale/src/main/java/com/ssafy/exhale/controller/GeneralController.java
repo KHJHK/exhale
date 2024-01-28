@@ -55,7 +55,7 @@ public class GeneralController {
 
             String jwt = jwtUtil.createJwt(loginId, memberId, role);
             String refresh_token = jwtUtil.createRefreshToken(memberId,role);
-            memberService.saveRefreshToken(memberId, refresh_token);
+            memberService.saveRefreshValue(memberId, refresh_token);
 
             TokenInfo tokeninfo = new TokenInfo("Bearer "+jwt,"Bearer "+refresh_token);
             MemberResponse memberResponse = new MemberResponse(memberId,loginId,nickname);
