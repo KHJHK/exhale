@@ -1,6 +1,7 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
+import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
 import com.ssafy.exhale.service.MemberService;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,4 +52,9 @@ public class MemberController {
         return ResponseEntity.ok(responseBody);
     }
 
+    @PostMapping("/check-password")
+    public ResponseEntity<?> checkPassword(@RequestBody MemberRequest memberRequest){
+        if(memberService.checkLoginId(memberRequest.getPassword()))return ResponseEntity.ok("{result: true}");
+        return ResponseEntity.status(200).body("{result: false}");
+    }
 }

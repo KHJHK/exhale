@@ -53,4 +53,9 @@ public class MemberService {
         return false;
     }
 
+    public boolean checkPassword(int memberId, String password){
+        if(memberRepository.existsByMemberIdAndPassword(memberId, bCryptPasswordEncoder.encode(password))) return true;
+        else return false;
+    }
+
 }
