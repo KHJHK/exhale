@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Entity
 @Getter
@@ -30,15 +31,15 @@ public class Member {
     private String nickname;
     @Column(name="profile_img", nullable = true)
     private String profileImg;
-    @Column(name="withdraw", nullable = true, columnDefinition = "tinyint default true")
-    private boolean withdraw;
+    @Column(name="withdraw", nullable = true, columnDefinition = "TINYINT(1) default 0")
+    private Boolean withdraw;
     @Column(name="refresh_value", nullable = true)
     private String refreshValue;
     @CreatedDate
     @Column(name="create_date") 
     private LocalDateTime createDate;
     @Column(name="withdraw_date", nullable = true)
-    private LocalDateTime withdraw_date;
+    private LocalDateTime withdrawDate;
     private String role;
 
     public void updateWithdraw(boolean withdrawal){

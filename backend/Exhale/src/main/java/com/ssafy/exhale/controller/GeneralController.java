@@ -42,16 +42,21 @@ public class GeneralController {
         String nickname = tokenPayloadUtil.getNickname();
         String loginId = tokenPayloadUtil.getLoginId();
 
+        if(memberService.checkWithdraw(memberId)){
+            // todo 탈퇴 회원 예외 처리
+            return ResponseEntity.ok("탈퇴 회원");
+        }
+
         String jwt = tokenPayloadUtil.createJWT();
         String refreshToken = tokenPayloadUtil.createRefreshToken();
 
-        Map<String, Object> responseBody = new HashMap<>();
 
         memberService.saveRefreshValue(memberId, refreshToken);
 
         TokenInfo tokeninfo = new TokenInfo(jwt,refreshToken);
         MemberResponse memberResponse = new MemberResponse(memberId,nickname,loginId);
 
+        Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("token",tokeninfo);
         responseBody.put("member",memberResponse);
 

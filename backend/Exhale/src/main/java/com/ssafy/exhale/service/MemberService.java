@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -82,6 +82,14 @@ public class MemberService {
             memberRepository.save(member);
         });
         return true;
+    }
+
+    public boolean checkWithdraw(long memberId){
+        AtomicReference<Boolean> isWithdraw = new AtomicReference<>(false);
+        memberRepository.findByMemberId(memberId).ifPresent((member)->{
+            isWithdraw.set(member.getWithdraw());
+        });
+        return isWithdraw.get();
     }
 
 }
