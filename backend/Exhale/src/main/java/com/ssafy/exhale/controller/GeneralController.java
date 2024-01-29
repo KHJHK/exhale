@@ -6,6 +6,7 @@ import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
 import com.ssafy.exhale.service.MemberService;
 import com.ssafy.exhale.util.JWTUtil;
+import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,7 +27,7 @@ import java.util.Map;
 @RequestMapping("/general")
 public class GeneralController {
     private final MemberService memberService;
-    private final JWTUtil jwtUtil;
+    private final TokenPayloadUtil tokenPayloadUtil;
 
     @PostMapping("/join")
     public void join(@RequestBody MemberRequest memberRequest){
@@ -36,38 +37,27 @@ public class GeneralController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(){
+
+        long memberId = tokenPayloadUtil.getMemberId();
+        String nickname = tokenPayloadUtil.getNickname();
+        String loginId = tokenPayloadUtil.getLoginId();
+
+        String jwt = tokenPayloadUtil.createJWT();
+        String refreshToken = tokenPayloadUtil.createRefreshToken();
+
         Map<String, Object> responseBody = new HashMap<>();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-            CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        memberService.saveRefreshValue(memberId, refreshToken);
 
-            String loginId = customUserDetails.getUsername();
-            long memberId = customUserDetails.getMemberId();
-            String nickname = customUserDetails.getNickname();
+        TokenInfo tokeninfo = new TokenInfo(jwt,refreshToken);
+        MemberResponse memberResponse = new MemberResponse(memberId,nickname,loginId);
 
-            //roll 값
-            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-            Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-            GrantedAuthority auth = iterator.next();
-            String role = auth.getAuthority();
+        responseBody.put("token",tokeninfo);
+        responseBody.put("member",memberResponse);
 
-
-            String jwt = jwtUtil.createJwt(loginId, memberId, role);
-            String refresh_token = jwtUtil.createRefreshToken(memberId,role);
-            memberService.saveRefreshValue(memberId, refresh_token);
-
-            TokenInfo tokeninfo = new TokenInfo("Bearer "+jwt,"Bearer "+refresh_token);
-            MemberResponse memberResponse = new MemberResponse(memberId,loginId,nickname);
-
-            responseBody.put("token",tokeninfo);
-            responseBody.put("member",memberResponse);
-
-        }else{
-            return ResponseEntity.status(500).body("서버 에러");
-        }
 
         return ResponseEntity.ok(responseBody);
+        // todo : 예외 처리
     }
 
     @PostMapping("/id")
