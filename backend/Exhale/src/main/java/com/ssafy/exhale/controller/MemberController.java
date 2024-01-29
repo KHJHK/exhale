@@ -2,6 +2,7 @@ package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
+import com.ssafy.exhale.dto.requestDto.PasswordRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
 import com.ssafy.exhale.service.MemberService;
@@ -33,7 +34,7 @@ public class MemberController {
 
         // DB와 토큰 비교
         String token_value = request.getHeader("Authorization").split(" ")[1];
-        int memberId = tokenPayloadUtil.getMemberId();
+        long memberId = tokenPayloadUtil.getMemberId();
         Map<String, Object> responseBody = new HashMap<>();
 
         if (memberService.compareRefreshToken(memberId, token_value)) {
@@ -57,4 +58,11 @@ public class MemberController {
         if(memberService.checkPassword(tokenPayloadUtil.getMemberId(),memberRequest.getPassword()))return ResponseEntity.ok("{result: true}");
         return ResponseEntity.status(200).body("{result: false}");
     }
+
+    @PostMapping("/repassword")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordRequest passwordRequest){
+        if(memberService.changePassword(tokenPayloadUtil.getMemberId(),passwordRequest.getOldPassword(),passwordRequest.getNewPassword()))return ResponseEntity.ok("{result: true}");
+        return ResponseEntity.status(200).body("{result: false}");
+    }
+
 }

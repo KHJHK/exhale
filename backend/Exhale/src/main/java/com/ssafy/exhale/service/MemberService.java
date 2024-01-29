@@ -68,4 +68,20 @@ public class MemberService {
         return isMatch[0];
 
     }
+    public boolean checkPassword(long memberId, String newPassword){
+        return verifyPassword(memberId,newPassword);
+    }
+    public boolean changePassword(long memberId, String currentPassword, String newPassword) {
+        if (verifyPassword(memberId, currentPassword)) {
+            memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+                member.setPassword(bCryptPasswordEncoder.encode(newPassword));
+                memberRepository.save(member);
+            });
+        }else{
+            return false;
+        }
+        return true;
+
+    }
+
 }
