@@ -41,6 +41,14 @@
       >환자 이야기</RouterLink>
   </nav>
 
+  <PostSlider />
+
+  <br>
+
+  <PostCreateBtn /> <PostSearch />
+
+  <hr>
+
   <hr class="my-4" />
   <RouterView></RouterView>
 
@@ -48,6 +56,10 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
+import PostMenu from '@/components/posts/PostMenu.vue'
+import PostSlider from '@/components/posts/PostSlider.vue'
+import PostSearch from '@/components/posts/PostSearch.vue'
+import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 const route = useRoute()
 </script>
 

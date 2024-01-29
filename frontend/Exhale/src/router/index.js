@@ -75,10 +75,10 @@ const router = createRouter({
     { path: '/review', name: 'Review', component: Review },
 
     // community
-    { path: '/post/create', name: 'PostCreateView', component: PostCreateView },
-    { path: '/post/:articleId', name: 'PostDetailView', component: PostDetailView },
-    { path: '/post/:articleId/edit', name: 'PostEditView', component: PostEditView },
-    { 
+    { path: '/posts/create', name: 'PostCreateView', component: PostCreateView },
+    { path: '/posts/:id', name: 'PostDetailView', component: PostDetailView },
+    { path: '/posts/:id/edit', name: 'PostEditView', component: PostEditView },
+    {
       path: '/post-nested',
       name: 'PostNestedView',
       component: PostNestedView,
