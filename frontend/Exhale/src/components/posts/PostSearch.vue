@@ -11,11 +11,6 @@
         placeholder="SEARCH" 
         id="search-modal-search--input">
       </div>
-      <div id="search-modal-search-result">
-        <home-search-result 
-        :search-input-data="searchInputData"
-        @close-modal="modalActiveTogle"/>
-      </div>
       <!-- <div v-show="modalActive" @click="modalActiveTogle" id="search-modal"></div> -->
     </div>
     
