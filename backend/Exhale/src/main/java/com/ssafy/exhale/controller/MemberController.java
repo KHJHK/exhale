@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +60,11 @@ public class MemberController {
     public ResponseEntity<?> changePassword(@RequestBody PasswordRequest passwordRequest){
         if(memberService.changePassword(tokenPayloadUtil.getMemberId(),passwordRequest.getOldPassword(),passwordRequest.getNewPassword()))return ResponseEntity.ok("{result: true}");
         return ResponseEntity.status(200).body("{result: false}");
+    }
+    @GetMapping("/withdraw")
+    public ResponseEntity<?> withdrawal(){
+        memberService.changeWithdraw(tokenPayloadUtil.getMemberId());
+        return ResponseEntity.status(200).body("");
     }
 
 }

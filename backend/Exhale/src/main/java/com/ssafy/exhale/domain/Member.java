@@ -28,17 +28,40 @@ public class Member {
     private String nickname;
     @Column(name="profile_img", nullable = true)
     private String profileImg;
-    @Column(name="is_active", nullable = true, columnDefinition = "tinyint default true")
-    private boolean isActive;
+    @Column(name="withdraw", nullable = true, columnDefinition = "tinyint default true")
+    private boolean withdraw;
     @Column(name="refresh_value", nullable = true)
     private String refreshValue;
     @CreatedDate
     @Column(name="create_date") 
     private LocalDateTime createDate;
-    @Column(name="withdrawal_date", nullable = true)
-    private LocalDateTime withdrawal_date;
+    @Column(name="withdraw_date", nullable = true)
+    private LocalDateTime withdraw_date;
     private String role;
 
-
+    public void updateWithdraw(boolean withdrawal){
+        if (withdrawal) this.withdraw = true;
+        else this.withdraw = false;
+    }
+    public void updateJoin(MemberRequest memberRequest, String password){
+        this.name = memberRequest.getName();
+        this.birth = memberRequest.getBirth();
+        this.emailDomain = memberRequest.getEmailDomain();
+        this.emailId = memberRequest.getEmailId();
+        this.loginId = memberRequest.getLoginId();
+        this.password = password;
+        this.role = "ROLE_USER";
+    }
+    public void updateRefreshValue(String value){
+        this.refreshValue = value;
+    }
+    public void capsulePayload(String loginId, long memberId, String role){
+        this.loginId = loginId;
+        this.memberId = memberId;
+        this.role = role;
+    }
+    public void updatePassword(String password){
+        this.password = password;
+    }
 
 }

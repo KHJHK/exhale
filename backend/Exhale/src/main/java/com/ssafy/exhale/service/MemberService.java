@@ -83,5 +83,12 @@ public class MemberService {
         return true;
 
     }
+    public boolean changeWithdraw(long memberId){
+        memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+            member.updateWithdraw(true);
+            memberRepository.save(member);
+        });
+        return true;
+    }
 
 }
