@@ -13,13 +13,13 @@ const posts = [
   {id: 9, title: '제목9', content: '내용9', create_date: '2020-04-01'},
   {id: 10, title: '제목10', content: '내용10', create_date: '2020-05-01'},
   {id: 11, title: '제목11', content: '내용11', create_date: '2020-02-08'},
-  {id: 12, title: '제목12', content: '내용12', create_date: '2020-03-02'}
+  {id: 12, title: '제목12', content: '내용12', create_date: '2020-03-02'},
 ]
 
 // 리스트를 조회하는 함수
-export function getPosts(params) {
+export function getPosts() {
   // axios.HTTP메서드('서버 url(아래에 일단 가상 db.json 서버 url 넣어둠)')
-  return axios.get('http://localhost:5000/posts', {params})
+  return axios.get('http://localhost:5000/posts')
 }
 
 // 상세데이터 조회하는 함수
