@@ -1,21 +1,24 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Member;
-import com.ssafy.exhale.dto.requestDto.JoinRequest;
+import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public void join(JoinRequest joinRequest) {
+    public void join(MemberRequest memberRequest) {
 
-        String loginId = joinRequest.getLogin_id();
-        String password = joinRequest.getPassword();
+        String loginId = memberRequest.getLoginId();
+        String password = memberRequest.getPassword();
 
         Boolean isExist = memberRepository.existsByLoginId(loginId);
         if (isExist) {
@@ -24,21 +27,69 @@ public class MemberService {
         }
 
         Member member = new Member();
-        member.setName(joinRequest.getName());
-        member.setBirth(joinRequest.getBirth());
-        member.setEmailDomain(joinRequest.getEmail_domain());
-        member.setEmailId(joinRequest.getEmail_id());
-        member.setLoginId(loginId);
-        member.setPassword(bCryptPasswordEncoder.encode(password));
-        member.setRole("ROLE_USER");
-
+        member.updateJoin(memberRequest, bCryptPasswordEncoder.encode(password));
         memberRepository.save(member);
     }
 
-    public void saveRefreshToken(int member_id){
-        memberRepository.findByMemberId(member_id);
+    public void saveRefreshValue(long member_id, String token){
+        memberRepository.findByMemberId(member_id).ifPresent((member) -> {
+            member.updateRefreshValue(token);
+            memberRepository.save(member);
+        });
 
     }
 
+    public boolean compareRefreshToken(long memberId, String tokenValue){
+
+        if(memberRepository.existsByMemberIdAndRefreshValue(memberId, tokenValue))return true;
+        return false;
+    }
+    public boolean checkLoginId(String loginId){
+        if(memberRepository.existsByLoginId(loginId))return true;
+        return false;
+    }
+
+    public boolean verifyPassword(long memberId, String newPassword){
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        boolean[] isMatch = new boolean[1];
+        memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+            String oldPassword = member.getPassword();
+
+            isMatch[0] = passwordEncoder.matches(newPassword, oldPassword);
+        });
+        return isMatch[0];
+
+    }
+    public boolean checkPassword(long memberId, String newPassword){
+        return verifyPassword(memberId,newPassword);
+    }
+    public boolean changePassword(long memberId, String currentPassword, String newPassword) {
+        if (verifyPassword(memberId, currentPassword)) {
+            memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+                member.updatePassword(bCryptPasswordEncoder.encode(newPassword));
+                memberRepository.save(member);
+            });
+        }else{
+            return false;
+        }
+        return true;
+
+    }
+    public boolean changeWithdraw(long memberId){
+        memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+            member.updateWithdraw(true);
+            memberRepository.save(member);
+        });
+        return true;
+    }
+
+    public boolean checkWithdraw(long memberId){
+        AtomicReference<Boolean> isWithdraw = new AtomicReference<>(false);
+        memberRepository.findByMemberId(memberId).ifPresent((member)->{
+            isWithdraw.set(member.getWithdraw());
+        });
+        return isWithdraw.get();
+    }
 
 }
