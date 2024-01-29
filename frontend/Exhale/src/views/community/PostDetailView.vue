@@ -22,7 +22,6 @@
                 <button class="btn btn-outline-danger" @click="remove" >삭제</button>
             </div>
         </div>
-        
     </div>
 </template>
 

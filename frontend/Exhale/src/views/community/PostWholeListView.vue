@@ -33,6 +33,10 @@ import Pagination from '@/components/functions/Pagination.vue'
 const posts = ref([])
 const route = useRoute()
 const router = useRouter()
+const params = ref({
+  _sort: 'create_date',
+  _order: 'asc',
+})
 const articles = new Array(111)
 
   for (let i = 0; i < articles.length; i++) {

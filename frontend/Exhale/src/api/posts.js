@@ -17,9 +17,9 @@ const posts = [
 ]
 
 // 리스트를 조회하는 함수
-export function getPosts() {
+export function getPosts(params) {
   // axios.HTTP메서드('서버 url(아래에 일단 가상 db.json 서버 url 넣어둠)')
-  return axios.get('http://localhost:5000/posts')
+  return axios.get('http://localhost:5000/posts', {params})
 }
 
 // 상세데이터 조회하는 함수
