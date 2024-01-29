@@ -16,6 +16,7 @@ const posts = [
   {id: 12, title: '제목12', content: '내용12', create_date: '2020-03-02'}
 ]
 
+
 // 리스트를 조회하는 함수
 export function getPosts(params) {
   // axios.HTTP메서드('서버 url(아래에 일단 가상 db.json 서버 url 넣어둠)')

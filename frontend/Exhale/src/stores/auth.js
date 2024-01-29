@@ -20,7 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     axios({
       method: 'post',
-      url: `${API_URL}/auth/signup`,
+      url: 'http://localhost:5000/posts'/auth/signup,
       data: {
         userId,
         email,
@@ -34,6 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
       .then(res => {
         const password = passwordConfirmation
         logIn({username,password})
+        console.log('회원가입완료!')
       })
       .catch(err => console.log(err))
   }
@@ -49,7 +50,9 @@ export const useAuthStore = defineStore('auth', () => {
     })
       .then(res => {
         token.value = res.data.key
+        
         router.push({name: 'mainpage'})
+        console.log('로그인 완료!')
         isUser()
       })
       .catch(err => console.log(err))
@@ -59,7 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
 
     axios({
       method: 'post',
-      url: `${API_URL}/auth/logout`,
+      url: 'http://localhost:5000/posts'/auth/logout,
       headers: {
         Authorization: `Token${token.value}`
       }

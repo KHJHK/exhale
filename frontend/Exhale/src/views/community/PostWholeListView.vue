@@ -1,6 +1,7 @@
 <template>
 
   <h3>전체 글</h3>
+      
 
   <div class="article">
     <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" >
@@ -26,9 +27,12 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
-import { getPosts } from '@/api/posts'
+import { getPosts} from '@/api/posts'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
+
+
+
 
 const posts = ref([])
 const route = useRoute()
@@ -70,6 +74,8 @@ const fetchPosts = async () => {
   // })
 };
 fetchPosts()
+
+
 
 const goPage = (id) => {
 router.push(`/posts/${id}`)

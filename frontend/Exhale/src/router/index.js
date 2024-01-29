@@ -54,6 +54,11 @@ import WaitingArea from '@/components/modals/WaitingArea.vue';
 import Headers from '@/components/common/Headers.vue';
 import Footers from '@/components/common/Footers.vue';
 
+// comments
+import CommentsCreate from '@/components/comments/CommentsCreate.vue'
+import CommentsDelete from '@/components/comments/CommentsDelete.vue'
+import CommentsEdit from '@/components/comments/commentsEdit.vue'
+import CommentsReply from '@/components/comments/CommentsReply.vue'
 
 // Import Common views
 const history = createWebHistory();
@@ -76,7 +81,14 @@ const router = createRouter({
 
     // community
     { path: '/posts/create', name: 'PostCreateView', component: PostCreateView },
-    { path: '/posts/:id', name: 'PostDetailView', component: PostDetailView },
+    { path: '/posts/:id', name: 'PostDetailView', component: PostDetailView, 
+    children: [
+      {path: 'commentscreate', name: 'commentscreate', component: CommentsCreate },
+      {path: 'commentsedit', name: 'commentsedit', component: CommentsEdit},
+      {path: 'commentsdelete', name: 'commentsdelete', component: CommentsDelete},
+      {path: 'commentsreply', name: 'commentsreply', component: CommentsReply}
+    ]
+  },
     { path: '/posts/:id/edit', name: 'PostEditView', component: PostEditView },
     {
       path: '/post-nested',
