@@ -13,7 +13,6 @@
 
   <br>
 
-  <h3>전체 글</h3>
   <nav class="navbar-links">
       <RouterLink 
         :to="{name: 'PostWholeListView'}" 

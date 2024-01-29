@@ -1,13 +1,5 @@
 <template>
 
-  <PostSlider />
-
-  <br>
-
-  <PostCreateBtn /> <PostSearch />
-
-  <hr>
-
   <h3>환자 이야기</h3>
 
   <div class="article">
@@ -35,16 +27,16 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
 import { getPosts } from '@/api/posts'
-import PostMenu from '@/components/posts/PostMenu.vue'
-import PostSlider from '@/components/posts/PostSlider.vue'
-import PostSearch from '@/components/posts/PostSearch.vue'
-import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 
 const posts = ref([])
 const route = useRoute()
 const router = useRouter()
+const params = ref({
+  _sort: 'create_date',
+  _order: 'asc',
+})
 const articles = new Array(111)
 
   for (let i = 0; i < articles.length; i++) {
@@ -63,15 +55,24 @@ const articles = new Array(111)
 curPage.value = data;
 };
 
-const fetchPosts = () => {
-posts.value = getPosts()
-
+const fetchPosts = async () => {
+  try {
+    const { data } = await getPosts()
+    posts.value = data
+  } catch (error) {
+    console.error(error)
+  }
+  // console.dir(response)
+  // getPosts().then(response => {
+  //   console.log('response:', response)
+  // }).catch(error => {
+  //   console.log('error:', error)
+  // })
 };
-
 fetchPosts()
 
 const goPage = (id) => {
-router.push(`/post/${id}`)
+router.push(`/posts/${id}`)
 }
 
 </script>
