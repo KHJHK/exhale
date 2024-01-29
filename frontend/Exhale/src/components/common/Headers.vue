@@ -30,20 +30,18 @@ const store = useCounterStore()
 
 <style scoped>
 .navbar-links {
-  margin-left: 60%;
+  margin-left: 60vw;
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* padding: 0rem 1rem; */
   
 }
 .navbar > nav {
   display: flex;
   align-items: center;
-  
   width: 100%
 }
 
@@ -68,7 +66,7 @@ nav a:first-of-type {
 
 
 .nav-link:hover {
-  border-bottom: 2px solid #19691C; /* 호버 시 밑줄이 나타납니다 */
+  border-bottom: 2px solid rgb(108, 159, 156); /* 호버 시 밑줄이 나타납니다 */
   text-decoration: none;
   color: black;
   transition: 0.4s;
@@ -80,8 +78,8 @@ nav a:first-of-type {
 
 <style>
 .navbar-logo {
-  width: 120px; 
-  /* margin-right: 800px;  */
-margin-left: 30px;
+ width: 120px; 
+ margin-left: 4vw;
+ top: 10px;
 }
 </style>

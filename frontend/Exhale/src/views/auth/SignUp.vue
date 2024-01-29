@@ -7,40 +7,36 @@
         </p>
         </div>   
             <div class="form-wrap">
-              <form @submit.prevent="submitform">
+              <form @submit.prevent="submitForm">
                 <div class="input-with-label" >
-                  <input v-model.trim="userId" id="userId" placeholder="아이디" type="text" style= "border: 2px solid #19691C; border-radius: 30px; text-align: center;"/>
-                  
+                  <input v-model.trim="userId" id="userId" placeholder="아이디" type="text" style= "border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;"/>
                 </div>
                 <div class="input-with-label">
-                  <input v-model.trim="email" id="email" placeholder="이메일" type="text" style="border: 2px solid #19691C; border-radius: 30px; text-align: center;"/>
-                  
+                  <input v-model.trim="email" id="email" placeholder="이메일" type="text" style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;"/> 
                 </div>
                 <div class="input-with-label">
-                  <input v-model.trim="fullname" id="fullname" placeholder="성명" type="text" style="border: 2px solid #19691C; border-radius: 30px; text-align: center;" />
-                  
+                  <input v-model.trim="fullname" id="fullname" placeholder="성명" type="text" style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;" />
                 </div>
                 <div class="input-with-label">
-                  <input v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="text" style="border: 2px solid #19691C; border-radius: 30px; text-align: center;"/>
-                  
+                  <input v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="text" style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;"/>
                 </div>
                 <div class="input-with-label">
-                  <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호" style="border: 2px solid #19691C; border-radius: 30px; text-align: center;" />
+                  <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호" style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;" />
                   <button @click="toggleVisibility1('password')" class="eye">
                     <img src="@/assets/eye.png" alt="eye-icon" >
                   </button>
                 </div>
                 <div class="input-with-label">
-                  <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인" style="border: 2px solid #19691C; border-radius: 30px; text-align: center;" />
+                  <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인" style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;" />
                   <button @click="toggleVisibility2('passwordConfirm')" class="eye">
                     <img src="@/assets/eye.png" alt="eye-icon" >
                   </button>
                 </div>
                 <div class="input-with-label">
-                  <input v-model="nickName" id="nickname" placeholder="닉네임" type="text"  style="border: 2px solid #19691C; border-radius: 30px; text-align: center;" />
+                  <input v-model="nickName" id="nickname" placeholder="닉네임" type="text"  style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; text-align: center;" />
                 </div>
                 <div class="submit1" >
-                  <button class="btn-bottom" style="border: 2px solid #19691C; border-radius: 30px; width: 170px;" type="submit" @click.prevent="submitForm()" >회원가입</button> 
+                  <button class="btn-bottom" style="border: 2px solid rgb(108, 159, 156); border-radius: 30px; width: 170px;" type="submit" @click.prevent="submitForm()" >회원가입</button> 
                   <br>
                   <div class="kakaoLogin">
                     <button @click="snsLogin('?kakao')" style="width: 170px; border: 0px; background-color: white;">
@@ -48,10 +44,7 @@
                     </button>
                   </div>
                 </div>
-                
-                
                 <div style="display: inline">
-                  
                   이미 회원이세요? <RouterLink :to="{name: 'Login'}">로그인</RouterLink>
                 </div>
               </form>
@@ -66,11 +59,9 @@ import { onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import Buttons from '@/components/functions/buttons.vue';
 const store = useAuthStore()
 const fontSize = ref(16);
 const router = useRouter();
-
 const userId = ref(null);
 const email = ref(null);
 const fullname = ref(null);
@@ -80,7 +71,6 @@ const passwordConfirm = ref(null);
 const nickName = ref(null)
 const passwordType = ref("password");
 const passwordConfirmType = ref("passwordConfirmType");
-
 
 const submitForm = () => {
   const payload = {
@@ -94,6 +84,7 @@ const submitForm = () => {
   }
   store.signup(payload)
 };
+
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
 const enlarge = () => {
   fontSize.value ++;
@@ -124,7 +115,6 @@ const snsLogin = (type) => {
 
 const passwordInput = document.getElementById('password');
 
-
 </script>
 <style scoped>
 img {
@@ -144,7 +134,6 @@ img {
     margin-left: 700px;
     margin-top: 100px;
     
-    
 }
 .p {
   margin-left: 150px;
@@ -154,11 +143,10 @@ img {
   margin-left: 1100px;
   width: 100px;
   border-radius: 40px;
-  border: #19691C solid 2px;
+  border: rgb(108, 159, 156) solid 2px;
   background-color: white;
   
 }
-
 .input-with-label {
   position: relative;
   display: flex;
