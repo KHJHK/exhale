@@ -3,6 +3,8 @@ package com.ssafy.exhale.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -13,9 +15,10 @@ public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
-    private int boardId;
+    private int id;
 
-    @Column(name = "category_name")
+    @Column(name = "name")
     @NonNull
-    private String categoryName;
+    private String name;
+
 }

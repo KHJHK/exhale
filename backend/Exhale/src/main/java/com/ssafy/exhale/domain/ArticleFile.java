@@ -14,19 +14,14 @@ import lombok.Setter;
 @Table(name = "article_file")
 public class ArticleFile {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_file_id")
-    private int articleFileId;
+    private int id;
 
-    @Column(name = "origin_name")
-    private String originName;
-
-    @Column(name = "img_url")
-    private String imgUrl;
-
-    @Column(name = "is_active")
-    private boolean isActive;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @Column(name = "is_delete")
+    private boolean isDelete;
 }
