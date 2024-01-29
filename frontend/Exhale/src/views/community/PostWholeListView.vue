@@ -57,7 +57,7 @@ curPage.value = data;
 
 const fetchPosts = async () => {
   try {
-    const { data } = await getPosts()
+    const { data } = await getPosts(params.value)
     posts.value = data
   } catch (error) {
     console.error(error)
