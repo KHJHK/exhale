@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // axios
 const posts = [
   {articleId: 1, title: '제목1', content: '내용1', create_date: '2020-01-01'},
