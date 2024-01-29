@@ -1,7 +1,9 @@
 package com.ssafy.exhale.domain;
 
+import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -9,8 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "member")
+@NoArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

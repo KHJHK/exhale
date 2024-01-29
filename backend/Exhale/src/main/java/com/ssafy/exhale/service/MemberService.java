@@ -27,20 +27,13 @@ public class MemberService {
         }
 
         Member member = new Member();
-        member.setName(memberRequest.getName());
-        member.setBirth(memberRequest.getBirth());
-        member.setEmailDomain(memberRequest.getEmailDomain());
-        member.setEmailId(memberRequest.getEmailId());
-        member.setLoginId(loginId);
-        member.setPassword(bCryptPasswordEncoder.encode(password));
-        member.setRole("ROLE_USER");
-
+        member.updateJoin(memberRequest, bCryptPasswordEncoder.encode(password));
         memberRepository.save(member);
     }
 
     public void saveRefreshValue(long member_id, String token){
         memberRepository.findByMemberId(member_id).ifPresent((member) -> {
-            member.setRefreshValue(token);
+            member.updateRefreshValue(token);
             memberRepository.save(member);
         });
 
@@ -74,7 +67,7 @@ public class MemberService {
     public boolean changePassword(long memberId, String currentPassword, String newPassword) {
         if (verifyPassword(memberId, currentPassword)) {
             memberRepository.findByMemberId(memberId).ifPresent((member) -> {
-                member.setPassword(bCryptPasswordEncoder.encode(newPassword));
+                member.updatePassword(bCryptPasswordEncoder.encode(newPassword));
                 memberRepository.save(member);
             });
         }else{
