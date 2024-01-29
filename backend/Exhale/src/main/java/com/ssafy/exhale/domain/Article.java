@@ -16,9 +16,11 @@ import java.util.List;
 @Table(name = "article")
 public class Article {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
-    private int articleId;
+    private int id;
     private String title;
+    private String content;
 
     @Column(name = "is_hidden")
     private Boolean isHidden;
@@ -26,32 +28,25 @@ public class Article {
     private String thumbnail;
     private String nickname;
 
-    @Column(name = "is_withdrawal")
-    private boolean isWithdrawal;
+    @Column(name = "withdraw")
+    private boolean withdraw;
 
-    @Column(name = "create_date")
+    @Column(name = "create_time")
     @Temporal(TemporalType.DATE)
-    private Date createDate;
+    private Date createTime;
 
-    @Column(name = "modify_date")
+    @Column(name = "modify_time")
     @Temporal(TemporalType.DATE)
     private Date modifyDate;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "is_delete")
+    private boolean isDelete;
 
     @ManyToOne
-    @JoinColumn(name = "category")
-    private Article article;
+    @JoinColumn(name = "board_id")
+    private Board board;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
-    @OrderBy("createDate desc")
-    private List<Comment> comments;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "article")
-    private List<ArticleFile> articleFiles;
 }
