@@ -38,7 +38,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void saveRefreshValue(int member_id, String token){
+    public void saveRefreshValue(long member_id, String token){
         memberRepository.findByMemberId(member_id).ifPresent((member) -> {
             member.setRefreshValue(token);
             memberRepository.save(member);
@@ -46,7 +46,7 @@ public class MemberService {
 
     }
 
-    public boolean compareRefreshToken(int memberId, String tokenValue){
+    public boolean compareRefreshToken(long memberId, String tokenValue){
 
         if(memberRepository.existsByMemberIdAndRefreshValue(memberId, tokenValue))return true;
         return false;
@@ -56,7 +56,7 @@ public class MemberService {
         return false;
     }
 
-    public boolean checkPassword(int memberId, String newPassword){
+    public boolean verifyPassword(long memberId, String newPassword){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         boolean[] isMatch = new boolean[1];

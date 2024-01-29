@@ -32,7 +32,7 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
-    public int getUserId(String token){
+    public long getUserId(String token){
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("user_id",Integer.class);
     }
 
@@ -42,7 +42,7 @@ public class JWTUtil {
 
 
     // JWT 생성
-    public String createJwt(String loginId, int userId, String role){
+    public String createJwt(String loginId, long userId, String role){
         return Jwts.builder()
                 .claim("login_id",loginId)
                 .claim("user_id",userId)
@@ -54,7 +54,7 @@ public class JWTUtil {
     }
 
     // refresh token 생성
-    public String createRefreshToken(int userId, String role){
+    public String createRefreshToken(long userId, String role){
         return Jwts.builder()
                 .claim("user_id",userId)
                 .claim("role",role)

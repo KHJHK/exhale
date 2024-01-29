@@ -43,7 +43,7 @@ public class GeneralController {
             CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
             String loginId = customUserDetails.getUsername();
-            int memberId = customUserDetails.getMemberId();
+            long memberId = customUserDetails.getMemberId();
             String nickname = customUserDetails.getNickname();
 
             //roll 값

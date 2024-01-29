@@ -40,7 +40,7 @@ public class JWTFilter  extends OncePerRequestFilter {
         }
 
         String loginId  = jwtUtil.getLoginId(token);
-        int userId  = jwtUtil.getUserId(token);
+        long userId  = jwtUtil.getUserId(token);
         String role = jwtUtil.getRole(token);
 
         Member member = new Member();

@@ -25,7 +25,7 @@ public class TokenPayloadUtil {
         }
     }
     // DB PK
-    public int getMemberId(){
+    public long getMemberId(){
         CustomUserDetails customUserDetails = getPayload();
         if(customUserDetails==null)return 0;
         return customUserDetails.getMemberId();
