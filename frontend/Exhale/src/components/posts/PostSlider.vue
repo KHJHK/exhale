@@ -2,18 +2,18 @@
   <div id="carouselExample" class="carousel slide">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="@/assets/dog1.jpg" class="w-25" alt="...">
-      <img src="@/assets/dog1.jpg" class="w-25" alt="...">
-      <img src="@/assets/dog1.jpg" class="d-block h-50" alt="...">
+      <img src="@/assets/dog1.jpg" alt="...">
+      <img src="@/assets/dog3.jpg" alt="...">
+      <img src="@/assets/dog1.jpg" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="@/assets/dog2.jpg" class="w-50" alt="...">
-      <img src="@/assets/dog2.jpg" class="w-50" alt="...">
-      <!-- <img src="@/assets/dog2.jpg" class="d-block w-50" alt="..."> -->
+      <img src="@/assets/dog2.jpg" alt="...">
+      <img src="@/assets/dog2.jpg" alt="...">
+      <img src="@/assets/dog2.jpg" class="d-block w-50" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="@/assets/dog3.jpg" class="w-50" alt="...">
-      <img src="@/assets/dog3.jpg" class="w-50" alt="...">
+      <img src="@/assets/dog3.jpg" alt="...">
+      <img src="@/assets/dog3.jpg" alt="...">
     </div>
   </div>
   
@@ -29,13 +29,8 @@
 </template>
 
 <script>
-  export default {
-    
-  }
 </script>
 
-<style scoped>
-.carousel-control-next {
-  color: red;
-}
+<style lang="scss" scoped>
+  @import "@/assets/scss/components/_carousel.scss";
 </style>

@@ -18,7 +18,6 @@ import Review from '@/views/ARC/Review.vue';
 import PostCreateView from '@/views/community/PostCreateView.vue';
 import PostDetailView from '@/views/community/PostDetailView.vue';
 import PostEditView from '@/views/community/PostEditView.vue';
-import PostNestedView from '@/views/community/PostNestedView.vue';
 import PostWholeListView from '@/views/community/PostWholeListView.vue';
 import PostInfoListView from '@/views/community/PostInfoListView.vue';
 import PostReviewListView from '@/views/community/PostReviewListView.vue';
@@ -78,17 +77,10 @@ const router = createRouter({
     { path: '/posts/create', name: 'PostCreateView', component: PostCreateView },
     { path: '/posts/:id', name: 'PostDetailView', component: PostDetailView },
     { path: '/posts/:id/edit', name: 'PostEditView', component: PostEditView },
-    {
-      path: '/post-nested',
-      name: 'PostNestedView',
-      component: PostNestedView,
-      children: [
-        { path: 'post-whole-list', name: 'PostWholeListView', component: PostWholeListView },
-        { path: 'post-info-list', name: 'PostInfoListView', component: PostInfoListView },
-        { path: 'post-review-list', name: 'PostReviewListView', component: PostReviewListView },
-        { path: 'post-story-list', name: 'PostStoryListView', component: PostStoryListView },
-      ]
-    },
+    { path: '/post-whole-list', name: 'PostWholeListView', component: PostWholeListView },
+    { path: '/post-info-list', name: 'PostInfoListView', component: PostInfoListView },
+    { path: '/post-review-list', name: 'PostReviewListView', component: PostReviewListView },
+    { path: '/post-story-list', name: 'PostStoryListView', component: PostStoryListView },
 
     // main
     { path:'/', name: 'MainPage', component:MainPage},

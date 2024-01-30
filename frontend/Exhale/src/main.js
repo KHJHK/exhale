@@ -1,4 +1,4 @@
-import '@/assets/scss/abstracts/_variables.scss'
+import '@/assets/scss/main.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'

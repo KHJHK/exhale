@@ -1,22 +1,17 @@
 <template>
-  <div class="card mb-3" style="max-width: 540px;" @click="handleClick">
-    <div class="row">
-        <div class="col-md-2 d-flex align-items-center justify-content-center">
-            <h2 class="card-number">{{ number }}</h2>
-        </div>
-        <div class="col-md-6">
-            <div class="card-body">
-                <h5 class="card-title">{{ title }}</h5>
-                <p class="card-text">{{ content }}</p>
-                <p class="text-muted"><small class="text-body-secondary">{{ create_date }}</small></p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <img src="@/assets/dog3.jpg" class="img-fluid rounded-start" alt="...">
-        </div>
+  <div class="postcard" @click="handleClick">
+    <div class="card-number">
+        <p>{{ number }}</p>
     </div>
-  </div>
-
+    <div class="card-body">
+        <p class="card-title">{{ title }}</p>
+        <p class="card-text">{{ content }}</p>
+        <p class="text-muted"><small class="text-body-secondary">{{ create_date }}</small></p>
+    </div>
+    <div class="card-image">
+        <img src="@/assets/dog3.jpg">
+    </div>
+</div>
 </template>
 
 <script setup>
@@ -38,5 +33,5 @@ const handleClick = () => {
 </script>
 
 <style lang="scss" scoped>
-
+  @import "@/assets/scss/layout/_forms.scss";
 </style>

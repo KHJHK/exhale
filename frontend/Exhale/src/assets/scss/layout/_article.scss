@@ -1,0 +1,116 @@
+.navbar-logo {
+  display: inline;
+  width: 120px; 
+  margin-left: 3.5vw;
+}
+
+.menu {
+  margin-top: 25px;
+  margin-right: 4vw;
+}
+
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sub-nav1{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5vh;
+  & a {
+    text-decoration: none;
+    color: rgb(61, 61, 61);
+    font-family: 'NotoSansKR';
+  }
+  & #breadcrum{
+    margin-top: 0.5vh;
+    margin-left: 3vw;
+  }
+  & .breadlink {
+    margin: 0px 10px;
+  }
+}
+
+
+.enlarge {
+  color: gray;
+  width: 100px;
+  margin-right: 4vw;
+  border-radius: 20px;
+  border: gray solid 3px;
+  font-family: 'NotoSansKR';
+  &:hover {
+    color: rgb(108, 159, 156);
+    border: rgb(108, 159, 156) solid 3px;
+  }
+}
+
+article {
+  width: 100%;
+  gap: 10vh;
+  // background-color: black;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.postcard {
+  // background-color: white;
+  padding-bottom: 200px;
+  border-bottom: 1px solid lightgray;
+  width: 70vw;
+  font-family: 'NotoSansKR';
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  width: 100%
+  }
+  
+nav a:first-of-type {
+gap: 80px;
+}
+  
+.navbar-links {
+display: flex;
+gap: 10vw;
+justify-content: center;
+margin-top: 10vh;
+margin-bottom: 3vh;
+font-family: 'NotoSansKR';
+}
+
+.nav-link {
+text-decoration: none;
+color: #333;
+padding-bottom: 0.5rem;
+border-bottom: 2px solid transparent;
+display: inline-block;
+transition: color 0.3s ease, border-bottom 0.3s ease;
+  &.active {
+    border-bottom: 2px solid rgb(108, 158, 156);
+    color: black;
+    padding: 3px;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+  }
+}
+
+.box-item {
+  display: flex;
+  justify-content: center;
+}
+
+.sub-nav3 {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 7vh;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

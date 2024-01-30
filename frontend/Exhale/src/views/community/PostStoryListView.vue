@@ -78,12 +78,6 @@ router.push(`/posts/${id}`)
 </script>
 
 <style lang="scss" scoped>
-.article {
-  display: block;
-  width: 600px;
-  gap: 20px;
-}
-
 </style>
 
 

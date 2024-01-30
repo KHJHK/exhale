@@ -1,14 +1,9 @@
 <template>
 <div class="navbar">
-    <nav>
-          <RouterLink  :to="{ name: 'MainPage' }">
-            <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
-          </RouterLink>
-        <nav class="navbar-links">
-          <RouterLink  :to="{ name: 'AboutUs' }"  class="nav-link">날숨은 무엇인가요?</RouterLink>
-          <RouterLink  :to="{ name: 'Login' }" class="nav-link">로그인</RouterLink>
-          <RouterLink  :to="{ name: 'SignUp' }" class="nav-link">회원가입</RouterLink>
-          </nav>
+    <nav class="navbar-links">
+      <RouterLink  :to="{ name: 'AboutUs' }"  class="nav-link">날숨은 무엇인가요?</RouterLink>
+      <RouterLink  :to="{ name: 'Login' }" class="nav-link">로그인</RouterLink>
+      <RouterLink  :to="{ name: 'SignUp' }" class="nav-link">회원가입</RouterLink>
     </nav>
     <!-- <nav v-if="store.isLogIn">
           <RouterLink :to="{name: 'ReadPost'}" class="nav-link">복습하기</RouterLink> 
@@ -39,15 +34,15 @@ const store = useCounterStore()
   justify-content: space-between;
   
 }
-.navbar > nav {
+.navbar > .navbar-links {
   display: flex;
   align-items: center;
   width: 100%
 }
 
-nav a:first-of-type {
+/* nav a:first-of-type {
   gap: 80px;
-}
+} */
 
 .navbar-links {
   display: flex;
@@ -73,13 +68,4 @@ nav a:first-of-type {
   padding: 3px;
 }
 
-</style>
-
-
-<style>
-.navbar-logo {
- width: 120px; 
- margin-left: 4vw;
- top: 10px;
-}
 </style>
