@@ -1,7 +1,6 @@
 package com.ssafy.exhale.domain.rehabilitation;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,27 +11,15 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "text_matching_problem")
-public class TextMatchingProblem {
+@Table(name = "fluency_problem")
+public class FluencyProblem {
     @Id
+    @Column(name = "fluency_problem_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "text_matching_problem_id")
     private Long id;
 
-    @Column(name = "question_image")
-    private String questionImage;
-
-    @Column(name = "option1")
-    private String option1;
-
-    @Column(name = "option2")
-    private String option2;
-
-    @Column(name = "option3")
-    private String option3;
-
     @Column
-    private Integer answer;
+    private String question;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;

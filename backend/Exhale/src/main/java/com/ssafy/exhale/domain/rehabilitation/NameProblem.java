@@ -16,7 +16,7 @@ public class NameProblem {
     @Id
     @Column(name = "name_problem_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long nameProblemId;
+    private Long id;
 
     @Column(name = "question_image")
     private String questionImage;

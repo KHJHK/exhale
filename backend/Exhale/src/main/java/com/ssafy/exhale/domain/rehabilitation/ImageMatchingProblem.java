@@ -16,7 +16,7 @@ public class ImageMatchingProblem {
     @Id
     @Column(name = "image_matching_problem_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long imageMatchingProblemId;
+    private Long id;
 
     @Column
     private String question;
