@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth)->auth
                         .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
-                        .requestMatchers( "/","/general/**","/login", "/boards/**").permitAll()
+                        .requestMatchers( "/","/general/**","/login", "/boards/**", "/test/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")
                         .anyRequest().authenticated())
