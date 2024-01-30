@@ -4,10 +4,16 @@ import com.ssafy.exhale.domain.Article;
 import com.ssafy.exhale.domain.Board;
 import com.ssafy.exhale.domain.Member;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class ArticleDto {
     Integer id;
     String title;
@@ -15,19 +21,28 @@ public class ArticleDto {
     int view;
     String thumbnail;
     String nickname;
+    LocalDateTime createDate;
+    LocalDateTime modifyDate;
     BoardDto board;
 //    MemberDto memberDto;
+    boolean isDelete;
 
     public static ArticleDto of(Integer id, String title, String content, int view,
-                                String thumbnail, String nickname, BoardDto boardDto /*,MemberDto memberDto*/)
+                                String thumbnail, String nickname,
+                                LocalDateTime createDate, LocalDateTime modifyDate,
+                                BoardDto boardDto /*,MemberDto memberDto*/, boolean isDelete)
     {
-        return new ArticleDto(id, title, content, view,thumbnail, nickname, boardDto  /*,memberDto*/);
+        return new ArticleDto(id, title, content, view,thumbnail, nickname,
+                createDate, modifyDate, boardDto /*,memberDto*/, isDelete);
     }
 
+    //post
     public static ArticleDto of(String title, String content,
-                                String thumbnail, String nickname, BoardDto boardDto /*,MemberDto memberDto*/)
+                                String thumbnail, String nickname,
+                                BoardDto boardDto /*,MemberDto memberDto*/)
     {
-        return new ArticleDto(null, title, content, 0, thumbnail, nickname, boardDto /*,memberDto*/);
+        return new ArticleDto(null, title, content, 0, thumbnail, nickname,
+                LocalDateTime.now(), null, boardDto /*,memberDto*/, false);
     }
 
     public Article toEntity(Board board, Member member){
@@ -38,6 +53,9 @@ public class ArticleDto {
                 view,
                 thumbnail,
                 nickname,
+                createDate,
+                modifyDate,
+                isDelete,
                 board,
                 member
         );
@@ -50,7 +68,10 @@ public class ArticleDto {
                 entity.getView(),
                 entity.getThumbnail(),
                 entity.getNickname(),
-                BoardDto.from(entity.getBoard())
+                entity.getCreateDate(),
+                entity.getModifyDate(),
+                BoardDto.from(entity.getBoard()),
+                entity.isDelete()
         );
     }
 }

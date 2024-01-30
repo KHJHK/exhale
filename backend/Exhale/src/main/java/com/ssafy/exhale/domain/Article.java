@@ -24,7 +24,7 @@ public class Article {
 
     @Column(name = "create_time")
     @Temporal(TemporalType.DATE)
-    private LocalDateTime createTime;
+    private LocalDateTime createDate;
 
     @Column(name = "modify_time")
     @Temporal(TemporalType.DATE)
@@ -42,9 +42,11 @@ public class Article {
     private Member member;
 
     public static Article of(Integer id, String title, String content, int view,
-                             String thumbnail, String nickname, Board board, Member member)
+                             String thumbnail, String nickname,
+                             LocalDateTime createDate, LocalDateTime modifyDate,
+                             boolean isDelete, Board board, Member member)
     {
         return new Article(id, title, content, view, thumbnail, nickname,
-                LocalDateTime.now(), null, false, board, member);
+                LocalDateTime.now(), modifyDate, isDelete, board, member);
     }
 }
