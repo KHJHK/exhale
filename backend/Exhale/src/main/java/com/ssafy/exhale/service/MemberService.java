@@ -32,16 +32,16 @@ public class MemberService {
     }
 
     public void saveRefreshValue(long member_id, String token){
-        memberRepository.findByMemberId(member_id).ifPresent((member) -> {
+        memberRepository.findById(member_id).ifPresent((member) -> {
             member.updateRefreshValue(token);
             memberRepository.save(member);
         });
 
     }
 
-    public boolean compareRefreshToken(long memberId, String tokenValue){
+    public boolean compareRefreshToken(long id, String tokenValue){
 
-        if(memberRepository.existsByMemberIdAndRefreshValue(memberId, tokenValue))return true;
+        if(memberRepository.existsByIdAndRefreshValue(id, tokenValue))return true;
         return false;
     }
     public boolean checkLoginId(String loginId){
@@ -49,11 +49,11 @@ public class MemberService {
         return false;
     }
 
-    public boolean verifyPassword(long memberId, String newPassword){
+    public boolean verifyPassword(long id, String newPassword){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         boolean[] isMatch = new boolean[1];
-        memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+        memberRepository.findById(id).ifPresent((member) -> {
             String oldPassword = member.getPassword();
 
             isMatch[0] = passwordEncoder.matches(newPassword, oldPassword);
@@ -61,12 +61,12 @@ public class MemberService {
         return isMatch[0];
 
     }
-    public boolean checkPassword(long memberId, String newPassword){
-        return verifyPassword(memberId,newPassword);
+    public boolean checkPassword(long id, String newPassword){
+        return verifyPassword(id,newPassword);
     }
-    public boolean changePassword(long memberId, String currentPassword, String newPassword) {
-        if (verifyPassword(memberId, currentPassword)) {
-            memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+    public boolean changePassword(long id, String currentPassword, String newPassword) {
+        if (verifyPassword(id, currentPassword)) {
+            memberRepository.findById(id).ifPresent((member) -> {
                 member.updatePassword(bCryptPasswordEncoder.encode(newPassword));
                 memberRepository.save(member);
             });
@@ -76,17 +76,17 @@ public class MemberService {
         return true;
 
     }
-    public boolean changeWithdraw(long memberId){
-        memberRepository.findByMemberId(memberId).ifPresent((member) -> {
+    public boolean changeWithdraw(long id){
+        memberRepository.findById(id).ifPresent((member) -> {
             member.updateWithdraw(true);
             memberRepository.save(member);
         });
         return true;
     }
 
-    public boolean checkWithdraw(long memberId){
+    public boolean checkWithdraw(long id){
         AtomicReference<Boolean> isWithdraw = new AtomicReference<>(false);
-        memberRepository.findByMemberId(memberId).ifPresent((member)->{
+        memberRepository.findById(id).ifPresent((member)->{
             isWithdraw.set(member.getWithdraw());
         });
         return isWithdraw.get();

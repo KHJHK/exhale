@@ -18,7 +18,7 @@ public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
-    private Long memberId;
+    private Long id;
     @Column(name="login_id")
     private String loginId;
     private String password;
@@ -60,7 +60,7 @@ public class Member {
     }
     public void capsulePayload(String loginId, long memberId, String role){
         this.loginId = loginId;
-        this.memberId = memberId;
+        this.id = memberId;
         this.role = role;
     }
     public void updatePassword(String password){
