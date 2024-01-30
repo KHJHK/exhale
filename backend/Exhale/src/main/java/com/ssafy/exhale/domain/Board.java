@@ -3,8 +3,6 @@ package com.ssafy.exhale.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -20,5 +18,9 @@ public class Board {
     @Column(name = "name")
     @NonNull
     private String name;
+
+    public static Board of(Integer id, String name){
+        return new Board(id, name);
+    }
 
 }
