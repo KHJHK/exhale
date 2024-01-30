@@ -1,4 +1,4 @@
-package com.ssafy.exhale.dto.responseDto.common;
+package com.ssafy.exhale.dto.responseDto.commonDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

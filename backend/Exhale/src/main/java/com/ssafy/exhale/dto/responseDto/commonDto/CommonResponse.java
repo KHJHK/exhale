@@ -1,16 +1,22 @@
-package com.ssafy.exhale.dto.responseDto.common;
+package com.ssafy.exhale.dto.responseDto.commonDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
-@AllArgsConstructor
 public class CommonResponse {
-    private ConnectionStatus connectionStatus;
-    private DataStatus dataStatus;
-    private Object response;
+    private final ConnectionStatus connectionStatus;
+    private final DataStatus dataStatus;
+    private final Object response;
+
+    private CommonResponse(ConnectionStatus connectionStatus, DataStatus dataStatus, Object response) {
+        this.connectionStatus = connectionStatus;
+        this.dataStatus = dataStatus;
+        this.response = response;
+    }
 
     public static ResponseEntity<CommonResponse> ok(Object response) {
         ConnectionStatus connectionStatus = new ConnectionStatus(HttpStatus.OK.value(), null);
