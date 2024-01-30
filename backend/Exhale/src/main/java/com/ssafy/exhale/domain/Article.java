@@ -1,18 +1,15 @@
 package com.ssafy.exhale.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@RequiredArgsConstructor(staticName = "of")
 @Table(name = "article")
 public class Article {
     @Id
@@ -21,23 +18,17 @@ public class Article {
     private Integer id;
     private String title;
     private String content;
-
-    @Column(name = "is_hidden")
-    private Boolean isHidden;
     private int view;
     private String thumbnail;
     private String nickname;
 
-    @Column(name = "withdraw")
-    private boolean withdraw;
-
     @Column(name = "create_time")
     @Temporal(TemporalType.DATE)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @Column(name = "modify_time")
     @Temporal(TemporalType.DATE)
-    private Date modifyDate;
+    private LocalDateTime modifyDate;
 
     @Column(name = "is_delete")
     private boolean isDelete;
@@ -49,4 +40,11 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public static Article of(Integer id, String title, String content, int view,
+                             String thumbnail, String nickname, Board board, Member member)
+    {
+        return new Article(id, title, content, view, thumbnail, nickname,
+                LocalDateTime.now(), null, false, board, member);
+    }
 }
