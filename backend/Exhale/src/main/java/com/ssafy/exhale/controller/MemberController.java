@@ -68,5 +68,10 @@ public class MemberController {
         memberService.changeWithdraw(tokenPayloadUtil.getMemberId());
         return ResponseEntity.status(200).body("");
     }
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(){
+        authenticationService.logout(tokenPayloadUtil.getMemberId());
+        return ResponseEntity.status(200).body("");
+    }
 
 }
