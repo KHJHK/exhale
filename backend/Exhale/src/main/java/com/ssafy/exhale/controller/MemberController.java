@@ -5,6 +5,7 @@ import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.PasswordRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
+import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,23 +25,24 @@ public class MemberController {
 
     private final MemberService memberService;
     private final TokenPayloadUtil tokenPayloadUtil;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/refresh")
     public ResponseEntity<?> getRefreshToken(HttpServletRequest request) {
-        System.out.println("refresh");
 
         // DB와 토큰 비교
         String token_value = request.getHeader("Authorization").split(" ")[1];
         long memberId = tokenPayloadUtil.getMemberId();
         Map<String, Object> responseBody = new HashMap<>();
 
-        if (memberService.compareRefreshToken(memberId, token_value)) {
+        if (authenticationService.compareRefreshToken(memberId, token_value)) {
             // 새로운 토큰 발행
             String jwt = tokenPayloadUtil.createJWT();
-            String refresh_token = tokenPayloadUtil.createRefreshToken();
-            memberService.saveRefreshValue(memberId, refresh_token);
+            String refreshToken = tokenPayloadUtil.createRefreshToken();
 
-            TokenInfo tokeninfo = new TokenInfo(jwt, refresh_token);
+            authenticationService.reSaveRefreshValue(memberId, refreshToken);
+
+            TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt, "Bearer " + refreshToken);
 
             responseBody.put("token", tokeninfo);
 

@@ -55,9 +55,9 @@ public class TokenPayloadUtil {
     }
 
     public String createJWT(){
-        return "Bearer " + jwtUtil.createJwt(this.getLoginId(), this.getMemberId(), this.getRole());
+        return jwtUtil.createJwt(this.getLoginId(), this.getMemberId(), this.getRole());
     }
     public String createRefreshToken(){
-        return "Bearer " + jwtUtil.createRefreshToken(this.getMemberId(),this.getRole());
+        return jwtUtil.createRefreshToken(this.getMemberId(),this.getRole());
     }
 }

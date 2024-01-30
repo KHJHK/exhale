@@ -4,6 +4,7 @@ import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
+import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
 import com.ssafy.exhale.util.JWTUtil;
 import com.ssafy.exhale.util.TokenPayloadUtil;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class GeneralController {
     private final MemberService memberService;
     private final TokenPayloadUtil tokenPayloadUtil;
+    private final AuthenticationService authenticationService;
 
     @PostMapping("/join")
     public void join(@RequestBody MemberRequest memberRequest){
@@ -50,10 +52,9 @@ public class GeneralController {
         String jwt = tokenPayloadUtil.createJWT();
         String refreshToken = tokenPayloadUtil.createRefreshToken();
 
+        authenticationService.saveRefreshValue(memberId, refreshToken);
 
-        memberService.saveRefreshValue(memberId, refreshToken);
-
-        TokenInfo tokeninfo = new TokenInfo(jwt,refreshToken);
+        TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt,"Bearer " + refreshToken);
         MemberResponse memberResponse = new MemberResponse(memberId,nickname,loginId);
 
         Map<String, Object> responseBody = new HashMap<>();

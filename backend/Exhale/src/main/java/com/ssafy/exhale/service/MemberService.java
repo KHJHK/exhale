@@ -30,20 +30,7 @@ public class MemberService {
         member.updateJoin(memberRequest, bCryptPasswordEncoder.encode(password));
         memberRepository.save(member);
     }
-
-    public void saveRefreshValue(long member_id, String token){
-        memberRepository.findById(member_id).ifPresent((member) -> {
-            member.updateRefreshValue(token);
-            memberRepository.save(member);
-        });
-
-    }
-
-    public boolean compareRefreshToken(long id, String tokenValue){
-
-        if(memberRepository.existsByIdAndRefreshValue(id, tokenValue))return true;
-        return false;
-    }
+    
     public boolean checkLoginId(String loginId){
         if(memberRepository.existsByLoginId(loginId))return true;
         return false;
