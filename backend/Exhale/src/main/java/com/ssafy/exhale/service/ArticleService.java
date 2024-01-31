@@ -1,7 +1,6 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Article;
-import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import com.ssafy.exhale.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
