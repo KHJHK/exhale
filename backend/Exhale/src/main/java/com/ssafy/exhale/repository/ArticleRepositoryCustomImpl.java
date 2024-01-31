@@ -1,13 +1,11 @@
 package com.ssafy.exhale.repository;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.exhale.domain.Article;
 import com.ssafy.exhale.domain.QArticle;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
-import com.ssafy.exhale.dto.responseDto.ArticleListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import java.util.List;

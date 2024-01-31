@@ -1,46 +1,34 @@
 package com.ssafy.exhale.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "article")
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
-    private int id;
+    private Long id;
     private String title;
     private String content;
-
-    @Column(name = "is_hidden")
-    private Boolean isHidden;
     private int view;
     private String thumbnail;
     private String nickname;
 
-    @Column(name = "withdraw")
-    private boolean withdraw;
-
     @Column(name = "create_time")
-    @Temporal(TemporalType.DATE)
-    private Date createTime;
+    private LocalDateTime createDate;
 
     @Column(name = "modify_time")
-    @Temporal(TemporalType.DATE)
-    private Date modifyDate;
+    private LocalDateTime modifyDate;
 
     @Column(name = "is_delete")
-    private boolean isDelete;
+    private Boolean isDelete;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
@@ -49,4 +37,13 @@ public class Article {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public static Article of(Long id, String title, String content, int view,
+                             String thumbnail, String nickname,
+                             LocalDateTime createDate, LocalDateTime modifyDate,
+                             Boolean isDelete, Board board, Member member)
+    {
+        return new Article(id, title, content, view, thumbnail, nickname,
+                createDate, modifyDate, isDelete, board, member);
+    }
 }
