@@ -21,7 +21,7 @@ public class BoardDto {
          );
      }
 
-     public Board toEneity(Integer id, String name){
+     public Board toEntity(Integer id, String name){
          return Board.of(id, name);
      }
 }
