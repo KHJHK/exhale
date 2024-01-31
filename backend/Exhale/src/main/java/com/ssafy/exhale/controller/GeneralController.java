@@ -33,7 +33,7 @@ public class GeneralController {
 
     @PostMapping("/join")
     public void join(@RequestBody MemberRequest memberRequest){
-        memberService.join(memberRequest);
+        memberService.join(memberRequest.toDto());
         // todo: 회원가입 응답 구현
     }
 

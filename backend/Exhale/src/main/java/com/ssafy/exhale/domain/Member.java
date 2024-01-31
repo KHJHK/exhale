@@ -45,25 +45,15 @@ public class Member {
     }
     public static Member of(Long id, String loginId, String password,
                             String name, String emailId, String emailDomain,
-                            String birth, String nicknam, Boolean withhdraw,
+                            String birth, String nickname, Boolean withhdraw,
                             LocalDateTime createDate, LocalDateTime withdrawDate, String role){
         return new Member(id, loginId, password, name, emailId, emailDomain,
-                birth, nicknam, withhdraw, null, createDate, withdrawDate, role);
+                birth, nickname, withhdraw, null, createDate, withdrawDate, role);
     }
 
     public void updateWithdraw(boolean withdrawal) {
         if (withdrawal) this.withdraw = true;
         else this.withdraw = false;
-    }
-
-    public void updateJoin(MemberRequest memberRequest, String password) {
-        this.name = memberRequest.getName();
-        this.birth = memberRequest.getBirth();
-        this.emailDomain = memberRequest.getEmailDomain();
-        this.emailId = memberRequest.getEmailId();
-        this.loginId = memberRequest.getLoginId();
-        this.password = password;
-        this.role = "ROLE_USER";
     }
 
     public void updateRefreshValue(String value) {

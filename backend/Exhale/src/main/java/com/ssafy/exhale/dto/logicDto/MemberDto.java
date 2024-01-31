@@ -26,6 +26,7 @@ public class MemberDto {
     private LocalDateTime withdrawDate;
     private String role;
 
+
     public static MemberDto of(Long id, String loginId, String password,
                                String name, String emailId, String emailDomain,
                                String birth, String nickname, Boolean withdraw,
@@ -46,7 +47,6 @@ public class MemberDto {
                 role
         );
     }
-
     public static MemberDto from(Member entity){
         return new MemberDto(
                 entity.getId(),
@@ -80,4 +80,22 @@ public class MemberDto {
                 dto.getRole()
         );
     }
+
+    public Member toEntity(String password){
+        return Member.of(
+                null,
+                loginId,
+                password,
+                name,
+                emailId,
+                emailDomain,
+                birth,
+                nickname,
+                false,
+                LocalDateTime.now(),
+                null,
+                "ROLE_USER"
+        );
+    }
+
 }
