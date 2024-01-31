@@ -19,7 +19,7 @@ public class ArticleService {
         return articleRepository.findAllByBoardId(boardId, pageRequest);
     }
 
-    public Article getArticle(int articleId){
+    public Article getArticle(Long articleId){
         Article article = null;
         if(articleRepository.findById(articleId).isPresent()){
             article = articleRepository.findById(articleId).get();
