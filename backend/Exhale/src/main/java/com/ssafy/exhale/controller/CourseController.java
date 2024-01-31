@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CourseController {
     @GetMapping("test")
-    public ResponseEntity<?> testMethod() {
-        throw new RuntimeException();
+    public String testMethod() {
+        return "a";
     }
 }
