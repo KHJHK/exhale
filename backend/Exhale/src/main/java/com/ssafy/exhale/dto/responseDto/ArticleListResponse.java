@@ -4,7 +4,6 @@ import com.ssafy.exhale.dto.logicDto.ArticleDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -12,16 +11,16 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 public class ArticleListResponse {
-    Integer id;
+    Long id;
     String title;
     int view;
     String nickname;
     LocalDateTime createDate;
     String thumbnail;
-//    Integer memberId;
+    Long memberId;
 
-    public static ArticleListResponse of(Integer id, String title, int view, /*Integer memberId,*/ String nickname,
-                                         LocalDateTime createDate, String thumbnail)
+    public static ArticleListResponse of(Long id, String title, int view, String nickname,
+                                         LocalDateTime createDate, String thumbnail, Long memberId)
     {
         return new ArticleListResponse(
                 id,
@@ -29,8 +28,8 @@ public class ArticleListResponse {
                 view,
                 nickname,
                 createDate,
-                thumbnail
-//                memberId,
+                thumbnail,
+                memberId
         );
     }
 
@@ -41,8 +40,8 @@ public class ArticleListResponse {
                 articleDto.getView(),
                 articleDto.getNickname(),
                 articleDto.getCreateDate(),
-                articleDto.getThumbnail()
-//                articleDto.getMemberDto
+                articleDto.getThumbnail(),
+                articleDto.getMemberDto().getId()
         );
     }
 }

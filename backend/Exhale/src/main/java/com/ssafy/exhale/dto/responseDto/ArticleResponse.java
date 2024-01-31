@@ -11,21 +11,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class ArticleResponse {
-    Integer id;
+    Long id;
     String title;
     String thumbnail;
     String content;
-//    Integer memberId;
+    Long memberId;
     String nickname;
     int view;
     LocalDateTime createDate;
     LocalDateTime modifyDate;
 
-    public static ArticleResponse of(Integer id, String title, String thumbnail,
-                                     String content, /*Integer memberId,*/ String nickname, int view,
+    public static ArticleResponse of(Long id, String title, String thumbnail,
+                                     String content, Long memberId, String nickname, int view,
                                      LocalDateTime createDate, LocalDateTime modifyDate)
     {
-        return new ArticleResponse(id, title, thumbnail, content, /*memberId,*/ nickname, view, createDate, modifyDate);
+        return new ArticleResponse(id, title, thumbnail, content, memberId, nickname, view, createDate, modifyDate);
     }
 
     public static ArticleResponse from(ArticleDto dto){
@@ -34,7 +34,7 @@ public class ArticleResponse {
                 dto.getTitle(),
                 dto.getThumbnail(),
                 dto.getContent(),
-//                dto.getMemberDto.getMemberId,
+                dto.getMemberDto().getId(),
                 dto.getNickname(),
                 dto.getView(),
                 dto.getCreateDate(),
