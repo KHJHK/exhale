@@ -69,19 +69,19 @@ public class MemberDto {
 
     public Member toEntity(MemberDto dto){
         return Member.of(
-                id,
-                loginId,
-                password,
-                name,
-                emailId,
-                emailDomain,
-                birth,
-                nickname,
-                profileImg,
-                withdraw,
-                createDate,
-                withdrawDate,
-                role
+                dto.getId(),
+                dto.getLoginId(),
+                dto.getPassword(),
+                dto.getName(),
+                dto.getEmailId(),
+                dto.getEmailDomain(),
+                dto.getBirth(),
+                dto.getNickname(),
+                dto.getProfileImg(),
+                dto.getWithdraw(),
+                dto.getCreateDate(),
+                dto.getWithdrawDate(),
+                dto.getRole()
         );
     }
 }
