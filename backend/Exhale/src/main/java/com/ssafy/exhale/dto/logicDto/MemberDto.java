@@ -21,7 +21,6 @@ public class MemberDto {
     private String emailDomain;
     private String birth;
     private String nickname;
-    private String profileImg;
     private Boolean withdraw;
     private LocalDateTime createDate;
     private LocalDateTime withdrawDate;
@@ -29,7 +28,7 @@ public class MemberDto {
 
     public static MemberDto of(Long id, String loginId, String password,
                                String name, String emailId, String emailDomain,
-                               String birth, String nickname, String profileImg, Boolean withdraw,
+                               String birth, String nickname, Boolean withdraw,
                                LocalDateTime createDate, LocalDateTime withdrawDate, String role)
     {
         return new MemberDto(
@@ -41,7 +40,6 @@ public class MemberDto {
                 emailDomain,
                 birth,
                 nickname,
-                profileImg,
                 withdraw,
                 createDate,
                 withdrawDate,
@@ -59,7 +57,6 @@ public class MemberDto {
                 entity.getEmailDomain(),
                 entity.getBirth(),
                 entity.getNickname(),
-                entity.getProfileImg(),
                 entity.getWithdraw(),
                 entity.getCreateDate(),
                 entity.getWithdrawDate(),
@@ -77,7 +74,6 @@ public class MemberDto {
                 dto.getEmailDomain(),
                 dto.getBirth(),
                 dto.getNickname(),
-                dto.getProfileImg(),
                 dto.getWithdraw(),
                 dto.getCreateDate(),
                 dto.getWithdrawDate(),
