@@ -1,6 +1,7 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Member;
+import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public void join(MemberRequest memberRequest) {
+    public void join(MemberDto memberDto) {
 
-        String loginId = memberRequest.getLoginId();
-        String password = memberRequest.getPassword();
+        String loginId = memberDto.getLoginId();
+        String password = memberDto.getPassword();
 
         Boolean isExist = memberRepository.existsByLoginId(loginId);
         if (isExist) {
@@ -26,8 +27,7 @@ public class MemberService {
             return;
         }
 
-        Member member = new Member();
-        member.updateJoin(memberRequest, bCryptPasswordEncoder.encode(password));
+        Member member = memberDto.toEntity(bCryptPasswordEncoder.encode(password));
         memberRepository.save(member);
     }
     

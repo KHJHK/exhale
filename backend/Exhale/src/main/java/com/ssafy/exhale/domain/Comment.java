@@ -4,14 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "comment")
@@ -19,17 +16,17 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private int id;
+    private Long id;
     private String content;
 
     @Column(name = "is_delete")
-    private boolean isDelete;
+    private Boolean isDelete;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "modify_date")
-    private Date modifyDate;
+    private LocalDateTime modifyDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
@@ -43,6 +40,12 @@ public class Comment {
     @JoinColumn(name = "parent_id", referencedColumnName = "comment_id")
     private Comment comment;
 
-    @Column(name = "group_id")
-    private int groupId;
+    public static Comment of(Long id, String content, Boolean isDelete,
+                             LocalDateTime createDate, LocalDateTime modifyDate,
+                             Article article, Member member, Comment comment)
+    {
+        return new Comment(id, content, isDelete, createDate, modifyDate,
+                article, member, comment);
+    }
+
 }

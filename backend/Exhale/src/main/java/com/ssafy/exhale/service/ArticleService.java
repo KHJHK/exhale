@@ -1,7 +1,6 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Article;
-import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import com.ssafy.exhale.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +18,7 @@ public class ArticleService {
         return articleRepository.findAllByBoardId(boardId, pageRequest);
     }
 
-    public Article getArticle(int articleId){
+    public Article getArticle(Long articleId){
         Article article = null;
         if(articleRepository.findById(articleId).isPresent()){
             article = articleRepository.findById(articleId).get();
@@ -31,10 +30,10 @@ public class ArticleService {
 //        return articleRepository.search(articleSearchRequest);
 //    }
 
-//    public boolean postArticle(Article article){
-//        Article saved = articleRepository.save(article);
-//        return true;
-//    }
+    public boolean postArticle(Article article){
+        Article saved = articleRepository.save(article);
+        return true;
+    }
 
 
 }
