@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +28,11 @@ public class RehabilitationService {
 
     public List<CategoryResponse> getCategory(long courseId) {
         List<CategoryResponse> categoryResponseList = new ArrayList<>();
+        Optional<Course> course = courseRepository.findById(courseId);
+        Course course1 =
+        course.
+
+
         for(Category category : categoryRepository.findByCourseId(courseId)) categoryResponseList.add(CategoryResponse.from(category));
         return categoryResponseList;
     }

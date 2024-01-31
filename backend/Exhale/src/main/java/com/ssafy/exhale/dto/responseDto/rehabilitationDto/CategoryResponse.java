@@ -2,11 +2,12 @@ package com.ssafy.exhale.dto.responseDto.rehabilitationDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.domain.rehabilitation.Category;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryResponse {
     @JsonProperty("category_id")
     private long categoryId;
