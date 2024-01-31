@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "member")
-@NoArgsConstructor
+@NoArgsConstructor()
 @AllArgsConstructor
 public class Member {
     @Id
@@ -29,9 +29,7 @@ public class Member {
     private String emailDomain;
     private String birth;
     private String nickname;
-    @Column(name = "profile_img", nullable = true)
-    private String profileImg;
-    @Column(name = "withdraw", nullable = true, columnDefinition = "TINYINT(1) default 0")
+    @Column(name = "withdraw", columnDefinition = "TINYINT(1) default 0")
     private Boolean withdraw;
     @Column(name = "refresh_value", nullable = true)
     private String refreshValue;
@@ -42,12 +40,15 @@ public class Member {
     private LocalDateTime withdrawDate;
     private String role;
 
+    public static Member of(){
+        return new Member();
+    }
     public static Member of(Long id, String loginId, String password,
                             String name, String emailId, String emailDomain,
-                            String birth, String nicknam, String profileImg, Boolean withhdraw,
+                            String birth, String nicknam, Boolean withhdraw,
                             LocalDateTime createDate, LocalDateTime withdrawDate, String role){
         return new Member(id, loginId, password, name, emailId, emailDomain,
-                birth, nicknam, profileImg, withhdraw, null, createDate, withdrawDate, role);
+                birth, nicknam, withhdraw, null, createDate, withdrawDate, role);
     }
 
     public void updateWithdraw(boolean withdrawal) {
