@@ -24,4 +24,8 @@ public class ArticleFile {
 
     @Column(name = "is_delete")
     private boolean isDelete;
+
+    public static ArticleFile of(Integer id, Article article, boolean isDelete){
+        return new ArticleFile(id, article, isDelete);
+    }
 }

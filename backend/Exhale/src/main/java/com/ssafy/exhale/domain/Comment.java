@@ -4,14 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "comment")
@@ -26,10 +23,10 @@ public class Comment {
     private boolean isDelete;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "modify_date")
-    private Date modifyDate;
+    private LocalDateTime modifyDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
@@ -43,6 +40,12 @@ public class Comment {
     @JoinColumn(name = "parent_id", referencedColumnName = "comment_id")
     private Comment comment;
 
-    @Column(name = "group_id")
-    private int groupId;
+    public static Comment of(Integer id, String content, boolean isDelete,
+                             LocalDateTime createDate, LocalDateTime modifyDate,
+                             Article article, Member member, Comment comment)
+    {
+        return new Comment(id, content, isDelete, createDate, modifyDate,
+                article, member, comment);
+    }
+
 }
