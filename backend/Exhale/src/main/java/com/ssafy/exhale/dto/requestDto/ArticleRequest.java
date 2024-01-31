@@ -17,11 +17,10 @@ public class ArticleRequest {
     private Integer boardId;
 
     //작성자 정보 부분
-    private Integer memberId;
+    private Long memberId;
     private String nickname;
 
-    public ArticleDto toDto(String title, String content, String thumbnail,
-                                   String nickname, BoardDto boardDto, MemberDto memberDto){
+    public ArticleDto toDto(BoardDto boardDto, MemberDto memberDto){
         return ArticleDto.of(
                 title,
                 content,

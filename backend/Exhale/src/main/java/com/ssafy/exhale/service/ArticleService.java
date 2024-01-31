@@ -31,10 +31,10 @@ public class ArticleService {
 //        return articleRepository.search(articleSearchRequest);
 //    }
 
-//    public boolean postArticle(Article article){
-//        Article saved = articleRepository.save(article);
-//        return true;
-//    }
+    public boolean postArticle(Article article){
+        Article saved = articleRepository.save(article);
+        return true;
+    }
 
 
 }
