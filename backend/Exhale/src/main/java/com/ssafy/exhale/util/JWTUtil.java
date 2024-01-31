@@ -32,8 +32,8 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
-    public int getUserId(String token){
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("user_id",Integer.class);
+    public long getmemberId(String token){
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("member_id",Integer.class);
     }
 
     public Boolean isExpired(String token){
@@ -42,10 +42,10 @@ public class JWTUtil {
 
 
     // JWT 생성
-    public String createJwt(String loginId, int userId, String role){
+    public String createJwt(String loginId, long id, String role){
         return Jwts.builder()
                 .claim("login_id",loginId)
-                .claim("user_id",userId)
+                .claim("member_id",id)
                 .claim("role",role)
                 .issuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) // 토큰 소멸시간
@@ -54,9 +54,9 @@ public class JWTUtil {
     }
 
     // refresh token 생성
-    public String createRefreshToken(int userId, String role){
+    public String createRefreshToken(long id, String role){
         return Jwts.builder()
-                .claim("user_id",userId)
+                .claim("member_id",id)
                 .claim("role",role)
                 .issuedAt(new Date(System.currentTimeMillis()))   // 토큰 발행 시간
                 .expiration(new Date(System.currentTimeMillis() + refreshTokenExpiration)) // 토큰 소멸시간

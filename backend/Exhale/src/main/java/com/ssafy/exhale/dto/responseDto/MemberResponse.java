@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 public class MemberResponse {
-    private int member_id;
+    private Long member_id;
     private String nickname;
     private String login_id;
 }

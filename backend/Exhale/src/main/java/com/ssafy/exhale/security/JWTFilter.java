@@ -24,12 +24,10 @@ public class JWTFilter  extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("jwtfilter");
         String authorization = request.getHeader("Authorization");
 
         if(authorization == null || !authorization.startsWith("Bearer ")){
             filterChain.doFilter(request, response);
-
             return;
         }
 
@@ -42,18 +40,15 @@ public class JWTFilter  extends OncePerRequestFilter {
         }
 
         String loginId  = jwtUtil.getLoginId(token);
-        int userId  = jwtUtil.getUserId(token);
+        long userId  = jwtUtil.getmemberId(token);
         String role = jwtUtil.getRole(token);
 
         Member member = new Member();
-        member.setLoginId(loginId);
-        member.setMemberId(userId);
-        member.setRole(role);
+        member.capsulePayload(loginId,userId,role);
 
         CustomUserDetails customUserDetails = new CustomUserDetails(member);
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
-
         filterChain.doFilter(request,response);
     }
 }
