@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@RequiredArgsConstructor(staticName = "of")
 @Table(name = "article")
 public class Article {
     @Id
@@ -23,11 +22,9 @@ public class Article {
     private String nickname;
 
     @Column(name = "create_time")
-    @Temporal(TemporalType.DATE)
     private LocalDateTime createDate;
 
     @Column(name = "modify_time")
-    @Temporal(TemporalType.DATE)
     private LocalDateTime modifyDate;
 
     @Column(name = "is_delete")
