@@ -1,8 +1,6 @@
 package com.ssafy.exhale.dto.responseDto;
 
-import com.ssafy.exhale.dto.logicDto.ArticleDto;
 import com.ssafy.exhale.dto.logicDto.CommentDto;
-import com.ssafy.exhale.dto.logicDto.MemberDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +16,27 @@ public class CommentResponse {
     Boolean isDelete;
     LocalDateTime createDate;
     LocalDateTime modifyDate;
-    ArticleDto articleDto;
-    MemberDto memberDto;
-    CommentDto parentCommentDto;
+    Long articleId;
+    Long memberId;
+    Long parentCommentId;
+
+    public static CommentResponse of(Long id, String content, Boolean isDelete,
+                                     LocalDateTime createDate, LocalDateTime modifyDate,
+                                     Long articleId, Long memberId, Long parentCommentId){
+        return new CommentResponse(id, content, isDelete, createDate, modifyDate,
+                articleId, memberId, parentCommentId);
+    }
+
+    public static CommentResponse from(CommentDto dto){
+        return new CommentResponse(
+                dto.getId(),
+                dto.getContent(),
+                dto.getIsDelete(),
+                dto.getCreateDate(),
+                dto.getModifyDate(),
+                dto.getArticleDto().getId(),
+                dto.getMemberDto().getId(),
+                dto.getParentCommentDto().getId()
+        );
+    }
 }
