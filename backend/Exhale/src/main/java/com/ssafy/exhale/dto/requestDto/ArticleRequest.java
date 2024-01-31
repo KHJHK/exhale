@@ -20,7 +20,7 @@ public class ArticleRequest {
     private Integer memberId;
     private String nickname;
 
-    public static ArticleDto toDto(String title, String content, String thumbnail,
+    public ArticleDto toDto(String title, String content, String thumbnail,
                                    String nickname, BoardDto boardDto, MemberDto memberDto){
         return ArticleDto.of(
                 title,
