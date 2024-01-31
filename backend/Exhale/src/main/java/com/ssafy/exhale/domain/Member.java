@@ -2,6 +2,7 @@ package com.ssafy.exhale.domain;
 
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "member")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +41,14 @@ public class Member {
     @Column(name = "withdraw_date", nullable = true)
     private LocalDateTime withdrawDate;
     private String role;
+
+    public static Member of(Long id, String loginId, String password,
+                            String name, String emailId, String emailDomain,
+                            String birth, String nicknam, String profileImg, Boolean withhdraw,
+                            LocalDateTime createDate, LocalDateTime withdrawDate, String role){
+        return new Member(id, loginId, password, name, emailId, emailDomain,
+                birth, nicknam, profileImg, withhdraw, null, createDate, withdrawDate, role);
+    }
 
     public void updateWithdraw(boolean withdrawal) {
         if (withdrawal) this.withdraw = true;
