@@ -16,16 +16,16 @@ public class ArticleFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_file_id")
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id")
     private Article article;
 
     @Column(name = "is_delete")
-    private boolean isDelete;
+    private Boolean isDelete;
 
-    public static ArticleFile of(Integer id, Article article, boolean isDelete){
+    public static ArticleFile of(Long id, Article article, Boolean isDelete){
         return new ArticleFile(id, article, isDelete);
     }
 }

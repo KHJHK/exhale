@@ -16,11 +16,11 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Integer id;
+    private Long id;
     private String content;
 
     @Column(name = "is_delete")
-    private boolean isDelete;
+    private Boolean isDelete;
 
     @Column(name = "create_date")
     private LocalDateTime createDate;
@@ -40,7 +40,7 @@ public class Comment {
     @JoinColumn(name = "parent_id", referencedColumnName = "comment_id")
     private Comment comment;
 
-    public static Comment of(Integer id, String content, boolean isDelete,
+    public static Comment of(Long id, String content, Boolean isDelete,
                              LocalDateTime createDate, LocalDateTime modifyDate,
                              Article article, Member member, Comment comment)
     {

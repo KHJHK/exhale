@@ -15,7 +15,7 @@ public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "article_id")
-    private Integer id;
+    private Long id;
     private String title;
     private String content;
     private int view;
@@ -31,7 +31,7 @@ public class Article {
     private LocalDateTime modifyDate;
 
     @Column(name = "is_delete")
-    private boolean isDelete;
+    private Boolean isDelete;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
@@ -41,12 +41,12 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public static Article of(Integer id, String title, String content, int view,
+    public static Article of(Long id, String title, String content, int view,
                              String thumbnail, String nickname,
                              LocalDateTime createDate, LocalDateTime modifyDate,
-                             boolean isDelete, Board board, Member member)
+                             Boolean isDelete, Board board, Member member)
     {
         return new Article(id, title, content, view, thumbnail, nickname,
-                LocalDateTime.now(), modifyDate, isDelete, board, member);
+                createDate, modifyDate, isDelete, board, member);
     }
 }

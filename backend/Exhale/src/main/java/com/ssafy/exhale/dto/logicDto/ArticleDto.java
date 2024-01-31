@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ArticleDto {
-    Integer id;
+    Long id;
     String title;
     String content;
     int view;
@@ -24,25 +24,25 @@ public class ArticleDto {
     LocalDateTime createDate;
     LocalDateTime modifyDate;
     BoardDto board;
-//    MemberDto memberDto;
-    boolean isDelete;
+    MemberDto memberDto;
+    Boolean isDelete;
 
-    public static ArticleDto of(Integer id, String title, String content, int view,
+    public static ArticleDto of(Long id, String title, String content, int view,
                                 String thumbnail, String nickname,
                                 LocalDateTime createDate, LocalDateTime modifyDate,
-                                BoardDto boardDto /*,MemberDto memberDto*/, boolean isDelete)
+                                BoardDto boardDto ,MemberDto memberDto, Boolean isDelete)
     {
         return new ArticleDto(id, title, content, view,thumbnail, nickname,
-                createDate, modifyDate, boardDto /*,memberDto*/, isDelete);
+                createDate, modifyDate, boardDto ,memberDto, isDelete);
     }
 
     //post
     public static ArticleDto of(String title, String content,
                                 String thumbnail, String nickname,
-                                BoardDto boardDto /*,MemberDto memberDto*/)
+                                BoardDto boardDto ,MemberDto memberDto)
     {
         return new ArticleDto(null, title, content, 0, thumbnail, nickname,
-                LocalDateTime.now(), null, boardDto /*,memberDto*/, false);
+                LocalDateTime.now(), null, boardDto ,memberDto, false);
     }
 
     public Article toEntity(Board board, Member member){
@@ -71,7 +71,8 @@ public class ArticleDto {
                 entity.getCreateDate(),
                 entity.getModifyDate(),
                 BoardDto.from(entity.getBoard()),
-                entity.isDelete()
+                MemberDto.from(entity.getMember()),
+                entity.getIsDelete()
         );
     }
 }

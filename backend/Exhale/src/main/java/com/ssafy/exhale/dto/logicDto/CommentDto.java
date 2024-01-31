@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDto {
-    Integer id;
+    Long id;
     String content;
-    boolean isDelete;
+    Boolean isDelete;
     LocalDateTime createDate;
     LocalDateTime modifyDate;
     ArticleDto articleDto;
-//    MemberDto memberDto;
+    MemberDto memberDto;
     CommentDto commentDto;
 }

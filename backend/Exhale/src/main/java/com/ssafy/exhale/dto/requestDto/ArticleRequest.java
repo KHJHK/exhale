@@ -2,6 +2,7 @@ package com.ssafy.exhale.dto.requestDto;
 
 import com.ssafy.exhale.dto.logicDto.ArticleDto;
 import com.ssafy.exhale.dto.logicDto.BoardDto;
+import com.ssafy.exhale.dto.logicDto.MemberDto;
 import lombok.*;
 
 @Getter
@@ -19,13 +20,15 @@ public class ArticleRequest {
     private Integer memberId;
     private String nickname;
 
-    public static ArticleDto toDto(String title, String content, String thumbnail, String nickname, BoardDto boardDto){
+    public static ArticleDto toDto(String title, String content, String thumbnail,
+                                   String nickname, BoardDto boardDto, MemberDto memberDto){
         return ArticleDto.of(
                 title,
                 content,
                 thumbnail,
                 nickname,
-                boardDto
+                boardDto,
+                memberDto
         );
     }
 
