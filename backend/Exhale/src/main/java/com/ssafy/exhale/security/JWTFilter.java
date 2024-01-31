@@ -2,6 +2,7 @@ package com.ssafy.exhale.security;
 
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
+import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -43,8 +44,12 @@ public class JWTFilter  extends OncePerRequestFilter {
         long userId  = jwtUtil.getmemberId(token);
         String role = jwtUtil.getRole(token);
 
-        Member member = new Member();
-        member.capsulePayload(loginId,userId,role);
+
+        MemberDto memberDto = MemberDto.from(Member.of());
+        memberDto.setLoginId(loginId);
+        memberDto.setId(userId);
+        memberDto.setRole(role);
+        Member member = memberDto.toEntity();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(member);
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());

@@ -16,7 +16,7 @@ public class MemberRequest {
     private String name;
     @JsonProperty("email_id")
     private String emailId;
-    @JsonProperty("login_domain")
+    @JsonProperty("email_domain")
     private String emailDomain;
     private String birth;
     private String nickname;

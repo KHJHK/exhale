@@ -81,21 +81,4 @@ public class MemberDto {
         );
     }
 
-    public Member toEntity(String password){
-        return Member.of(
-                null,
-                loginId,
-                password,
-                name,
-                emailId,
-                emailDomain,
-                birth,
-                nickname,
-                false,
-                LocalDateTime.now(),
-                null,
-                "ROLE_USER"
-        );
-    }
-
 }

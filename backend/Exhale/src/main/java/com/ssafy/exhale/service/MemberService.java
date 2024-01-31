@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -26,8 +28,10 @@ public class MemberService {
             // todo: 이미 존재하는 아이디 response 처리
             return;
         }
-
-        Member member = memberDto.toEntity(bCryptPasswordEncoder.encode(password));
+        memberDto.setRole("ROLE_USER");
+        memberDto.setPassword(bCryptPasswordEncoder.encode(password));
+        memberDto.setWithdraw(false);
+        Member member = memberDto.toEntity();
         memberRepository.save(member);
     }
     
@@ -36,45 +40,55 @@ public class MemberService {
         return false;
     }
 
-    public boolean verifyPassword(long id, String newPassword){
+    public boolean verifyPassword(Long id, String newPassword){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         boolean[] isMatch = new boolean[1];
-        memberRepository.findById(id).ifPresent((member) -> {
+        memberRepository.findById(id).ifPresentOrElse(member ->{
             String oldPassword = member.getPassword();
-
             isMatch[0] = passwordEncoder.matches(newPassword, oldPassword);
+
+        },()->{
+            // todo 에러 처리
         });
         return isMatch[0];
 
     }
-    public boolean checkPassword(long id, String newPassword){
+    public boolean checkPassword(Long id, String newPassword){
         return verifyPassword(id,newPassword);
     }
-    public boolean changePassword(long id, String currentPassword, String newPassword) {
+    public boolean changePassword(Long id, String currentPassword, String newPassword) {
         if (verifyPassword(id, currentPassword)) {
-            memberRepository.findById(id).ifPresent((member) -> {
-                member.updatePassword(bCryptPasswordEncoder.encode(newPassword));
-                memberRepository.save(member);
+            memberRepository.findById(id).ifPresentOrElse(member ->{
+                MemberDto memberDto = MemberDto.from(member);
+                memberDto.setPassword(bCryptPasswordEncoder.encode(newPassword));
+                memberRepository.save(memberDto.toEntity());
+            },() -> {
+                // todo 예외 처리
             });
+
         }else{
             return false;
         }
         return true;
 
     }
-    public boolean changeWithdraw(long id){
-        memberRepository.findById(id).ifPresent((member) -> {
-            member.updateWithdraw(true);
-            memberRepository.save(member);
+    public void changeWithdraw(Long id){
+        memberRepository.findById(id).ifPresentOrElse((member) -> {
+            MemberDto memberDto = MemberDto.from(member);
+            memberDto.setWithdraw(true);
+            memberRepository.save(memberDto.toEntity());
+        },()->{
+            // todo 예외 처리
         });
-        return true;
     }
 
-    public boolean checkWithdraw(long id){
+    public boolean checkWithdraw(Long id){
         AtomicReference<Boolean> isWithdraw = new AtomicReference<>(false);
-        memberRepository.findById(id).ifPresent((member)->{
+        memberRepository.findById(id).ifPresentOrElse((member)->{
             isWithdraw.set(member.getWithdraw());
+        },()->{
+            // todo 예외 처리
         });
         return isWithdraw.get();
     }

@@ -39,7 +39,10 @@ public class Member {
     @Column(name = "withdraw_date", nullable = true)
     private LocalDateTime withdrawDate;
     private String role;
-
+    @PrePersist
+    protected void onCreate() {
+        createDate = LocalDateTime.now();
+    }
     public static Member of(){
         return new Member();
     }
@@ -51,23 +54,5 @@ public class Member {
                 birth, nickname, withhdraw, null, createDate, withdrawDate, role);
     }
 
-    public void updateWithdraw(boolean withdrawal) {
-        if (withdrawal) this.withdraw = true;
-        else this.withdraw = false;
-    }
-
-    public void updateRefreshValue(String value) {
-        this.refreshValue = value;
-    }
-
-    public void capsulePayload(String loginId, long memberId, String role) {
-        this.loginId = loginId;
-        this.id = memberId;
-        this.role = role;
-    }
-
-    public void updatePassword(String password) {
-        this.password = password;
-    }
 }
 
