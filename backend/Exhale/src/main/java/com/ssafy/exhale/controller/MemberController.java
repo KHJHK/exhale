@@ -1,5 +1,6 @@
 package com.ssafy.exhale.controller;
 
+import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
 import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.PasswordRequest;
@@ -40,7 +41,10 @@ public class MemberController {
             String jwt = tokenPayloadUtil.createJWT();
             String refreshToken = tokenPayloadUtil.createRefreshToken();
 
-            authenticationService.reSaveRefreshValue(memberId, refreshToken);
+            AuthenticationDto authenticationDto = AuthenticationDto.of();
+            authenticationDto.setMemberId(memberId);
+            authenticationDto.setRefreshValue(refreshToken);
+            authenticationService.reSaveRefreshValue(authenticationDto);
 
             TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt, "Bearer " + refreshToken);
 
