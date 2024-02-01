@@ -20,4 +20,21 @@ public class CertificationCodeService {
             // todo 예외 처리 : 저장 실패
         }
     }
+
+    public boolean compareCode(Long id, String code){
+        return certificationCodeRepository.findByMemberId(id)
+                .map(certification ->{
+                    if(certification.getCode().equals(code)){
+                        certificationCodeRepository.deleteById(certification.getId());
+                        return true;
+                    }else{
+                        return false;
+                    }
+                })
+                .orElseGet(()->{
+                    // todo 예외 처리
+                    System.out.println("예외 발생");
+                    return false;
+                });
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.exhale.controller;
 
+import com.ssafy.exhale.domain.CertificationCode;
 import com.ssafy.exhale.dto.logicDto.CertificationCodeDto;
 import com.ssafy.exhale.dto.requestDto.CertificationCodeRequest;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
@@ -32,13 +33,25 @@ public class EmailController {
             String fullEmail = emailRequest.getEmailId()+"@"+emailRequest.getEmailDomain();
             String certificationCode = CertificationNumber.getCertificationNumber();
             certificationCodeService.saveCode(CertificationCodeDto.of(null, memberId, certificationCode, null));
-            try {
-                emailUtil.sendCertificationMail(fullEmail, certificationCode);
-            } catch (MessagingException e) {
-                throw new RuntimeException(e);  // todo 예외처리 수정
-            }
+//            try {
+//                emailUtil.sendCertificationMail(fullEmail, certificationCode);
+//            } catch (MessagingException e) {
+//                throw new RuntimeException(e);  // todo 예외처리 수정
+//            }
         }
 
     return ResponseEntity.status(200).body("");
+    }
+
+    @PostMapping("/check")
+    public ResponseEntity<?> checkCertificationCode(@RequestBody CertificationCodeRequest certificationCodeRequest){
+        Long memberId = tokenPayloadUtil.getMemberId();
+        String code = certificationCodeRequest.getCode();
+        if(code==null){
+            // todo 예외 처리 : 파라미터 오류
+        }
+        boolean isSuccess = certificationCodeService.compareCode(memberId, code);
+        if(isSuccess) return ResponseEntity.status(200).body("");
+        else return ResponseEntity.status(400).body("인증코드가 맞지 않습니다.");
     }
 }

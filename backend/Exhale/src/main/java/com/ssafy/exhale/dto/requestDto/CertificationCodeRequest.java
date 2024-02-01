@@ -15,14 +15,6 @@ import java.time.LocalDateTime;
 public class CertificationCodeRequest {
     String code;
 
-    public CertificationCodeDto to(String id, Long memberId, String code, LocalDateTime createAt){
-        return CertificationCodeDto.of(
-                id,
-                memberId,
-                code,
-                createAt
-                );
-    }
 }
 
 
