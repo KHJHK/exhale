@@ -26,6 +26,7 @@ public class EmailController {
     private final EmailUtil emailUtil;
     private final CertificationCodeService certificationCodeService;
 
+
     @PostMapping("/certification")
     public ResponseEntity<?> certificationEmail(@RequestBody EmailRequest emailRequest){
         Long memberId = tokenPayloadUtil.getMemberId();
@@ -33,11 +34,11 @@ public class EmailController {
             String fullEmail = emailRequest.getEmailId()+"@"+emailRequest.getEmailDomain();
             String certificationCode = CertificationNumber.getCertificationNumber();
             certificationCodeService.saveCode(CertificationCodeDto.of(null, memberId, certificationCode, null));
-//            try {
-//                emailUtil.sendCertificationMail(fullEmail, certificationCode);
-//            } catch (MessagingException e) {
-//                throw new RuntimeException(e);  // todo 예외처리 수정
-//            }
+            try {
+                emailUtil.sendCertificationMail(fullEmail, certificationCode);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);  // todo 예외처리 수정
+            }
         }
 
     return ResponseEntity.status(200).body("");
