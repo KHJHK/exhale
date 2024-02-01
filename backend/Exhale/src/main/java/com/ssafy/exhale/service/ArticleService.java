@@ -1,11 +1,17 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Article;
+import com.ssafy.exhale.domain.Board;
+import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.ArticleDto;
+import com.ssafy.exhale.dto.logicDto.BoardDto;
+import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import com.ssafy.exhale.dto.responseDto.ArticleResponse;
 import com.ssafy.exhale.repository.ArticleRepository;
+import com.ssafy.exhale.repository.BoardRepository;
+import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,6 +24,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
+    private final BoardRepository boardRepository;
+    private final MemberRepository memberRepository;
     private final int PAGE_SIZE = 10;
 
     public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page){
@@ -45,11 +53,21 @@ public class ArticleService {
 
         return ArticleResponse.from(ArticleDto.from(article));
     }
-    public void postArticle(ArticleDto articleDto){
+    //request로 받도록 설정
+    public void postArticle(ArticleRequest articleRequest){
+        Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
+        Member member = memberRepository.getReferenceById(articleRequest.getMemberId());
+
+        ArticleDto articleDto = articleRequest.toDto(
+                BoardDto.from(board),
+                MemberDto.from(member)
+        );
+
         Article article = articleDto.toEntity(
                 articleDto.getBoardDto().toEntity(),
                 articleDto.getMemberDto().toEntity()
         );
+
         articleRepository.save(article);
     }
 

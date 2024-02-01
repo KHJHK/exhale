@@ -1,14 +1,9 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.domain.Board;
-import com.ssafy.exhale.domain.Member;
-import com.ssafy.exhale.dto.logicDto.BoardDto;
-import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import com.ssafy.exhale.dto.responseDto.ArticleResponse;
-import com.ssafy.exhale.repository.BoardRepository;
-import com.ssafy.exhale.repository.MemberRepository;
 import com.ssafy.exhale.service.ArticleService;
 import com.ssafy.exhale.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +19,6 @@ public class BoardController {
 
     private final BoardService boardService;
     private final ArticleService articleService;
-    private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
 
     //게시판 종류
     @GetMapping
@@ -55,14 +48,8 @@ public class BoardController {
     //게시글 생성
     @PostMapping("/articles")
     public void postArticle(@RequestBody ArticleRequest articleRequest){
-        Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
-        Member member = memberRepository.getReferenceById(articleRequest.getMemberId());
-        articleService.postArticle(
-                articleRequest.toDto(
-                        BoardDto.from(board),
-                        MemberDto.from(member)
-                )
-        );
+
+        articleService.postArticle(articleRequest);
     }
 
     //게시글 수정
