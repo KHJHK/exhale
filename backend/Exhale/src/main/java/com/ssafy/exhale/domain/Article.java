@@ -1,7 +1,10 @@
 package com.ssafy.exhale.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -27,10 +30,10 @@ public class Article {
     @Column(name = "modify_time")
     private LocalDateTime modifyDate;
 
-    @Column(name = "is_delete")
+    @Column(name = "is_delete", columnDefinition = "TINYINT(1) default 0")
     private Boolean isDelete;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
 
