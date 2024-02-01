@@ -10,15 +10,18 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryResponse {
     @JsonProperty("category_id")
-    private long categoryId;
+    private final long categoryId;
 
     @JsonProperty("category_name")
-    private String categoryName;
+    private final String categoryName;
 
     @JsonProperty("over_time_sec")
-    private int overTimeSec;
+    private final int overTimeSec;
 
     public static CategoryResponse from(Category category) {
-        return new CategoryResponse(category.getId(), category.getCategoryName(), category.getOverTimeSec());
+        return new CategoryResponse(
+                category.getId(),
+                category.getCategoryName(),
+                category.getOverTimeSec());
     }
 }

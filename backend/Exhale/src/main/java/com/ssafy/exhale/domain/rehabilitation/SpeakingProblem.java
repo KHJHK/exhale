@@ -21,6 +21,9 @@ public class SpeakingProblem {
     @Column
     private String question;
 
+    @Column
+    private String hint;
+
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 

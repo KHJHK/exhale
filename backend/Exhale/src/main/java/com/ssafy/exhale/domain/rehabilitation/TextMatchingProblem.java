@@ -19,6 +19,9 @@ public class TextMatchingProblem {
     @Column(name = "text_matching_problem_id")
     private Long id;
 
+    @Column(name = "question")
+    private String question;
+
     @Column(name = "question_image")
     private String questionImage;
 

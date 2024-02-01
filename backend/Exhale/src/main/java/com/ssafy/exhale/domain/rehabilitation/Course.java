@@ -23,6 +23,6 @@ public class Course {
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_removed")
+    private Boolean isRemoved;
 }

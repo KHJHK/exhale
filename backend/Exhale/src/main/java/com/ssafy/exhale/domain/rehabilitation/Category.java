@@ -26,8 +26,12 @@ public class Category {
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_removed")
+    private Boolean isRemoved;
+
+    @Enumerated
+    @Column(name = "problem_table")
+    private ProblemTableName problemTableName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_Id")
