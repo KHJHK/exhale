@@ -23,7 +23,7 @@ public class ArticleDto {
     String nickname;
     LocalDateTime createDate;
     LocalDateTime modifyDate;
-    BoardDto board;
+    BoardDto boardDto;
     MemberDto memberDto;
     Boolean isDelete;
 
