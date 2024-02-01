@@ -8,6 +8,7 @@ import com.ssafy.exhale.domain.QArticle;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -15,9 +16,7 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
     private final JPAQueryFactory queryFactory;
     private final QArticle article = QArticle.article;
     @Override
-    public List<Article> search(ArticleSearchRequest articleSearchRequest) {
-        PageRequest pageRequest = PageRequest.of(articleSearchRequest.getPage(), 10);
-
+    public List<Article> search(ArticleSearchRequest articleSearchRequest, PageRequest pageRequest) {
         JPAQuery<Article> query =  queryFactory.select(article)
                 .from(article)
                 .where(article.board.id.eq(articleSearchRequest.getBoardId()))
