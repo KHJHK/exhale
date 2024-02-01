@@ -2,6 +2,7 @@ package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
+import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -91,6 +92,27 @@ public class MemberService {
             // todo 예외 처리
         });
         return isWithdraw.get();
+    }
+    
+    public boolean compareEmail(Long id, EmailRequest emailRequest){
+        String newEmailId = emailRequest.getEmailId();
+        String newEamilDomain = emailRequest.getEmailDomain();
+        boolean isEmailMatching = memberRepository.findById(id)
+                .map((member) -> {
+                    String emailId = member.getEmailId();
+                    String emailDomain = member.getEmailDomain();
+                    if(emailId==null || emailDomain==null){
+                        // todo 예외 처리 : 저장된 이메일 없음
+                        System.out.println("저장된 이메일 없음");
+                    }
+                    return (newEmailId.equals(emailId) && newEamilDomain.equals(emailDomain));
+                })
+                .orElseGet(() -> {
+                    // todo 예외 처리
+                    System.out.println("이메일이 다릅니다.");
+                    return false;
+                });
+        return isEmailMatching;
     }
 
 }
