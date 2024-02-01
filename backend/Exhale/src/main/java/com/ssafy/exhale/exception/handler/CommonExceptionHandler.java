@@ -1,6 +1,6 @@
 package com.ssafy.exhale.exception.handler;
 
-import com.ssafy.exhale.dto.responseDto.common.CommonResponse;
+import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
