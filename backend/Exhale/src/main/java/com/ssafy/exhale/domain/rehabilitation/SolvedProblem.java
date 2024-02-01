@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "solved_logging")
-public class SolvedLogging {
+@Table(name = "solved_problem")
+public class SolvedProblem {
     @Id
     @Column(name = "solved_logging_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,27 +31,46 @@ public class SolvedLogging {
     @Column(name = "is_removed")
     private Boolean isRemoved;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "name_problem_id")
     private NameProblem nameProblem;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_matching_problem_id")
     private ImageMatchingProblem imageMatchingProblem;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "text_matching_problem_id")
     private TextMatchingProblem textMatchingProblem;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "speaking_problem_id")
     private SpeakingProblem speakingProblem;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fluency_problem_id")
     private FluencyProblem fluencyProblem;
+
+    public static SolvedProblem of(boolean isCorrect, int solveTime, Member member, NameProblem nameProblem,
+                                   ImageMatchingProblem imageMatchingProblem, TextMatchingProblem textMatchingProblem,
+                                   SpeakingProblem speakingProblem, FluencyProblem fluencyProblem) {
+
+        return new SolvedProblem(
+                null,
+                isCorrect,
+                solveTime,
+                null,
+                null,
+                member,
+                nameProblem,
+                imageMatchingProblem,
+                textMatchingProblem,
+                speakingProblem,
+                fluencyProblem
+        );
+    }
 }

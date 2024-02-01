@@ -1,7 +1,7 @@
 package com.ssafy.exhale.dto.responseDto.rehabilitationDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ssafy.exhale.dto.logicDto.rehabilitationDto.TextMatchingProblemDto;
+import com.ssafy.exhale.domain.rehabilitation.TextMatchingProblem;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -27,19 +27,19 @@ public class TextMatchingProblemResponse extends ProblemResponse {
         this.answer = answer;
     }
 
-    public static TextMatchingProblemResponse from(TextMatchingProblemDto textMatchingProblemDto) {
+    public static TextMatchingProblemResponse from(TextMatchingProblem textMatchingProblem) {
         List<String> options = new ArrayList<>();
 
-        options.add(textMatchingProblemDto.getOption1());
-        options.add(textMatchingProblemDto.getOption2());
-        options.add(textMatchingProblemDto.getOption3());
+        options.add(textMatchingProblem.getOption1());
+        options.add(textMatchingProblem.getOption2());
+        options.add(textMatchingProblem.getOption3());
 
         return new TextMatchingProblemResponse(
-                textMatchingProblemDto.getId(),
-                textMatchingProblemDto.getQuestion(),
-                textMatchingProblemDto.getQuestionImage(),
+                textMatchingProblem.getId(),
+                textMatchingProblem.getQuestion(),
+                textMatchingProblem.getQuestionImage(),
                 options,
-                textMatchingProblemDto.getAnswer()
+                textMatchingProblem.getAnswer()
         );
     }
 }

@@ -18,6 +18,6 @@ public class CourseResponse {
     private final String courseName;
     
     public static CourseResponse from(Course course) {
-        return new CourseResponse(courseDto.getId(), courseDto.getCourseName());
+        return new CourseResponse(course.getId(), course.getCourseName());
     }
 }

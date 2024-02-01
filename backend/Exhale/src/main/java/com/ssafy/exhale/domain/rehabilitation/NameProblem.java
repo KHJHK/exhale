@@ -11,13 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("A")
 @Table(name = "name_problem")
-public class NameProblem {
-    @Id
-    @Column(name = "name_problem_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class NameProblem extends Problem {
     @Column(name = "question_image")
     private String questionImage;
 
@@ -26,14 +22,4 @@ public class NameProblem {
 
     @Column
     private String hint;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column(name = "is_removed")
-    private Boolean isRemoved;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

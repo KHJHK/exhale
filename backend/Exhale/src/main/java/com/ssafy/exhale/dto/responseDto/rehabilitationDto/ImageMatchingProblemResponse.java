@@ -1,6 +1,6 @@
 package com.ssafy.exhale.dto.responseDto.rehabilitationDto;
 
-import com.ssafy.exhale.dto.logicDto.rehabilitationDto.ImageMatchingProblemDto;
+import com.ssafy.exhale.domain.rehabilitation.ImageMatchingProblem;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -21,18 +21,18 @@ public class ImageMatchingProblemResponse extends ProblemResponse {
         this.answer = answer;
     }
 
-    public static ImageMatchingProblemResponse from(ImageMatchingProblemDto imageMatchingProblemDto) {
+    public static ImageMatchingProblemResponse from(ImageMatchingProblem imageMatchingProblem) {
         List<String> options = new ArrayList<>();
-        options.add(imageMatchingProblemDto.getOptionImage1());
-        options.add(imageMatchingProblemDto.getOptionImage2());
-        options.add(imageMatchingProblemDto.getOptionImage3());
-        options.add(imageMatchingProblemDto.getOptionImage4());
+        options.add(imageMatchingProblem.getOptionImage1());
+        options.add(imageMatchingProblem.getOptionImage2());
+        options.add(imageMatchingProblem.getOptionImage3());
+        options.add(imageMatchingProblem.getOptionImage4());
 
         return new ImageMatchingProblemResponse(
-                imageMatchingProblemDto.getId(),
-                imageMatchingProblemDto.getQuestion(),
+                imageMatchingProblem.getId(),
+                imageMatchingProblem.getQuestion(),
                 options,
-                imageMatchingProblemDto.getAnswer()
+                imageMatchingProblem.getAnswer()
         );
     }
 }

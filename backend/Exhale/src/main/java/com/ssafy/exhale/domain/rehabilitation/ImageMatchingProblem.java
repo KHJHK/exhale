@@ -11,13 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("B")
 @Table(name = "image_matching_problem")
-public class ImageMatchingProblem {
-    @Id
-    @Column(name = "image_matching_problem_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class ImageMatchingProblem extends Problem {
     @Column
     private String question;
 
@@ -35,14 +31,4 @@ public class ImageMatchingProblem {
 
     @Column
     private Integer answer;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column(name = "is_removed")
-    private Boolean isRemoved;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

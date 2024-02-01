@@ -4,6 +4,7 @@ import com.ssafy.exhale.domain.rehabilitation.*;
 import com.ssafy.exhale.domain.rehabilitation.ProblemTable;
 import com.ssafy.exhale.dto.logicDto.rehabilitationDto.*;
 import com.ssafy.exhale.domain.rehabilitation.CategoryName;
+import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.rehabilitationDto.*;
 import com.ssafy.exhale.exception.handler.NoSuchParameterException;
 import com.ssafy.exhale.repository.rehabilitationRepository.*;
@@ -26,10 +27,11 @@ public class RehabilitationService {
     private final SpeakingProblemRepository speakingProblemRepository;
     private final FluencyProblemRepository fluencyProblemRepository;
 
+
     public List<CourseResponse> getCourseList() {
         List<CourseResponse> courseResponseList = new ArrayList<>();
         for(Course course : courseRepository.findByIsRemoved(false)) {
-            courseResponseList.add(CourseResponse.from(CourseDto.from(course)));
+            courseResponseList.add(CourseResponse.from(course));
         }
         return courseResponseList;
     }
@@ -40,7 +42,7 @@ public class RehabilitationService {
 
         List<CategoryResponse> categoryResponsesList = new ArrayList<>();
         for(Category category : categoryRepository.findByCourse(course)) {
-            categoryResponsesList.add(CategoryResponse.from(CategoryDto.from(category)));
+            categoryResponsesList.add(CategoryResponse.from(category));
         }
         return categoryResponsesList;
     }
@@ -49,38 +51,63 @@ public class RehabilitationService {
         Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
         Category category = categoryOpt.orElseThrow(NoSuchParameterException::new);
 
+        List<ProblemResponse> problemResponseList = new ArrayList<>();
+
+
+
         switch (category.getProblemTableName()) {
             case NAME_PROBLEM -> {
-                List<NameProblemResponse> responseList = new ArrayList<>();
                 for(NameProblem nameProblem : nameProblemRepository.findByCategory(category)) {
-                    responseList.add(NameProblemResponse.from(NameProblemDto.from(nameProblem)));
-                    return responseList;
+                    problemResponseList.add(NameProblemResponse.from(nameProblem));
                 }
             }
             case IMAGE_MATCHING_PROBLEM -> {
-                List<ImageMatchingProblemResponse> responseList = new ArrayList<>();
                 for(ImageMatchingProblem imageMatchingProblem : imageMatchingProblemRepository.findByCategory(category)) {
-                    responseList.add(ImageMatchingProblemResponse.from(ImageMatchingProblemDto.from(imageMatchingProblem)));
+                    problemResponseList.add(ImageMatchingProblemResponse.from(imageMatchingProblem));
                 }
-                return responseList;
             }
             case TEXT_MATCHING_PROBLEM -> {
-                List<TextMatchingProblemResponse> responseList = new ArrayList<>();
                 for(TextMatchingProblem textMatchingProblem : textMatchingProblemRepository.findByCategory(category)) {
-                    responseList.add(TextMatchingProblemResponse.from(TextMatchingProblemDto.from(textMatchingProblem)));
+                    problemResponseList.add(TextMatchingProblemResponse.from(textMatchingProblem));
                 }
-                return responseList;
             }
             case SPEAKING_PROBLEM -> {
-                List<SpeakingProblemResponse> responseList = new ArrayList<>();
                 for(SpeakingProblem speakingProblem : speakingProblemRepository.findByCategory(category)) {
-                    responseList.add(SpeakingProblemResponse.from(SpeakingProblemDto.from(speakingProblem)));
+                    problemResponseList.add(SpeakingProblemResponse.from(speakingProblem));
                 }
-                return responseList;
             }
             case FLUENCY_PROBLEM -> {
-
+                for(FluencyProblem fluencyProblem : fluencyProblemRepository.findByCategory(category)) {
+                    problemResponseList.add(FluencyProblemResponse.from(fluencyProblem));
+                }
             }
         }
+        return problemResponseList;
     }
+
+    public void solveProblem(SolvedProblemRequest solvedProblemRequest) {
+        Optional<Category> categoryOpt = categoryRepository.findById(solvedProblemRequest.getCategoryId());
+        Category category = categoryOpt.orElseThrow(NoSuchParameterException::new);
+
+        switch (category.getProblemTableName()) {
+            case NAME_PROBLEM -> {
+                Optional<NameProblem> nameProblemOpt = nameProblemRepository.findById(solvedProblemRequest.getProblemId());
+                NameProblem nameProblem = nameProblemOpt.orElseThrow(NoSuchParameterException::new);
+                SolvedProblem.of(
+                        solvedProblemRequest.isRight(),
+                        solvedProblemRequest.getTime(),
+                        nameProblem)
+            }
+            case IMAGE_MATCHING_PROBLEM -> {
+                Optional<ImageMatchingProblem>
+            }
+
+        }
+
+    }
+
+
+
+
+
 }

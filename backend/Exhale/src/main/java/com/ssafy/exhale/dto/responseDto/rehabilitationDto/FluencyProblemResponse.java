@@ -1,6 +1,6 @@
 package com.ssafy.exhale.dto.responseDto.rehabilitationDto;
 
-import com.ssafy.exhale.dto.logicDto.rehabilitationDto.FluencyProblemDto;
+import com.ssafy.exhale.domain.rehabilitation.FluencyProblem;
 import lombok.Getter;
 
 @Getter
@@ -12,10 +12,10 @@ public class FluencyProblemResponse extends ProblemResponse {
         this.question = question;
     }
 
-    public static FluencyProblemResponse from(FluencyProblemDto fluencyProblemDto) {
+    public static FluencyProblemResponse from(FluencyProblem fluencyProblem) {
         return new FluencyProblemResponse(
-                fluencyProblemDto.getId(),
-                fluencyProblemDto.getQuestion()
+                fluencyProblem.getId(),
+                fluencyProblem.getQuestion()
         );
     }
 }
