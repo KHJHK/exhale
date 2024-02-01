@@ -34,21 +34,9 @@ public class Authentication {
         createdTime = LocalDateTime.now();
     }
 
-
-//    private Authentication(Long memberId, String refreshValue, LocalDateTime createdTime, Long expireAt) {
-//        this.memberId = memberId;
-//        this.refreshValue = refreshValue;
-//        this.createdTime = createdTime;
-//        this.expireAt = expireAt;
-//    }
-
     public static Authentication of(){
         return new Authentication();
     }
-
-//    public static Authentication of(Long memberId, String refreshValue, Long expireAt){
-//        return new Authentication(memberId,refreshValue,LocalDateTime.now(),expireAt);
-//    }
 
     public static Authentication of(String id, Long memberId, String refreshValue, LocalDateTime createTime, Long expireAt){
         return new Authentication(
