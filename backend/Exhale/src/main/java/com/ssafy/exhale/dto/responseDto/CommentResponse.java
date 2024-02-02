@@ -4,6 +4,7 @@ import com.ssafy.exhale.dto.logicDto.CommentDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,15 +20,30 @@ public class CommentResponse {
     Long articleId;
     Long memberId;
     Long parentCommentId;
+    List<CommentResponse> childCommentList;
 
     public static CommentResponse of(Long id, String content, Boolean isDelete,
                                      LocalDateTime createDate, LocalDateTime modifyDate,
-                                     Long articleId, Long memberId, Long parentCommentId){
+                                     Long articleId, Long memberId, Long parentCommentId,
+                                     List<CommentResponse> childCommentList){
         return new CommentResponse(id, content, isDelete, createDate, modifyDate,
-                articleId, memberId, parentCommentId);
+                articleId, memberId, parentCommentId, childCommentList);
     }
 
-    public static CommentResponse from(CommentDto dto){
+    public static CommentResponse from(CommentDto dto, List<CommentResponse> childCommentList){
+        if(dto.getParentCommentDto() != null){
+            return new CommentResponse(
+                    dto.getId(),
+                    dto.getContent(),
+                    dto.getIsDelete(),
+                    dto.getCreateDate(),
+                    dto.getModifyDate(),
+                    dto.getArticleDto().getId(),
+                    dto.getMemberDto().getId(),
+                    dto.getParentCommentDto().getId(),
+                    childCommentList
+            );
+        }
         return new CommentResponse(
                 dto.getId(),
                 dto.getContent(),
@@ -36,7 +52,8 @@ public class CommentResponse {
                 dto.getModifyDate(),
                 dto.getArticleDto().getId(),
                 dto.getMemberDto().getId(),
-                dto.getParentCommentDto().getId()
+                null,
+                childCommentList
         );
     }
 }
