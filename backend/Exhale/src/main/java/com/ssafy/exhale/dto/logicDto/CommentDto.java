@@ -1,6 +1,8 @@
 package com.ssafy.exhale.dto.logicDto;
 
+import com.ssafy.exhale.domain.Article;
 import com.ssafy.exhale.domain.Comment;
+import com.ssafy.exhale.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,7 @@ public class CommentDto {
     }
 
     public static CommentDto from(Comment entity){
+        //부모댓글이 있는 댓글 entity
         if(entity.getComment() != null){
             return new CommentDto(
                     entity.getId(),
@@ -54,16 +57,16 @@ public class CommentDto {
                 null
         );
     }
-    public CommentDto toEntity(){
-        return CommentDto.of(
+    public Comment toEntity(Article article, Member member, Comment parentComment){
+        return Comment.of(
                 id,
                 content,
                 isDelete,
                 createDate,
                 modifyDate,
-                articleDto,
-                memberDto,
-                parentCommentDto
+                article,
+                member,
+                parentComment
         );
     }
 }
