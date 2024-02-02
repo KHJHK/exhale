@@ -115,4 +115,10 @@ public class MemberService {
         return isEmailMatching;
     }
 
+    public boolean checkEmail(EmailRequest emailRequest){
+        String emailId = emailRequest.getEmailId();
+        String emailDomain = emailRequest.getEmailDomain();
+        return memberRepository.existsByEmailIdAndEmailDomain(emailId, emailDomain);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
 import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
+import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
@@ -74,5 +75,11 @@ public class GeneralController {
     public ResponseEntity<?> checkLoginId(@RequestBody MemberRequest memberRequest){
         if(memberService.checkLoginId(memberRequest.getLoginId()))return ResponseEntity.ok("{result: false}");
         return ResponseEntity.status(200).body("{result: true}");
+    }
+
+    @PostMapping("/email")
+    public ResponseEntity<?> checkEmail(@RequestBody EmailRequest emailRequest){
+        if(!memberService.checkEmail(emailRequest)) return ResponseEntity.status(200).body("이메일 사용 가능");
+        return ResponseEntity.status(400).body("이미 존재하는 이메일");
     }
 }
