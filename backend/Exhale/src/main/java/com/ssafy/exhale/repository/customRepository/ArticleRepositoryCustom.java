@@ -1,4 +1,4 @@
-package com.ssafy.exhale.repository;
+package com.ssafy.exhale.repository.customRepository;
 
 import com.ssafy.exhale.domain.Article;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
