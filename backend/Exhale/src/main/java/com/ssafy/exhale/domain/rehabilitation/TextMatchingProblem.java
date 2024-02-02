@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("C")
+@DiscriminatorValue("text_matching_problem")
 @Table(name = "text_matching_problem")
 public class TextMatchingProblem extends Problem {
     @Column(name = "question")

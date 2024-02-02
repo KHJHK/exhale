@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "solved_problem")
 public class SolvedProblem {
     @Id
-    @Column(name = "solved_logging_id")
+    @Column(name = "solved_problem_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -36,29 +36,10 @@ public class SolvedProblem {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "name_problem_id")
-    private NameProblem nameProblem;
+    @JoinColumn(name = "problem_id")
+    private Problem problem;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_matching_problem_id")
-    private ImageMatchingProblem imageMatchingProblem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "text_matching_problem_id")
-    private TextMatchingProblem textMatchingProblem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "speaking_problem_id")
-    private SpeakingProblem speakingProblem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fluency_problem_id")
-    private FluencyProblem fluencyProblem;
-
-    public static SolvedProblem of(boolean isCorrect, int solveTime, Member member, NameProblem nameProblem,
-                                   ImageMatchingProblem imageMatchingProblem, TextMatchingProblem textMatchingProblem,
-                                   SpeakingProblem speakingProblem, FluencyProblem fluencyProblem) {
-
+    public static SolvedProblem of(boolean isCorrect, int solveTime, Member member, Problem problem) {
         return new SolvedProblem(
                 null,
                 isCorrect,
@@ -66,11 +47,7 @@ public class SolvedProblem {
                 null,
                 null,
                 member,
-                nameProblem,
-                imageMatchingProblem,
-                textMatchingProblem,
-                speakingProblem,
-                fluencyProblem
+                problem
         );
     }
 }

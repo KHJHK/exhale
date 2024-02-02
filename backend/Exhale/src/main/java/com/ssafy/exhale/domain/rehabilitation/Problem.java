@@ -1,12 +1,14 @@
 package com.ssafy.exhale.domain.rehabilitation;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "DTYPE")
+@DiscriminatorColumn
 public abstract class Problem {
     @Id
     @Column(name = "problem_id")

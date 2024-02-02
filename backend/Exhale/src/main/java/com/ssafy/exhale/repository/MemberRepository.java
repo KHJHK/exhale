@@ -10,6 +10,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Boolean existsByLoginId(String login_id);
     Member findByLoginId(String login_id);
 
+    Optional<Member> findByLoginIdAndWithdrawIs(String login_id, boolean withDrawIs);
+
     Optional<Member> findById(long member_id);
 
     Boolean existsByIdAndRefreshValue(long memberId, String tokenValue);

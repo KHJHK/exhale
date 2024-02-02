@@ -2,7 +2,6 @@ package com.ssafy.exhale.dto.responseDto.rehabilitationDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.domain.rehabilitation.NameProblem;
-import com.ssafy.exhale.dto.logicDto.rehabilitationDto.NameProblemDto;
 import lombok.Getter;
 
 @Getter
@@ -25,7 +24,7 @@ public class NameProblemResponse extends ProblemResponse {
         return new NameProblemResponse(
                 nameProblem.getId(),
                 nameProblem.getQuestionImage(),
-                nameProblem.getAnswser(),
+                nameProblem.getAnswer(),
                 nameProblem.getHint()
         );
     }

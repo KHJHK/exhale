@@ -29,10 +29,6 @@ public class Category {
     @Column(name = "is_removed")
     private Boolean isRemoved;
 
-    @Enumerated
-    @Column(name = "problem_table")
-    private ProblemTableName problemTableName;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_Id")
     private Course course;

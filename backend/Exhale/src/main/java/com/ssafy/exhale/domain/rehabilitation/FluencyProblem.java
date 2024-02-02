@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("D")
+@DiscriminatorValue("fluency_problem")
 @Table(name = "fluency_problem")
 public class FluencyProblem extends Problem {
     @Column

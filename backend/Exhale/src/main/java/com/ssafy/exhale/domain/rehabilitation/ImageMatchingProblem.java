@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("B")
+@DiscriminatorValue("image_matching_problem")
 @Table(name = "image_matching_problem")
 public class ImageMatchingProblem extends Problem {
     @Column

@@ -11,14 +11,11 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("D")
+@DiscriminatorValue("speaking_problem")
 @Table(name = "speaking_problem")
 public class SpeakingProblem extends Problem {
     @Column
     private String question;
-
-    @Column
-    private String hint;
 
     @Column(name = "created_date")
     private LocalDateTime createdDate;

@@ -2,11 +2,9 @@ package com.ssafy.exhale.dto.responseDto.rehabilitationDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.domain.rehabilitation.Course;
-import com.ssafy.exhale.dto.logicDto.rehabilitationDto.CourseDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

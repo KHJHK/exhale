@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DiscriminatorValue("A")
+@DiscriminatorValue("name_problem")
 @Table(name = "name_problem")
 public class NameProblem extends Problem {
     @Column(name = "question_image")
     private String questionImage;
 
     @Column
-    private String answser;
+    private String answer;
 
     @Column
     private String hint;
