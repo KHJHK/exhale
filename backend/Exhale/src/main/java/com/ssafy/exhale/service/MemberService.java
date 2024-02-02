@@ -3,15 +3,13 @@ package com.ssafy.exhale.service;
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
-import com.ssafy.exhale.dto.requestDto.MemberRequest;
+import com.ssafy.exhale.dto.requestDto.NicknameRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -119,6 +117,17 @@ public class MemberService {
         String emailId = emailRequest.getEmailId();
         String emailDomain = emailRequest.getEmailDomain();
         return memberRepository.existsByEmailIdAndEmailDomain(emailId, emailDomain);
+    }
+
+    public void setNickname(Long id, NicknameRequest nicknameRequest){
+        memberRepository.findById(id).ifPresentOrElse((member)->{
+            MemberDto memberDto = MemberDto.from(member);
+            memberDto.setNickname(nicknameRequest.getNickname());
+            memberRepository.save(memberDto.toEntity());
+        },()->{
+            System.out.println("예외처리");
+            // todo 예외 처리
+        });
     }
 
 }
