@@ -37,6 +37,6 @@ public class CourseController {
 
     @PostMapping("/result")
     public ResponseEntity<CommonResponse> solveProblem(@RequestBody SolvedProblemRequest solvedProblemRequest, String loginId) {
-        return CommonResponse.ok(rehabilitationService.solveProblem(solvedProblemRequest, loginId));
+        return CommonResponse.ok(null);
     }
 }
