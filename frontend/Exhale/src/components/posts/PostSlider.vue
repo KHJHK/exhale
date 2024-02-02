@@ -1,5 +1,5 @@
 <template>
-  <div id="carouselExample" class="carousel slide">
+<!-- <div id="carouselExample" class="carousel slide">
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img src="@/assets/dog1.jpg" alt="...">
@@ -25,12 +25,77 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </button>
-</div>
+</div> -->
+
+<v-sheet
+    class="mx-auto"
+    width="100%"
+  >
+    <v-slide-group
+      v-model="model"
+      class="v-slide-group"
+      show-arrows
+    >
+      <v-slide-group-item
+        v-for="n in 15"
+        :key="n"
+        v-slot="{ isSelected, toggle, selectedClass }"
+      >
+        
+        <v-card
+          color="#E0E0E0"
+          class="v-card"
+          :class="[selectedClass]"
+          height="230"
+          width="230"
+          @click="toggle"
+        >
+          <div class="d-flex fill-height align-center justify-center">
+            
+            <div>
+              <p class="card-text">title</p>
+            </div>  
+
+            <v-scale-transition>
+              <v-icon
+                v-if="isSelected"
+                color="black"
+                size="48"
+                icon="mdi-close-circle-outline"
+              ></v-icon>
+            </v-scale-transition>
+          </div>
+        </v-card>
+      </v-slide-group-item>
+    </v-slide-group>
+  </v-sheet>
+
+
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
+
+const model = ref(null)
+
 </script>
 
-<style lang="scss" scoped>
-  @import "@/assets/scss/components/_carousel.scss";
+<style scoped>
+  /* @import "@/styles/main.scss"; */
+  .v-card {
+    border-radius: 0px;
+    position: relative;
+  }
+  .v-slide-group {
+    background-color: #f2f3ec;
+    width: 100vw;
+  }
+  .card-text {
+    position: absolute;
+    z-index: 5;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+  }
 </style>

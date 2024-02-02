@@ -7,6 +7,13 @@
 .menu {
   margin-top: 25px;
   margin-right: 4vw;
+  font-family: 'NotoSerifKR';
+  & span{
+    margin-left: 155px;
+    color: rgb(108, 159, 156);
+    font-weight: 700;
+    font-size: large;
+  }
 }
 
 .main-nav {
@@ -76,31 +83,34 @@ gap: 80px;
   
 .navbar-links {
 display: flex;
-gap: 10vw;
-justify-content: center;
-margin-top: 10vh;
-margin-bottom: 3vh;
+gap: 150px;
+justify-content: space-evenly;
+margin-top: 60px;
+margin-bottom: 30px;
 font-family: 'NotoSansKR';
+border-bottom: 1px solid rgb(181, 181, 181);
+margin-left: 150px;
+margin-right: 150px;
 }
 
 .nav-link {
 text-decoration: none;
 color: #333;
 padding-bottom: 0.5rem;
-border-bottom: 2px solid transparent;
-display: inline-block;
+// border-bottom: 2px solid transparent;
+// display: inline-block;
 transition: color 0.3s ease, border-bottom 0.3s ease;
   &.active {
-    border-bottom: 2px solid rgb(108, 158, 156);
+    border-bottom: 4px solid rgb(108, 158, 156);
     color: black;
-    padding: 3px;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
+    // transition: color 0.3s ease, border-bottom 0.3s ease;
   }
 }
 
 .box-item {
   display: flex;
   justify-content: center;
+  font-family: 'NotoSansKR';
 }
 
 .sub-nav3 {

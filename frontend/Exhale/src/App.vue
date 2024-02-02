@@ -4,9 +4,11 @@
       <RouterView/>
     </main>
   </div>
+
 </template>
 
-<script setup>
+
+<script>
 import { RouterLink, RouterView } from 'vue-router';
 import {createApp, onMounted, ref} from 'vue';
 import {reactive} from 'vue';
@@ -16,8 +18,8 @@ import axios from 'axios';
 <style>
 
 .head {
-  background-image: url("@/assets/background_origin1.png");
-  background-size: contain;
+  /* background-image: url("@/assets/background_origin1.png");
+  background-size: cover; */
   height: auto;
   min-height: 100%;
 }

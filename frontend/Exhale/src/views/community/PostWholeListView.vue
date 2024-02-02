@@ -11,6 +11,7 @@
       <div>
         <label class="menu">
           <PostMenu />
+          <span>Menu</span>
         </label>
       </div>
     </section>
@@ -57,10 +58,11 @@
   </header>
 
   <main>
+    <svg-icon type="mdi" :path="path"></svg-icon>
     <div class="p" :style="{ fontSize: fontSize + 'px' }">
       <div class="box-container">
 
-        <section class="box-item">
+        <section>
           <PostSlider />
         </section>
 
@@ -107,6 +109,7 @@
 </template>
 
 <script setup>
+
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
 import { getPosts } from '@/api/posts'
