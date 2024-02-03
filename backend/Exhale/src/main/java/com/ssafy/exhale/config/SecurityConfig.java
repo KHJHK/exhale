@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth)->auth
                         .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
                         .requestMatchers( "/","/general/**", "/boards/**", "/rehabilitation/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")
                         .anyRequest().authenticated())
