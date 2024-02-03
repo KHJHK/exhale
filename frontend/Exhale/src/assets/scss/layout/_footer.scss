@@ -1,0 +1,20 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 200px;
+  height: 20vh;
+  position: relative;
+  transform: translateY(-100%);
+  & a{
+    text-decoration: none;
+    color: rgb(103, 103, 103);
+    font-family: 'NotoSansKR';
+  }
+  & span{
+    color: rgb(103, 103, 103);
+    font-family: 'NotoSansKR';
+  }
+  & .footer-contact {
+    margin-top: 1.5vh;
+  }
+}

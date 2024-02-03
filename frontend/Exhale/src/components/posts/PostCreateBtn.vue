@@ -1,13 +1,7 @@
 <template>
-  <div>
-    <button
-      class="btn btn-outline-light"
-      type="button"
-      @click="goPage"
-    >
+    <p @click="goPage">
       글쓰기
-    </button>
-  </div>
+    </p>
 </template>
 
 <script setup>
@@ -20,8 +14,13 @@
 
 </script>
 
-<style lang="scss" scoped>
-  .btn {
-    color: black;
+<style scoped>
+  p {
+    color: gray;
+    border: 2px solid gray;
+    border-radius: 20px;
+    padding: 5px 20px;
+    font-family: 'NotoSansKR';
   }
+
 </style>

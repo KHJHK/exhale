@@ -1,5 +1,4 @@
 <template>
-  <div>
     <!-- 모달 -->
     <div v-show="modalActive" id="search-modal-search">
       <button @click="modalActiveTogle">닫기</button>
@@ -18,13 +17,13 @@
     <div v-if="modalActive" @click="modalActiveTogle" id="search-modal-bg"></div>
 
       <!-- 홈화면에 보이는 검색창 -->
-      <div id="home-search">
-      <div id="home-search-box">
-        <!-- 검색창은 비활성화 -->
-        <input @click="modalActiveTogle" placeholder="SEARCH" type="text" id="search--input" readonly>
-      </div>
-    </div>
-  </div>
+      <span id="home-search">
+        <span id="home-search-box">
+          <!-- 검색창은 비활성화 -->
+          <input @click="modalActiveTogle" placeholder="SEARCH" type="text" id="search--input" readonly>
+        </span>
+      </span>
+      
 </template>
 
 <script setup>

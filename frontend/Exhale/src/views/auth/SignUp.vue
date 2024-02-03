@@ -1,4 +1,5 @@
   <template>
+<<<<<<< HEAD
         <button class="enlarge" @click="enlarge">{{ msg }}</button>    
       <div class="p" :style="{ fontSize: fontSize + 'px' }">
         <h1>회원가입</h1>
@@ -62,14 +63,116 @@
           </p>
         </div>
           <footer>
+=======
+  
+  <!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
+  
+  <button class="enlarge" @click="enlarge">{{ msg }}</button>
+  <div class="p" :style="{ fontSize: fontSize + 'px' }">
 
-            </footer>
-            </template>
+    <div id="container" class="container" ref="container">
+    <!-- FORM SECTION -->
+    <form @submit.prevent="submitForm">
+        <!-- SIGN UP -->
+        <div class="col align-items-center flex-col sign-up">
+          <img src="@/assets/logo_white.png" class="intro-logo">
+          <div class="form-wrapper align-items-center">
+            <div class="form sign-up">
+              <div class="input-group">
+                <i class='bx bxs-user'></i>
+                <input class="input" v-model.trim="submitForm.userId" id="userId" placeholder="아이디" type="text"/>
+              </div>
+              <div class="input-group">
+                <i class='bx bx-mail-send'></i>
+                <input class="input" v-model.trim="submitForm.email" id="email" placeholder="이메일" type="email"/> 
+              </div>
+              <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input class="input" v-model.trim="submitForm.fullname" id="fullname" placeholder="성명" type="text"/>
+              </div>
+              
+              <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input class="input" v-model.trim="submitForm.birthdate" id="birthdate" placeholder="생년월일" type="text"/>
+              </div>
+
+              <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input class="input" v-model="submitForm.password" id="password" :type="passwordType" placeholder="비밀번호"/>
+                <span @click="toggleVisibility('password')" class="eye-icon">
+                <img src="@/assets/eye.png" alt="">
+                </span>
+              </div>
+              
+              <div class="input-group">
+                <i class='bx bxs-lock-alt'></i>
+                <input v-model="submitForm.passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인"/>
+                <span @click="toggleVisibility('password')" class="eye-icon">
+                  <img src="@/assets/eye.png" alt="">
+                </span>
+              </div>
+
+              <div class="input-group">
+                <input v-model="submitForm.nickName" id="nickname" placeholder="닉네임" type="text"/>
+              </div>
+
+              <div class="submit1" >
+                <button class="btn-bottom" type="submit" @click.prevent="submitForm()">
+                  회원가입
+                </button>
+                <div class="kakaoLogin">
+                  <button @click="snsLogin('?kakao')" class="kakao">
+                    <img src="@/assets/kakao-logo.png" alt="signup">&nbsp;
+                    <label>카카오로 시작하기</label>
+                  </button>
+                </div>
+              </div>
+
+              <p>
+                <span>
+                  이미 계정이 있으신가요?
+                </span>
+                <b @click="toggle" class="pointer">
+                  로그인
+                </b>
+              </p>
+          </div>
+          </div>
+        </div>
+        <!-- END SIGN UP -->
+      </form>
+      <!-- END FORM SECTION -->
+
+
+      <!-- CONTENT SECTION -->
+      <div class="row content-row">
+        <!-- SIGN UP CONTENT -->
+        <div class="col align-items-center flex-col">
+          <div class="text sign-up">
+            <h2>Sign Up</h2>
+            <!-- <p>희망을 잃지 마세요!
+              환영합니다! 4종 1,000개가 넘는 언어 재활 코스와 함께 일상으로의 복귀를 도와드리고 있어요. 함께 노력해봐요.
+            </p> -->
+          </div>
+        </div>
+        <!-- END SIGN UP CONTENT -->
+      </div>
+    </div>
+
+</div>
+</template>
+>>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
+
 <script setup>
+<<<<<<< HEAD
 import { ref, computed, reactive, watch } from 'vue';
 import { onMounted } from 'vue';
+=======
+import { reactive, ref, computed, onMounted } from 'vue';
+>>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { isIdDuplicated, signUp } from '@/api/outhApi.js';
 
@@ -200,8 +303,13 @@ const enlarge = () => {
   fontSize.value ++;
   if (fontSize.value > 22) {
     fontSize.value = 16
-  };
-};
+  }
+}
+
+const toggleVisibility = (field) => {
+  if (field === 'password') {
+    passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
+  }}; 
 
 const toggleVisibility1 = (field) => {
   if (field === 'password') {
@@ -413,8 +521,27 @@ alert.log('회원가입 성공:');
 
 // const passwordInput = document.getElementById('password');
 
+const container = ref(null);
+
+const toggle = () => {
+      router.push(`/login`)
+  }
+
+  // container ref가 mount 되었을 때 sign-up class를 추가합니다.
+  onMounted(() => {
+  // DOM이 마운트된 후에 `classList`에 접근합니다.
+  setTimeout(() => {
+    if (container.value) {
+      container.value.classList.add('sign-up')
+    }
+  }, 300)
+})
+
+
 </script>
+
 <style scoped>
+<<<<<<< HEAD
 img {
   width: 20px;
   height: auto;
@@ -487,4 +614,8 @@ input {
     font-size: 11px;
     color: red;
   }
+=======
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+  @import "@/assets/scss/pages/_signup.scss";
+>>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
 </style>

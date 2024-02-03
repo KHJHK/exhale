@@ -1,28 +1,39 @@
 <template>
-  <div class="box">
-    <div class="nav">
+    <div class="nav scale-up-hor-right">
       <img src="@/assets/Nav.png" alt="hamburgerMenu" class="hamburgerMenu" >
     </div>
-  </div>
 </template>
 
 <script>
-export default {
-  name: "Box",
-};
+
 </script>
 
-<style>
-.box {
+<style scoped>
+
+.nav {
+  display: inline;
+  width: 100px;
   height: 28px;
-  width: 204px;
 }
 
-.box .nav {
-  height: 28px;
-  right: 2vw;
-  position: fixed;
-  top: 3vh;
-  width: 204px;
+.hamburgerMenu {
+  margin-top: 10px;
+  margin-right: 10px;
 }
+
+.scale-up-hor-right {
+	animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+ @keyframes scale-up-hor-right {
+  0% {
+    transform: scaleX(0.1);
+    transform-origin: 100% 100%;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: 100% 100%;
+  }
+}
+
 </style>

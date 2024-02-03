@@ -1,7 +1,7 @@
 <template>
 	<div style="display: flex; align-items: center;">
 		<span>
-			<a
+			<a id="move"
 				@click="
 					() => {
                         if (leftmostPage > 1) {
@@ -15,6 +15,7 @@
 		<span class="page" v-for="page in getPaginationArray(leftmostPage)" :key="page">
 			<a
 				:class="{ on: page === curPage }"
+				id="move"
 				@click="
 					() => {
 						onChangeCurPage(page);
@@ -26,6 +27,7 @@
 		</span>
 		<span v-if="leftmostPage + PAGE_PER_SECTION <= totalPage">
 			<a
+				id="move"
 				@click="
 					() => {
                         // if (leftmostPage + PAGE_PER_SECTION <= totalPage){
@@ -86,20 +88,7 @@ const usePagination = (props, emit) => {
 };
 </script>
 
-<style>
-.page {
-	padding: 1rem;
-	cursor: pointer;
-   
-    
-}
-.page a.on {
-	font-weight: 900;
-	color: red;
-}
-.page a, span > a {
-    cursor: pointer;
-    
-}
+<style lang="scss" scoped>
+@import "@/assets/scss/components/_pagination.scss";
 
 </style>
