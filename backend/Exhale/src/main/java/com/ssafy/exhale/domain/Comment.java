@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,14 +39,26 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id", referencedColumnName = "comment_id")
-    private Comment comment;
+    private Comment parentComment;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parentComment", cascade = CascadeType.ALL)
+    private List<Comment> childCommentList;
 
     public static Comment of(Long id, String content, Boolean isDelete,
                              LocalDateTime createDate, LocalDateTime modifyDate,
-                             Article article, Member member, Comment comment)
+                             Article article, Member member,
+                             Comment parentComment, List<Comment> childCommentList)
     {
         return new Comment(id, content, isDelete, createDate, modifyDate,
-                article, member, comment);
+                article, member, parentComment, childCommentList);
+    }
+
+    public static Comment of(Long id, String content, Boolean isDelete,
+                             LocalDateTime createDate, LocalDateTime modifyDate,
+                             Article article, Member member, Comment parentComment)
+    {
+        return new Comment(id, content, isDelete, createDate, modifyDate,
+                article, member, parentComment, null);
     }
 
 }
