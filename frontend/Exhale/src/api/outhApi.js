@@ -213,6 +213,15 @@ const formDataHeader = {"Content-Type":
                         })
                     };
                     
+                    const kakaoLogin = () => {
+                        const clientId = "64f53b3a322ebb16eabd9859392720c9"; // 클라이언트 ID를 문자열로 설정
+                        const redirectUri = 'http://localhost:5173/';
+                        const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
+                        // 사용자를 카카오 로그인 페이지로 리디렉션
+                        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+                        
+                        return kakaoLogin
+                      };
                     
 
                     
@@ -232,5 +241,6 @@ const formDataHeader = {"Content-Type":
                         reFresh,
                         withDraw,
                         logout,
+                        kakaoLogin
                         
                     };

@@ -7,7 +7,7 @@
 
     <div id="container" class="container" ref="container">
     <!-- FORM SECTION -->
-    <form @submit.prevent="submitForm">
+    <form>
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
           <img src="@/assets/logo_white.png" class="intro-logo">
@@ -15,26 +15,26 @@
             <div class="form sign-up">
               <div class="input-group">
                 <i class='bx bxs-user'></i>
-                <input class="input" v-model.trim="submitForm.userId" id="userId" placeholder="아이디" type="text"/>
+                <input class="input" v-model.trim="userId" id="userId" placeholder="아이디" type="text"/>
                 <button @click="isIdDuplicated">중복확인</button>
               </div>
               <div class="input-group">
                 <i class='bx bx-mail-send'></i>
-                <input class="input" v-model.trim="submitForm.email" id="email" placeholder="이메일" type="email"/> 
+                <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email"/> 
               </div>
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
-                <input class="input" v-model.trim="submitForm.fullname" id="fullname" placeholder="성명" type="text"/>
+                <input class="input" v-model.trim="fullname" id="fullname" placeholder="성명" type="text"/>
               </div>
               
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
-                <input class="input" v-model.trim="submitForm.birthdate" id="birthdate" placeholder="생년월일" type="text"/>
+                <input class="input" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="text"/>
               </div>
 
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
-                <input class="input" v-model="submitForm.password" id="password" :type="passwordType" placeholder="비밀번호"/>
+                <input class="input" v-model="password" id="password" :type="passwordType" placeholder="비밀번호"/>
                 <span @click="toggleVisibility('password')" class="eye-icon">
                 <img src="@/assets/eye.png" alt="">
                 </span>
@@ -42,22 +42,22 @@
               
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
-                <input v-model="submitForm.passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인"/>
+                <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인"/>
                 <span @click="toggleVisibility('password')" class="eye-icon">
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
 
               <div class="input-group">
-                <input v-model="submitForm.nickName" id="nickname" placeholder="닉네임" type="text"/>
+                <input v-model="nickName" id="nickname" placeholder="닉네임" type="text"/>
               </div>
 
               <div class="submit1" >
-                <button class="btn-bottom" type="submit" @click.prevent="submitForm()">
+                <button class="btn-bottom" type="submit" @click.prevent="sign_up">
                   회원가입
                 </button>
                 <div class="kakaoLogin">
-                  <button @click="snsLogin('?kakao')" class="kakao">
+                  <button @click="kakaoLogin" class="kakao">
                     <img src="@/assets/kakao-logo.png" alt="signup">&nbsp;
                     <label>카카오로 시작하기</label>
                   </button>
@@ -99,12 +99,12 @@
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted } from 'vue';
+import { reactive, ref, computed, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { isIdDuplicated, signUp } from '@/api/outhApi.js';
+import { isIdDuplicated, signUp, kakaoLogin } from '@/api/outhApi.js';
 
 
 
@@ -251,15 +251,7 @@ const toggleVisibility2 = (field) => {
   }
   };
 
-  const kakaoLogin = () => {
-  const clientId = "64f53b3a322ebb16eabd9859392720c9"; // 클라이언트 ID를 문자열로 설정
-  const redirectUri = 'http://localhost:5173/';
-  const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
-  // 사용자를 카카오 로그인 페이지로 리디렉션
-  window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
-  
-  return kakaoLogin
-};
+
 const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get('code');
     
@@ -473,4 +465,17 @@ const toggle = () => {
 <style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
   @import "@/assets/scss/pages/_signup.scss";
+  .input-danger{
+  border-bottom: 2px solid red !important;
+}
+
+.title-danger{
+  color: red;
+}
+
+.input-error {
+    line-height: 16px;
+    font-size: 11px;
+    color: red;
+  }
 </style>

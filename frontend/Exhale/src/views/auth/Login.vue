@@ -30,7 +30,7 @@
               로그인
             </button>
 
-            <button @click="snsLogin('?kakao')" class="kakao">
+            <button @click="kakaoLogin" class="kakaoLogin">
               <img src="@/assets/kakao-logo.png" alt="login">&nbsp;
               <label>카카오로 시작하기</label>
             </button>
@@ -90,6 +90,7 @@
   import { useAuthStore } from '@/stores/auth'; 
   import { RouterLink } from 'vue-router';
   import { useRouter } from 'vue-router';
+  import { kakaoLogin } from '@/api/outhApi';
 
   const router = useRouter()
   ////////////////////////////////////////////////////
@@ -189,19 +190,6 @@ const login = (userId, password) => {
   })
 }
 
-const kakaoLogin = () => {
-  axios ({
-    method: 'post',
-    url: 'api.outh/kakao/login',
-    headers: {
-      "Content-Type":"application/json"
-    },
-    data: {
-
-    }
-  })
-
-}
   </script>
   
   <style scoped>
