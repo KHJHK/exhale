@@ -1,6 +1,5 @@
 <template>
 <div class="navbar">
-<<<<<<< HEAD
     <nav v-if="state.loggedIn">
           <RouterLink  to="/">
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
@@ -21,12 +20,6 @@
           <RouterLink  :to="{ name: 'Login' }" class="nav-link">로그인</RouterLink>
           <RouterLink  :to="{ name: 'SignUp' }" class="nav-link">회원가입</RouterLink>
           </nav>
-=======
-    <nav class="navbar-links">
-      <RouterLink  :to="{ name: 'AboutUs' }"  class="nav-link">날숨은 무엇인가요?</RouterLink>
-      <RouterLink  :to="{ name: 'Login' }" class="nav-link">로그인</RouterLink>
-      <RouterLink  :to="{ name: 'SignUp' }" class="nav-link">회원가입</RouterLink>
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
     </nav>
   </div> 
 
