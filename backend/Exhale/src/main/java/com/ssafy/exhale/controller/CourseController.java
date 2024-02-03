@@ -1,9 +1,9 @@
 package com.ssafy.exhale.controller;
 
+import com.ssafy.exhale.dto.requestDto.RegisterReviewRequest;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
-import com.ssafy.exhale.dto.responseDto.rehabilitationDto.CategoryResponse;
-import com.ssafy.exhale.dto.responseDto.rehabilitationDto.ProblemResponse;
+import com.ssafy.exhale.dto.responseDto.rehabilitationDto.ReviewProblemResponse;
 import com.ssafy.exhale.service.RehabilitationService;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
@@ -32,11 +32,30 @@ public class CourseController {
 
     @GetMapping("/problem/{category_id}")
     public ResponseEntity<CommonResponse> getProblemList(@PathVariable("category_id") int categoryId) {
-        return CommonResponse.ok(rehabilitationService.getProblemList(categoryId));
+        return CommonResponse.ok(rehabilitationService.getProblemList(categoryId, tokenPayloadUtil.getLoginId()));
     }
 
     @PostMapping("/result")
-    public ResponseEntity<CommonResponse> solveProblem(@RequestBody SolvedProblemRequest solvedProblemRequest, String loginId) {
+    public ResponseEntity<CommonResponse> solveProblem(@RequestBody SolvedProblemRequest solvedProblemRequest) {
+        rehabilitationService.solveProblem(solvedProblemRequest, tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(null);
+    }
+
+    @PostMapping("/review")
+    public ResponseEntity<CommonResponse> registerReview(@RequestBody RegisterReviewRequest registerReviewRequest) {
+        rehabilitationService.registerReview(registerReviewRequest.getProblemId(), tokenPayloadUtil.getLoginId());
+        return CommonResponse.ok(null);
+    }
+
+    @DeleteMapping("/review/{problem_id}")
+    public ResponseEntity<CommonResponse> deleteReview(@PathVariable("problem_id") long problemId) {
+        rehabilitationService.deleteReview(problemId, tokenPayloadUtil.getLoginId());
+        return CommonResponse.ok(null);
+    }
+
+    @GetMapping("/review-problem/{course_id}")
+    public ResponseEntity<CommonResponse> getReviewProblemList(@PathVariable("course_id") long course_id) {
+        List<ReviewProblemResponse> problemResponseList = rehabilitationService.getReviewProblemList(course_id, tokenPayloadUtil.getLoginId());
+        return CommonResponse.ok(problemResponseList);
     }
 }

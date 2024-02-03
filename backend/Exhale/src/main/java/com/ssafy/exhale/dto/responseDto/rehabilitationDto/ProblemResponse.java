@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.domain.rehabilitation.*;
 import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public class ProblemResponse {
     @JsonProperty("problem_id")
     private long problemId;
+
+    protected ProblemResponse(long problemId) {
+        this.problemId = problemId;
+    }
 
     public static ProblemResponse from(Problem problem) {
         if(problem instanceof NameProblem) {

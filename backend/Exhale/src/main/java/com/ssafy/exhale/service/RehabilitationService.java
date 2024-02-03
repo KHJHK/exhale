@@ -4,10 +4,12 @@ import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.domain.rehabilitation.*;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.rehabilitationDto.*;
-import com.ssafy.exhale.exception.handler.NoSuchParameterException;
+import com.ssafy.exhale.exception.handler.DuplicateDataException;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
 import com.ssafy.exhale.repository.MemberRepository;
 import com.ssafy.exhale.repository.rehabilitationRepository.*;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,7 @@ public class RehabilitationService {
     private final CategoryRepository categoryRepository;
     private final ProblemRepository<Problem> problemRepository;
     private final SolvedProblemRepository solvedProblemRepository;
-
+    private final ReviewRepository reviewRepository;
 
     private final NameProblemRepository nameProblemRepository;
     private final ImageMatchingProblemRepository imageMatchingProblemRepository;
@@ -43,7 +45,7 @@ public class RehabilitationService {
 
     public List<CategoryResponse> getCategory(long courseId) {
         Optional<Course> courseOpt = courseRepository.findByIdAndIsRemoved(courseId, false);
-        Course course = courseOpt.orElseThrow(NoSuchParameterException::new);
+        Course course = courseOpt.orElseThrow(NoSuchDataException::new);
 
         List<CategoryResponse> categoryResponsesList = new ArrayList<>();
         for(Category category : categoryRepository.findByCourseAndIsRemoved(course, false)) {
@@ -52,25 +54,43 @@ public class RehabilitationService {
         return categoryResponsesList;
     }
 
-    public List<ProblemResponse> getProblemList(long categoryId) {
-        Optional<Category> categoryOpt = categoryRepository.findById(categoryId);
-        Category category = categoryOpt.orElseThrow(NoSuchParameterException::new);
+    public ProblemGetResponse getProblemList(long categoryId, String loginId) {
+        Optional<Category> categoryOpt = categoryRepository.findByIdAndIsRemoved(categoryId, false);
+        Category category = categoryOpt.orElseThrow(NoSuchDataException::new);
 
+        List<Problem> problemList = problemRepository.findByCategoryAndIsRemovedOrderByCreatedDate(category, false);
+
+        List<Long> lastSolvedProblem = solvedProblemRepository.findLastSolvedProblem(category.getId(), loginId, PageRequest.of(0, 1));
+        long lastSolvedProblemId = lastSolvedProblem.isEmpty() ? -1 : lastSolvedProblem.get(0);
+
+        int firstProblemIndex = 0;
         List<ProblemResponse> problemResponseList = new ArrayList<>();
-        for(Problem problem : problemRepository.findByCategoryAndIsRemoved(category, false)) {
+        for(int order=0; order<problemList.size(); order++) {
+            Problem problem = problemList.get(order);
             problemResponseList.add(ProblemResponse.from(problem));
+            if(problem.getId() == lastSolvedProblemId) firstProblemIndex = order + 1;
         }
-        return problemResponseList;
+        if(firstProblemIndex >= problemList.size()) firstProblemIndex = 0;
+
+        return ProblemGetResponse.from(problemResponseList, firstProblemIndex);
     }
 
     @Transactional
     public void solveProblem(SolvedProblemRequest solvedProblemRequest, String loginId) {
-        System.out.println("테스트");
         Optional<Problem> problemOpt = problemRepository.findByIdAndIsRemoved(solvedProblemRequest.getProblemId(), false);
-        Problem problem = problemOpt.orElseThrow(NoSuchParameterException::new);
+        Problem problem = problemOpt.orElseThrow(NoSuchDataException::new);
 
         Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
-        Member member = memberOpt.orElseThrow(NoSuchParameterException::new);
+        Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+        //오답, 복습에 추가
+        if(!solvedProblemRequest.isRight()) {
+            Optional<Review> reviewOpt = reviewRepository.findByMemberAndProblem(member, problem);
+            if(reviewOpt.isEmpty()) {
+                Review review = Review.of(member, problem);
+                reviewRepository.save(review);
+            }
+        }
 
         SolvedProblem solvedProblem = SolvedProblem.of(
                 solvedProblemRequest.isRight(),
@@ -78,5 +98,49 @@ public class RehabilitationService {
                 member,
                 problem);
         solvedProblemRepository.save(solvedProblem);
+    }
+
+    @Transactional
+    public void registerReview(long problemId, String loginId) {
+        Optional<Problem> problemOpt = problemRepository.findByIdAndIsRemoved(problemId, false);
+        Problem problem = problemOpt.orElseThrow(NoSuchDataException::new);
+
+        Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
+        Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+        Optional<Review> reviewOpt = reviewRepository.findByMemberAndProblem(member, problem);
+        if(reviewOpt.isPresent()) throw new DuplicateDataException();
+
+        Review review = Review.of(member, problem);
+        reviewRepository.save(review);
+    }
+
+    @Transactional
+    public void deleteReview(long problemId, String loginId) {
+        Optional<Problem> problemOpt = problemRepository.findByIdAndIsRemoved(problemId, false);
+        Problem problem = problemOpt.orElseThrow(NoSuchDataException::new);
+
+        Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
+        Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+        Optional<Review> reviewOpt = reviewRepository.findByMemberAndProblem(member, problem);
+        Review review = reviewOpt.orElseThrow(NoSuchDataException::new);
+
+        reviewRepository.delete(review);
+    }
+
+    public List<ReviewProblemResponse> getReviewProblemList(long courseId, String loginId) {
+        Optional<Course> courseOpt = courseRepository.findByIdAndIsRemoved(courseId, false);
+        Course course = courseOpt.orElseThrow(NoSuchDataException::new);
+
+        Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
+        Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+        List<ReviewProblemResponse> reviewProblemResponseList = new ArrayList<>();
+        for(Problem problem : problemRepository.getReviewProblem(courseId, loginId)) {
+            System.out.println(problem.getCategory().getCategoryName());
+            reviewProblemResponseList.add(ReviewProblemResponse.from(problem));
+        }
+        return reviewProblemResponseList;
     }
 }

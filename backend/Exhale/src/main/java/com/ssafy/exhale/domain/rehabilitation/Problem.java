@@ -2,6 +2,7 @@ package com.ssafy.exhale.domain.rehabilitation;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ public abstract class Problem {
     private Long id;
 
     @Column(name = "created_date")
+    @CreationTimestamp
     private LocalDateTime createdDate;
 
     @Column(name = "is_removed")
