@@ -1,18 +1,16 @@
 <template>
 <div id="content">
   <header>
-
     <section class="main-nav">
       <div>
         <RouterLink  :to="{ name: 'MainPage' }">
           <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
         </RouterLink>
       </div>
-      <div>
-        <label class="menu">
-          <PostMenu />
-          <span>Menu</span>
-        </label>
+      <div class="menu" @click="toggleMenu">
+        <PostMenu v-if="!show" />
+        <CommunityMenu v-else />
+          <!-- <span >Menu</span> -->
       </div>
     </section>
 
@@ -115,12 +113,27 @@ import { useRoute, useRouter } from 'vue-router'
 import { getPosts } from '@/api/posts'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
+import CommunityMenu from '@/components/modals/CommunityMenu.vue'
 
 import PostMenu from '@/components/posts/PostMenu.vue'
 import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
+
+const show = ref(false)
+
+function toggleMenu() {
+  show.value = !show.value
+}
+
+// const open = () => {
+//   show.value = !show.value
+//   return show
+// }
+
+// console.log(show.value)
+
 
 const posts = ref([])
 const route = useRoute()

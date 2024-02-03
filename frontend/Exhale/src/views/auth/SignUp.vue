@@ -10,6 +10,7 @@
     <form @submit.prevent="submitForm">
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
+          <img src="@/assets/logo_white.png" class="intro-logo">
           <div class="form-wrapper align-items-center">
             <div class="form sign-up">
               <div class="input-group">
@@ -56,8 +57,8 @@
                 </button>
                 <div class="kakaoLogin">
                   <button @click="snsLogin('?kakao')" class="kakao">
-                    <img src="@/assets/kakao-logo.png" alt="signup">
-                    카카오로 시작하기
+                    <img src="@/assets/kakao-logo.png" alt="signup">&nbsp;
+                    <label>카카오로 시작하기</label>
                   </button>
                 </div>
               </div>
@@ -83,7 +84,7 @@
         <!-- SIGN UP CONTENT -->
         <div class="col align-items-center flex-col">
           <div class="text sign-up">
-            <h2>Sign Up —</h2>
+            <h2>Sign Up</h2>
             <!-- <p>희망을 잃지 마세요!
               환영합니다! 4종 1,000개가 넘는 언어 재활 코스와 함께 일상으로의 복귀를 도와드리고 있어요. 함께 노력해봐요.
             </p> -->

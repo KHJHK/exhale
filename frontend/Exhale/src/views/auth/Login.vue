@@ -1,5 +1,4 @@
 <template>
-<!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
   <button class="enlarge" @click="enlarge">{{ msg }}</button>
   <div class="p" :style="{ fontSize: fontSize + 'px' }">
 
@@ -9,6 +8,7 @@
       <!-- <p>날;숨입니다. 여러분의 회복을 기원합니다.</p> -->
       <!-- SIGN IN -->
       <div class="col align-items-center flex-col sign-in">
+        <img src="@/assets/logo_white.png" class="intro-logo">
         <div class="form-wrapper align-items-center">
           <div class="form sign-in">
             
@@ -31,7 +31,7 @@
             </button>
 
             <button @click="snsLogin('?kakao')" class="kakao">
-              <img src="@/assets/kakao-logo.png" alt="login">
+              <img src="@/assets/kakao-logo.png" alt="login">&nbsp;
               <label>카카오로 시작하기</label>
             </button>
           
@@ -65,7 +65,7 @@
       
       <div class="text sign-in">
         <h2>
-          Log In —
+          Log In
         </h2>
         <!-- <p>로그인 하고 완치를 향해 나아가보세요.</p>
         <p>누구나 극복할 수 있습니다!</p> -->

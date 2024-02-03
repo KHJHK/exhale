@@ -174,16 +174,16 @@
   }
   
   .form {
-  padding: 30px 70px;
+  padding: 35px 75px;
   background-color: var(--white);
   border-radius: 1.5rem;
   width: 100%;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(71, 71, 71, 0.35) 25px 20px 25px;
   transform: scale(0);
   transition: .5s ease-in-out;
   transition-delay: 0.2s;
   margin-bottom: 1vh;
-  margin-top: 12vh;
+  margin-top: -80vh;
   background-color: #ffffff;
   }
   
@@ -378,7 +378,7 @@
   
   .text.sign-up h2,
   .img.sign-up img {
-  transform: translateX(280%);
+  transform: translateX(350%);
   position: absolute;
   color: white;
   font-family: 'NotoSerifKR';
@@ -436,10 +436,24 @@
   }
   
   
+  .intro-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 40%;
+    margin-left: 1500px;
+    padding-top: 43%;
+    // margin-top: 500px;
+    z-index: 25;
+    opacity: 30%;
+  }
   
+
+
   /* RESPONSIVE */
   
-  @media only screen and (max-width: 550px) {
+  @media only screen and (max-width: 1000px) {
   
   .container::before,
   .container.sign-in::before,

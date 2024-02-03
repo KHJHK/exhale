@@ -87,7 +87,7 @@ const model = ref(null)
     position: relative;
   }
   .v-slide-group {
-    background-color: #f2f3ec;
+    background-color: #ffffff;
     width: 100vw;
   }
   .card-text {
