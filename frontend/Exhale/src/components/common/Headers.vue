@@ -1,31 +1,45 @@
 <template>
 <div class="navbar">
-    <nav>
-          <RouterLink  :to="{ name: 'MainPage' }">
+    <nav v-if="state.loggedIn">
+          <RouterLink  to="/">
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
           </RouterLink>
-        <nav class="navbar-links">
+          <nav class="navbar-links">
+            <RouterLink :to="{name: 'Review'}" class="nav-link">복습하기</RouterLink> 
+            <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link">커뮤니티</RouterLink>
+            <RouterLink :to="{name: 'ARCReport'}" class="nav-link">내 정보</RouterLink> 
+            <div class="nav-link" @click="logOut">로그아웃</div>
+          </nav>
+    </nav>
+    <nav v-else>
+          <RouterLink to="/">
+            <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
+          </RouterLink>
+          <nav class="navbar-links">
           <RouterLink  :to="{ name: 'AboutUs' }"  class="nav-link">날숨은 무엇인가요?</RouterLink>
           <RouterLink  :to="{ name: 'Login' }" class="nav-link">로그인</RouterLink>
           <RouterLink  :to="{ name: 'SignUp' }" class="nav-link">회원가입</RouterLink>
           </nav>
     </nav>
-    <!-- <nav v-if="store.isLogIn">
-          <RouterLink :to="{name: 'ReadPost'}" class="nav-link">복습하기</RouterLink> 
-          <RouterLink :to="{name: 'ReadPost'}" class="nav-link">커뮤니티</RouterLink>
-          <RouterLink :to="{name: 'ReadPost'}" class="nav-link">내 정보</RouterLink> 
-          <RouterLink :to="{name: 'ReadPost'}" class="nav-link">로그아웃</RouterLink> 
-          </nav> -->
   </div> 
 
  
 </template>
 
-<script setup>
+<script>
 import { useAuthStore } from '@/stores/auth';
 import { useCounterStore } from '@/stores/counter';
+import { reactive } from 'vue';
+export default {
+  setup() {
+    const state = reactive({
+      loggedIn: false,
+    });
+    
+    return {state};
+  }
+}
 
-const store = useCounterStore()
 </script>
 
 <style scoped>

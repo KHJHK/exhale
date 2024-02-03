@@ -8,7 +8,6 @@ import ForgotPassword from '@/views/auth/ForgotPassword.vue';
 import Logout from '@/views/auth/Logout.vue';
 
 // Aphasia Recovery Course
-
 import FollowUpSpeech from '@/views/ARC/FollowUpSpeech.vue';
 import ListeningComprehension from '@/views/ARC/ListeningComprehension.vue';
 import Fluency from '@/views/ARC/Fluency.vue';
@@ -128,7 +127,6 @@ const router = createRouter({
 
     // common
     { path: '/Headers', name: 'Headers', component: Headers},
-  
     { path: '/Footers', name: 'Footers', component: Footers},
   ],
 });

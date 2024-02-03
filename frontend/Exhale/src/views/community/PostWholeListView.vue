@@ -1,10 +1,8 @@
 <template>
 
   <h3>전체 글</h3>
-      
-
   <div class="article">
-    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" >
+    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id">
       <PostItem
         :number="pageStartIdx + index + 1"
         :title="post.title"
@@ -25,12 +23,11 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onUpdated, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
 import { getPosts} from '@/api/posts'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
-
 
 
 
@@ -39,7 +36,7 @@ const route = useRoute()
 const router = useRouter()
 const params = ref({
   _sort: 'create_date',
-  _order: 'asc',
+  _order: 'desc',
 })
 const articles = new Array(111)
 
@@ -63,6 +60,9 @@ const fetchPosts = async () => {
   try {
     const { data } = await getPosts(params.value)
     posts.value = data
+    
+
+
   } catch (error) {
     console.error(error)
   }

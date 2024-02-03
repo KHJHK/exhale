@@ -4,81 +4,22 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { ref, computed } from 'vue'
 
+
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
   const loginUser = ref([])
-  const token = ref(null)
-  
-  const signup = (payload) => {
-    const userId = payload.userId
-    const email = payload.email
-    const fullname = payload.fullname
-    const birthdate = payload.birthdate
-    const password = payload.password
-    const passwordConfirmation = payload.passwordConfirmation
-    const nickname = payload.nickname
+  const comments = ref([])
+  const replies = ref([])
+  const token = ref(localStorage.getItem('token') || null)
+  const isAuthenticated = computed(() => !!token.value)
 
-    axios({
-      method: 'post',
-      url: 'http://localhost:5000/posts'/auth/signup,
-      data: {
-        userId,
-        email,
-        fullname,
-        birthdate,
-        password,
-        passwordConfirmation,
-        nickname, 
-      }
-    })
-      .then(res => {
-        const password = passwordConfirmation
-        logIn({username,password})
-        console.log('회원가입완료!')
-      })
-      .catch(err => console.log(err))
-  }
-  const logIn = (payload) => {
-    const {userId, password} = payload
+ 
 
-    axios({
-      method: 'post',
-      url: `${API_URL}/auth/login`,
-      data: {
-        userId, password
-      }
-    })
-      .then(res => {
-        token.value = res.data.key
-        
-        router.push({name: 'mainpage'})
-        console.log('로그인 완료!')
-        isUser()
-      })
-      .catch(err => console.log(err))
-  }
 
-  const logOut = () => {
 
-    axios({
-      method: 'post',
-      url: 'http://localhost:5000/posts'/auth/logout,
-      headers: {
-        Authorization: `Token${token.value}`
-      }
-    })
-    .then(res => {
-      token.value = null
-      loginUser.value = null
-      console.log(res)
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  }
+
 
   const isLogIn = computed(() => {
-    true
     if (token.value === null) {
       return false
     } else {
@@ -101,6 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
       console.log(err)
     })
   }
-  return {signup,}
+  return 
 })
+
 

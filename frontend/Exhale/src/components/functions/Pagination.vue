@@ -7,7 +7,7 @@
                         if (leftmostPage > 1) {
 						leftmostPage -= PAGE_PER_SECTION;
 						// onChangeCurPage(leftmostPage);
-                        					}}
+                        				}}
 				"
 				>&lt;</a
 			>

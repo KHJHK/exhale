@@ -13,6 +13,7 @@
       <form @submit.prevent="submitLogin">
         <div>
           <input class="input" type="text" v-model="loginForm.userId" placeholder="아이디">
+          
           <br>  
           <input class="input" type="password" v-model="loginForm.password" placeholder="비밀번호">
           <button @click="toggleVisibility('password')" class="eye">
@@ -43,7 +44,8 @@
   import axios from 'axios';
   import { useAuthStore } from '@/stores/auth'; 
   import { RouterLink } from 'vue-router';
-
+ 
+  
   const authStore = useAuthStore(); 
   const loginForm = reactive({
     userId: '',
@@ -51,19 +53,19 @@
   });
   const fontSize = ref(16);
   // 로그인 요청
-  const submitLogin = async () => {
-    try {
-      const response = await axios.post('http://주소.com/api/login', {
-        username: loginForm.userId,
-        password: loginForm.password
-      });
-      // 로그인이 성공적으로 이루어진 후의 처리 로직
-      authStore.setUser(response.data);
-      console.log('로그인 성공:', response.data);
-    } catch (error) {
-      console.error('로그인 실패:', error);
-    }
-  };
+  // const submitLogin = async () => {
+  //   try {
+  //     const response = await axios.post('http://주소.com/api/login', {
+  //       username: loginForm.userId,
+  //       password: loginForm.password
+  //     });
+  //     // 로그인이 성공적으로 이루어진 후의 처리 로직
+  //     authStore.setUser(response.data);
+  //     console.log('로그인 성공:', response.data);
+  //   } catch (error) {
+  //     console.error('로그인 실패:', error);
+  //   }
+  // };
   
   const toggleVisibility = (field) => {
   if (field === 'password') {
@@ -78,6 +80,42 @@ const enlarge = () => {
   };
 };
 
+const created = () => {
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (code) {
+      
+      console.log("인가 코드:", code);
+    }
+}
+
+const login = (userId, password) => {
+  axios ({
+    method: 'post',
+    url: 'api/general/login',
+    headers: {
+      "Content-Type":"multipart/form-data"
+    },
+    data: {
+      login_id: userId,
+      password: password,
+      
+    }
+  })
+}
+
+const kakaoLogin = () => {
+  axios ({
+    method: 'post',
+    url: 'api.outh/kakao/login',
+    headers: {
+      "Content-Type":"application/json"
+    },
+    data: {
+
+    }
+  })
+
+}
   </script>
   
 <style scoped>

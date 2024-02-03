@@ -11,14 +11,6 @@ export const useCounterStore = defineStore('counter', () => {
   const token = ref(localStorage.getItem('token')|| null)
   const isAuthenticated = computed(() => !!token.value)
   
-  const getposts = function() {
-    axios({
-      method: 'get',
-      url:''
-      
-    })
-  }
-  
   // const signUp = function (payload) {
   //   const {userId, email, fullname, birthdate,password, passwordconfirm, nickname } = payload
   //   console.log('sending request with payload:',payload)
