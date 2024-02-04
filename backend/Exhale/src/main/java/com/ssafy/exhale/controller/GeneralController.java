@@ -1,28 +1,24 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
-import com.ssafy.exhale.dto.logicDto.CustomUserDetails;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
+import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
+import com.ssafy.exhale.dto.responseDto.commonDto.ConnectionStatus;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
-import com.ssafy.exhale.util.JWTUtil;
+import com.ssafy.exhale.util.MessageUtil;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 @RestController
@@ -32,11 +28,20 @@ public class GeneralController {
     private final MemberService memberService;
     private final TokenPayloadUtil tokenPayloadUtil;
     private final AuthenticationService authenticationService;
-
+    private MessageUtil mes;
     @PostMapping("/join")
-    public void join(@RequestBody MemberRequest memberRequest){
+    public ResponseEntity<?> join(@RequestBody MemberRequest memberRequest){
+        if(  memberRequest.getLoginId() == null ||
+                memberRequest.getPassword() == null ||
+                memberRequest.getName() == null ||
+                memberRequest.getEmailId() == null ||
+                memberRequest.getEmailDomain() == null ||
+                memberRequest.getBirth() == null ||
+                memberRequest.getNickname() == null
+        ) return CommonResponse.dataError(400, mes.getMes("PARAM"));
+        // todo password 유효성 체크
         memberService.join(memberRequest.toDto());
-        // todo: 회원가입 응답 구현
+        return CommonResponse.ok(null);
     }
 
     @PostMapping("/login")
