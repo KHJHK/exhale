@@ -2,7 +2,7 @@
   
   <!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
   
-  <button class="enlarge" @click="enlarge">{{ msg }}</button>
+  <button class="enlarge" @click="enlarge" style="z-index: 100;">{{ msg }}</button>
   <div class="p" :style="{ fontSize: fontSize + 'px' }">
 
     <div id="container" class="container" ref="container">
@@ -16,11 +16,12 @@
               <div class="input-group">
                 <i class='bx bxs-user'></i>
                 <input class="input" v-model.trim="userId" id="userId" placeholder="아이디" type="text"/>
-                <button @click="isIdDuplicated">중복확인</button>
+                <hana @click="isIdDuplicated">중복확인</hana>
               </div>
               <div class="input-group">
                 <i class='bx bx-mail-send'></i>
                 <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email"/> 
+                <hana @click="isIdDuplicated">중복확인</hana>
               </div>
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
@@ -35,7 +36,7 @@
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
                 <input class="input" v-model="password" id="password" :type="passwordType" placeholder="비밀번호"/>
-                <span @click="toggleVisibility('password')" class="eye-icon">
+                <span @click="toggleVisibility1('password')" class="eye-icon">
                 <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
@@ -43,7 +44,7 @@
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
                 <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인"/>
-                <span @click="toggleVisibility('password')" class="eye-icon">
+                <span @click="toggleVisibility2('passwordConfirm')" class="eye-icon">
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
@@ -236,10 +237,6 @@ const enlarge = () => {
   }
 }
 
-const toggleVisibility = (field) => {
-  if (field === 'password') {
-    passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
-  }}; 
 
 const toggleVisibility1 = (field) => {
   if (field === 'password') {

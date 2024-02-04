@@ -66,7 +66,6 @@
       "create_date": "2020-02-08"
     },
     {
-<<<<<<< HEAD
       "id": "12",
       "title": "제목12",
       "content": "내용12",
@@ -254,19 +253,31 @@
       "nickname": "랜달",
       "postId": 2,
       "create_date": "202"
+    },
+    {
+      "id": "bd46",
+      "postId": {
+        "postId": "1",
+        "content": "hhjhh",
+        "created_date": "2024-02-03T17:32:26.581Z"
+      }
+    },
+    {
+      "id": "f05c",
+      "postId": {
+        "postId": "868",
+        "content": "jj",
+        "created_date": "2024-02-03T17:33:03.330Z"
+      }
     }
   ],
   "login": [
     {
       "userId": "mojojojo",
       "password": "test1234",
-      "id": "165e"
-=======
-      "id": "b392",
-      "title": "kkk",
+      "id": "165e",
       "content": "kk",
       "create_date": 1706682630986
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
     }
   ]
 }

@@ -1,121 +1,107 @@
 <template>
+  <div :style="{ fontSize: fontSize + 'px' }">
 <div id="content">
   <header>
     <section class="main-nav">
-      <div>
-        <RouterLink  :to="{ name: 'MainPage' }">
+      <div class="navbar-logo-link">
+        <RouterLink :to="{ name: 'MainPage' }">
           <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
         </RouterLink>
       </div>
       <div class="menu" @click="toggleMenu">
         <PostMenu v-if="!show" />
         <CommunityMenu v-else />
-          <!-- <span >Menu</span> -->
       </div>
     </section>
 
-  <h3>전체 글</h3>
-  <div class="article">
-    <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id">
-      <PostItem
-        :number="pageStartIdx + index + 1"
-        :title="post.title"
-        :content="post.content"
-        :create_date="post.create_date"
-        :id="post.id"
-        @go-to-detail="goPage"
-      ></PostItem>
-    </div>
-  </div>
-    <section class="sub-nav1">
-      <div id="breadcrum">
+      <section class="sub-nav1">
+        <div id="breadcrum">
           <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
           >
           <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
           >
           <RouterLink class="breadlink" :to="{name: 'PostStoryListView'}">환자이야기</RouterLink>
-      </div>
-      <button class="enlarge" @click="enlarge">{{ msg }}</button> 
-    </section>
-
-    <nav class="navbar-links">
+        </div>
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">{{ msg }}</button> 
+      </section>
+      
+      <nav class="navbar-links">
         <RouterLink 
-          :to="{name: 'PostWholeListView'}" 
-          class="nav-link"
-          :class="{ active: route.name === 'PostWholeListView'}"
-          active-class="active"
+        :to="{name: 'PostWholeListView'}" 
+        class="nav-link"
+        :class="{ active: route.name === 'PostWholeListView'}"
+        active-class="active"
         >전체</RouterLink>
         <RouterLink 
-          :to="{name: 'PostInfoListView'}" 
-          class="nav-link"
-          :class="{ active: route.name === 'PostInfoListView' }"
-          active-class="active"
-          >정보 글</RouterLink>
+        :to="{name: 'PostInfoListView'}" 
+        class="nav-link"
+        :class="{ active: route.name === 'PostInfoListView' }"
+        active-class="active"
+        >정보 글</RouterLink>
         <RouterLink 
-          :to="{name: 'PostReviewListView'}" 
-          class="nav-link"
-          :class="{ active: route.name === 'PostReviewListView' }"
-          active-class="active"
-          >치료 후기</RouterLink>
+        :to="{name: 'PostReviewListView'}" 
+        class="nav-link"
+        :class="{ active: route.name === 'PostReviewListView' }"
+        active-class="active"
+        >치료 후기</RouterLink>
         <RouterLink 
-          :to="{name: 'PostStoryListView'}" 
-          class="nav-link"
-          :class="{ active: route.name === 'PostStoryListView' }"
-          active-class="active"
+        :to="{name: 'PostStoryListView'}" 
+        class="nav-link"
+        :class="{ active: route.name === 'PostStoryListView' }"
+        active-class="active"
         >환자 이야기</RouterLink>
-    </nav>
+      </nav>
+      
+    </header>
     
-  </header>
-
-  <main>
-    <svg-icon type="mdi" :path="path"></svg-icon>
-    <div class="p" :style="{ fontSize: fontSize + 'px' }">
+    <main>
+      <svg-icon type="mdi" :path="path"></svg-icon>
+      
       <div class="box-container">
-
+        
         <section>
           <PostSlider />
         </section>
-
+        
         <section class="box-item sub-nav3">
           <label><PostCreateBtn /></label> 
           <label><PostSearch /></label>
           <label>최신순</label>
         </section>
-
+        
         <section class="box-item">
           <article>
             <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" >
               <PostItem
-                :number="pageStartIdx + index + 1"
-                :title="post.title"
-                :content="post.content"
-                :create_date="post.create_date"
-                :id="post.id"
-                @go-to-detail="goPage"
+              :number="pageStartIdx + index + 1"
+              :title="post.title"
+              :content="post.content"
+              :create_date="post.create_date"
+              :id="post.id"
+              @go-to-detail="goPage"
               ></PostItem>
             </div>
           </article>
         </section>
-
+        
         <section class="box-item">
           <div>
             <Pagination 
-              :list="articles"
-              v-bind="{ITEM_PER_PAGE, PAGE_PER_SECTION}"
-              @change-page="onChangePage"
+            :list="articles"
+            v-bind="{ITEM_PER_PAGE, PAGE_PER_SECTION}"
+            @change-page="onChangePage"
             />
           </div>
-        </section>
-        
+        </section> 
       </div>
-    </div>
-  </main>
-</div>
-
+    </main>
+    
+  </div>
+  
   <footer class="footer">
     <Footers/>
   </footer>
-
+</div>
 </template>
 
 <script setup>

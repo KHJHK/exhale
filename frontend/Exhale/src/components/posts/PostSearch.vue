@@ -1,28 +1,27 @@
 <template>
     <!-- 모달 -->
     <div v-show="modalActive" id="search-modal-search">
-      <button @click="modalActiveTogle">닫기</button>
       <div id="search-modal-search-box">
         <input 
         type="text" 
         @keyup="searchInput" 
-        @keyup.esc="modalActiveTogle" 
         placeholder="SEARCH" 
         id="search-modal-search--input">
       </div>
       <!-- <div v-show="modalActive" @click="modalActiveTogle" id="search-modal"></div> -->
     </div>
+    <!-- @keyup.esc="modalActiveTogle"  -->
     
     <!-- 모달 배경 -->
-    <div v-if="modalActive" @click="modalActiveTogle" id="search-modal-bg"></div>
+    <!-- <div v-if="modalActive" @click="modalActiveTogle" id="search-modal-bg"></div> -->
 
       <!-- 홈화면에 보이는 검색창 -->
-      <span id="home-search">
-        <span id="home-search-box">
+      <!-- <span id="home-search">
+        <span id="home-search-box"> -->
           <!-- 검색창은 비활성화 -->
-          <input @click="modalActiveTogle" placeholder="SEARCH" type="text" id="search--input" readonly>
+          <!-- <input placeholder="SEARCH" type="text" id="search--input" readonly>
         </span>
-      </span>
+      </span> -->
       
 </template>
 
@@ -99,9 +98,9 @@ const searchInput = () => {
 
 #search-modal-search {
   z-index: 20;
-  width: 100%;
-  position: fixed;
-  top: 30px;
+  width: 60%;
+  /* position: fixed; */
+  top: 330px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -110,7 +109,9 @@ const searchInput = () => {
 
 #search-modal-search-box {
   z-index: 30;
-  margin-top: 50px;
+  padding: 0px 10px;
+  border-bottom: 3px solid rgba(108, 159, 156, 0.8);
+  /* margin-top: 50px; */
 }
 
 #search-modal-search-box input {
@@ -143,10 +144,11 @@ const searchInput = () => {
   z-index: 10;
   position: fixed;
   top: 0px;
+  right: 0px;
   width: 100%;
   height: 100%;
-  background-color: #222222b0;
-  backdrop-filter: blur(20px);
+  background-color: rgba(108, 159, 156, 0.9);
+  /* backdrop-filter: blur(20px); */
 }
 
 button {
