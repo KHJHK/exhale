@@ -5,7 +5,8 @@
     </div>
     <div class="card-body">
         <p class="card-title">{{ title }}</p>
-        <p class="card-text">{{ content }}</p>
+        <p class="card-content">{{ content }}</p>
+        <p class="card-author">{{ author }}</p>
         <p class="text-muted"><small class="text-body-secondary">{{ create_date }}</small></p>
     </div>
     <div class="card-image">
@@ -21,6 +22,7 @@ const props = defineProps({
   number: Number,
   title: String,
   content: String,
+  author: String,
   create_date: [String, Date, Number],
   id: Number,
 })

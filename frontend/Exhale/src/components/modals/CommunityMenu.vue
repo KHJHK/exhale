@@ -28,7 +28,8 @@
  
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/scss/components/_buttons.scss";
 
 /* .background {
   position: absolute;
@@ -121,7 +122,7 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   animation: jello-horizontal 0.9s both;
 }
 .close-btn:hover {
-  animation: rotate-center 0.6s ease-in-out both;
+  animation: jello-horizontal2 0.9s both;
 }
 
 /* .rotate-center {
@@ -150,6 +151,30 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 @keyframes jello-horizontal {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes jello-horizontal2 {
   0% {
     transform: scale3d(1, 1, 1);
   }
