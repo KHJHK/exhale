@@ -70,4 +70,25 @@ public class CommentService {
                 })
                 .toList();
     }
+
+    public void modifyComment(Long commentId, String content, Long memberId){
+        System.out.println("여기들어왔니???");
+        if(commentRepository.findById(commentId).isPresent()){
+            Comment comment = commentRepository.findById(commentId).get();
+            if(!memberId.equals(comment.getMember().getId())){
+                //수정 권한 없음
+                return;
+            }
+            CommentDto commentDto = CommentDto.from(comment, null);
+            commentDto.setContent(content);
+
+            Article article = articleRepository.getReferenceById(commentDto.getArticleDto().getId());
+            Member member = memberRepository.getReferenceById(commentDto.getMemberDto().getId());
+            Comment modifyComment = commentDto.toEntity(article, member, null);
+            commentRepository.save(modifyComment);
+        }else{
+            System.out.println("error");
+            //error 메세지 출력
+        }
+    }
 }
