@@ -10,7 +10,7 @@ public class FluencyCheckResponse {
     private boolean result;
     private String explain;
 
-    public static FluencyCheckResponse of(Boolean result, String explain) {
+    public static FluencyCheckResponse of(boolean result, String explain) {
         return new FluencyCheckResponse(result, explain);
     }
 }

@@ -44,7 +44,8 @@ public class CourseController {
 
     @PostMapping("/fluency-check")
     public ResponseEntity<CommonResponse> fluencyCheck(@RequestBody FluencyCheckRequest fluencyCheckRequest) {
-        return null;
+        System.out.println("테스트");
+        return CommonResponse.ok(rehabilitationService.fluencyCheck(fluencyCheckRequest));
     }
 
     @PostMapping("/review")

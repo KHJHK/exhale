@@ -1,6 +1,7 @@
 package com.ssafy.exhale.util;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.ssafy.exhale.exception.handler.S3Exception;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -33,8 +34,8 @@ public class S3Util {
             File file = new File(multipartFile.getOriginalFilename());
             multipartFile.transferTo(file);
             s3Client.putObject(bucketName, fullFileName, file);
-        } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
+        } catch (Exception exception) {
+            throw new S3Exception(exception);
         }
         return createPath(fullFileName);
     }

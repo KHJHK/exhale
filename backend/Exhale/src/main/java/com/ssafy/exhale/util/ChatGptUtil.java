@@ -4,10 +4,12 @@ import com.ssafy.exhale.dto.chatGpt.ChatGptRequest;
 import com.ssafy.exhale.dto.chatGpt.ChatGptResponse;
 import com.ssafy.exhale.dto.chatGpt.MessageRequest;
 import com.ssafy.exhale.dto.responseDto.rehabilitationDto.FluencyCheckResponse;
+import com.ssafy.exhale.exception.handler.ChatGptException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpHeaders;
 
@@ -54,19 +56,22 @@ public class ChatGptUtil {
         setUserContent(question, answer);
         HttpEntity<ChatGptRequest> request = new HttpEntity<>(chatGptRequestDto, httpHeaders);
 
-        ChatGptResponse response = restTemplate.postForObject(
-                chatGptUrl,
-                request,
-                ChatGptResponse.class
-        );
-
-        String content = response.getChoices().get(0).getMessage().getContent();
         FluencyCheckResponse fluencyCheckResponse = null;
+        try {
+            ChatGptResponse response = restTemplate.postForObject(
+                    chatGptUrl,
+                    request,
+                    ChatGptResponse.class
+            );
 
-        if (content.startsWith("맞았어요")) {
-            fluencyCheckResponse = FluencyCheckResponse.of(true,  "null");
-        } else if (content.startsWith("틀렸어요")) {
-            fluencyCheckResponse = FluencyCheckResponse.of(false, content);
+            String content = response.getChoices().get(0).getMessage().getContent();
+            if (content.startsWith("맞았어요")) {
+                fluencyCheckResponse = FluencyCheckResponse.of(true,  null);
+            } else if (content.startsWith("틀렸어요")) {
+                fluencyCheckResponse = FluencyCheckResponse.of(false, content);
+            }
+        } catch (RestClientException | NullPointerException restClientException) {
+            throw new ChatGptException(restClientException);
         }
         return fluencyCheckResponse;
     }
