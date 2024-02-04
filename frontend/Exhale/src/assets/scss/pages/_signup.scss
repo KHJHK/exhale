@@ -183,7 +183,7 @@
   transition: .5s ease-in-out;
   transition-delay: 0.2s;
   margin-bottom: 1vh;
-  margin-top: -80vh;
+  margin-top: -90vh;
   background-color: #ffffff;
   }
   
@@ -194,10 +194,10 @@
   .input-group {
   position: relative;
   width: 100%;
-  margin: 6% 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 6% 2%;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
   }
   
   .input-group i {
@@ -205,18 +205,18 @@
   top: 50%;
   left: 1rem;
   transform: translateY(-50%);
-  font-size: 1.4rem;
+  // font-size: 1.4rem;
   color: var(--gray-2);
 }
 
 .input-group input {
   width: 100%;
   // padding: 1rem 3rem;
-  font-size: 1rem;
+  // font-size: 1rem;
   background-color: var(--gray);
-  border-radius: .5rem;
+  // border-radius: .5rem;
   border: 0.125rem solid var(--white);
-  outline: none;
+  // outline: none;
   margin-bottom: 10px;
   }
   
@@ -234,7 +234,7 @@
   border: none;
   background-color: lightgray;
   color: black;
-  font-size: 0.8rem;
+  // font-size: 0.8rem;
   outline: none;
   }
   
@@ -243,9 +243,26 @@
   color: white;
   }
   
+ .form hana {
+  position: absolute;
+  right: 5px;
+  padding: 3px 6px;
+  transform: translateY(-20%);
+  // border-left: 1px solid black;
+  border-top-left-radius: 6px;
+  // border-radius: 6px;
+  background: lightgray;
+}
+
+  .form hana:hover {
+    color: white;
+    background-color: rgb(108, 159, 156);
+  }
+
+
   .form p {
   margin: 1rem 0;
-  font-size: .7rem;
+  // font-size: .7rem;
   }
   
   .flex-col {
@@ -349,15 +366,15 @@
   }
   
   .text label {
-  font-size: 3.5rem;
-  font-weight: 800;
+  // font-size: 3.5rem;
+  // font-weight: 800;
   margin: 2rem 0;
   transition: 1s ease-in-out;
   color: white;
   }
   
   .text p {
-  font-weight: 500;
+  // font-weight: 500;
   transition: 1s ease-in-out;
   transition-delay: .2s;
   }
@@ -516,6 +533,6 @@
   
   .text h2 {
       margin: .5rem;
-      font-size: 2rem;
+      // font-size: 2rem;
   }
   }

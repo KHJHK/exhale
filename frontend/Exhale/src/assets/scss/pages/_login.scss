@@ -147,7 +147,7 @@ color: var(--gray-2);
 .input-group input {
 width: 100%;
 padding: 1rem 3rem;
-font-size: 1rem;
+// font-size: 1rem;
 background-color: var(--gray);
 border-radius: .5rem;
 border: 0.125rem solid var(--white);
@@ -168,7 +168,7 @@ border-radius: .5rem;
 border: none;
 background-color: lightgray;
 color: black;
-font-size: 0.8rem;
+// font-size: 0.8rem;
 outline: none;
 }
 
@@ -179,7 +179,7 @@ color: white;
 
 .form p {
 margin: 1rem 0;
-font-size: .7rem;
+// font-size: .7rem;
 }
 
 .flex-col {
@@ -283,15 +283,15 @@ color: var(--white);
 }
 
 .text label {
-font-size: 3.5rem;
-font-weight: 800;
+// font-size: 3.5rem;
+// font-weight: 800;
 margin: 2rem 0;
 transition: 1s ease-in-out;
 color: white;
 }
 
 .text p {
-font-weight: 500;
+// font-weight: 500;
 transition: 1s ease-in-out;
 transition-delay: .2s;
 }
@@ -429,7 +429,7 @@ right: 50%;
 
 .text h2 {
     margin: .5rem;
-    font-size: 2rem;
+    // font-size: 2rem;
 }
 }
 

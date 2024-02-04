@@ -1,8 +1,8 @@
 <template>
-  <button class="enlarge" @click="enlarge">{{ msg }}</button>
-  <div class="p" :style="{ fontSize: fontSize + 'px' }">
+  <button class="enlarge" @click="enlarge" style="z-index: 200;">{{ msg }}</button>
+  <div :style="{ fontSize: fontSize + 'px' }">
 
-    <div id="container" class="container" ref="container">
+    <div class="container" ref="container">
     <!-- FORM SECTION -->
     <form @submit.prevent="submitLogin">
       <!-- <p>날;숨입니다. 여러분의 회복을 기원합니다.</p> -->
@@ -19,7 +19,7 @@
             
             <div class="input-group">
               <i class='bx bxs-lock-alt'></i>
-              <input class="input" type="password" v-model="loginForm.password" placeholder="비밀번호">
+              <input class="input"  v-model="password" :type="passwordType" placeholder="비밀번호">
               <span @click="toggleVisibility('password')" class="eye-icon">
                 <img src="@/assets/eye.png" alt="">
               </span>
@@ -64,9 +64,9 @@
       <div class="col align-items-center flex-col">
       
       <div class="text sign-in">
-        <h2>
+        <!-- <h2>
           Log In
-        </h2>
+        </h2> -->
         <!-- <p>로그인 하고 완치를 향해 나아가보세요.</p>
         <p>누구나 극복할 수 있습니다!</p> -->
       </div>
@@ -79,23 +79,23 @@
     </div>
     <!-- END CONTENT SECTION -->
   </div>
-
 </div>
 
 </template>
-  
-  <script setup>
+
+<script setup>
   import { reactive, ref, computed, onMounted } from 'vue';
   import axios from 'axios';
   import { useAuthStore } from '@/stores/auth'; 
   import { RouterLink } from 'vue-router';
   import { useRouter } from 'vue-router';
   import { kakaoLogin } from '@/api/outhApi';
-
   const router = useRouter()
   ////////////////////////////////////////////////////
   // let container = document.getElementById('container')
-
+  const fontSize = ref(16);
+  const passwordType = ref("password");
+  const password = ref('');
   // toggle = () => {
   //   container.classList.toggle('sign-in')
   //   container.classList.toggle('sign-up')
@@ -136,7 +136,6 @@
     userId: '',
     password: ''
   });
-  const fontSize = ref(16);
 
   // 로그인 요청
   // const submitLogin = async () => {

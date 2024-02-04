@@ -1,24 +1,28 @@
 .navbar-logo {
-  display: inline;
   width: 120px; 
   margin-left: 3.5vw;
+  margin-top: 2vh;
+  // position: fixed;
 }
 
-.menu {
-  // margin-top: 25px;
-  // margin-right: 4vw;
-& span{
-    font-family: 'NotoSerifKR';
-    margin-left: 154px;
-    color: rgb(108, 159, 156);
-    font-weight: 700;
-    font-size: large;
-  }
-}
+// #content {
+//   // margin-top: 25px;
+//   // margin-right: 4vw;
+// & span{
+//     font-family: 'NotoSerifKR';
+//     display: flex;
+//     justify-content: space-between;
+//     color: rgb(108, 159, 156);
+//     font-weight: 700;
+//     font-size: large;
+//   }
+// }
 
 .main-nav {
   display: flex;
   justify-content: space-between;
+  background-color: white;
+  z-index: 1003;
 }
 
 .sub-nav1{
