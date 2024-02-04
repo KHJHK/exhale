@@ -2,16 +2,20 @@ package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.domain.rehabilitation.*;
+import com.ssafy.exhale.dto.requestDto.FluencyCheckRequest;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.rehabilitationDto.*;
 import com.ssafy.exhale.exception.handler.DuplicateDataException;
 import com.ssafy.exhale.exception.handler.NoSuchDataException;
 import com.ssafy.exhale.repository.MemberRepository;
 import com.ssafy.exhale.repository.rehabilitationRepository.*;
+import com.ssafy.exhale.util.ChatGptUtil;
+import com.ssafy.exhale.util.S3Util;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +38,7 @@ public class RehabilitationService {
     private final SpeakingProblemRepository speakingProblemRepository;
     private final FluencyProblemRepository fluencyProblemRepository;
 
+    private final ChatGptUtil chatGptUtil;
 
     public List<CourseResponse> getCourseList() {
         List<CourseResponse> courseResponseList = new ArrayList<>();
@@ -142,5 +147,9 @@ public class RehabilitationService {
             reviewProblemResponseList.add(ReviewProblemResponse.from(problem));
         }
         return reviewProblemResponseList;
+    }
+
+    public FluencyCheckResponse fluencyCheck(FluencyCheckRequest fluencyCheckRequest) {
+        return chatGptUtil.postRequest(fluencyCheckRequest.getQuestion(), fluencyCheckRequest.getAnswer());
     }
 }

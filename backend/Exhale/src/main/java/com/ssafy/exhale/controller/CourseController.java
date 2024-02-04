@@ -1,5 +1,6 @@
 package com.ssafy.exhale.controller;
 
+import com.ssafy.exhale.dto.requestDto.FluencyCheckRequest;
 import com.ssafy.exhale.dto.requestDto.RegisterReviewRequest;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
@@ -39,6 +40,11 @@ public class CourseController {
     public ResponseEntity<CommonResponse> solveProblem(@RequestBody SolvedProblemRequest solvedProblemRequest) {
         rehabilitationService.solveProblem(solvedProblemRequest, tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(null);
+    }
+
+    @PostMapping("/fluency-check")
+    public ResponseEntity<CommonResponse> fluencyCheck(@RequestBody FluencyCheckRequest fluencyCheckRequest) {
+        return null;
     }
 
     @PostMapping("/review")
