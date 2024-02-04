@@ -12,12 +12,11 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("text_matching_problem")
 @Table(name = "text_matching_problem")
-public class TextMatchingProblem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "text_matching_problem_id")
-    private Long id;
+public class TextMatchingProblem extends Problem {
+    @Column(name = "question")
+    private String question;
 
     @Column(name = "question_image")
     private String questionImage;
@@ -33,14 +32,4 @@ public class TextMatchingProblem {
 
     @Column
     private Integer answer;
-
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
-    @Column(name = "is_removed")
-    private Boolean isRemoved;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

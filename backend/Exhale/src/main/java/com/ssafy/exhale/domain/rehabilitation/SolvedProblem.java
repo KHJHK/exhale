@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +13,10 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "solved_logging")
-public class SolvedLogging {
+@Table(name = "solved_problem")
+public class SolvedProblem {
     @Id
-    @Column(name = "solved_logging_id")
+    @Column(name = "solved_problem_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -25,33 +26,30 @@ public class SolvedLogging {
     @Column(name = "solve_time")
     private Integer solveTime;
 
+    @CreationTimestamp
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 
     @Column(name = "is_removed")
     private Boolean isRemoved;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "name_problem_id")
-    private NameProblem nameProblem;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "problem_id")
+    private Problem problem;
 
-    @ManyToOne
-    @JoinColumn(name = "image_matching_problem_id")
-    private ImageMatchingProblem imageMatchingProblem;
-
-    @ManyToOne
-    @JoinColumn(name = "text_matching_problem_id")
-    private TextMatchingProblem textMatchingProblem;
-
-    @ManyToOne
-    @JoinColumn(name = "speaking_problem_id")
-    private SpeakingProblem speakingProblem;
-
-    @ManyToOne
-    @JoinColumn(name = "fluency_problem_id")
-    private FluencyProblem fluencyProblem;
+    public static SolvedProblem of(boolean isCorrect, int solveTime, Member member, Problem problem) {
+        return new SolvedProblem(
+                null,
+                isCorrect,
+                solveTime,
+                null,
+                null,
+                member,
+                problem
+        );
+    }
 }

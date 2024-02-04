@@ -9,5 +9,4 @@ class ExhaleApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
