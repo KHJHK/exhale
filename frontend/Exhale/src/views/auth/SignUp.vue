@@ -3,9 +3,8 @@
   <!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
   
   <button class="enlarge" @click="enlarge">{{ msg }}</button>
-  <div class="p" :style="{ fontSize: fontSize + 'px' }">
-
-    <div id="container" class="container" ref="container">
+  <div :style="{ fontSize: fontSize + 'px' }">
+    <div  class="container" ref="container">
     <!-- FORM SECTION -->
     <form>
         <!-- SIGN UP -->
@@ -13,14 +12,20 @@
           <img src="@/assets/logo_white.png" class="intro-logo">
           <div class="form-wrapper align-items-center">
             <div class="form sign-up">
-              <div class="input-group">
+              <div class="input-group" :class="{'title-dager' : userIdErr }">
                 <i class='bx bxs-user'></i>
-                <input class="input" v-model.trim="userId" id="userId" placeholder="아이디" type="text"/>
+                <p v-show="userIdErr" style="color: red;">
+                  아이디는 4자리 이상의 영문,숫자가 조합되어야합니다.
+                </p>
+                <input class="input" v-model.trim="userId" id="userId" placeholder="아이디" type="text" :class="{'input-dager' : userIdErr }"/>
                 <button @click="isIdDuplicated">중복확인</button>
               </div>
               <div class="input-group">
                 <i class='bx bx-mail-send'></i>
-                <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email"/> 
+                <p v-show="emailErr" style="color: red;">
+                  유효한 이메일 주소를 입력하세요.
+                </p>
+                <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" :class="{'input-dager' : emailErr }"/> 
               </div>
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
@@ -29,21 +34,27 @@
               
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
-                <input class="input" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="text"/>
+                <input class="input" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="Date"/>
               </div>
 
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
+                <p v-show="passwordErr" style="color: red;">
+                  비밀번호는 10자리 이상의 영문,숫자,특수문자가 조합되어야 합니다.
+                </p>
                 <input class="input" v-model="password" id="password" :type="passwordType" placeholder="비밀번호"/>
-                <span @click="toggleVisibility('password')" class="eye-icon">
+                <span @click="toggleVisibility1('password')" class="eye-icon">
                 <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
               
               <div class="input-group">
+                <p v-show="passwordConfirmErr" style="color: red;">
+                  비밀번호와 비밀번호확인이 다릅니다.
+                </p>
                 <i class='bx bxs-lock-alt'></i>
                 <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인"/>
-                <span @click="toggleVisibility('password')" class="eye-icon">
+                <span @click="toggleVisibility2('passwordConfirm')" class="eye-icon">
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
@@ -71,6 +82,7 @@
                 <b @click="toggle" class="pointer">
                   로그인
                 </b>
+              
               </p>
           </div>
           </div>
@@ -85,7 +97,7 @@
         <!-- SIGN UP CONTENT -->
         <div class="col align-items-center flex-col">
           <div class="text sign-up">
-            <h2>Sign Up</h2>
+            <!-- <h2>Sign Up</h2> -->
             <!-- <p>희망을 잃지 마세요!
               환영합니다! 4종 1,000개가 넘는 언어 재활 코스와 함께 일상으로의 복귀를 도와드리고 있어요. 함께 노력해봐요.
             </p> -->
@@ -124,74 +136,56 @@ const passwordConfirmType = ref("passwordConfirmType");
 const valid = ref({
   userId: false,
   email: false,
-  fullname: false,
-  birthdate: false,
   password: false,
+  passwordConfirm: false,
   nickName: false
 });
 
 const userIdErr = ref(false);
 const emailErr = ref(false);
-const fullnameErr = ref(false);
-const birthdateErr = ref(false);
 const passwordErr = ref(false);
-const nickNameErr = ref(false);
+const passwordConfirmErr = ref(false);
 
-watch(userId, (newValue) => {
-  userIdErr.value = !newValue.trim()  
-  if (userId.value < 2) {
-    userIdErr.value = true
-  }
-  check_userId();   
+//유저아이디 조건
+function check_userId() {
+  const userIdValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/
+  userIdErr.value = !userIdValid.test(userId.value)
+}
+watch(userId, ()=> {
+  check_userId();
 })
 
-watch(email, (newValue) => {
+//유저이메일 조건
+function check_email() {
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{3,}$/;
+  emailErr.value = !emailValid.test(email.value);
+}
+watch(email, () => {
   check_email();
 })
 
-watch(fullname, (newValue) => {
-  check_fullname()
-})
-
-watch(birthdate, (newValue) => {
-  check_birthdate()
-})
-
-watch(passwordConfirm, (newValue) => {
-  if (passwordConfirm.value !== newValue)
-  passwordErr.value = true
-  check_password()
-})
-
-function check_userId() {
-  valid.value.userId = !userIdErr.value;
-
+//유저비밀번호 조건
+function check_password() {
+  const passwordValid = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{10,}$/;
+  passwordErr.value = !passwordValid.test(password.value);
 }
+watch(password, () => {
+    check_password()
+})
 
-function check_email() {
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  emailErr.value = !emailValid.test(email.value);
-  valid.value.email = !emailErr.value;
-}
-
-function check_fullname() {
-  if (!fullname.value.trim()) {
-    fullnameErr.value = true;
-  } else {
-    valid.value.fullname = !fullnameErr.value;
+//유저 비밀번호확인
+function check_passwordConfirm() {
+  if (password.value !== passwordConfirm.value){
+    passwordConfirmErr.value = true
+  }
+  else {
+    passwordConfirmErr.value = false
   }
 }
 
-function check_birthdate() {
-  valid.value.birthdate = !birthdateErr.value;
-}
-
-function check_password() {
-  valid.value.password = !passwordErr.value
-}
-
-
-
+watch(passwordConfirm, () => {
+  check_passwordConfirm()
+});
 
 const sign_up = async () => {
   if (
@@ -236,17 +230,13 @@ const enlarge = () => {
   }
 }
 
-const toggleVisibility = (field) => {
-  if (field === 'password') {
-    passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
-  }}; 
 
-const toggleVisibility1 = (field) => {
-  if (field === 'password') {
+const toggleVisibility1 = (field1) => {
+  if (field1 === 'password') {
     passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
   }}; 
-const toggleVisibility2 = (field) => {
-  if (field === 'passwordConfirm') {
+const toggleVisibility2 = (field2) => {
+  if (field2 === 'passwordConfirm') {
     passwordConfirmType.value = passwordConfirmType.value === 'password' ? 'text' : 'password';
   }
   };
@@ -467,10 +457,11 @@ const toggle = () => {
   @import "@/assets/scss/pages/_signup.scss";
   .input-danger{
   border-bottom: 2px solid red !important;
+  color: red;
 }
 
 .title-danger{
-  color: red;
+  color: red !important;
 }
 
 .input-error {
