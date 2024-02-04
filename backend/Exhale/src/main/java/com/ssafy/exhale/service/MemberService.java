@@ -3,6 +3,7 @@ package com.ssafy.exhale.service;
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
+import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class MemberService {
     }
     
     public boolean checkLoginId(String loginId){
-        if(memberRepository.existsByLoginId(loginId))return true;
+        if(memberRepository.existsByLoginIdAndWithdrawFalse(loginId))return true;
         return false;
     }
 
@@ -126,6 +127,30 @@ public class MemberService {
             memberRepository.save(memberDto.toEntity());
         },()->{
             System.out.println("예외처리");
+            // todo 예외 처리
+        });
+    }
+
+    public MemberDto checkLoginIdEmail(MemberRequest memberRequest){
+        String loginId = memberRequest.getLoginId();
+        String emailId = memberRequest.getEmailId();
+        String emailDomain = memberRequest.getEmailDomain();
+        MemberDto memberDto = memberRepository.findByLoginIdAndEmailIdAndEmailDomainAndWithdrawFalse(loginId,emailId,emailDomain)
+                .map(member -> MemberDto.from(member))
+                .orElseGet(() -> {
+                    // todo: 값이 없을 때 수행할 작업
+
+                    return null;
+                });
+        return memberDto;
+    }
+
+    public void saveTempPassword(Long id, String password){
+        memberRepository.findById(id).ifPresentOrElse((member)->{
+            MemberDto memberDto = MemberDto.from(member);
+            memberDto.setPassword(bCryptPasswordEncoder.encode(password));
+            memberRepository.save(memberDto.toEntity());
+        },()->{
             // todo 예외 처리
         });
     }
