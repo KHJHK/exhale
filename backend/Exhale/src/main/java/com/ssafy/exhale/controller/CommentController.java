@@ -30,6 +30,9 @@ public class CommentController {
     public void modifyComment(@PathVariable("comment_id") Long commentId, @RequestBody CommentRequest commentRequest){
         commentService.modifyComment(commentId, commentRequest.getContent(), tokenPayloadUtil.getMemberId());
     }
-//
-//    @PutMapping
+
+    @DeleteMapping("/{comment_id}")
+    public void deleteComment(@PathVariable("comment_id") Long commentId){
+        commentService.deleteComment(commentId, tokenPayloadUtil.getMemberId());
+    }
 }
