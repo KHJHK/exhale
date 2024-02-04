@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +31,7 @@ public class ArticleService {
 
     public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page){
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
-        List<Article> articleEntityList = articleRepository.findAllByBoardId(boardId, pageRequest);
+        List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);
 
         return articleEntityList.stream()
                 .map(article -> {
@@ -41,39 +42,46 @@ public class ArticleService {
     }
 
     public ArticleResponse getArticle(Long articleId){
-        Article article = null;
-        if(articleRepository.findById(articleId).isPresent()){
-            article = articleRepository.findById(articleId).get();
-        }else{
-            //예외 처리 임시 코드. 나중에 예외 처리 로직 추가 후 삭제하기
-            ArticleResponse tempError = new ArticleResponse();
-            tempError.setTitle("null일때 주는 객체");
-            return tempError;
+        try{
+            Article article = articleRepository.findByIdAndIsDelete(articleId, false);
+            return ArticleResponse.from(ArticleDto.from(article));
+        }catch (Exception e){
+            System.out.println(articleId + "번 게시글 존재 X");
+            return null;
         }
-
-        return ArticleResponse.from(ArticleDto.from(article));
     }
     //request로 받도록 설정
-    public void postArticle(ArticleRequest articleRequest){
-        Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
-        Member member = memberRepository.getReferenceById(articleRequest.getMemberId());
+    public void postArticle(ArticleRequest articleRequest, Long memberId){
+        try {
+            Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
+            Member member = memberRepository.getReferenceById(memberId);
 
-        ArticleDto articleDto = articleRequest.toDto(
-                BoardDto.from(board),
-                MemberDto.from(member)
-        );
+            ArticleDto articleDto = articleRequest.toDto(
+                    BoardDto.from(board),
+                    MemberDto.from(member)
+            );
 
-        Article article = articleDto.toEntity(
-                articleDto.getBoardDto().toEntity(),
-                articleDto.getMemberDto().toEntity()
-        );
+            Article article = articleDto.toEntity(
+                    articleDto.getBoardDto().toEntity(),
+                    articleDto.getMemberDto().toEntity()
+            );
 
-        articleRepository.save(article);
+            articleRepository.save(article);
+        } catch (Exception e){
+            System.out.println("필요 데이터 존재 X");
+        }
     }
 
-    public void modifyArticle(Long articleId, ArticleRequest articleRequest){
-        if(articleRepository.findById(articleId).isPresent()){
-            Article originalArticle = articleRepository.findById(articleId).get();
+    public void modifyArticle(Long articleId, ArticleRequest articleRequest, Long memberId){
+        try{
+            Article originalArticle = articleRepository.findByIdAndIsDelete(articleId, false);
+            if(memberRepository.findById(memberId).isPresent()){
+                Member member = memberRepository.findById(memberId).get();
+                if(!Objects.equals(member.getId(), originalArticle.getMember().getId())){
+                    System.out.println("권한 없는 사용자");
+                    return;
+                }
+            }
             ArticleDto originalArticleDto = ArticleDto.from(originalArticle);
 
             originalArticleDto.setId(articleId);
@@ -88,12 +96,21 @@ public class ArticleService {
                     originalArticleDto.getMemberDto().toEntity()
             );
             articleRepository.save(modifyArticle);
+        }catch (Exception e){
+            System.out.println("필요 데이터 존재 X");
         }
     }
 
-    public void deleteArticle(Long articleId){
-        if(articleRepository.findById(articleId).isPresent()){
-            Article originalArticle = articleRepository.findById(articleId).get();
+    public void deleteArticle(Long articleId, Long memberId){
+        try{
+            Article originalArticle = articleRepository.findByIdAndIsDelete(articleId,false);
+            if(memberRepository.findById(memberId).isPresent()){
+                Member member = memberRepository.findById(memberId).get();
+                if(!Objects.equals(member.getId(), originalArticle.getMember().getId())){
+                    System.out.println("권한 없는 사용자");
+                    return;
+                }
+            }
             ArticleDto articleDto = ArticleDto.from(originalArticle);
             articleDto.setIsDelete(true);
             Article deleteArticle = articleDto.toEntity(
@@ -101,8 +118,9 @@ public class ArticleService {
                     articleDto.getMemberDto().toEntity()
             );
             articleRepository.save(deleteArticle);
+        }catch (Exception e){
+            System.out.println("필요 데이터 X");
         }
-        //못찾으면 에러
     }
 
     public List<ArticleResponse> search(ArticleSearchRequest searchRequest){
