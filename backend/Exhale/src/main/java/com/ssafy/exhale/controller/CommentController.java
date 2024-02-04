@@ -1,15 +1,12 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.requestDto.CommentRequest;
-import com.ssafy.exhale.dto.responseDto.CommentResponse;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.service.CommentService;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
