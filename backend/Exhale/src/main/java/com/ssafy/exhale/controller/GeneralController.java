@@ -7,12 +7,15 @@ import com.ssafy.exhale.dto.responseDto.MemberResponse;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.dto.responseDto.commonDto.ConnectionStatus;
+import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
 import com.ssafy.exhale.util.MessageUtil;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,31 +32,25 @@ public class GeneralController {
     private final TokenPayloadUtil tokenPayloadUtil;
     private final AuthenticationService authenticationService;
     private MessageUtil mes;
+
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody MemberRequest memberRequest){
-        if(  memberRequest.getLoginId() == null ||
-                memberRequest.getPassword() == null ||
-                memberRequest.getName() == null ||
-                memberRequest.getEmailId() == null ||
-                memberRequest.getEmailDomain() == null ||
-                memberRequest.getBirth() == null ||
-                memberRequest.getNickname() == null
-        ) return CommonResponse.dataError(400, mes.getMes("PARAM"));
-        // todo password 유효성 체크
+    public ResponseEntity<?> join(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult){
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
         memberService.join(memberRequest.toDto());
         return CommonResponse.ok(null);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(){
+    public ResponseEntity<?> login() {
 
         long memberId = tokenPayloadUtil.getMemberId();
         String nickname = tokenPayloadUtil.getNickname();
         String loginId = tokenPayloadUtil.getLoginId();
 
         if(memberService.checkWithdraw(memberId)){
-            // todo 탈퇴 회원 예외 처리
-            return ResponseEntity.ok("탈퇴 회원");
+            return CommonResponse.dataError(5, "회원 탈퇴된 유저");
         }
 
         String jwt = tokenPayloadUtil.createJWT();
@@ -71,20 +68,22 @@ public class GeneralController {
         responseBody.put("token",tokeninfo);
         responseBody.put("member",memberResponse);
 
-
-        return ResponseEntity.ok(responseBody);
-        // todo : 예외 처리
+        return CommonResponse.ok(responseBody);
     }
 
     @PostMapping("/id")
-    public ResponseEntity<?> checkLoginId(@RequestBody MemberRequest memberRequest){
-        if(memberService.checkLoginId(memberRequest.getLoginId()))return ResponseEntity.ok("{result: false}");
-        return ResponseEntity.status(200).body("{result: true}");
+    public ResponseEntity<?> checkLoginId(@RequestBody MemberRequest memberRequest) {
+        if(memberRequest.getLoginId() == null || memberRequest.getLoginId().isEmpty()) {
+            throw new InValidParameterException();
+        }
+
+        if(memberService.checkLoginId(memberRequest.getLoginId())) return CommonResponse.dataError(2, "이미 존재하는 ID");
+        return CommonResponse.ok(null);
     }
 
     @PostMapping("/email")
-    public ResponseEntity<?> checkEmail(@RequestBody EmailRequest emailRequest){
-        if(!memberService.checkEmail(emailRequest)) return ResponseEntity.status(200).body("이메일 사용 가능");
-        return ResponseEntity.status(400).body("이미 존재하는 이메일");
+    public ResponseEntity<?> checkEmail(@RequestBody EmailRequest emailRequest) {
+        if(memberService.checkEmail(emailRequest)) return CommonResponse.dataError(2, "이미 존재하는 email");
+        return CommonResponse.ok(null);
     }
 }

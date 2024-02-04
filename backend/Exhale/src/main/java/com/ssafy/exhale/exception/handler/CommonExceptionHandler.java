@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class CommonExceptionHandler {
@@ -14,5 +15,45 @@ public class CommonExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> httpMessageNotReadableExceptionHandle() {
         return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "invalid json format");
+    }
+
+    //get 요청 파라미터 변환 실패 예외
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> methodArgumentTypeMismatchExceptionHandle() {
+        return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "invalid request parameter");
+    }
+    
+    //파라미터 검증 실패 예외
+    @ExceptionHandler(InValidParameterException.class)
+    public ResponseEntity<?> inValidParameterExceptionHandle() {
+        return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "invalid request parameter");
+    }
+
+    @ExceptionHandler(DuplicateDataException.class)
+    public ResponseEntity<?> duplicateDataExceptionHandle(DuplicateDataException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "duplicateData exception";
+        return CommonResponse.dataError(2, message);
+    }
+
+    @ExceptionHandler(NoSuchDataException.class)
+    public ResponseEntity<?> noSuchDataExceptionHandle(NoSuchDataException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "noSuchData exception";
+        return CommonResponse.dataError(4, message);
+    }
+
+    @ExceptionHandler(ChatGptException.class)
+    public ResponseEntity<?> chatGptExceptionHandle(ChatGptException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "server error";
+        return CommonResponse.connectionError(HttpStatus.INTERNAL_SERVER_ERROR, message);
+    }
+
+    @ExceptionHandler(S3Exception.class)
+    public ResponseEntity<?> S3ExceptionHandle(S3Exception exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "server error";
+        return CommonResponse.connectionError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 }

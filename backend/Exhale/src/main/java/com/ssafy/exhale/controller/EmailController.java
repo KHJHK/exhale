@@ -28,12 +28,11 @@ public class EmailController {
     private final EmailUtil emailUtil;
     private final CertificationCodeService certificationCodeService;
 
-
     @PostMapping("/certification")
     public ResponseEntity<?> certificationEmail(@RequestBody EmailRequest emailRequest){
         Long memberId = tokenPayloadUtil.getMemberId();
         if(memberService.compareEmail(memberId, emailRequest)) {
-            String fullEmail = emailRequest.getEmailId()+"@"+emailRequest.getEmailDomain();
+            String fullEmail = emailRequest.getEmailId() + "@" + emailRequest.getEmailDomain();
             String certificationNumber = GenerateCertificationCode.getCertificationNumber();
             certificationCodeService.saveCode(CertificationCodeDto.of(null, memberId, certificationNumber, null));
             try {
@@ -43,7 +42,7 @@ public class EmailController {
             }
         }
 
-    return ResponseEntity.status(200).body("");
+        return ResponseEntity.status(200).body("");
     }
 
     @PostMapping("/check")

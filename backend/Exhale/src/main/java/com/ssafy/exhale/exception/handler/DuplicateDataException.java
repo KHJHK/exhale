@@ -1,7 +1,15 @@
 package com.ssafy.exhale.exception.handler;
 
 public class DuplicateDataException extends RuntimeException {
-    public DuplicateDataException() {}
+    public DuplicateDataException() {
+        super();
+    }
 
-    DuplicateDataException(Throwable throwable) { super(throwable); }
+    DuplicateDataException(Throwable cause) {
+        super(cause);
+    }
+
+    DuplicateDataException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

@@ -5,10 +5,13 @@ import com.ssafy.exhale.dto.requestDto.RegisterReviewRequest;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.dto.responseDto.rehabilitationDto.ReviewProblemResponse;
+import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.service.RehabilitationService;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,19 +40,27 @@ public class CourseController {
     }
 
     @PostMapping("/result")
-    public ResponseEntity<CommonResponse> solveProblem(@RequestBody SolvedProblemRequest solvedProblemRequest) {
+    public ResponseEntity<CommonResponse> solveProblem(@Validated @RequestBody SolvedProblemRequest solvedProblemRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
         rehabilitationService.solveProblem(solvedProblemRequest, tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(null);
     }
 
     @PostMapping("/fluency-check")
-    public ResponseEntity<CommonResponse> fluencyCheck(@RequestBody FluencyCheckRequest fluencyCheckRequest) {
-        System.out.println("테스트");
+    public ResponseEntity<CommonResponse> fluencyCheck(@Validated @RequestBody FluencyCheckRequest fluencyCheckRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
         return CommonResponse.ok(rehabilitationService.fluencyCheck(fluencyCheckRequest));
     }
 
     @PostMapping("/review")
-    public ResponseEntity<CommonResponse> registerReview(@RequestBody RegisterReviewRequest registerReviewRequest) {
+    public ResponseEntity<CommonResponse> registerReview(@Validated @RequestBody RegisterReviewRequest registerReviewRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
         rehabilitationService.registerReview(registerReviewRequest.getProblemId(), tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(null);
     }

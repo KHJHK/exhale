@@ -1,9 +1,15 @@
 package com.ssafy.exhale.exception.handler;
 
 public class NoSuchDataException extends RuntimeException {
-    public NoSuchDataException() { }
+    public NoSuchDataException() {
+        super();
+    }
 
-    public NoSuchDataException(Throwable throwable) {
-        super(throwable);
+    public NoSuchDataException(Throwable cause) {
+        super(cause);
+    }
+
+    public NoSuchDataException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

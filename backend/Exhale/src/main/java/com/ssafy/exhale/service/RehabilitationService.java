@@ -89,7 +89,7 @@ public class RehabilitationService {
         Member member = memberOpt.orElseThrow(NoSuchDataException::new);
 
         //오답, 복습에 추가
-        if(!solvedProblemRequest.isRight()) {
+        if(!solvedProblemRequest.getIsRight()) {
             Optional<Review> reviewOpt = reviewRepository.findByMemberAndProblem(member, problem);
             if(reviewOpt.isEmpty()) {
                 Review review = Review.of(member, problem);
@@ -98,7 +98,7 @@ public class RehabilitationService {
         }
 
         SolvedProblem solvedProblem = SolvedProblem.of(
-                solvedProblemRequest.isRight(),
+                solvedProblemRequest.getIsRight(),
                 solvedProblemRequest.getTime(),
                 member,
                 problem);

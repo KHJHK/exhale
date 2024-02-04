@@ -1,20 +1,23 @@
 package com.ssafy.exhale.dto.requestDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class SolvedProblemRequest {
+    @NotNull
     @JsonProperty("problem_id")
-    private long problemId;
+    private Long problemId;
 
+    @NotNull
     @JsonProperty("is_right")
-    private boolean isRight;
+    private Boolean isRight;
 
-    private int time;
+    @NotNull
+    private Integer time;
 }

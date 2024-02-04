@@ -2,6 +2,9 @@ package com.ssafy.exhale.dto.requestDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Getter
@@ -10,15 +13,28 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class MemberRequest {
+    @NotBlank
     @JsonProperty("login_id")
     private String loginId;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     @JsonProperty("email_id")
     private String emailId;
+
+    @NotBlank
     @JsonProperty("email_domain")
     private String emailDomain;
+
+    @NotBlank
     private String birth;
+
+    @NotBlank
     private String nickname;
 
     public static MemberRequest of(){
