@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -21,8 +22,9 @@ public class Course {
     private String courseName;
 
     @Column(name = "created_time")
+    @CreationTimestamp
     private LocalDateTime createdTime;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_removed")
+    private Boolean isRemoved;
 }

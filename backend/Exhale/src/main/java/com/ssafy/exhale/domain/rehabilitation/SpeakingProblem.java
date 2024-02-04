@@ -11,13 +11,9 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("speaking_problem")
 @Table(name = "speaking_problem")
-public class SpeakingProblem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "speaking_problem_id")
-    private Long id;
-
+public class SpeakingProblem extends Problem {
     @Column
     private String question;
 
@@ -26,8 +22,4 @@ public class SpeakingProblem {
 
     @Column(name = "is_removed")
     private Boolean isRemoved;
-
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
 }

@@ -15,7 +15,4 @@ public class CommonExceptionHandler {
     public ResponseEntity<?> httpMessageNotReadableExceptionHandle() {
         return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "invalid json format");
     }
-
-
-
 }

@@ -21,12 +21,15 @@ public class CommentController {
         commentService.postComment(commentRequest, tokenPayloadUtil.getMemberId());
     }
 
-    @GetMapping("/{article_id}")
+    @GetMapping("/list/{article_id}")
     public List<CommentResponse> getCommentList(@PathVariable("article_id") Long articleId){
         return commentService.getCommentListByArticleId(articleId);
     }
-//
-//    @PutMapping
+
+    @PutMapping("/{comment_id}")
+    public void modifyComment(@PathVariable("comment_id") Long commentId, @RequestBody CommentRequest commentRequest){
+        commentService.modifyComment(commentId, commentRequest.getContent(), tokenPayloadUtil.getMemberId());
+    }
 //
 //    @PutMapping
 }
