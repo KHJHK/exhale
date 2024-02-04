@@ -29,8 +29,11 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
 
+
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+
         return configuration.getAuthenticationManager();
     }
 
@@ -61,9 +64,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth)->auth
-                        .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
-                        .requestMatchers( "/","/general/**","/login", "/boards/**", "/rehabilitation", "/rehabilitation/{course_id}").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/comments/**").permitAll()
+                        .requestMatchers( "/","/general/**", "/boards/**", "/rehabilitation/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")
                         .anyRequest().authenticated())
