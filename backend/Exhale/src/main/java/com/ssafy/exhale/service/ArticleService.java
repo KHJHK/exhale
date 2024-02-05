@@ -1,20 +1,25 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Article;
+import com.ssafy.exhale.domain.ArticleFile;
 import com.ssafy.exhale.domain.Board;
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.ArticleDto;
+import com.ssafy.exhale.dto.logicDto.ArticleFileDto;
 import com.ssafy.exhale.dto.logicDto.BoardDto;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import com.ssafy.exhale.dto.responseDto.ArticleResponse;
+import com.ssafy.exhale.repository.ArticleFileRepository;
 import com.ssafy.exhale.repository.ArticleRepository;
 import com.ssafy.exhale.repository.BoardRepository;
 import com.ssafy.exhale.repository.MemberRepository;
+import com.ssafy.exhale.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +32,8 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final ArticleFileRepository articleFileRepository;
+    private final S3Util s3Util;
     private final int PAGE_SIZE = 10;
 
     public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page){
@@ -124,13 +131,44 @@ public class ArticleService {
     }
 
     public List<ArticleResponse> search(ArticleSearchRequest searchRequest){
-        PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), PAGE_SIZE);
-        List<Article> articleEntityList = articleRepository.search(searchRequest, pageRequest);
-        return articleEntityList.stream()
-                .map(article -> {
-                    ArticleDto articleDto = ArticleDto.from(article);
-                    return ArticleResponse.from(articleDto);
-                })
-                .collect(Collectors.toList());
+        try{
+            PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), PAGE_SIZE);
+            List<Article> articleEntityList = articleRepository.search(searchRequest, pageRequest);
+            return articleEntityList.stream()
+                    .map(article -> {
+                        ArticleDto articleDto = ArticleDto.from(article);
+                        return ArticleResponse.from(articleDto);
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e){
+            System.out.println("error");
+            return null;
+        }
+    }
+
+    public String saveImage(MultipartFile file, Long articleId){
+        try{
+            String imageURL = s3Util.saveImage(file);
+            Article article = articleRepository.getReferenceById(articleId);
+            articleFileRepository.save(ArticleFile.of(null, article, false, imageURL));
+
+            return imageURL;
+        }catch (Exception e){
+            System.out.println("save error");
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void deleteImage(Long articleFileId){
+        try{
+            ArticleFile articleFile = articleFileRepository.findById(articleFileId).get();
+            ArticleFileDto articleFileDto = ArticleFileDto.from(articleFile);
+            articleFileDto.setIsDelete(true);
+            ArticleFile deleteArticleFile = articleFileDto.toEntity(articleFile.getArticle());
+            articleFileRepository.save(deleteArticleFile);
+        }catch (Exception e){
+            System.out.println("save error");
+        }
     }
 }

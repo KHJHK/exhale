@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -67,4 +68,16 @@ public class BoardController {
         return CommonResponse.ok(null);
     }
 
+    @PostMapping("/articles/image/{article_id}")
+    public ResponseEntity<CommonResponse> saveImage(@PathVariable("article_id") Long articleId, @RequestParam(value = "file") MultipartFile file){
+        System.out.println("file = " + file.getOriginalFilename());
+        String imageURL = articleService.saveImage(file, articleId);
+        return CommonResponse.ok(imageURL);
+    }
+
+    @DeleteMapping("/articles/image/{article_file_id}")
+    public ResponseEntity<CommonResponse> deleteImage(@PathVariable("article_file_id") Long articleFileId){
+        articleService.deleteImage(articleFileId);
+        return CommonResponse.ok(null);
+    }
 }
