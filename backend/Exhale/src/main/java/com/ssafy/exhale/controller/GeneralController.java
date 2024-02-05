@@ -84,8 +84,13 @@ public class GeneralController {
         return CommonResponse.ok(null);
     }
 
+    // todo 삭제?
     @PostMapping("/email")
-    public ResponseEntity<?> checkEmail(@RequestBody EmailRequest emailRequest) {
+    public ResponseEntity<?> checkEmail(@Validated @RequestBody EmailRequest emailRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
+
         if(memberService.checkEmail(emailRequest)) return CommonResponse.dataError(2, "이미 존재하는 email");
         return CommonResponse.ok(null);
     }

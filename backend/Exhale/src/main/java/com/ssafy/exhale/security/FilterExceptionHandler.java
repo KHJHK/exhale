@@ -39,7 +39,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         try {
-            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"토큰 만료").getBody()));
+            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"Token Expiration").getBody()));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
         } catch (IOException e){
             throw new RuntimeException(e);
@@ -50,7 +50,7 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         try{
-            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"토큰 유효하지 않음").getBody()));
+            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"Invalid token").getBody()));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
         } catch (IOException e){
             throw new RuntimeException(e);
