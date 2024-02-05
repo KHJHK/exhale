@@ -12,4 +12,5 @@ import lombok.ToString;
 public class TokenInfo {
     private String access_token;
     private String refresh_toekn;
+    private String key;
 }

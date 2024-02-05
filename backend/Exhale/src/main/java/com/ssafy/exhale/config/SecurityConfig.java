@@ -1,6 +1,6 @@
 package com.ssafy.exhale.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.exhale.security.FilterExceptionHandler;
 import com.ssafy.exhale.security.JWTFilter;
 import com.ssafy.exhale.security.LoginFilter;
 import com.ssafy.exhale.util.JWTUtil;
@@ -29,8 +29,6 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
 
-
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
@@ -42,11 +40,12 @@ public class SecurityConfig {
 
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // cors
         http
-                .cors((cors)->cors.configurationSource(new CorsConfigurationSource() {
+                .cors((cors) -> cors.configurationSource(new CorsConfigurationSource() {
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration configuration = new CorsConfiguration();
@@ -63,13 +62,14 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((auth)->auth
+                .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/**").permitAll()
-                        .requestMatchers( "/","/general/**", "/boards/**", "/rehabilitation/**").permitAll()
+                        .requestMatchers("/", "/general/**", "/boards/**", "/rehabilitation/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")
                         .anyRequest().authenticated())
+                .addFilterBefore(new FilterExceptionHandler(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
 

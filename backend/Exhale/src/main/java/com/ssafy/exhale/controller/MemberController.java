@@ -1,12 +1,14 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
+import com.ssafy.exhale.dto.requestDto.KeyRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
 import com.ssafy.exhale.dto.requestDto.PasswordRequest;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
+import com.ssafy.exhale.util.GenerateRandomKey;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +28,13 @@ public class MemberController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> getRefreshToken(HttpServletRequest request) {
+    public ResponseEntity<?> getRefreshToken(HttpServletRequest request, @RequestBody KeyRequest keyRequest) {
 
         // DB와 토큰 비교
         String token_value = request.getHeader("Authorization").split(" ")[1];
         long memberId = tokenPayloadUtil.getMemberId();
         Map<String, Object> responseBody = new HashMap<>();
-
-        if (authenticationService.compareRefreshToken(memberId, token_value)) {
+        if (authenticationService.compareRefreshToken(memberId, token_value, keyRequest.getKey())) {
             // 새로운 토큰 발행
             String jwt = tokenPayloadUtil.createJWT();
             String refreshToken = tokenPayloadUtil.createRefreshToken();
@@ -41,9 +42,12 @@ public class MemberController {
             AuthenticationDto authenticationDto = AuthenticationDto.of();
             authenticationDto.setMemberId(memberId);
             authenticationDto.setRefreshValue(refreshToken);
+            authenticationDto.setKey(keyRequest.getKey());
             authenticationService.reSaveRefreshValue(authenticationDto);
 
-            TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt, "Bearer " + refreshToken);
+            String key = GenerateRandomKey.getRandomKey(memberId);
+
+            TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt, "Bearer " + refreshToken, key);
 
             responseBody.put("token", tokeninfo);
 
@@ -70,8 +74,8 @@ public class MemberController {
         return ResponseEntity.status(200).body("");
     }
     @GetMapping("/logout")
-    public ResponseEntity<?> logout(){
-        authenticationService.logout(tokenPayloadUtil.getMemberId());
+    public ResponseEntity<?> logout(@RequestBody KeyRequest keyRequest){
+        authenticationService.logout(tokenPayloadUtil.getMemberId(), keyRequest.getKey());
         return ResponseEntity.status(200).body("");
     }
 

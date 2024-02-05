@@ -1,8 +1,5 @@
 package com.ssafy.exhale.util;
 
-import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
-import com.ssafy.exhale.exception.handler.InValidParameterException;
-import com.ssafy.exhale.exception.handler.TokenExpireException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
