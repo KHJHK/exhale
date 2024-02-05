@@ -27,7 +27,7 @@ public class MemberService {
 
         Boolean isExist = memberRepository.existsByLoginId(loginId);
         if (isExist) {
-             throw new DuplicateDataException("이미 존재하는 아이디");
+             throw new DuplicateDataException();
         }
         memberDto.setRole("ROLE_USER");
         memberDto.setPassword(bCryptPasswordEncoder.encode(password));

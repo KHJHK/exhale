@@ -38,13 +38,13 @@ public class GeneralController {
         if(bindingResult.hasErrors()) {
             throw new InValidParameterException();
         }
+
         memberService.join(memberRequest.toDto());
         return CommonResponse.ok(null);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login() {
-
         long memberId = tokenPayloadUtil.getMemberId();
         String nickname = tokenPayloadUtil.getNickname();
         String loginId = tokenPayloadUtil.getLoginId();
@@ -55,7 +55,6 @@ public class GeneralController {
 
         String jwt = tokenPayloadUtil.createJWT();
         String refreshToken = tokenPayloadUtil.createRefreshToken();
-
 
         String key = GenerateRandomKey.getRandomKey(memberId);
 
@@ -76,8 +75,8 @@ public class GeneralController {
     }
 
     @PostMapping("/id")
-    public ResponseEntity<?> checkLoginId(@RequestBody MemberRequest memberRequest) {
-        if(memberRequest.getLoginId() == null || memberRequest.getLoginId().isEmpty()) {
+    public ResponseEntity<?> checkLoginId(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors("loginId")) {
             throw new InValidParameterException();
         }
 

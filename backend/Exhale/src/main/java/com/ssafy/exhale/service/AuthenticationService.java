@@ -49,6 +49,7 @@ public class AuthenticationService {
         long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
         return cnt;
     }
+
     public void logout(long memberId, String key){
         long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
         if(cnt == 0){
