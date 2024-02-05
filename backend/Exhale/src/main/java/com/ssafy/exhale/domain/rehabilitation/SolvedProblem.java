@@ -26,8 +26,8 @@ public class SolvedProblem {
     @Column(name = "solve_time")
     private Integer solveTime;
 
-    @CreationTimestamp
     @Column(name = "created_date")
+    @CreationTimestamp
     private LocalDateTime createdDate;
 
     @Column(name = "is_removed")

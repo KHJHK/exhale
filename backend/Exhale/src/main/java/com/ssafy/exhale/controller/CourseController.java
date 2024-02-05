@@ -1,6 +1,7 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.requestDto.FluencyCheckRequest;
+import com.ssafy.exhale.dto.requestDto.LetterRecodeRequest;
 import com.ssafy.exhale.dto.requestDto.RegisterReviewRequest;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
@@ -75,5 +76,16 @@ public class CourseController {
     public ResponseEntity<CommonResponse> getReviewProblemList(@PathVariable("course_id") long course_id) {
         List<ReviewProblemResponse> problemResponseList = rehabilitationService.getReviewProblemList(course_id, tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(problemResponseList);
+    }
+
+    @GetMapping("/letter")
+    public ResponseEntity<CommonResponse> getLetterList() {
+        return CommonResponse.ok(rehabilitationService.getLetterList());
+    }
+
+    @PostMapping("/letter/result")
+    public ResponseEntity<CommonResponse> registerLetterRecode(LetterRecodeRequest letterRecodeRequest) {
+        rehabilitationService.registerLetterRecode(letterRecodeRequest, tokenPayloadUtil.getLoginId());
+        return CommonResponse.ok(rehabilitationService.getLetterList());
     }
 }

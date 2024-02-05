@@ -1,8 +1,11 @@
 package com.ssafy.exhale.service;
 
+import com.ssafy.exhale.domain.Letter;
+import com.ssafy.exhale.domain.LetterRecode;
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.domain.rehabilitation.*;
 import com.ssafy.exhale.dto.requestDto.FluencyCheckRequest;
+import com.ssafy.exhale.dto.requestDto.LetterRecodeRequest;
 import com.ssafy.exhale.dto.requestDto.SolvedProblemRequest;
 import com.ssafy.exhale.dto.responseDto.rehabilitationDto.*;
 import com.ssafy.exhale.exception.handler.DuplicateDataException;
@@ -24,13 +27,14 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class RehabilitationService {
-
     private final MemberRepository memberRepository;
     private final CourseRepository courseRepository;
     private final CategoryRepository categoryRepository;
     private final ProblemRepository<Problem> problemRepository;
     private final SolvedProblemRepository solvedProblemRepository;
     private final ReviewRepository reviewRepository;
+    private final LetterRepository letterRepository;
+    private final LetterRecodeRepository letterRecodeRepository;
 
     private final NameProblemRepository nameProblemRepository;
     private final ImageMatchingProblemRepository imageMatchingProblemRepository;
@@ -143,7 +147,6 @@ public class RehabilitationService {
 
         List<ReviewProblemResponse> reviewProblemResponseList = new ArrayList<>();
         for(Problem problem : problemRepository.getReviewProblem(courseId, loginId)) {
-            System.out.println(problem.getCategory().getCategoryName());
             reviewProblemResponseList.add(ReviewProblemResponse.from(problem));
         }
         return reviewProblemResponseList;
@@ -151,5 +154,30 @@ public class RehabilitationService {
 
     public FluencyCheckResponse fluencyCheck(FluencyCheckRequest fluencyCheckRequest) {
         return chatGptUtil.postRequest(fluencyCheckRequest.getQuestion(), fluencyCheckRequest.getAnswer());
+    }
+
+    public List<LetterResponse> getLetterList() {
+        List<LetterResponse> letterResponseList = new ArrayList<>();
+        for(Letter letter : letterRepository.findAll()) {
+            letterResponseList.add(LetterResponse.of(letter));
+        }
+        return letterResponseList;
+    }
+
+    @Transactional
+    public void registerLetterRecode(LetterRecodeRequest letterRecodeRequest, String loginId) {
+        Optional<Letter> letterOpt = letterRepository.findById(letterRecodeRequest.getLetterId());
+        Letter letter = letterOpt.orElseThrow(NoSuchDataException::new);
+
+        Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
+        Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+        LetterRecode letterRecode = LetterRecode.of(
+                letterRecodeRequest.getCorrectCnt(),
+                letterRecodeRequest.getWrongCnt(),
+                member,
+                letter
+        );
+        letterRecodeRepository.save(letterRecode);
     }
 }
