@@ -1,18 +1,16 @@
 package com.ssafy.exhale.controller;
 
-import com.ssafy.exhale.domain.Board;
 import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
-import com.ssafy.exhale.dto.responseDto.ArticleResponse;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.service.ArticleService;
 import com.ssafy.exhale.service.BoardService;
+import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,6 +19,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final ArticleService articleService;
+    private final TokenPayloadUtil tokenPayloadUtil;
 
     //게시판 종류
     @GetMapping
@@ -30,7 +29,7 @@ public class BoardController {
 
     //게시판별 게시글 목록
     @GetMapping("/{board_id}")
-    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page) {
+    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page){
         return CommonResponse.ok(articleService.getArticleListByBoardId(boardId, page));
     }
 
@@ -50,21 +49,35 @@ public class BoardController {
     //게시글 생성
     @PostMapping("/articles")
     public ResponseEntity<CommonResponse> postArticle(@RequestBody ArticleRequest articleRequest){
-        articleService.postArticle(articleRequest);
+
+        articleService.postArticle(articleRequest, tokenPayloadUtil.getMemberId());
         return CommonResponse.ok(null);
     }
 
     //게시글 수정
     @PutMapping("/articles/{article_id}")
     public ResponseEntity<CommonResponse> modifyArticle(@PathVariable("article_id") Long articleId,@RequestBody ArticleRequest articleRequest){
-        articleService.modifyArticle(articleId, articleRequest);
+        articleService.modifyArticle(articleId, articleRequest, tokenPayloadUtil.getMemberId());
         return CommonResponse.ok(null);
     }
 
     //게시글 삭제처리
     @DeleteMapping("/articles/{article_id}")
     public ResponseEntity<CommonResponse> deleteArticle(@PathVariable("article_id") Long articleId){
-        articleService.deleteArticle(articleId);
+        articleService.deleteArticle(articleId, tokenPayloadUtil.getMemberId());
+        return CommonResponse.ok(null);
+    }
+
+    @PostMapping("/articles/image/{article_id}")
+    public ResponseEntity<CommonResponse> saveImage(@PathVariable("article_id") Long articleId, @RequestParam(value = "file") MultipartFile file){
+        System.out.println("file = " + file.getOriginalFilename());
+        String imageURL = articleService.saveImage(file, articleId);
+        return CommonResponse.ok(imageURL);
+    }
+
+    @DeleteMapping("/articles/image/{article_file_id}")
+    public ResponseEntity<CommonResponse> deleteImage(@PathVariable("article_file_id") Long articleFileId){
+        articleService.deleteImage(articleFileId);
         return CommonResponse.ok(null);
     }
 }

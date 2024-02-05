@@ -24,55 +24,64 @@ public class CommentService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     public void postComment(CommentRequest commentRequest, Long memberId) {
-        Article articleEntity = articleRepository.getReferenceById(
-                commentRequest
-                .getArticleId()
-        );
-        Member memberEntity = memberRepository.getReferenceById(memberId);
-
-        Comment commentEntity = null;
-        if(commentRequest.getParentId() != null){
-            commentEntity = commentRepository.getReferenceById(
+        try {
+            Article articleEntity = articleRepository.getReferenceById(
                     commentRequest
-                    .getParentId()
+                            .getArticleId()
             );
-        }
+            Member memberEntity = memberRepository.getReferenceById(memberId);
 
-        CommentDto commentDto = commentRequest.toDto(
-                ArticleDto.from(articleEntity),
-                MemberDto.from(memberEntity),
-                null
-        );
-        commentRepository.save(commentDto.toEntity(articleEntity, memberEntity, commentEntity));
+            Comment commentEntity = null;
+            if (commentRequest.getParentId() != null) {
+                commentEntity = commentRepository.getReferenceById(
+                        commentRequest
+                                .getParentId()
+                );
+            }
+
+            CommentDto commentDto = commentRequest.toDto(
+                    ArticleDto.from(articleEntity),
+                    MemberDto.from(memberEntity),
+                    null
+            );
+            commentRepository.save(commentDto.toEntity(articleEntity, memberEntity, commentEntity));
+        } catch (Exception e){
+            System.out.println("error");
+        }
     }
 
     @Transactional
     public List<CommentResponse> getCommentListByArticleId(Long articleId){
-        List<Comment> commentEntityList = commentRepository.getParentCommentListByArticleId(articleId);
+        try {
+            List<Comment> commentEntityList = commentRepository.getParentCommentListByArticleId(articleId);
 
-        List<CommentDto> commentDtoList = commentEntityList.stream()
-                .map(comment -> {
-                    List<CommentDto> childDtoList = comment.getChildCommentList().stream()
-                            .map(child -> CommentDto.from(child, null))
-                            .toList();
+            List<CommentDto> commentDtoList = commentEntityList.stream()
+                    .map(comment -> {
+                        List<CommentDto> childDtoList = comment.getChildCommentList().stream()
+                                .map(child -> CommentDto.from(child, null))
+                                .toList();
 
-                    return CommentDto.from(comment, childDtoList);
-                })
-                .toList();
+                        return CommentDto.from(comment, childDtoList);
+                    })
+                    .toList();
 
-        return commentDtoList.stream()
-                .map(commentDto -> {
-                    List<CommentResponse> childResponseList = commentDto.getChildCommentDtoList().stream()
-                            .map(childDto -> CommentResponse.from(childDto, null))
-                            .toList();
+            return commentDtoList.stream()
+                    .map(commentDto -> {
+                        List<CommentResponse> childResponseList = commentDto.getChildCommentDtoList().stream()
+                                .map(childDto -> CommentResponse.from(childDto, null))
+                                .toList();
 
-                    return CommentResponse.from(commentDto, childResponseList);
-                })
-                .toList();
+                        return CommentResponse.from(commentDto, childResponseList);
+                    })
+                    .toList();
+        }catch (Exception e){
+            System.out.println("error");
+            return null;
+        }
     }
 
     public void modifyComment(Long commentId, String content, Long memberId){
-        if(commentRepository.findById(commentId).isPresent()){
+        try{
             Comment comment = commentRepository.findById(commentId).get();
             if(!memberId.equals(comment.getMember().getId())){
                 //수정 권한 없음
@@ -85,14 +94,14 @@ public class CommentService {
             Member member = memberRepository.getReferenceById(commentDto.getMemberDto().getId());
             Comment modifyComment = commentDto.toEntity(article, member, null);
             commentRepository.save(modifyComment);
-        }else{
+        }catch (Exception e){
             System.out.println("error");
             //error 메세지 출력
         }
     }
 
     public void deleteComment(Long commentId, Long memberId) {
-        if(commentRepository.findById(commentId).isPresent()){
+        try {
             Comment comment = commentRepository.findById(commentId).get();
             if(!memberId.equals(comment.getMember().getId())){
                 //수정 권한 없음
@@ -105,7 +114,7 @@ public class CommentService {
             Member member = memberRepository.getReferenceById(commentDto.getMemberDto().getId());
             Comment modifyComment = commentDto.toEntity(article, member, null);
             commentRepository.save(modifyComment);
-        }else{
+        }catch (Exception e){
             System.out.println("error");
             //error 메세지 출력
         }
