@@ -1,16 +1,12 @@
 package com.ssafy.exhale.controller;
 
-import com.ssafy.exhale.domain.Board;
-import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
-import com.ssafy.exhale.dto.responseDto.ArticleResponse;
+import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.service.ArticleService;
 import com.ssafy.exhale.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,46 +18,19 @@ public class BoardController {
 
     //게시판 종류
     @GetMapping
-    public List<Board> getBoardList(){
-        return boardService.getBoardList();
+    public ResponseEntity<CommonResponse> getBoardList(){
+        return CommonResponse.ok(boardService.getBoardList());
     }
 
     //게시판별 게시글 목록
     @GetMapping("/{board_id}")
-    public List<ArticleResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page){
-        return articleService.getArticleListByBoardId(boardId, page);
+    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page){
+        return CommonResponse.ok(articleService.getArticleListByBoardId(boardId, page));
     }
 
     //검색
     @PostMapping("/search")
-    public List<ArticleResponse> search(@RequestBody ArticleSearchRequest articleSearchRequest){
-        return articleService.search(articleSearchRequest);
+    public ResponseEntity<CommonResponse> search(@RequestBody ArticleSearchRequest articleSearchRequest){
+        return CommonResponse.ok(articleService.search(articleSearchRequest));
     }
-
-    //게시글 조회
-    @Transactional(readOnly = true)
-    @GetMapping("/articles/{article_id}")
-    public ArticleResponse getArticle(@PathVariable("article_id") Long articleId){
-        return articleService.getArticle(articleId);
-    }
-
-    //게시글 생성
-    @PostMapping("/articles")
-    public void postArticle(@RequestBody ArticleRequest articleRequest){
-
-        articleService.postArticle(articleRequest);
-    }
-
-    //게시글 수정
-    @PutMapping("/articles/{article_id}")
-    public void modifyArticle(@PathVariable("article_id") Long articleId,@RequestBody ArticleRequest articleRequest){
-        articleService.modifyArticle(articleId, articleRequest);
-    }
-
-    //게시글 삭제처리
-    @DeleteMapping("/articles/{article_id}")
-    public void deleteArticle(@PathVariable("article_id") Long articleId){
-        articleService.deleteArticle(articleId);
-    }
-
 }

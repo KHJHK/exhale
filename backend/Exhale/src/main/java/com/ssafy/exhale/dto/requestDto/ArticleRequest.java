@@ -18,17 +18,12 @@ public class ArticleRequest {
     @JsonProperty("board_id")
     private Integer boardId;
 
-    //작성자 정보 부분
-    @JsonProperty("member_id")
-    private Long memberId;
-    private String nickname;
-
     public ArticleDto toDto(BoardDto boardDto, MemberDto memberDto){
         return ArticleDto.of(
                 title,
                 content,
                 thumbnail,
-                nickname,
+                memberDto.getNickname(),
                 boardDto,
                 memberDto
         );

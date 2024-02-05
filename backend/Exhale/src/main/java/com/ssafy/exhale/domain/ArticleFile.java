@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "article_file")
@@ -25,7 +23,10 @@ public class ArticleFile {
     @Column(name = "is_delete")
     private Boolean isDelete;
 
-    public static ArticleFile of(Long id, Article article, Boolean isDelete){
-        return new ArticleFile(id, article, isDelete);
+    @Column
+    private String url;
+
+    public static ArticleFile of(Long id, Article article, Boolean isDelete, String url){
+        return new ArticleFile(id, article, isDelete, url);
     }
 }

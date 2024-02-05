@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
-    List<Article> findAllByBoardId(int boardId, PageRequest page);  //custom해서 전달 데이터 종류 줄이기
+    List<Article> findAllByBoardIdAndIsDelete(Integer boardId, PageRequest page, Boolean isDelete);
+    Article findByIdAndIsDelete(Long articleId, Boolean isDelete);
 }
