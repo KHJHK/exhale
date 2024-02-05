@@ -28,6 +28,7 @@ public class Authentication {
     private LocalDateTime createdTime;
     @Field("expire_at")
     private Long expireAt;
+    private String key;
 
     @PrePersist
     protected void onCreate() {
@@ -38,13 +39,14 @@ public class Authentication {
         return new Authentication();
     }
 
-    public static Authentication of(String id, Long memberId, String refreshValue, LocalDateTime createTime, Long expireAt){
+    public static Authentication of(String id, Long memberId, String refreshValue, LocalDateTime createTime, Long expireAt, String key){
         return new Authentication(
                 id,
                 memberId,
                 refreshValue,
                 createTime,
-                expireAt
+                expireAt,
+                key
         );
     }
 

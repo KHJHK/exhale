@@ -10,6 +10,7 @@ import com.ssafy.exhale.dto.responseDto.commonDto.ConnectionStatus;
 import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
+import com.ssafy.exhale.util.GenerateRandomKey;
 import com.ssafy.exhale.util.MessageUtil;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
@@ -56,12 +57,16 @@ public class GeneralController {
         String jwt = tokenPayloadUtil.createJWT();
         String refreshToken = tokenPayloadUtil.createRefreshToken();
 
+
+        String key = GenerateRandomKey.getRandomKey(memberId);
+
         AuthenticationDto authenticationDto = AuthenticationDto.of();
         authenticationDto.setMemberId(memberId);
         authenticationDto.setRefreshValue(refreshToken);
+        authenticationDto.setKey(key);
         authenticationService.saveRefreshValue(authenticationDto);
 
-        TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt,"Bearer " + refreshToken);
+        TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt,"Bearer " + refreshToken, key);
         MemberResponse memberResponse = new MemberResponse(memberId,nickname,loginId);
 
         Map<String, Object> responseBody = new HashMap<>();

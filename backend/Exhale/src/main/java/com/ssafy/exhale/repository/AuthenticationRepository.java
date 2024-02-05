@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuthenticationRepository extends MongoRepository <Authentication,String>{
-    List<Authentication> findAllByMemberId(long memberId);
-    Optional<Authentication> findByMemberId(long memberId);
-    long deleteByMemberId(long memberId);
+    long deleteByMemberIdAndKey(Long memberId, String key);
+    Optional<Authentication> findByMemberIdAndKey(Long memberId, String key);
+    long deleteByMemberId(Long memberId);
 }

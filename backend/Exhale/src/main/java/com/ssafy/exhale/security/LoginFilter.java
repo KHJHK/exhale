@@ -33,7 +33,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String login_id = obtainUsername(request);
         String password = obtainPassword(request);
-        System.out.println(login_id);
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(login_id, password, null); // JWT를 사용할 것임으로 3번째 인자를 사용하지 않을 거임
 
         return authenticationManager.authenticate(authToken);
@@ -46,7 +45,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws ServletException, IOException {
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
