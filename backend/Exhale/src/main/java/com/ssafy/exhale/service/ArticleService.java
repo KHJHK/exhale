@@ -60,7 +60,7 @@ public class ArticleService {
 
         ArticleDto articleDto = articleRequest.toDto(
                 BoardDto.from(board),
-                MemberDto.from(member)
+                MemberDto.from( member)
         );
 
         Article article = articleDto.toEntity(
