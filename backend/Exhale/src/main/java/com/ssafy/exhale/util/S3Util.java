@@ -3,6 +3,7 @@ package com.ssafy.exhale.util;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.exhale.exception.handler.S3Exception;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -19,14 +20,16 @@ public class S3Util {
     @Value("${cloud.aws.s3.bucketName}")
     private String bucketName;
 
+    @Value("${cloud.aws.uploadUrl}")
+    private String uploadUrl;
+
     private final AmazonS3 s3Client;
 
     private String createPath(String fullFileName) {
-        return "https://" + bucketName + ".s3.amazonaws.com/" + fullFileName;
+        return uploadUrl + fullFileName;
     }
 
     public String saveImage(MultipartFile multipartFile) {
-        System.out.println(multipartFile.getOriginalFilename());
         String extension = (multipartFile.getOriginalFilename().split("\\."))[1];
         String newFileName = UUID.randomUUID().toString();
         String fullFileName = newFileName + '.' + extension;
@@ -38,13 +41,18 @@ public class S3Util {
             s3Client.putObject(
                     new PutObjectRequest(bucketName, fullFileName, multipartFile.getInputStream(), metadata)
             );
-        } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
+        } catch (Exception e) {
+            throw new S3Exception(e);
         }
         return createPath(fullFileName);
     }
 
-    public void deleteImage(String fileName) {
-        s3Client.deleteObject(bucketName, fileName);
+    public void deleteImage(String imageUrl) {
+        try {
+            String deleteFileName = imageUrl.substring(uploadUrl.length());
+            s3Client.deleteObject(bucketName, deleteFileName);
+        } catch (Exception e) {
+            throw new S3Exception(e);
+        }
     }
 }

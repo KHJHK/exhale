@@ -84,7 +84,7 @@ public class CourseController {
     }
 
     @PostMapping("/letter/result")
-    public ResponseEntity<CommonResponse> registerLetterRecode(LetterRecodeRequest letterRecodeRequest) {
+    public ResponseEntity<CommonResponse> registerLetterRecode(@Validated @RequestBody LetterRecodeRequest letterRecodeRequest) {
         rehabilitationService.registerLetterRecode(letterRecodeRequest, tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(rehabilitationService.getLetterList());
     }

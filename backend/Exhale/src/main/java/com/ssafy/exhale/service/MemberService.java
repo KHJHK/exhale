@@ -5,6 +5,8 @@ import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
+import com.ssafy.exhale.exception.handler.DuplicateDataException;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,15 +20,14 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    public void join(MemberDto memberDto) {
 
+    public void join(MemberDto memberDto) {
         String loginId = memberDto.getLoginId();
         String password = memberDto.getPassword();
 
         Boolean isExist = memberRepository.existsByLoginId(loginId);
         if (isExist) {
-            // todo: 이미 존재하는 아이디 response 처리
-            return;
+             throw new DuplicateDataException("이미 존재하는 아이디");
         }
         memberDto.setRole("ROLE_USER");
         memberDto.setPassword(bCryptPasswordEncoder.encode(password));
@@ -36,60 +37,43 @@ public class MemberService {
     }
     
     public boolean checkLoginId(String loginId){
-        if(memberRepository.existsByLoginIdAndWithdrawFalse(loginId))return true;
-        return false;
+        return memberRepository.existsByLoginIdAndWithdrawFalse(loginId);
     }
 
     public boolean verifyPassword(Long id, String newPassword){
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        boolean[] isMatch = new boolean[1];
-        memberRepository.findById(id).ifPresentOrElse(member ->{
-            String oldPassword = member.getPassword();
-            isMatch[0] = passwordEncoder.matches(newPassword, oldPassword);
-
-        },()->{
-            // todo 에러 처리
-        });
-        return isMatch[0];
-
+        Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+        return passwordEncoder.matches(newPassword, member.getPassword());
     }
+
     public boolean checkPassword(Long id, String newPassword){
-        return verifyPassword(id,newPassword);
+        return verifyPassword(id, newPassword);
     }
+
     public boolean changePassword(Long id, String currentPassword, String newPassword) {
         if (verifyPassword(id, currentPassword)) {
-            memberRepository.findById(id).ifPresentOrElse(member ->{
-                MemberDto memberDto = MemberDto.from(member);
-                memberDto.setPassword(bCryptPasswordEncoder.encode(newPassword));
-                memberRepository.save(memberDto.toEntity());
-            },() -> {
-                // todo 예외 처리
-            });
-
-        }else{
+            Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+            MemberDto memberDto = MemberDto.from(member);
+            memberDto.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            memberRepository.save(memberDto.toEntity());
+        } else {
             return false;
         }
         return true;
-
     }
+
     public void changeWithdraw(Long id){
-        memberRepository.findById(id).ifPresentOrElse((member) -> {
-            MemberDto memberDto = MemberDto.from(member);
-            memberDto.setWithdraw(true);
-            memberRepository.save(memberDto.toEntity());
-        },()->{
-            // todo 예외 처리
-        });
+        Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+        MemberDto memberDto = MemberDto.from(member);
+        memberDto.setWithdraw(true);
+        memberRepository.save(memberDto.toEntity());
     }
 
     public boolean checkWithdraw(Long id){
         AtomicReference<Boolean> isWithdraw = new AtomicReference<>(false);
-        memberRepository.findById(id).ifPresentOrElse((member)->{
-            isWithdraw.set(member.getWithdraw());
-        },()->{
-            // todo 예외 처리
-        });
+        Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+        isWithdraw.set(member.getWithdraw());
         return isWithdraw.get();
     }
     

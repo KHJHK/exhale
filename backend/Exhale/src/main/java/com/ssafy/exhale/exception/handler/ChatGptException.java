@@ -9,6 +9,10 @@ public class ChatGptException extends RuntimeException {
         super(cause);
     }
 
+    public ChatGptException(String message) {
+        super(message);
+    }
+
     public ChatGptException(String message, Throwable cause) {
         super(message, cause);
     }
