@@ -231,5 +231,3 @@ router.push(`/posts/${id}`)
   @import "@/assets/scss/layout/_article.scss";
   @import "@/assets/scss/layout/_grid.scss";
 </style>
-
-

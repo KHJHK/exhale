@@ -13,6 +13,7 @@ import { RouterLink, RouterView } from 'vue-router';
 import {createApp, onMounted, ref} from 'vue';
 import {reactive} from 'vue';
 import axios from 'axios';
+
 </script>
 
 <style>

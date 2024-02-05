@@ -98,4 +98,8 @@ const model = ref(null)
     width: 100%;
     text-align: center;
   }
+
+  .v-slide-group__next i {
+    display: none;
+  }
 </style>
