@@ -57,10 +57,9 @@ public class MemberService {
             MemberDto memberDto = MemberDto.from(member);
             memberDto.setPassword(bCryptPasswordEncoder.encode(newPassword));
             memberRepository.save(memberDto.toEntity());
-        } else {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void changeWithdraw(Long id){
@@ -79,23 +78,16 @@ public class MemberService {
     
     public boolean compareEmail(Long id, EmailRequest emailRequest){
         String newEmailId = emailRequest.getEmailId();
-        String newEamilDomain = emailRequest.getEmailDomain();
-        boolean isEmailMatching = memberRepository.findById(id)
-                .map((member) -> {
-                    String emailId = member.getEmailId();
-                    String emailDomain = member.getEmailDomain();
-                    if(emailId==null || emailDomain==null){
-                        // todo 예외 처리 : 저장된 이메일 없음
-                        System.out.println("저장된 이메일 없음");
-                    }
-                    return (newEmailId.equals(emailId) && newEamilDomain.equals(emailDomain));
-                })
-                .orElseGet(() -> {
-                    // todo 예외 처리
-                    System.out.println("이메일이 다릅니다.");
-                    return false;
-                });
-        return isEmailMatching;
+        String newEmailDomain = emailRequest.getEmailDomain();
+        Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+
+        String emailId = member.getEmailId();
+        String emailDomain = member.getEmailDomain();
+        if(emailId==null || emailDomain==null){
+            // todo 예외 처리 : 저장된 이메일 없음?
+            System.out.println("저장된 이메일 없음");
+        }
+        return (newEmailId.equals(emailId) && newEmailDomain.equals(emailDomain));
     }
 
     public boolean checkEmail(EmailRequest emailRequest){
@@ -104,39 +96,26 @@ public class MemberService {
         return memberRepository.existsByEmailIdAndEmailDomain(emailId, emailDomain);
     }
 
-    public void setNickname(Long id, NicknameRequest nicknameRequest){
-        memberRepository.findById(id).ifPresentOrElse((member)->{
-            MemberDto memberDto = MemberDto.from(member);
-            memberDto.setNickname(nicknameRequest.getNickname());
-            memberRepository.save(memberDto.toEntity());
-        },()->{
-            System.out.println("예외처리");
-            // todo 예외 처리
-        });
+    public void setNickname(Long id, NicknameRequest nicknameRequest) {
+        Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+        MemberDto memberDto = MemberDto.from(member);
+        memberDto.setNickname(nicknameRequest.getNickname());
+        memberRepository.save(memberDto.toEntity());
     }
 
     public MemberDto checkLoginIdEmail(MemberRequest memberRequest){
         String loginId = memberRequest.getLoginId();
         String emailId = memberRequest.getEmailId();
         String emailDomain = memberRequest.getEmailDomain();
-        MemberDto memberDto = memberRepository.findByLoginIdAndEmailIdAndEmailDomainAndWithdrawFalse(loginId,emailId,emailDomain)
-                .map(member -> MemberDto.from(member))
-                .orElseGet(() -> {
-                    // todo: 값이 없을 때 수행할 작업
-
-                    return null;
-                });
-        return memberDto;
+        Member member = memberRepository.findByLoginIdAndEmailIdAndEmailDomainAndWithdrawFalse(loginId,emailId,emailDomain)
+                .orElseThrow(NoSuchDataException::new);
+        return MemberDto.from(member);
     }
 
     public void saveTempPassword(Long id, String password){
-        memberRepository.findById(id).ifPresentOrElse((member)->{
-            MemberDto memberDto = MemberDto.from(member);
-            memberDto.setPassword(bCryptPasswordEncoder.encode(password));
-            memberRepository.save(memberDto.toEntity());
-        },()->{
-            // todo 예외 처리
-        });
+        Member member = memberRepository.findById(id).orElseThrow(NoSuchDataException::new);
+        MemberDto memberDto = MemberDto.from(member);
+        memberDto.setPassword(bCryptPasswordEncoder.encode(password));
+        memberRepository.save(memberDto.toEntity());
     }
-
 }

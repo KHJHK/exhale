@@ -32,7 +32,6 @@ public class GeneralController {
     private final MemberService memberService;
     private final TokenPayloadUtil tokenPayloadUtil;
     private final AuthenticationService authenticationService;
-    private MessageUtil mes;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult){
@@ -50,7 +49,7 @@ public class GeneralController {
         String nickname = tokenPayloadUtil.getNickname();
         String loginId = tokenPayloadUtil.getLoginId();
 
-        if(memberService.checkWithdraw(memberId)){
+        if(memberService.checkWithdraw(memberId)) {
             return CommonResponse.dataError(5, "회원 탈퇴된 유저");
         }
 
