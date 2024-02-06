@@ -28,6 +28,9 @@ public class MemberDto {
     private String role;
     private ProfileImageDto profileImageDto;
 
+    public static MemberDto of(){
+        return new MemberDto();
+    }
     public static MemberDto of(Long id, String loginId, String password,
                                String name, String emailId, String emailDomain,
                                String birth, String nickname, Boolean withdraw,
