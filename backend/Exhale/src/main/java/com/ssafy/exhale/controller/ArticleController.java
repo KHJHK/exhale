@@ -40,7 +40,11 @@ public class ArticleController {
 
     //게시글 수정
     @PutMapping("/{article_id}")
-    public ResponseEntity<CommonResponse> modifyArticle(@PathVariable("article_id") Long articleId, @RequestBody ArticleRequest articleRequest){
+    public ResponseEntity<CommonResponse> modifyArticle(@PathVariable("article_id") Long articleId, @Validated @RequestBody ArticleRequest articleRequest, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors("titie") || bindingResult.hasFieldErrors("content")) {
+            throw new InValidParameterException();
+        }
+
         articleService.modifyArticle(articleId, articleRequest, tokenPayloadUtil.getMemberId());
         return CommonResponse.ok(null);
     }

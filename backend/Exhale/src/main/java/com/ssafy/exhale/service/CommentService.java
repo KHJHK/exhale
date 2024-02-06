@@ -8,10 +8,12 @@ import com.ssafy.exhale.dto.logicDto.CommentDto;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.CommentRequest;
 import com.ssafy.exhale.dto.responseDto.CommentResponse;
+import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.repository.ArticleRepository;
 import com.ssafy.exhale.repository.CommentRepository;
 import com.ssafy.exhale.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,18 +27,12 @@ public class CommentService {
     private final MemberRepository memberRepository;
     public void postComment(CommentRequest commentRequest, Long memberId) {
         try {
-            Article articleEntity = articleRepository.getReferenceById(
-                    commentRequest
-                            .getArticleId()
-            );
+            Article articleEntity = articleRepository.getReferenceById(commentRequest.getArticleId());
             Member memberEntity = memberRepository.getReferenceById(memberId);
 
             Comment commentEntity = null;
             if (commentRequest.getParentId() != null) {
-                commentEntity = commentRepository.getReferenceById(
-                        commentRequest
-                                .getParentId()
-                );
+                commentEntity = commentRepository.getReferenceById(commentRequest.getParentId());
             }
 
             CommentDto commentDto = commentRequest.toDto(
@@ -45,8 +41,8 @@ public class CommentService {
                     null
             );
             commentRepository.save(commentDto.toEntity(articleEntity, memberEntity, commentEntity));
-        } catch (Exception e){
-            System.out.println("error");
+        } catch (DataIntegrityViolationException exception){
+            throw new InValidParameterException("상위 댓글이 없습니다.");
         }
     }
 

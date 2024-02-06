@@ -26,8 +26,10 @@ public class CommonExceptionHandler {
     
     //파라미터 검증 실패 예외
     @ExceptionHandler(InValidParameterException.class)
-    public ResponseEntity<?> inValidParameterExceptionHandle() {
-        return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "invalid request parameter");
+    public ResponseEntity<?> inValidParameterExceptionHandle(InValidParameterException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "invalid request parameter";
+        return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(DuplicateDataException.class)
