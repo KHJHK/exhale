@@ -24,7 +24,7 @@ public class BoardController {
 
     //게시판별 게시글 목록
     @GetMapping("/{board_id}")
-    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page){
+    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page) {
         return CommonResponse.ok(articleService.getArticleListByBoardId(boardId, page));
     }
 

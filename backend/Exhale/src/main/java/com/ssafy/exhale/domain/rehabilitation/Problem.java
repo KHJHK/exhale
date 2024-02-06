@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
+@Table(name = "problem")
 public abstract class Problem {
     @Id
     @Column(name = "problem_id")

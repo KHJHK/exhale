@@ -64,7 +64,8 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/**").permitAll()
-                        .requestMatchers("/", "/general/**", "/boards/**", "/rehabilitation/**", "/email/**").permitAll()
+                        .requestMatchers("/", "/general/**", "/email/**","/rehabilitation/{course_id}", "/rehabilitation/problem/{category_id}",
+                                "/boards", "/boards/{board_id}", "/boards/search").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")

@@ -147,19 +147,21 @@ public class ArticleService {
         }
     }
 
-    public String saveImage(MultipartFile file, Long articleId) {
-        String imageURL = s3Util.saveImage(file);
+    public String saveImage(MultipartFile file) {
+        return s3Util.saveImage(file);
 
+        /*
+        deprecated
         try {
             Article article = articleRepository.getReferenceById(articleId);
             articleFileRepository.save(ArticleFile.of(null, article, false, imageURL));
         } catch (NullPointerException e) {
             throw new NoSuchDataException();
         }
-
-        return imageURL;
+         */
     }
 
+    /*
     public void deleteImage(Long articleFileId){
         try{
             ArticleFile articleFile = articleFileRepository.findById(articleFileId).get();
@@ -171,4 +173,5 @@ public class ArticleService {
             throw new NoSuchDataException();
         }
     }
+     */
 }
