@@ -14,7 +14,7 @@
             
             <div class="input-group">
               <i class='bx bxs-user'></i>
-              <input class="input" type="text" v-model="loginForm.userId" placeholder="아이디">
+              <input class="input" type="text" v-model="userId" placeholder="아이디">
             </div>
             
             <div class="input-group">
@@ -26,7 +26,7 @@
             </div>
             
             
-            <button class="loginBtn" type="submit">
+            <button class="loginBtn" type="submit" @click.prevent="log_In">
               로그인
             </button>
 
@@ -84,83 +84,54 @@
 </template>
 
 <script setup>
-  import { reactive, ref, computed, onMounted } from 'vue';
-  import axios from 'axios';
-  import { useAuthStore } from '@/stores/auth'; 
-  import { RouterLink } from 'vue-router';
-  import { useRouter } from 'vue-router';
-  import { kakaoLogin } from '@/api/outhApi';
+import { reactive, ref, computed, onMounted } from 'vue';
+import axios from 'axios';
+import { useAuthStore} from '@/stores/auth'; 
+
+
+import { RouterLink } from 'vue-router';
+import { useRouter } from 'vue-router';
+import { logIn } from '@/api/outhApi';
+  // import { kakaoLogin } from '@/api/outhApi';
   const router = useRouter()
-  ////////////////////////////////////////////////////
-  // let container = document.getElementById('container')
   const fontSize = ref(16);
   const passwordType = ref("password");
   const password = ref('');
-  // toggle = () => {
-  //   container.classList.toggle('sign-in')
-  //   container.classList.toggle('sign-up')
-  // }
+  const userId = ref('')
 
+
+
+const log_In = async () => {
+  const response = await logIn(
+    userId.value,
+    password.value
+  )
+  router.push('/mainpage')
+} 
 
 
   // 컴포넌트의 root element를 찾기 위한 ref를 생성합니다.
   const container = ref(null);
 
   // toggle 함수를 선언합니다. 이 함수는 container의 classList를 조작합니다.
-  // const toggle = () => {
-  //   if (container.value) {
-  //     container.value.classList.toggle('sign-in');
-  //     container.value.classList.toggle('sign-up');
-  //   }
-  // };
-
-
   const toggle = () => {
-      router.push(`/signup`)
-  }
-  
+    router.push({ name: 'SignUp'})
+  };
 
-  // container ref가 mount 되었을 때 sign-in class를 추가합니다.
-  onMounted(() => {
-  // DOM이 마운트된 후에 `classList`에 접근합니다.
-  setTimeout(() => {
-    if (container.value) {
-      container.value.classList.add('sign-in')
-    }
-  }, 300)
-})
-  //////////////////////////////////////////////////
+
 
   const authStore = useAuthStore(); 
-  const loginForm = reactive({
-    userId: '',
-    password: ''
-  });
 
-  // 로그인 요청
-  // const submitLogin = async () => {
-  //   try {
-  //     const response = await axios.post('http://주소.com/api/login', {
-  //       username: loginForm.userId,
-  //       password: loginForm.password
-  //     });
-  //     // 로그인이 성공적으로 이루어진 후의 처리 로직
-  //     authStore.setUser(response.data);
-  //     console.log('로그인 성공:', response.data);
-  //   } catch (error) {
-  //     console.error('로그인 실패:', error);
-  //   }
-  // };
   
   const toggleVisibility = (field) => {
   if (field === 'password') {
     passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
   }}; 
 
-  const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+  const msg = computed(() => fontSize.value >= 28 ? '원래대로' : '글자확대');
   const enlarge = () => {
-    fontSize.value ++;
-    if (fontSize.value > 22) {
+    fontSize.value += 4;
+    if (fontSize.value >= 32) {
       fontSize.value = 16
     };
   };
@@ -174,20 +145,6 @@ const created = () => {
     }
 }
 
-const login = (userId, password) => {
-  axios ({
-    method: 'post',
-    url: 'api/general/login',
-    headers: {
-      "Content-Type":"multipart/form-data"
-    },
-    data: {
-      login_id: userId,
-      password: password,
-      
-    }
-  })
-}
 
   </script>
   

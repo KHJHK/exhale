@@ -16,9 +16,10 @@
 //     justify-content: center;
 //     align-items: center;
 // }
-// .p {
+// .movelink {
 //   margin-left: 150px;
 //   margin-top: 100px;
+//   text-decoration: none;
 // }
 // .enlarge {
 //   margin-left: 1100px;
@@ -179,14 +180,45 @@
   border-radius: 1.5rem;
   width: 100%;
   box-shadow: rgba(71, 71, 71, 0.35) 25px 20px 25px;
-  transform: scale(0);
-  transition: .5s ease-in-out;
-  transition-delay: 0.2s;
+  // transform: scale(0);
+  // transition: .5s ease-in-out;
+  // transition-delay: 0.2s;
   margin-bottom: 1vh;
-  margin-top: -90vh;
+  margin-top: -80vh;
   background-color: #ffffff;
   }
   
+  .input-group-flex {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: space-between; /* 내부 요소 사이의 공간을 균등하게 배분 */
+    gap: 20px; /* 요소 사이의 간격 */
+  }
+  
+  .input {
+    flex-grow: 1; /* input 필드가 가능한 많은 공간을 차지하도록 함 */
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+
+
+  .doubleCheck {
+    width: 100px !important;
+    padding: 5px 5px !important;
+  }
+  #password-confirm {
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+
+  #nickname {
+    border: none;
+    outline: none;
+    background: transparent;
+  }
+
   // .form-wrapper {
   //   height: 70vh;
   // }
@@ -430,13 +462,13 @@
   position: absolute;
   top: 0;
   right: 0;
-  height: 100vh;
-  width: 300vw;
-  transform: translate(35%, 0);
-  background-color: rgb(108, 159, 156);
+  // height: 100vh;
+  // width: 300vw;
+  // transform: translate(35%, 0);
+  // background-color: rgb(108, 159, 156);
   /* background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%); */
-  transition: 2s ease-in-out;
-  z-index: 6;
+  // transition: 2s ease-in-out;
+  // z-index: 6;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-bottom-right-radius: max(50vw, 50vh);
   border-top-left-radius: max(50vw, 50vh);

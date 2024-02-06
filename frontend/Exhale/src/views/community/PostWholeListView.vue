@@ -111,12 +111,23 @@ import { getPosts} from '@/api/posts'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 import CommunityMenu from '@/components/modals/CommunityMenu.vue'
-
 import PostMenu from '@/components/posts/PostMenu.vue'
 import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
+import boardCategory from '@/api/boards.js'
+
+
+
+const board_caterogy = async() => {
+ const response = await boardCategory()
+ console.log(response)
+}
+
+
+
+
 
 const show = ref(false)
 

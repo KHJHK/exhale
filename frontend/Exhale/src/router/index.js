@@ -94,8 +94,8 @@ const router = createRouter({
     { path: '/post-story-list', name: 'PostStoryListView', component: PostStoryListView },
 
     // main
-    { path:'/', name: 'MainPage', component:MainPage},
-    { path: '/initial-page', name: 'InitialPage', component: InitialPage },
+    { path:'/mainpage', name: 'MainPage', component:MainPage},
+    { path: '/', name: 'InitialPage', component: InitialPage },
     { path: '/initial-test-page', name: 'InitialTestPage', component: InitialTestPage },
     { path: '/test-result-page', name: 'TestResultPage', component: TestResultPage },
     { path: '/ARC-waiting-page', name:' ARCWaitingPage', component: ARCWaitingPage},

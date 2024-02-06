@@ -8,7 +8,7 @@
             <RouterLink :to="{name: 'Review'}" class="nav-link">복습하기</RouterLink> 
             <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link">커뮤니티</RouterLink>
             <RouterLink :to="{name: 'ARCReport'}" class="nav-link">내 정보</RouterLink> 
-            <div class="nav-link" @click="logOut">로그아웃</div>
+            <div class="nav-link" @click="logout">로그아웃</div>
           </nav>
     </nav>
     <nav v-else>
@@ -26,19 +26,12 @@
  
 </template>
 
-<script>
+<script setup>
 import { useAuthStore } from '@/stores/auth';
 import { useCounterStore } from '@/stores/counter';
 import { reactive } from 'vue';
-export default {
-  setup() {
-    const state = reactive({
-      loggedIn: false,
-    });
-    
-    return {state};
-  }
-}
+const {logout} = useAuthStore()
+
 
 </script>
 

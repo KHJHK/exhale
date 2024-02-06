@@ -1,104 +1,82 @@
 import axios from "axios";
-import { ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
 const formDataHeader = {"Content-Type":
 "multipart/form-data"};
 
-// const rules = ref({
-//     userId: [
-//       (value) => {
-//         if (value) return true;
-//         return "Username is requred.",
-//         alert('이름은 좀 압시다.')
-//       },
-//     ],
-//     password: [
-//       (value) => {
-//         if (value) return true;
-//         return "Password is requred.";
-//       },
-//     ],
-//     passwordConfirm: [
-//       (value) => {
-//         if (value) return true;
-//         return "비밀번호확인을 빼먹었어요";
-//       },  
-//     ],
-//     birthdate: [
-//         (value) => {
-//         if (value) return true;
-//         return "생년월일을 입력해주세요" 
-//         },
-//     ],
-//     nickName: [
-//         (value) => {
-//             if (value) return true;
-//             return "아버지를 아버지라 부르지못하고..."
-//         }
-//     ],
-//     fullname: [
-//       (value) => {
-//         if (value) return true;
-//         return "Name is required.";
-//       },
-//       (value) => {
-//         if (value?.length <= 10) return true;
-//         return "Name must be less than 10 characters.";
-//       },
-//     ],
-//     email: [
-//       (value) => {
-//         var regex = /^[a-z0-9]+@[a-z.-]+\.[a-z]+$/i;
-//         if (regex.test(value)) return true;
-//         return "Must be a valid e-mail.";
-//       },
-//     ],
-
-//   });
-
-//test시 path에 api빼고
-
     // 2 - 이미 존재하는 값
     const isIdDuplicated = async (userId) => {
-        return await axios.post('http://i10b208.p.ssafy.io/api/general/id', {
-            login_id: userId.value
+        
+        try {
+        const response = await axios.post('http://i10b208.p.ssafy.io/api/general/id', {
+            login_id: userId
         });
-    };
-    
-    // const isEmailDuplicated = async (email, emailDomain) => {
-        //     return await axios.post('/api/email', {
-            //             email_id: email.value,
-            //             email_domain : emailDomain.value
-            //     });
-            // };
+       
+        console.log("사용 가능한 아이디입니다.");
+        alert("사용 가능한 아이디입니다.");
+        return false; 
+    } catch (error) {
+        if (error.response && error.response.status === 400) {
+            console.log("아이디가 이미 사용 중입니다.");
+            alert("아이디가 이미 사용 중입니다.");
+            return true; 
+        } else {
+            console.error("아이디 중복 확인 중 오류가 발생했습니다:", error);
             
-            // 2 - 이미 존재하는 값, 3 - 유효하지 않은 이메일
-            const verifyNumberCreate = async (email, emailDomain) => {
-                return await axios.post('/api/email/certification', {
-                    email_id: email.value,
-                    email_domain : emailDomain.value
+        }
+    }
+};
+
+            const verifyNumberCreate = async (email_id, email_domain) => {
+                try {
+                    const response = await axios.post('http://192.168.192.3:8080/api/email/certification', {
+                        email_id: email_id,
+                        email_domain : email_domain
+                    })
+                    console.log('인증 성공!', response)
+                } catch (error) {
+                    console.error('이메일 중복 확인 요청 에러:', error)
+                    throw error;
+                 }}; 
+            
+            const emailVerifyRequest = async (email_id, email_domain) => {
+                return await axios.post('http://i10b208.p.ssafy.io/api/email/check',  {
+                    email_id: email_id,
+                    email_domain : email_domain
                 })
             };
             
-            const emailVerifyRequest = async (email, emailDomain) => {
-                return await axios.post('/api/email/check',  {
-                    email_id: email.value,
-                    email_domain : emailDomain.value
-                })
-            };
+            const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
+                try {
+                    const response = await axios.post('http://i10b208.p.ssafy.io/api/general/join', {
+                      login_id: userId,
+                      password: password,
+                      email_id: email_id,
+                      email_domain: email_domain,
+                      name: fullname,
+                      birth: birthdate,
+                      nickname: nickName
+                    });
+                    console.log('회원가입 성공:', response);
+                    alert('날숨의 가족이 되신것을 환영해요! 다시 로그인 해주세요');
+                    
+                    // return response.data; 
+                  } catch (error) {
+                    if (axios.isAxiosError(error)) {
+                      // 서버 응답 에러 처리
+                      console.error('서버 요청 에러:', error.response?.data || error.message);
+                      alert(`서버 에러 발생: ${error.response?.statusText || error.message}`);
+                    } else {
+                      // 그 외 에러 처리
+                      console.error('알 수 없는 에러:', error);
+                      alert('알 수 없는 에러가 발생했습니다.');
+                    }
+                  }
+                };
             
-            const signUp = async (userId, email, emailDomain, fullname, birthdate, password, nickName) => {
-                console.log("k ",password)
-                return await axios.post('http://i10b208.p.ssafy.io/general/join',  {
-                    login_id : userId,
-                    password : password,
-                    name : fullname,
-                    email_id : email,
-                    email_domain : emailDomain,
-                    birth : birthdate,
-                    nickname : nickName
-                })
-            };
             
+
+
+
             const sendKakaoCode = async (kakaoCode) => {
                 return await axios.post('/api/outh/kakao/join', {
                     code: kakaoCode
@@ -120,26 +98,45 @@ const formDataHeader = {"Content-Type":
                         
                         // [로그인 실패]
                         // { }
-                        const logIn = async (userId, password) => {
-                            return await axios.post('/api/general/login', {
-                                login_id: userId,
-                                password: password,
-                            },{ headers:{
-                                "Content-Type": "application/x-www-form-urlencoded"
-                            }
-                        })
-                    };
-                    
-                    const tempPassword = async (userId, email, emailDomain) => {
-                        return await axios.post('/api/users/temp-password',  {
+            const logIn = async (userId, password) => {
+                try {
+                    const response = await axios.post('http://i10b208.p.ssafy.io/api/general/login', {
+                        login_id: userId,
+                        password: password,
+                    }, {
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        }
+                    });
+                    localStorage.setItem('JWT_token', response.data.response.token.access_token)
+                    localStorage.setItem('refresh_token', response.data.response.token.refresh_token)
+                    localStorage.setItem('key',response.data.response.token.key);
+                    console.log('로그인 성공:', response.data);
+                    alert('환영합니다.')
+
+                return response.data;
+            } catch (error) {
+                // 로그인 실패 시 에러 처리
+                if (axios.isAxiosError(error) && error.response) {
+                    console.error('로그인 실패:', error.response.data.message);
+                    alert(`로그인 실패: ${error.response.data.message}`);
+                } else {
+                    console.error('알 수 없는 에러:', error);
+                    alert('알 수 없는 에러가 발생했습니다.');
+                }
+                throw error;
+            }};
+
+                    const tempPassword = async (userId, email_id, emailDomain) => {
+                        return await axios.post('http://i10b208.p.ssafy.io/api/users/temp-password',  {
                             login_id: userId,
-                            email_id: email,
+                            email_id: email_id,
                             email_domain: emailDomain
                         })
                     };
                     
                     const reName = async (nickName, accessToken) => { 
-                        return await axios.post('/api/users/nickname',  {
+                        return await axios.post('http://i10b208.p.ssafy.io/api/users/nickname',  {
                             nickname: nickName
                         }, {
                             headers: {
@@ -151,7 +148,7 @@ const formDataHeader = {"Content-Type":
                     const changeProfileImg = async (file, accessToken) => {
                         const formData = new FormData();
                         formData.append('image', file)
-                        return await axios.post('api/users/profile-image', formData, {
+                        return await axios.post('http://i10b208.p.ssafy.io/api/users/profile-image', formData, {
                             headers: {
                                 formDataHeader,
                                 'Authorization': `Bearer ${accessToken}`                
@@ -160,7 +157,7 @@ const formDataHeader = {"Content-Type":
                     };
                     
                     const checkPassword = async (password, accessToken) => {
-                        return await axios.post('/api/users/check-password', {
+                        return await axios.post('http://i10b208.p.ssafy.io/api/users/check-password', {
                             password: password 
                         }, {
                             headers: {
@@ -170,7 +167,7 @@ const formDataHeader = {"Content-Type":
                     };
                     
                     const rePassword = async (password, accessToken) => {
-                        return await axios.post('/api/users/repassword', {
+                        return await axios.post('http://i10b208.p.ssafy.io/api/users/repassword', {
                             old_password: password,
                             new_password: password
                         }, {
@@ -181,7 +178,7 @@ const formDataHeader = {"Content-Type":
                     };
                     
                     const reFresh = async (refresh_token, member_id) => {
-                        return await axios.post('/api/users/refresh', {
+                        return await axios.post('http://i10b208.p.ssafy.io/api/users/refresh', {
                             refresh_token : refresh_token,
                             member_id : member_id
                         }, {
@@ -192,7 +189,7 @@ const formDataHeader = {"Content-Type":
                     };
                     
                     const withDraw = async (accessToken) => {
-                        return await axios.get('/api/users/withdraw', {
+                        return await axios.get('http://i10b208.p.ssafy.io/api/users/withdraw', {
                             None
                         },{
                             headers : {
@@ -202,16 +199,21 @@ const formDataHeader = {"Content-Type":
                         })
                     };
                     
-                    const logout = async (accessToken) => {
-                        return await axios.get('/api/users/logout', {
-                            None
-                        },{
-                            headers : {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                            
-                        })
-                    };
+                    // const logout = async (accessToken) => {
+                    //     try {
+                    //         const response = await axios.get('http://i10b208.p.ssafy.io/api/users/logout', {
+                    //             None
+                    //         },{
+                    //             headers : {
+                    //                 'Authorization': `Bearer ${accessToken}`
+                    //             }
+                    //         })
+                    //         token.value = null
+                    //         localStorage.removeItem('token')
+                    //         router.push( '/' )  
+                    //          }  catch (error) {
+                    //          }};
+                
                     
                     const kakaoLogin = () => {
                         const clientId = "64f53b3a322ebb16eabd9859392720c9"; // 클라이언트 ID를 문자열로 설정
@@ -223,7 +225,13 @@ const formDataHeader = {"Content-Type":
                         return kakaoLogin
                       };
                     
-
+                      const logOut = function () {
+                        token.value = null
+                        // username.value = '' // 로그아웃 시 username 제거
+                        localStorage.removeItem('token')
+                        // localStorage.removeItem('username')
+                        router.push({ name: 'Intro' })
+                      }
                     
                     export {
                         isIdDuplicated,
@@ -240,7 +248,7 @@ const formDataHeader = {"Content-Type":
                         rePassword,
                         reFresh,
                         withDraw,
-                        logout,
+                        logOut,
                         kakaoLogin
                         
                     };

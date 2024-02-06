@@ -10,22 +10,19 @@ export const useAuthStore = defineStore('auth', () => {
   const loginUser = ref([])
   const comments = ref([])
   const replies = ref([])
-  const token = ref(localStorage.getItem('token') || null)
-  const isAuthenticated = computed(() => !!token.value)
+  const JWTtoken = ref(localStorage.getItem('JWT_token') || null)
+  const refreshToken = ref(localStorage.getItem('refresh_token') || null)
+  const KEY = ref(localStorage.getItem('key') || null)
+  const isAuthenticated = computed(() => !!JWTtoken.value)
 
  
-
-
-
-
-
   const isLogIn = computed(() => {
-    if (token.value === null) {
-      return false
+    if (localStorage.JWT_token.value === null) {
+    return false
     } else {
-      return true
+    return true
     }
-  })
+})
 
   const isUser = () => {
     axios({
@@ -42,7 +39,26 @@ export const useAuthStore = defineStore('auth', () => {
       console.log(err)
     })
   }
-  return 
-})
+
+  const logout = async (key) => {
+    try {
+        const response = await axios.get('http://i10b208.p.ssafy.io/api/users/logout', {
+            None
+        },{
+            headers : {
+                'Authorization': `${key}`
+            }
+        })
+        JWTtoken.value = null
+        localStorage.removeItem('JWT_token')
+        localStorage.removeItem('refresh_token')
+        localStorage.removeItem('key')
+        router.push( '/' )  
+         }  catch (error) {
+         }};
+
+
+  return {isLogIn, JWTtoken, refreshToken, KEY, isAuthenticated, logout}
+} , { persist: true })
 
 
