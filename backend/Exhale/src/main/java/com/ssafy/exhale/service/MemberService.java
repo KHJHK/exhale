@@ -1,16 +1,28 @@
 package com.ssafy.exhale.service;
 
+import com.ssafy.exhale.domain.Article;
+import com.ssafy.exhale.domain.ArticleFile;
 import com.ssafy.exhale.domain.Member;
+import com.ssafy.exhale.domain.ProfileImage;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
+import com.ssafy.exhale.dto.logicDto.ProfileImageDto;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
 import com.ssafy.exhale.repository.MemberRepository;
+import com.ssafy.exhale.repository.ProfileImageRepository;
+import com.ssafy.exhale.util.S3Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -18,6 +30,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final S3Util s3Util;
+    private final ProfileImageRepository profileImageRepository;
+
+    @Value("${profile.image.url.default}")
+    private String defaultImage;
+
+    @Transactional
     public void join(MemberDto memberDto) {
 
         String loginId = memberDto.getLoginId();
@@ -33,6 +52,9 @@ public class MemberService {
         memberDto.setWithdraw(false);
         Member member = memberDto.toEntity();
         memberRepository.save(member);
+
+        ProfileImageDto profileImageDto = ProfileImageDto.of(null, defaultImage, null, member);
+        profileImageRepository.save(profileImageDto.toEntity());
     }
     
     public boolean checkLoginId(String loginId){
@@ -152,6 +174,19 @@ public class MemberService {
             memberRepository.save(memberDto.toEntity());
         },()->{
             // todo 예외 처리
+        });
+    }
+
+    @Transactional
+    public void setProfileImage(MultipartFile file, Long id){
+        String imageURL = s3Util.saveImage(file);
+
+        memberRepository.findById(id).ifPresentOrElse((member) -> {
+            ProfileImageDto profileImageDto = ProfileImageDto.from(member.getProfileImage());
+            profileImageDto.setImage(imageURL);
+            profileImageRepository.save(profileImageDto.toEntity());
+        },()->{
+            throw new NoSuchDataException();
         });
     }
 

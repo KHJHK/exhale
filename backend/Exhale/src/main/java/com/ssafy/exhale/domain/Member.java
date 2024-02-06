@@ -39,6 +39,10 @@ public class Member {
     @Column(name = "withdraw_date", nullable = true)
     private LocalDateTime withdrawDate;
     private String role;
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ProfileImage profileImage;
+
     @PrePersist
     protected void onCreate() {
         createDate = LocalDateTime.now();
@@ -49,9 +53,9 @@ public class Member {
     public static Member of(Long id, String loginId, String password,
                             String name, String emailId, String emailDomain,
                             String birth, String nickname, Boolean withhdraw,
-                            LocalDateTime createDate, LocalDateTime withdrawDate, String role){
+                            LocalDateTime createDate, LocalDateTime withdrawDate, String role, ProfileImage profileImage){
         return new Member(id, loginId, password, name, emailId, emailDomain,
-                birth, nickname, withhdraw, null, createDate, withdrawDate, role);
+                birth, nickname, withhdraw, null, createDate, withdrawDate, role, profileImage);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ssafy.exhale.dto.logicDto;
 
 import com.ssafy.exhale.domain.Member;
+import com.ssafy.exhale.domain.ProfileImage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,12 +26,12 @@ public class MemberDto {
     private LocalDateTime createDate;
     private LocalDateTime withdrawDate;
     private String role;
-
+    private ProfileImageDto profileImageDto;
 
     public static MemberDto of(Long id, String loginId, String password,
                                String name, String emailId, String emailDomain,
                                String birth, String nickname, Boolean withdraw,
-                               LocalDateTime createDate, LocalDateTime withdrawDate, String role)
+                               LocalDateTime createDate, LocalDateTime withdrawDate, String role, ProfileImageDto profileImageDto)
     {
         return new MemberDto(
                 id,
@@ -44,7 +45,8 @@ public class MemberDto {
                 withdraw,
                 createDate,
                 withdrawDate,
-                role
+                role,
+                profileImageDto
         );
     }
     public static MemberDto from(Member entity){
@@ -60,10 +62,10 @@ public class MemberDto {
                 entity.getWithdraw(),
                 entity.getCreateDate(),
                 entity.getWithdrawDate(),
-                entity.getRole()
+                entity.getRole(),
+                ProfileImageDto.from(entity.getProfileImage())
         );
     }
-
     public Member toEntity(){
         return Member.of(
                 id,
@@ -77,8 +79,10 @@ public class MemberDto {
                 withdraw,
                 createDate,
                 withdrawDate,
-                role
+                role,
+                profileImageDto!=null?profileImageDto.toEntity(): null
         );
     }
+
 
 }

@@ -6,6 +6,7 @@ import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
 import com.ssafy.exhale.dto.requestDto.PasswordRequest;
 import com.ssafy.exhale.dto.responseDto.TokenInfo;
+import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
 import com.ssafy.exhale.util.GenerateRandomKey;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,6 +86,13 @@ public class MemberController {
         Long memberId = tokenPayloadUtil.getMemberId();
         memberService.setNickname(memberId, nicknameRequest);
         return ResponseEntity.status(200).body("");
+    }
+
+    @PostMapping("/profile-image")
+    public ResponseEntity<?> setProfileImage(@RequestParam("image") MultipartFile image){
+        Long memberId = tokenPayloadUtil.getMemberId();
+        memberService.setProfileImage(image, memberId);
+        return CommonResponse.ok(null);
     }
 
 }

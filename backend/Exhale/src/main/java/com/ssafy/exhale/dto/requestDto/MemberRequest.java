@@ -65,6 +65,7 @@ public class MemberRequest {
                 null,
                 null,
                 null,
+                null,
                 null
         );
     }
