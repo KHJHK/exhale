@@ -17,6 +17,6 @@ public class LetterResponse {
     private String letterChar;
 
     public static LetterResponse of(Letter letter) {
-        return new LetterResponse(letter.getId(), letter.getCharacter());
+        return new LetterResponse(letter.getId(), letter.getContent());
     }
 }

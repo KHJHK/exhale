@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "letters")
 public class Letter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +21,5 @@ public class Letter {
     private LetterType type;
 
     @Column
-    private String character;
+    private String content;
 }

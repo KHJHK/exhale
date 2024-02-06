@@ -17,6 +17,8 @@ import com.ssafy.exhale.util.TokenPayloadUtil;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,11 @@ public class EmailController {
     private final CertificationCodeService certificationCodeService;
 
     @PostMapping("/certification")
-    public ResponseEntity<?> certificationEmail(@RequestBody EmailRequest emailRequest){
+    public ResponseEntity<?> certificationEmail(@Validated @RequestBody EmailRequest emailRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
+
         if(!memberService.checkEmail(emailRequest)) {
             String fullEmail = emailRequest.getEmailId() + "@" + emailRequest.getEmailDomain();
             String certificationNumber = GenerateCertificationCode.getCertificationNumber();
@@ -41,7 +47,7 @@ public class EmailController {
             } catch (MessagingException e) {
                 throw new RuntimeException(e);  // todo 예외처리 수정
             }
-        }else{
+        } else {
             throw new DuplicateDataException();
         }
 
@@ -60,13 +66,13 @@ public class EmailController {
     }
 
     @PostMapping("/temp-password")
-    public ResponseEntity<?> tempPassword(@RequestBody MemberRequest memberRequest){
+    public ResponseEntity<?> tempPassword(@RequestBody MemberRequest memberRequest) {
 
         MemberDto memberDto = memberService.checkLoginIdEmail(memberRequest);
         if(memberDto.getEmailId()==null || memberDto.getEmailDomain()==null){
             // todo 예외처리 이메일 없음
         }
-        String fullEmail = memberDto.getEmailId()+"@"+memberDto.getEmailDomain();
+        String fullEmail = memberDto.getEmailId()+ "@" +memberDto.getEmailDomain();
         String tempPassword = GenerateCertificationCode.getRandomPassword();
         memberService.saveTempPassword(memberDto.getId(), tempPassword);
         try {
@@ -74,7 +80,6 @@ public class EmailController {
         } catch (MessagingException e) {
             throw new RuntimeException(e);  // todo 예외처리 수정
         }
-
         return ResponseEntity.ok("");
     }
 }

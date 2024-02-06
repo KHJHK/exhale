@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "category")
 public class Category {
     @Id
     @Column(name ="category_id")

@@ -44,7 +44,7 @@ public class MemberService {
 
         Boolean isExist = memberRepository.existsByLoginId(loginId);
         if (isExist) {
-             throw new DuplicateDataException();
+             throw new DuplicateDataException("회원 탈퇴된 회원이거나, 이미 존재하는 회원입니다.");
         }
         memberDto.setRole("ROLE_USER");
         memberDto.setPassword(bCryptPasswordEncoder.encode(password));
@@ -103,10 +103,6 @@ public class MemberService {
 
         String emailId = member.getEmailId();
         String emailDomain = member.getEmailDomain();
-        if(emailId==null || emailDomain==null){
-            // todo 예외 처리 : 저장된 이메일 없음?
-            System.out.println("저장된 이메일 없음");
-        }
         return (newEmailId.equals(emailId) && newEmailDomain.equals(emailDomain));
     }
 

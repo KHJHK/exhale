@@ -93,13 +93,20 @@ public class MemberController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody KeyRequest keyRequest){
+    public ResponseEntity<?> logout(@Validated @RequestBody KeyRequest keyRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
         authenticationService.logout(tokenPayloadUtil.getMemberId(), keyRequest.getKey());
         return CommonResponse.ok(null);
     }
 
     @PostMapping("/nickname")
-    public ResponseEntity<?> setNickname(@RequestBody NicknameRequest nicknameRequest){
+    public ResponseEntity<?> setNickname(@Validated @RequestBody NicknameRequest nicknameRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
+
         Long memberId = tokenPayloadUtil.getMemberId();
         memberService.setNickname(memberId, nicknameRequest);
         return CommonResponse.ok(null);
