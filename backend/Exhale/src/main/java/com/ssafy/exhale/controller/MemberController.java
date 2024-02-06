@@ -1,6 +1,7 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
+import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.KeyRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
@@ -10,8 +11,11 @@ import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
+import com.ssafy.exhale.util.EmailUtil;
+import com.ssafy.exhale.util.GenerateCertificationCode;
 import com.ssafy.exhale.util.GenerateRandomKey;
 import com.ssafy.exhale.util.TokenPayloadUtil;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +35,7 @@ public class MemberController {
     private final MemberService memberService;
     private final TokenPayloadUtil tokenPayloadUtil;
     private final AuthenticationService authenticationService;
+    private final EmailUtil emailUtil;
 
     @PostMapping("/refresh")
     public ResponseEntity<?> getRefreshToken(HttpServletRequest request, @Validated @RequestBody KeyRequest keyRequest, BindingResult bindingResult) {
