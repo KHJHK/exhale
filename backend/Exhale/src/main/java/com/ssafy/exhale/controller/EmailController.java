@@ -9,6 +9,7 @@ import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
 import com.ssafy.exhale.exception.handler.DuplicateDataException;
 import com.ssafy.exhale.exception.handler.InValidParameterException;
+import com.ssafy.exhale.exception.handler.MailMessagingException;
 import com.ssafy.exhale.service.CertificationCodeService;
 import com.ssafy.exhale.service.MemberService;
 import com.ssafy.exhale.util.EmailUtil;
@@ -16,6 +17,7 @@ import com.ssafy.exhale.util.GenerateCertificationCode;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -45,7 +47,7 @@ public class EmailController {
             try {
                 emailUtil.sendCertificationMail(fullEmail, certificationNumber);
             } catch (MessagingException e) {
-                throw new RuntimeException(e);  // todo 예외처리 수정
+                throw new MailMessagingException(e);  // todo 예외처리 수정
             }
         } else {
             throw new DuplicateDataException();
@@ -55,31 +57,37 @@ public class EmailController {
     }
 
     @PostMapping("/check")
-    public ResponseEntity<?> checkCertificationCode(@RequestBody CertificationCodeRequest certificationCodeRequest){
-        String code = certificationCodeRequest.getCode();
-        if(code==null){
+    public ResponseEntity<?> checkCertificationCode(@Validated @RequestBody CertificationCodeRequest certificationCodeRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
             throw new InValidParameterException();
         }
+
+        String code = certificationCodeRequest.getCode();
+        if(code == null) {
+            throw new InValidParameterException();
+        }
+
         boolean isSuccess = certificationCodeService.compareCode(certificationCodeRequest);
         if(isSuccess) return CommonResponse.ok(null);
-        else return ResponseEntity.status(400).body("인증코드가 맞지 않습니다.");
+        else return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "not match code");
     }
 
     @PostMapping("/temp-password")
-    public ResponseEntity<?> tempPassword(@RequestBody MemberRequest memberRequest) {
+    public ResponseEntity<?> tempPassword(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult) {
+
+        if(bindingResult.hasFieldErrors("emailId") || bindingResult.hasFieldErrors("emailDomain")) {
+            throw new InValidParameterException();
+        }
 
         MemberDto memberDto = memberService.checkLoginIdEmail(memberRequest);
-        if(memberDto.getEmailId()==null || memberDto.getEmailDomain()==null){
-            // todo 예외처리 이메일 없음
-        }
         String fullEmail = memberDto.getEmailId()+ "@" +memberDto.getEmailDomain();
         String tempPassword = GenerateCertificationCode.getRandomPassword();
         memberService.saveTempPassword(memberDto.getId(), tempPassword);
         try {
             emailUtil.sendTempPasswordMail(fullEmail, tempPassword);
         } catch (MessagingException e) {
-            throw new RuntimeException(e);  // todo 예외처리 수정
+            throw new MailMessagingException(e);
         }
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok(null);
     }
 }

@@ -31,7 +31,7 @@ public class AuthenticationService {
 
     @Transactional
     public void reSaveRefreshValue(AuthenticationDto authenticationDto) {
-        if(removeRefreshValue(authenticationDto.getMemberId(), authenticationDto.getKey())==0){
+        if(removeRefreshValue(authenticationDto.getMemberId(), authenticationDto.getKey()) == 0) {
             // todo 예외처리
         }
         saveRefreshValue(authenticationDto);
