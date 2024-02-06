@@ -12,7 +12,7 @@ public class ArticleSearchRequest {
     @JsonProperty("board_id")
     int boardId;
     @JsonProperty("search_type")
-    String searchType;
+    String searchType; // todo 타입 체크 필요
     @JsonProperty("search_content")
     String searchContent;
     int page;

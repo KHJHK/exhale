@@ -23,39 +23,36 @@ public class FilterExceptionHandler extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        try{
+        try {
             filterChain.doFilter(request, response);
-        }catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e){
             //토큰의 유효기간 만료
             tokenExpireException(response, e);
-        }catch (JwtException | IllegalArgumentException e){
+        } catch (JwtException | IllegalArgumentException e){
             //유효하지 않은 토큰
             tokenInvalidException(response, e);
         }
     }
-    private void tokenExpireException(
-            HttpServletResponse response,
-            Exception exception
-    ){
+
+    private void tokenExpireException(HttpServletResponse response, Exception exception) {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        try{
-            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"토큰 만료").getBody()));
-        }catch (IOException e){
-            e.printStackTrace();
+        try {
+            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"Token Expiration").getBody()));
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        } catch (IOException e){
+            throw new RuntimeException(e);
         }
     }
 
-    private void tokenInvalidException(
-            HttpServletResponse response,
-            Exception exception
-    ) {
+    private void tokenInvalidException(HttpServletResponse response, Exception exception) {
         ObjectMapper objectMapper = new ObjectMapper();
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         try{
-            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"권한 없음").getBody()));
-        }catch (IOException e){
-            e.printStackTrace();
+            response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"Invalid token").getBody()));
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        } catch (IOException e){
+            throw new RuntimeException(e);
         }
     }
 }

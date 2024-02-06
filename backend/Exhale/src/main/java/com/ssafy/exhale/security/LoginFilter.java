@@ -50,9 +50,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authentication) throws ServletException, IOException {
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
-
     }
 
     @Override

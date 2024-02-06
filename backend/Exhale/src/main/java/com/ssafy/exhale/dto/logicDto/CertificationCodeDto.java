@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CertificationCodeDto {
     private String id;
-    private Long memberId;
+    private String email;
     private String code;
     private LocalDateTime createAt;
 
@@ -24,14 +24,14 @@ public class CertificationCodeDto {
         return new CertificationCodeDto();
     }
 
-    public static CertificationCodeDto of(String id, Long memberId, String code, LocalDateTime createAt){
-        return new CertificationCodeDto(id, memberId, code, createAt);
+    public static CertificationCodeDto of(String id, String email, String code, LocalDateTime createAt){
+        return new CertificationCodeDto(id, email, code, createAt);
     }
 
     public CertificationCode toEntity(){
         return CertificationCode.of(
                 id,
-                memberId,
+                email,
                 code,
                 createAt
         );
@@ -40,7 +40,7 @@ public class CertificationCodeDto {
     public CertificationCodeDto fromDto(CertificationCode certificationCode){
         return CertificationCodeDto.of(
                 certificationCode.getId(),
-                certificationCode.getMemberId(),
+                certificationCode.getEmail(),
                 certificationCode.getCode(),
                 certificationCode.getCreateAt()
         );

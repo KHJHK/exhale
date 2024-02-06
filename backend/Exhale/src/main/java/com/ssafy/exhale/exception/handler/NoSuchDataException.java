@@ -9,6 +9,10 @@ public class NoSuchDataException extends RuntimeException {
         super(cause);
     }
 
+    public NoSuchDataException(String message) {
+        super(message);
+    }
+
     public NoSuchDataException(String message, Throwable cause) {
         super(message, cause);
     }

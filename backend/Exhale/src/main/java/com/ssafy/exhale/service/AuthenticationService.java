@@ -33,7 +33,6 @@ public class AuthenticationService {
             // todo 예외처리
         }
         saveRefreshValue(authenticationDto);
-
     }
 
     public boolean compareRefreshToken(Long memberId, String tokenValue, String key) {
@@ -49,6 +48,7 @@ public class AuthenticationService {
         long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
         return cnt;
     }
+
     public void logout(long memberId, String key){
         long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
         if(cnt == 0){

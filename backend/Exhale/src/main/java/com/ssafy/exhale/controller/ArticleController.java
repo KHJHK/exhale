@@ -47,7 +47,6 @@ public class ArticleController {
 
     @PostMapping("/image/{article_id}")
     public ResponseEntity<CommonResponse> saveImage(@PathVariable("article_id") Long articleId, @RequestParam(value = "file") MultipartFile file){
-        System.out.println("file = " + file.getOriginalFilename());
         String imageURL = articleService.saveImage(file, articleId);
         return CommonResponse.ok(imageURL);
     }

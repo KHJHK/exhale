@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @Document(collection = "certification_code")
 public class CertificationCode {
     private String id;
-    @Field("member_id")
-    private Long memberId;
+    @Field("email")
+    private String email;
     private String code;
     @Field("create_at")
     private LocalDateTime createAt;
@@ -30,8 +30,8 @@ public class CertificationCode {
     public static CertificationCode of(){
         return new CertificationCode();
     }
-    public static CertificationCode of(String id, Long memberId, String code, LocalDateTime createAt){
-        return new CertificationCode(id, memberId, code, createAt);
+    public static CertificationCode of(String id, String email, String code, LocalDateTime createAt){
+        return new CertificationCode(id, email, code, createAt);
     }
 }
 
