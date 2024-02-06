@@ -6,14 +6,17 @@ import com.ssafy.exhale.dto.requestDto.CertificationCodeRequest;
 import com.ssafy.exhale.repository.CertificationCodeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class CertificationCodeService {
     private final CertificationCodeRepository certificationCodeRepository;
 
+    @Transactional
     public void saveCode(CertificationCodeDto certificationCodeDto){
         try {
+            certificationCodeRepository.deleteByEmail(certificationCodeDto.getEmail());
             CertificationCode certificationCode = certificationCodeDto.toEntity();
             certificationCodeRepository.save(certificationCode);
         } catch (Exception e) {
@@ -21,8 +24,10 @@ public class CertificationCodeService {
         }
     }
 
-    public boolean compareCode(Long id, String code){
-        return certificationCodeRepository.findByMemberId(id)
+    public boolean compareCode(CertificationCodeRequest certificationCodeRequest){
+        String email = certificationCodeRequest.getEmailId()+"@"+certificationCodeRequest.getEmailDomain();
+        String code = certificationCodeRequest.getCode();
+        return certificationCodeRepository.findByEmail(email)
                 .map(certification ->{
                     if(certification.getCode().equals(code)){
                         certificationCodeRepository.deleteById(certification.getId());

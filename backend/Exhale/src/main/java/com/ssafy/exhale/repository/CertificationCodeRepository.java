@@ -6,5 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface CertificationCodeRepository extends MongoRepository<CertificationCode, String> {
-    Optional<CertificationCode> findByMemberId(Long memberId);
+    Optional<CertificationCode> findByEmail(String email);
+    void deleteByEmail(String email);
 }

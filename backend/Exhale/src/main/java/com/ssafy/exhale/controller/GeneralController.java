@@ -1,6 +1,7 @@
 package com.ssafy.exhale.controller;
 
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
+import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.responseDto.MemberResponse;
@@ -10,9 +11,8 @@ import com.ssafy.exhale.dto.responseDto.commonDto.ConnectionStatus;
 import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.service.AuthenticationService;
 import com.ssafy.exhale.service.MemberService;
-import com.ssafy.exhale.util.GenerateRandomKey;
-import com.ssafy.exhale.util.MessageUtil;
-import com.ssafy.exhale.util.TokenPayloadUtil;
+import com.ssafy.exhale.util.*;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -32,6 +32,7 @@ public class GeneralController {
     private final MemberService memberService;
     private final TokenPayloadUtil tokenPayloadUtil;
     private final AuthenticationService authenticationService;
+    private final EmailUtil emailUtil;
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult){

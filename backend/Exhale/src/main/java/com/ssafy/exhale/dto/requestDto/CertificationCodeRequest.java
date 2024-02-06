@@ -1,5 +1,6 @@
 package com.ssafy.exhale.dto.requestDto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.dto.logicDto.CertificationCodeDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +14,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CertificationCodeRequest {
-    String code;
+    private String code;
+    @JsonProperty("email_id")
+    private String emailId;
+    @JsonProperty("email_domain")
+    private String emailDomain;
 
 }
 
