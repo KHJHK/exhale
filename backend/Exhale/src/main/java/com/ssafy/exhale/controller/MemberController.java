@@ -60,16 +60,16 @@ public class MemberController {
             responseBody.put("token", tokeninfo);
 
         } else {
-            return CommonResponse.connectionError(HttpStatus.UNAUTHORIZED, "Unauthorized: Invalid token");
+            return CommonResponse.connectionError(HttpStatus.UNAUTHORIZED, "Invalid token");
         }
         return CommonResponse.ok(responseBody);
     }
 
     @PostMapping("/check-password")
-    public ResponseEntity<?> checkPassword(@RequestBody MemberRequest memberRequest) {
-        if(memberRequest.getPassword() == null || memberRequest.getPassword().isEmpty()) throw new InValidParameterException();
+    public ResponseEntity<?> checkPassword(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult) {
+        if(bindingResult.hasFieldErrors("password")) throw new InValidParameterException();
 
-        if(!memberService.checkPassword(tokenPayloadUtil.getMemberId(), memberRequest.getPassword())) return CommonResponse.dataError(2, null);
+        if(!memberService.checkPassword(tokenPayloadUtil.getMemberId(), memberRequest.getPassword())) return CommonResponse.dataError(6, "not match password");
         return CommonResponse.ok(null);
     }
 
@@ -77,7 +77,9 @@ public class MemberController {
     public ResponseEntity<?> changePassword(@Validated @RequestBody PasswordRequest passwordRequest, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) throw new InValidParameterException();
 
-        if(!memberService.changePassword(tokenPayloadUtil.getMemberId(), passwordRequest.getOldPassword(), passwordRequest.getNewPassword())) return CommonResponse.dataError(2, null);
+        if(!memberService.changePassword(tokenPayloadUtil.getMemberId(), passwordRequest.getOldPassword(), passwordRequest.getNewPassword())) {
+            return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "not match password");
+        }
         return CommonResponse.ok(null);
     }
 

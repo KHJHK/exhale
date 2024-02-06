@@ -64,7 +64,7 @@ public class GeneralController {
         authenticationDto.setKey(key);
         authenticationService.saveRefreshValue(authenticationDto);
 
-        TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt,"Bearer " + refreshToken, key);
+        TokenInfo tokeninfo = new TokenInfo("Bearer " + jwt, "Bearer " + refreshToken, key);
         MemberResponse memberResponse = new MemberResponse(memberId,nickname,loginId);
 
         Map<String, Object> responseBody = new HashMap<>();
@@ -80,18 +80,7 @@ public class GeneralController {
             throw new InValidParameterException();
         }
 
-        if(memberService.checkLoginId(memberRequest.getLoginId())) return CommonResponse.dataError(2, "이미 존재하는 ID");
-        return CommonResponse.ok(null);
-    }
-
-    // todo 삭제?
-    @PostMapping("/email")
-    public ResponseEntity<?> checkEmail(@Validated @RequestBody EmailRequest emailRequest, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
-            throw new InValidParameterException();
-        }
-
-        if(memberService.checkEmail(emailRequest)) return CommonResponse.dataError(2, "이미 존재하는 email");
+        if(memberService.checkLoginId(memberRequest.getLoginId())) return CommonResponse.dataError(5, "이미 존재하는 ID");
         return CommonResponse.ok(null);
     }
 }

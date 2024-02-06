@@ -33,7 +33,6 @@ public class AuthenticationService {
             // todo 예외처리
         }
         saveRefreshValue(authenticationDto);
-
     }
 
     public boolean compareRefreshToken(Long memberId, String tokenValue, String key) {
