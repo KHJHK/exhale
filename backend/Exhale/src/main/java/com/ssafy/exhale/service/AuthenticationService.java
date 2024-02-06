@@ -2,6 +2,8 @@ package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Authentication;
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
+import com.ssafy.exhale.exception.handler.UserPermissionException;
 import com.ssafy.exhale.repository.AuthenticationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,10 +51,10 @@ public class AuthenticationService {
         return cnt;
     }
 
-    public void logout(long memberId, String key){
+    public void logout(long memberId, String key) {
         long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
-        if(cnt == 0){
-            // todo 예외처리
+        if(cnt == 0) {
+            throw new UserPermissionException();
         }
     }
 }

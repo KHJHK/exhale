@@ -29,7 +29,7 @@ public class EmailController {
     private final CertificationCodeService certificationCodeService;
 
     @PostMapping("/certification")
-    public ResponseEntity<?> certificationEmail(@RequestBody EmailRequest emailRequest){
+    public ResponseEntity<?> certificationEmail(@RequestBody EmailRequest emailRequest) {
         Long memberId = tokenPayloadUtil.getMemberId();
         if(memberService.compareEmail(memberId, emailRequest)) {
             String fullEmail = emailRequest.getEmailId() + "@" + emailRequest.getEmailDomain();
@@ -46,7 +46,7 @@ public class EmailController {
     }
 
     @PostMapping("/check")
-    public ResponseEntity<?> checkCertificationCode(@RequestBody CertificationCodeRequest certificationCodeRequest){
+    public ResponseEntity<?> checkCertificationCode(@RequestBody CertificationCodeRequest certificationCodeRequest) {
         Long memberId = tokenPayloadUtil.getMemberId();
         String code = certificationCodeRequest.getCode();
         if(code==null){
@@ -58,13 +58,13 @@ public class EmailController {
     }
 
     @PostMapping("/temp-password")
-    public ResponseEntity<?> tempPassword(@RequestBody MemberRequest memberRequest){
+    public ResponseEntity<?> tempPassword(@RequestBody MemberRequest memberRequest) {
 
         MemberDto memberDto = memberService.checkLoginIdEmail(memberRequest);
         if(memberDto.getEmailId()==null || memberDto.getEmailDomain()==null){
             // todo 예외처리 이메일 없음
         }
-        String fullEmail = memberDto.getEmailId()+"@"+memberDto.getEmailDomain();
+        String fullEmail = memberDto.getEmailId()+ "@" +memberDto.getEmailDomain();
         String tempPassword = GenerateCertificationCode.getRandomPassword();
         memberService.saveTempPassword(memberDto.getId(), tempPassword);
         try {
@@ -72,7 +72,6 @@ public class EmailController {
         } catch (MessagingException e) {
             throw new RuntimeException(e);  // todo 예외처리 수정
         }
-
         return ResponseEntity.ok("");
     }
 }

@@ -32,14 +32,14 @@ public class CommonExceptionHandler {
     @ExceptionHandler(DuplicateDataException.class)
     public ResponseEntity<?> duplicateDataExceptionHandle(DuplicateDataException exception) {
         String message = exception.getMessage();
-        if(message == null) message = "duplicateData exception";
+        if(message == null) message = "duplicate data exception";
         return CommonResponse.dataError(2, message);
     }
 
     @ExceptionHandler(NoSuchDataException.class)
     public ResponseEntity<?> noSuchDataExceptionHandle(NoSuchDataException exception) {
         String message = exception.getMessage();
-        if(message == null) message = "noSuchData exception";
+        if(message == null) message = "no such data exception";
         return CommonResponse.dataError(4, message);
     }
 
@@ -55,5 +55,12 @@ public class CommonExceptionHandler {
         String message = exception.getMessage();
         if(message == null) message = "server error";
         return CommonResponse.connectionError(HttpStatus.INTERNAL_SERVER_ERROR, message);
+    }
+
+    @ExceptionHandler(UserPermissionException.class)
+    public ResponseEntity<?> userPermissionExceptionHandle(UserPermissionException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "invalid user permission";
+        return CommonResponse.connectionError(HttpStatus.UNAUTHORIZED, message);
     }
 }

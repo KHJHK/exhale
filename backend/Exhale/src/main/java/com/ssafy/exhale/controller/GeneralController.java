@@ -34,7 +34,7 @@ public class GeneralController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/join")
-    public ResponseEntity<?> join(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult){
+    public ResponseEntity<?> join(@Validated @RequestBody MemberRequest memberRequest, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             throw new InValidParameterException();
         }
