@@ -1,15 +1,38 @@
 <template>
-    <!-- 모달 -->
+    
+
+    <form class="search" @submit="onSearch">
+
+      <select class="SelectSearch" v-model="selectedOption" name="WhichSearch">
+        <option id="title" value="title">제목</option>
+        <option id="content" value="content">내용</option>
+        <option id="author" value="author">작성자</option>
+      </select>
+      <button @click="">
+        <font-awesome-icon icon="chevron-down" class="search-icon2" />
+      </button>
+
+      <input class="keyword" v-model="keyword" type="text" name="search" maxlength="255" value="" autocomplete="off">
+
+      <button class="img-button" type="submit" name="click" value="">
+        <font-awesome-icon icon="magnifying-glass" class="search-icon"/>
+      </button>
+
+    </form>
+    
+    <!-- 기존코드
     <div v-show="modalActive" id="search-modal-search">
       <div id="search-modal-search-box">
         <input 
         type="text" 
         @keyup="searchInput" 
-        placeholder="SEARCH" 
-        id="search-modal-search--input">
+        placeholder="" 
+        id="search-modal-search--input"
+        >
       </div>
-      <!-- <div v-show="modalActive" @click="modalActiveTogle" id="search-modal"></div> -->
-    </div>
+      <font-awesome-icon icon="magnifying-glass" class="search-icon"/>
+      div v-show="modalActive" @click="modalActiveTogle" id="search-modal"></div>
+    </div> -->
     <!-- @keyup.esc="modalActiveTogle"  -->
     
     <!-- 모달 배경 -->
@@ -26,42 +49,104 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { defineEmits } from 'vue'
 
-const modalActive = ref(false)
-const ableSearch = ref(true)
-const searchInputData = ref(null)
+const selectedOption = ref('title') // 기본값으로 'title'을 선택
+const keyword = ref('') // 입력된 검색어를 저장할 ref 생성
+const emit = defineEmits(['search'])
+const router = useRouter()
 
-const modalActiveTogle = () => {
-  modalActive.value = !modalActive.value
-  setTimeout(() => {
-    const searchModalInputTag = document.querySelector('#search-modal-search--input')
-    searchModalInputTag.focus()
-  }, 200)
-}
+const onSearch = (e) => {
+  e.preventDefault()
+  // PostWholeListView.vue로 라우팅하면서 선택된 옵션과 검색어를 쿼리 파라미터로 전달
+  // router.push({ name: 'PostWholeListView', query: { searchBy: selectedOption.value, keyword: keyword.value } });
+  emit('search', { option: selectedOption.value, keyword: keyword.value })
+};
 
-const searchInput = () => {
-  if (ableSearch.value) {
-    ableSearch.value = false
-    const searchModalInputTag = document.querySelector('#search-modal-search--input')
-    setTimeout(() => {
-      searchInputData.value = searchModalInputTag.value
-      ableSearch.value = true
-    }, 1000)
-  }
-}
+watch(router.currentRoute, (newRoute) => {
+  // 라우트가 변경될 때마다 선택된 옵션과 검색어를 초기화
+  selectedOption.value = newRoute.query.searchBy || 'title'
+  keyword.value = newRoute.query.keyword || ''
+});
+
+
+
+// import { ref } from 'vue'
+
+
+
+// const modalActive = ref(true)
+// const ableSearch = ref(true)
+// const searchInputData = ref(null)
+
+// const modalActiveTogle = () => {
+//   modalActive.value = !modalActive.value
+//   setTimeout(() => {
+//     const searchModalInputTag = document.querySelector('#search-modal-search--input')
+//     searchModalInputTag.focus()
+//   }, 200)
+// }
+
+// const searchInput = () => {
+//   if (ableSearch.value) {
+//     ableSearch.value = false
+//     const searchModalInputTag = document.querySelector('#search-modal-search--input')
+//     setTimeout(() => {
+//       searchInputData.value = searchModalInputTag.value
+//       ableSearch.value = true
+//     }, 1000)
+//   }
+// }
 
 
 </script>
 
 <style scoped>
-.modal {
-  overflow-y: auto;
-  max-height: 100%;
+.search-icon {
+  display: flex;
+  color: gray;
+  position: absolute;
+  margin-left: 15px;
+  margin-top: -14px;
 }
 
+.keyword {
+  border: none;
+  border-bottom: 3px solid rgb(108, 159, 156);
+  outline: none;
+  background: transparent;
+  width: 250px;
+  color: black;
+}
+
+select {
+  /* display: flex; */
+  padding-left: 10px;
+  margin-bottom: -15px;
+  border: none;
+  outline: none;
+  width: 80px;
+  background: transparent;
+  color: rgb(61, 61, 61);
+  z-index: 1;
+}
+
+.search-icon2 {
+  color: gray;
+  margin-right: 20px;
+  margin-left: -25px;
+  z-index: -1;
+}
+
+/* .modal {
+  overflow-y: auto;
+  max-height: 100%;
+} */
+
 /* 홈화면에서의 서치 요소(작동 안하고, 모달을 띄우는데만 사용) */
-#home-search {
+/* #home-search {
   display: flex;
   justify-content: center;
   margin-bottom: 80px;
@@ -73,10 +158,10 @@ const searchInput = () => {
   border: none;
   border-bottom: white solid;
   background-color: #ffffff00;
-  color: white;
+  color: black;
 }
 
-#home-search-box input:hover {
+ #home-search-box input:hover {
   border-bottom: gray solid;
   transition: all 0.2s;
   transform: scale(1.03);
@@ -85,10 +170,10 @@ const searchInput = () => {
 #home-search-box img {
   width: 35px;
   margin-right: 10px;
-}
+} */
 
 /* 서치용 모달 내부 요소 */
-#search-modal {
+/* #search-modal {
   z-index: 10;
   position: fixed;
   top: 0px;
@@ -98,8 +183,8 @@ const searchInput = () => {
 
 #search-modal-search {
   z-index: 20;
-  width: 60%;
-  /* position: fixed; */
+  width: 85%;
+  position: fixed;
   top: 330px;
   display: flex;
   align-items: center;
@@ -108,27 +193,27 @@ const searchInput = () => {
 }
 
 #search-modal-search-box {
+  position: relative;
   z-index: 30;
-  padding: 0px 10px;
+  padding: 10px 60px;
   border-bottom: 3px solid rgba(108, 159, 156, 0.8);
-  /* margin-top: 50px; */
+  margin-top: -10px;
 }
 
 #search-modal-search-box input {
   font-family: 'NanumSquareNeo-Variable';
   outline: none;
   border: none;
-  border-bottom: white solid;
   background-color: #ffffff00;
-  color: white;
+  color: black;
 }
 
 #search-modal-search-box input:hover {
   transition: all 0.2s;
   transform: scale(1.03);
-}
+} */
 
-#search-modal-search-box img {
+/* #search-modal-search-box img {
   width: 35px;
   margin-right: 10px;
 }
@@ -137,10 +222,10 @@ const searchInput = () => {
   width: 100%;
   max-width: 900px;
   z-index: 30;
-}
+} */
 
 /* 배경 애니메이션 */
-#search-modal-bg {
+/* #search-modal-bg {
   z-index: 10;
   position: fixed;
   top: 0px;
@@ -149,27 +234,6 @@ const searchInput = () => {
   height: 100%;
   background-color: rgba(108, 159, 156, 0.9);
   /* backdrop-filter: blur(20px); */
-}
 
-button {
-  color: rgba(116, 116, 116, 0);
-}
-/* Keyframes for fade-in animation */
-@-webkit-keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 </style>

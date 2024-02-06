@@ -8,6 +8,11 @@ import "bootstrap"
 import dayjs from './plugins/dayjs';
 import { mdiAccount } from '@mdi/js'
 
+// fontawesome import
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+library.add(fas)
 
 const app = createApp(App)
 const pinia = createPinia();
@@ -24,6 +29,9 @@ const vuetify = createVuetify({
     defaultSet: 'mdi',
   }
 })
+
+// createApp을 통해 생성한Application 인스턴스의 component API 활용
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(createPinia())
 app.use(router)

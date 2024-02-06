@@ -24,34 +24,46 @@
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">{{ msg }}</button> 
       </section>
+    
       
-      <nav class="navbar-links">
-        <RouterLink 
+<!-- vuetify -->
+<div class="vutifyTabs">
+    <v-tabs
+      v-model="tab"
+      color="#6C9F9C"
+      align-tabs="center"
+    >
+      <v-tab 
+        :value="1"
         :to="{name: 'PostWholeListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostWholeListView'}"
         active-class="active"
-        >전체</RouterLink>
-        <RouterLink 
+      >전체</v-tab>
+      <v-tab 
+        :value="2"
         :to="{name: 'PostInfoListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostInfoListView' }"
         active-class="active"
-        >정보 글</RouterLink>
-        <RouterLink 
+      >정보 글</v-tab>
+      <v-tab 
+        :value="3"
         :to="{name: 'PostReviewListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostReviewListView' }"
         active-class="active"
-        >치료 후기</RouterLink>
-        <RouterLink 
+      >치료 후기</v-tab>
+      <v-tab 
+        :value="4"
         :to="{name: 'PostStoryListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostStoryListView' }"
         active-class="active"
-        >환자 이야기</RouterLink>
-      </nav>
-      
+      >환자 이야기</v-tab>
+    </v-tabs>
+  </div>
+
     </header>
     
     <main>
@@ -65,13 +77,14 @@
         
         <section class="box-item sub-nav3">
           <label><PostCreateBtn /></label> 
-          <label><PostSearch /></label>
+          <label><PostSearch @search="handleSearch" /></label>
           <label>최신순</label>
         </section>
         
         <section class="box-item">
           <article>
-            <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" >
+            <!-- <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" > -->
+            <div v-for="(post, index) in filteredPosts" :key="post.id" >  
               <PostItem
               :number="pageStartIdx + index + 1"
               :title="post.title"
@@ -105,7 +118,7 @@
 </template>
 
 <script setup>
-import { computed, onUpdated, ref } from 'vue'
+import { computed, onUpdated, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
 import { getPosts} from '@/api/posts'
 import PostItem from '@/components/posts/PostItem.vue'
@@ -129,11 +142,35 @@ const board_caterogy = async() => {
 
 
 
+const searchOption = ref(null);
+const searchKeyword = ref('');
+
+const handleSearch = ({ option, keyword }) => {
+  searchOption.value = option;
+  searchKeyword.value = keyword;
+  fetchPosts(); // 필터링된 포스트를 다시 가져옵니다.
+};
+
+const filteredPosts = computed(() => {
+  if (!searchOption.value || !searchKeyword.value) {
+    return posts.value;
+  }
+  return posts.value.filter(post => {
+    const valueToSearch = post[searchOption.value];
+    return valueToSearch && valueToSearch.includes(searchKeyword.value);
+  });
+});
+
+
 const show = ref(false)
 
 function toggleMenu() {
   show.value = !show.value
 }
+
+// vuetify Tabs components
+const tab = ref(null);
+
 
 // const open = () => {
 //   show.value = !show.value
@@ -182,24 +219,18 @@ curPage.value = data;
 
 const fetchPosts = async () => {
   try {
-    const { data } = await getPosts()
-    posts.value = data
-    
-
-
+    // URL 쿼리 파라미터를 기반으로 필터링된 포스트를 가져옵니다.
+    const searchBy = route.query.searchBy;
+    const keyword = route.query.keyword;
+    const { data } = await getPosts(searchBy, keyword);
+    posts.value = data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-  // console.dir(response)
-  // getPosts().then(response => {
-  //   console.log('response:', response)
-  // }).catch(error => {
-  //   console.log('error:', error)
-  // })
 };
 fetchPosts()
 
-
+watch(() => route.query, fetchPosts);
 
 const goPage = (id) => {
 router.push(`/posts/${id}`)
@@ -211,5 +242,3 @@ router.push(`/posts/${id}`)
   @import "@/assets/scss/layout/_article.scss";
   @import "@/assets/scss/layout/_grid.scss";
 </style>
-
-
