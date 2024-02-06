@@ -2,24 +2,20 @@ package com.ssafy.exhale.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
-import com.ssafy.exhale.util.MessageUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 public class FilterExceptionHandler extends OncePerRequestFilter {
 
-    private MessageUtil messageUtil;
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
