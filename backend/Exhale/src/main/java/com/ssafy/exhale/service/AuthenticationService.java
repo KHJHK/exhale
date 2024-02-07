@@ -2,10 +2,13 @@ package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Authentication;
 import com.ssafy.exhale.dto.logicDto.AuthenticationDto;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
+import com.ssafy.exhale.exception.handler.UserPermissionException;
 import com.ssafy.exhale.repository.AuthenticationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +22,6 @@ public class AuthenticationService {
     private long expireAt;
 
     public boolean saveRefreshValue(AuthenticationDto authenticationDto) {
-        removeRefreshValue(authenticationDto.getMemberId());
-
         authenticationDto.setExpireAt(expireAt);
         Authentication authentication = authenticationDto.toEntity();
         authenticationRepository.save(authentication);
@@ -28,14 +29,16 @@ public class AuthenticationService {
         return true;
     }
 
+    @Transactional
     public void reSaveRefreshValue(AuthenticationDto authenticationDto) {
-        removeRefreshValue(authenticationDto.getMemberId());
+        if(removeRefreshValue(authenticationDto.getMemberId(), authenticationDto.getKey()) == 0) {
+            // todo 예외처리
+        }
         saveRefreshValue(authenticationDto);
-
     }
 
-    public boolean compareRefreshToken(Long memberId, String tokenValue) {
-        return authenticationRepository.findByMemberId(memberId)
+    public boolean compareRefreshToken(Long memberId, String tokenValue, String key) {
+        return authenticationRepository.findByMemberIdAndKey(memberId, key)
                 .map(auth -> auth.getRefreshValue().equals(tokenValue))
                 .orElseGet(() -> {
                     // TODO: 예외 처리
@@ -43,15 +46,15 @@ public class AuthenticationService {
                 });
     }
 
-    public void removeRefreshValue(long memberId) {
-        List<Authentication> authentications = authenticationRepository.findAllByMemberId(memberId);
-        for (Authentication auth : authentications) {
-            authenticationRepository.deleteByMemberId(auth.getMemberId());
-        }
+    public long removeRefreshValue(Long memberId, String key) {
+        long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
+        return cnt;
     }
-    public void logout(long memberId){
-        authenticationRepository.findByMemberId(memberId).ifPresent((auth)->{
-            authenticationRepository.deleteByMemberId(memberId);
-        });
+
+    public void logout(long memberId, String key) {
+        long cnt = authenticationRepository.deleteByMemberIdAndKey(memberId, key);
+        if(cnt == 0) {
+            throw new UserPermissionException();
+        }
     }
 }

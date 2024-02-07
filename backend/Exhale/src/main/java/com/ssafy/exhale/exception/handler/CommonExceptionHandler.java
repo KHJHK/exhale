@@ -1,6 +1,7 @@
 package com.ssafy.exhale.exception.handler;
 
 import com.ssafy.exhale.dto.responseDto.commonDto.CommonResponse;
+import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -25,21 +26,23 @@ public class CommonExceptionHandler {
     
     //파라미터 검증 실패 예외
     @ExceptionHandler(InValidParameterException.class)
-    public ResponseEntity<?> inValidParameterExceptionHandle() {
-        return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, "invalid request parameter");
+    public ResponseEntity<?> inValidParameterExceptionHandle(InValidParameterException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "invalid request parameter";
+        return CommonResponse.connectionError(HttpStatus.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(DuplicateDataException.class)
     public ResponseEntity<?> duplicateDataExceptionHandle(DuplicateDataException exception) {
         String message = exception.getMessage();
-        if(message == null) message = "duplicateData exception";
+        if(message == null) message = "duplicate data exception";
         return CommonResponse.dataError(2, message);
     }
 
     @ExceptionHandler(NoSuchDataException.class)
     public ResponseEntity<?> noSuchDataExceptionHandle(NoSuchDataException exception) {
         String message = exception.getMessage();
-        if(message == null) message = "noSuchData exception";
+        if(message == null) message = "no such data exception";
         return CommonResponse.dataError(4, message);
     }
 
@@ -54,6 +57,20 @@ public class CommonExceptionHandler {
     public ResponseEntity<?> S3ExceptionHandle(S3Exception exception) {
         String message = exception.getMessage();
         if(message == null) message = "server error";
+        return CommonResponse.connectionError(HttpStatus.INTERNAL_SERVER_ERROR, message);
+    }
+
+    @ExceptionHandler(UserPermissionException.class)
+    public ResponseEntity<?> userPermissionExceptionHandle(UserPermissionException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "invalid user permission";
+        return CommonResponse.connectionError(HttpStatus.UNAUTHORIZED, message);
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<?> messagingExceptionHandle(MessagingException exception) {
+        String message = exception.getMessage();
+        if(message == null) message = "messaging exception";
         return CommonResponse.connectionError(HttpStatus.INTERNAL_SERVER_ERROR, message);
     }
 }

@@ -9,6 +9,10 @@ public class InValidParameterException extends RuntimeException {
         super(cause);
     }
 
+    public InValidParameterException(String message) {
+        super(message);
+    }
+
     public InValidParameterException(String message, Throwable cause) {
         super(message, cause);
     }

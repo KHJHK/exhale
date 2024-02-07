@@ -22,17 +22,19 @@ public class AuthenticationDto {
     private String refreshValue;
     private LocalDateTime createdTime;
     private Long expireAt;
+    private String key;
 
     public static AuthenticationDto of(){
         return new AuthenticationDto();
     }
-    public static AuthenticationDto of(String id, Long memberId, String refreshValue, LocalDateTime createTime, Long expireAt){
+    public static AuthenticationDto of(String id, Long memberId, String refreshValue, LocalDateTime createTime, Long expireAt, String key){
         return new AuthenticationDto(
                 id,
                 memberId,
                 refreshValue,
                 createTime,
-                expireAt
+                expireAt,
+                key
         );
     }
     public Authentication toEntity(){
@@ -41,7 +43,8 @@ public class AuthenticationDto {
                 memberId,
                 refreshValue,
                 createdTime,
-                expireAt
+                expireAt,
+                key
         );
     }
 }

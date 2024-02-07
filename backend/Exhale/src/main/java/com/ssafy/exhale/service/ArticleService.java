@@ -11,6 +11,8 @@ import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
 import com.ssafy.exhale.dto.responseDto.ArticleResponse;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
+import com.ssafy.exhale.exception.handler.UserPermissionException;
 import com.ssafy.exhale.repository.ArticleFileRepository;
 import com.ssafy.exhale.repository.ArticleRepository;
 import com.ssafy.exhale.repository.BoardRepository;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,7 +39,7 @@ public class ArticleService {
     private final S3Util s3Util;
     private final int PAGE_SIZE = 10;
 
-    public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page){
+    public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page) {
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
         List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);
 
@@ -48,17 +51,17 @@ public class ArticleService {
                 .collect(Collectors.toList());
     }
 
-    public ArticleResponse getArticle(Long articleId){
-        try{
+    public ArticleResponse getArticle(Long articleId) {
+        try {
             Article article = articleRepository.findByIdAndIsDelete(articleId, false);
             return ArticleResponse.from(ArticleDto.from(article));
-        }catch (Exception e){
-            System.out.println(articleId + "번 게시글 존재 X");
-            return null;
+        } catch (NullPointerException e){
+            throw new NoSuchDataException(e);
         }
     }
+
     //request로 받도록 설정
-    public void postArticle(ArticleRequest articleRequest, Long memberId){
+    public void postArticle(ArticleRequest articleRequest, Long memberId) {
         try {
             Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
             Member member = memberRepository.getReferenceById(memberId);
@@ -74,21 +77,21 @@ public class ArticleService {
             );
 
             articleRepository.save(article);
-        } catch (Exception e){
-            System.out.println("필요 데이터 존재 X");
+        } catch (NullPointerException e){
+            throw new NoSuchDataException(e);
         }
     }
 
-    public void modifyArticle(Long articleId, ArticleRequest articleRequest, Long memberId){
+    public void modifyArticle(Long articleId, ArticleRequest articleRequest, Long memberId) {
         try{
             Article originalArticle = articleRepository.findByIdAndIsDelete(articleId, false);
-            if(memberRepository.findById(memberId).isPresent()){
-                Member member = memberRepository.findById(memberId).get();
-                if(!Objects.equals(member.getId(), originalArticle.getMember().getId())){
-                    System.out.println("권한 없는 사용자");
-                    return;
-                }
+            Optional<Member> memberOpt = memberRepository.findById(memberId);
+            Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+            if(!Objects.equals(member.getId(), originalArticle.getMember().getId())){
+                throw new UserPermissionException();
             }
+
             ArticleDto originalArticleDto = ArticleDto.from(originalArticle);
 
             originalArticleDto.setId(articleId);
@@ -97,27 +100,26 @@ public class ArticleService {
             originalArticleDto.setContent(articleRequest.getContent());
             originalArticleDto.setThumbnail(articleRequest.getThumbnail());
 
-
             Article modifyArticle = originalArticleDto.toEntity(
                     originalArticleDto.getBoardDto().toEntity(),
                     originalArticleDto.getMemberDto().toEntity()
             );
             articleRepository.save(modifyArticle);
-        }catch (Exception e){
-            System.out.println("필요 데이터 존재 X");
+        } catch (NullPointerException e) {
+            throw new NoSuchDataException();
         }
     }
 
     public void deleteArticle(Long articleId, Long memberId){
         try{
             Article originalArticle = articleRepository.findByIdAndIsDelete(articleId,false);
-            if(memberRepository.findById(memberId).isPresent()){
-                Member member = memberRepository.findById(memberId).get();
-                if(!Objects.equals(member.getId(), originalArticle.getMember().getId())){
-                    System.out.println("권한 없는 사용자");
-                    return;
-                }
+            Optional<Member> memberOpt = memberRepository.findById(memberId);
+            Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+
+            if(!Objects.equals(member.getId(), originalArticle.getMember().getId())){
+                throw new UserPermissionException();
             }
+
             ArticleDto articleDto = ArticleDto.from(originalArticle);
             articleDto.setIsDelete(true);
             Article deleteArticle = articleDto.toEntity(
@@ -125,8 +127,8 @@ public class ArticleService {
                     articleDto.getMemberDto().toEntity()
             );
             articleRepository.save(deleteArticle);
-        }catch (Exception e){
-            System.out.println("필요 데이터 X");
+        } catch (NullPointerException e){
+            throw new NoSuchDataException();
         }
     }
 
@@ -140,26 +142,26 @@ public class ArticleService {
                         return ArticleResponse.from(articleDto);
                     })
                     .collect(Collectors.toList());
-        } catch (Exception e){
-            System.out.println("error");
-            return null;
+        } catch (NullPointerException e){
+            throw new NoSuchDataException();
         }
     }
 
-    public String saveImage(MultipartFile file, Long articleId){
-        try{
-            String imageURL = s3Util.saveImage(file);
+    public String saveImage(MultipartFile file) {
+        return s3Util.saveImage(file);
+
+        /*
+        deprecated
+        try {
             Article article = articleRepository.getReferenceById(articleId);
             articleFileRepository.save(ArticleFile.of(null, article, false, imageURL));
-
-            return imageURL;
-        }catch (Exception e){
-            System.out.println("save error");
-            e.printStackTrace();
-            return null;
+        } catch (NullPointerException e) {
+            throw new NoSuchDataException();
         }
+         */
     }
 
+    /*
     public void deleteImage(Long articleFileId){
         try{
             ArticleFile articleFile = articleFileRepository.findById(articleFileId).get();
@@ -167,8 +169,9 @@ public class ArticleService {
             articleFileDto.setIsDelete(true);
             ArticleFile deleteArticleFile = articleFileDto.toEntity(articleFile.getArticle());
             articleFileRepository.save(deleteArticleFile);
-        }catch (Exception e){
-            System.out.println("save error");
+        } catch (NullPointerException e) {
+            throw new NoSuchDataException();
         }
     }
+     */
 }

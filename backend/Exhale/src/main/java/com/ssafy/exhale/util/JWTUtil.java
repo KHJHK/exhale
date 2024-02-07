@@ -1,5 +1,6 @@
 package com.ssafy.exhale.util;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -36,8 +37,10 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("member_id",Integer.class);
     }
 
-    public Boolean isExpired(String token){
+    public Boolean isExpired(String token) throws ExpiredJwtException{
+
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+
     }
 
 

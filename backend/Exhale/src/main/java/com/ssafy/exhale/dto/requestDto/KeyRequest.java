@@ -6,11 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class NicknameRequest {
+@NoArgsConstructor
+public class KeyRequest {
     @NotBlank
-    String nickname;
+    private String key;
 }

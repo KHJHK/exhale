@@ -3,7 +3,6 @@ package com.ssafy.exhale.dto.requestDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
@@ -14,10 +13,12 @@ import lombok.*;
 @ToString
 public class MemberRequest {
     @NotBlank
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d).{4,}$")
     @JsonProperty("login_id")
     private String loginId;
 
     @NotBlank
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[!@#$%^&*()-_+=<>?]).{10,}$")
     private String password;
 
     @NotBlank
@@ -62,6 +63,7 @@ public class MemberRequest {
                 emailDomain,
                 birth,
                 nickname,
+                null,
                 null,
                 null,
                 null,

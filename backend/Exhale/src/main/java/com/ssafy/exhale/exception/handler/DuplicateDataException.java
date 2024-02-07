@@ -9,6 +9,10 @@ public class DuplicateDataException extends RuntimeException {
         super(cause);
     }
 
+    public DuplicateDataException(String message) {
+        super(message);
+    }
+
     DuplicateDataException(String message, Throwable cause) {
         super(message, cause);
     }
