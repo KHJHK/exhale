@@ -129,21 +129,13 @@ import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
-import boardCategory from '@/api/boards.js'
-
-
-
-const board_caterogy = async() => {
- const response = await boardCategory()
- console.log(response)
-}
-
-
-
-
+import {boardList} from '@/api/boards' 
 
 const searchOption = ref(null);
 const searchKeyword = ref('');
+
+const board_id = ref(0)
+
 
 const handleSearch = ({ option, keyword }) => {
   searchOption.value = option;
@@ -171,17 +163,6 @@ function toggleMenu() {
 // vuetify Tabs components
 const tab = ref(null);
 
-
-// const open = () => {
-//   show.value = !show.value
-//   return show
-// }
-
-// console.log(show.value)
-
-
-
-
 const posts = ref([])
 const route = useRoute()
 const router = useRouter()
@@ -207,7 +188,7 @@ const articles = new Array(111)
  
   const ITEM_PER_PAGE = ref(10);
   const PAGE_PER_SECTION = ref(10);
-  let curPage = ref(1);
+  const curPage = ref(1);
 
   const pageStartIdx = computed(() => {
     return (curPage.value - 1) * ITEM_PER_PAGE.value;
@@ -215,7 +196,18 @@ const articles = new Array(111)
 
   const onChangePage = (data) => {
 curPage.value = data;
+console.log(curPage.value)
 };
+
+
+const board_list = async () => {
+  const response = await boardList(
+    
+  curPage.value
+  )
+}
+
+
 
 const fetchPosts = async () => {
   try {

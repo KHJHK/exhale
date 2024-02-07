@@ -32,7 +32,7 @@
                 </p>
                 <div class="input-group-flex">
                   <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" /> 
-                  <button class="doubleCheck" @click.prevent="verify_Number_Create">중복확인</button>
+                  <button class="doubleCheck" @click.prevent="verify_Number_Create" :disabled="isVerifying">인증요청</button>
                 </div>
               </div>
               <div class="input-group">
@@ -302,16 +302,23 @@ const sendKakaoTokenToServer = async () => {
 //     throw error;
 //   }};
 
+const isVerifying = ref(false)
 
-
+// 이메일 인증요청
 const verify_Number_Create = async () => {
-
-    const response = await verifyNumberCreate(
-      email_id.value,
-      email_domain.value
-      )
-      console.log(response)
-  };
+if(isVerifying.value) return
+try{
+  const response = await verifyNumberCreate(
+    email_id.value,
+    email_domain.value
+    );
+    isVerifying.value = true
+  }catch(error) {
+    
+  } finally {
+    isVerifying.value = false
+  }
+};
   
 
 const emailVerifyRequest = async (email, emailDomain) => {

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
 const formDataHeader = {"Content-Type":
 "multipart/form-data"};
-
+const accessToken = localStorage.getItem('JWT_token')
     // 2 - 이미 존재하는 값
     const isIdDuplicated = async (userId) => {
         
@@ -28,14 +28,16 @@ const formDataHeader = {"Content-Type":
 
             const verifyNumberCreate = async (email_id, email_domain) => {
                 try {
-                    const response = await axios.post('http://192.168.192.3:8080/api/email/certification', {
+                    const response = await axios.post('http://i10b208.p.ssafy.io/api/email/certification', {
                         email_id: email_id,
                         email_domain : email_domain
                     })
-                    console.log('인증 성공!', response)
+                    if (response) {
+                    console.log('인증번호 전송완료!', response)}
                 } catch (error) {
-                    console.error('이메일 중복 확인 요청 에러:', error)
-                    throw error;
+                    console.error(error)
+                    alert('이미 인증된 이메일입니다. 다른 이메일 계정으로 시도해주세요.')
+
                  }}; 
             
             const emailVerifyRequest = async (email_id, email_domain) => {
@@ -183,7 +185,7 @@ const formDataHeader = {"Content-Type":
                             member_id : member_id
                         }, {
                             headers : {
-                                'Authorization': `Bearer ${refresh_token}`
+                                'Authorization': `Bearer ${accessToken}`
                             }
                         })
                     };

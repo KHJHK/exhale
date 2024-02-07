@@ -17,6 +17,7 @@
 <style scoped>
   p {
     color: gray;
+    cursor: pointer;
     border: 2px solid gray;
     border-radius: 20px;
     padding: 5px 20px;

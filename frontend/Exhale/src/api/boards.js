@@ -1,14 +1,97 @@
 import axios from "axios";
+const accessToken = localStorage.getItem('JWT_token')
+//카테고리 조회 요청
+// const boardCategory = async () => {
+//     try {
+//     const response = await axios.get('http://i10b208.p.ssafy.io/api/boards')    
+    
+//     console.log(response.data.response)
+    
+//     } catch (error){
+//         console.error('분류가 안되네요 지금', error)
+//     }
+// }   
 
-const boardCategory = async () => {
+//글 목록 조회 ~
+const boardList = async (board_id, page) => {
     try {
-    const response = await axios.get('http://i10b208.p.ssafy.io/api/boards')    
-    console.log(response)
-    } catch (error){
-        console.log('에러가 발생했습니다.')
-    }
-}   
+    const response = await axios.get(`http://i10b208.p.ssafy.io/api//boards/${board_id}/page=${page}`, {
+        board_id: board_id,
+        page: page
+    })
+    } catch (error) {
+        console.error('글 목록을 가져오지 못했어요.', error)
+    }}
 
-export default {
-    boardCategory
+//게시글 검색 x
+const boardSearch = async (board_id, searchType, searchContent, page) => {
+    try {
+    const response = await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
+        board_id : board_id,
+        searchType : searchType, // title, content, author
+        searchContent : searchContent,
+        page : page // int 
+    }) 
+    } catch (error) {
+        console.error('검색을 완료하지 못했습니다.', error)
+    }
+}
+
+//글 상세 정보 조회 x
+const boardDetail = async () => {
+    try {
+    const response = await axios.get('http://i10b208.p.ssafy.io/api/articles/{article_id}', {
+        
+        headers: {
+            'Authorization': `${accessToken}`
+        }
+    })
+    } catch (error) {
+        console.log('게시물을 찾을 수 없습니다.', error)
+    }
+}
+
+//게시글 생성 O
+const articleCreate = async (title, content, thumbnail, board_id) => {
+    try {
+    const response = await axios.post('http://i10b208.p.ssafy.io/api/articles', {
+        title: title,
+        content: content,
+        thumbnail: null,
+        board_id: board_id
+    }, {
+        headers: {
+            'Authorization': `${accessToken}`
+        }
+    });    
+    } catch (error) {
+        console.error('게시글 등록에 실패하였습니다.', error)
+    }}
+
+//이미지 저장 x
+const saveImg = async (file) => {
+ try {
+    const response = await axios.post('http://i10b208.p.ssafy.io/api/articles/image/{article_id}', {
+ }, { 
+    headers : {
+        "Content-Type": "multipart/form-data"
+    }
+    })
+ } catch (error) {
+    console.error('이미지를 저장할 수 없어요', error)
+ }
+}
+
+
+
+
+
+
+
+export {
+    boardList,
+    boardSearch,
+    boardDetail,
+    articleCreate,
+    saveImg
 };
