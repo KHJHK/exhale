@@ -33,6 +33,9 @@ public class CommentService {
             Comment commentEntity = null;
             if (commentRequest.getParentId() != null) {
                 commentEntity = commentRepository.getReferenceById(commentRequest.getParentId());
+                if(commentEntity.getParentComment().getArticle().getId().equals(commentRequest.getArticleId())){
+                    throw new InValidParameterException("현재 게시글에 존재하지 않는 댓글에 대댓글을 작성했습니다.");
+                }
             }
 
             CommentDto commentDto = commentRequest.toDto(
