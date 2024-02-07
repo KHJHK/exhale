@@ -12,7 +12,7 @@
         </section>
 
             <div>
-                <input v-model="form.title" class="titleInput" id="title" placeholder="제목을 입력하세요">
+                <input v-model="title" class="titleInput" id="title" placeholder="제목을 입력하세요">
             </div>
             <div class="author">
                 (작성자명) 
@@ -101,7 +101,7 @@
                 
             <div class="mb-3">
                 <p class="howtowrite">어떻게 쓰나요?</p>
-                <textarea v-model="form.content" class="textcontent" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
+                <textarea v-model="content" class="textcontent" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
             </div>
             
             <div class="twoButton">
@@ -136,14 +136,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { createPost } from '@/api/posts'
-import EmojiPicker from 'vue3-emoji-picker'
-import 'vue3-emoji-picker/css'
-import { watch } from 'vue'
-import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js'
-import { articleCreate } from '@/api/boards'
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+import EmojiPicker from 'vue3-emoji-picker';
+import 'vue3-emoji-picker/css';
+import { watch } from 'vue';
+import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js';
+import { articleCreate } from '@/api/boards';
+
 
 const selectedCategory = ref('');
 const router = useRouter()
@@ -151,10 +151,7 @@ const title = ref('');
 const content = ref('')
 const thumbnail = ref(null);
 const board_id = ref('')
-const form = ref({
-    title: null,
-    content: null,
-})
+
 
 const rules = ref([
   value => {
@@ -216,22 +213,17 @@ const article_create = async () => {
             content.value,
             thumbnail.value,
             board_id.value
-       )
-       if (response) {
-        alert('게시글 등록 완료!')
-        router.push('/post-whole-list') 
-    }
+       ) 
     } catch (error) {
         console.error('게시글 등록에 실패하였습니다.', error)
-    }
+        
+    } finally { router.push('/post-whole-list') } 
 }
 
 // 게시물 종류 선택시 게시물 아이디 정해짐
 const onCategoryChange = () => {
   board_id.value =  parseInt(selectedCategory.value, 10);
 };
-
-
 
 
 </script>

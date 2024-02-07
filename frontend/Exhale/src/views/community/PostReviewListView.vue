@@ -123,7 +123,7 @@
 <script setup>
 import { computed, onUpdated, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
-import { getPosts} from '@/api/posts'
+
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 import CommunityMenu from '@/components/modals/CommunityMenu.vue'
@@ -209,20 +209,7 @@ const articles = new Array(111)
 curPage.value = data;
 };
 
-const fetchPosts = async () => {
-  try {
-    // URL 쿼리 파라미터를 기반으로 필터링된 포스트를 가져옵니다.
-    const searchBy = route.query.searchBy;
-    const keyword = route.query.keyword;
-    const { data } = await getPosts(searchBy, keyword);
-    posts.value = data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-fetchPosts()
 
-watch(() => route.query, fetchPosts);
 
 const goPage = (id) => {
 router.push(`/posts/${id}`)

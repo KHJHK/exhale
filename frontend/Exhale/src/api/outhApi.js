@@ -115,16 +115,14 @@ const accessToken = localStorage.getItem('JWT_token')
                     localStorage.setItem('key',response.data.response.token.key);
                     console.log('로그인 성공:', response.data);
                     alert('환영합니다.')
-
-                return response.data;
             } catch (error) {
                 // 로그인 실패 시 에러 처리
                 if (axios.isAxiosError(error) && error.response) {
                     console.error('로그인 실패:', error.response.data.message);
                     alert(`로그인 실패: ${error.response.data.message}`);
                 } else {
-                    console.error('알 수 없는 에러:', error);
-                    alert('알 수 없는 에러가 발생했습니다.');
+                    console.error('undefined user:', error);
+                    alert('등록되지 않은 아이디입니다.');
                 }
                 throw error;
             }};

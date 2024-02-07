@@ -15,10 +15,12 @@ const accessToken = localStorage.getItem('JWT_token')
 //글 목록 조회 ~
 const boardList = async (board_id, page) => {
     try {
-    const response = await axios.get(`http://i10b208.p.ssafy.io/api//boards/${board_id}/page=${page}`, {
+    const response = await axios.get(`http://i10b208.p.ssafy.io/api/boards/${board_id}?page=${page}`, {
         board_id: board_id,
         page: page
+        
     })
+        console.log(response.data)
     } catch (error) {
         console.error('글 목록을 가져오지 못했어요.', error)
     }}
@@ -64,8 +66,12 @@ const articleCreate = async (title, content, thumbnail, board_id) => {
             'Authorization': `${accessToken}`
         }
     });    
+         if (response.status === 200) {
+        alert('게시글 등록 완료!')
+    }
     } catch (error) {
         console.error('게시글 등록에 실패하였습니다.', error)
+        alert('로그인 후 이용해주세요.') // 원래는 status분기를 갈라서 다른 에러메시지를 출력해야함.
     }}
 
 //이미지 저장 x

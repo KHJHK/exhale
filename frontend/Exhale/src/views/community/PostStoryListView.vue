@@ -123,7 +123,7 @@
 <script setup>
 import { computed, onUpdated, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
-import { getPosts} from '@/api/posts'
+
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 import CommunityMenu from '@/components/modals/CommunityMenu.vue'
