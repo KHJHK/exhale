@@ -4,6 +4,7 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getCourseList, getProblem  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
+import TTS from '@/components/ARC/TTS.vue';
 
 
 // const authStore = useAuthStore();
@@ -37,6 +38,10 @@ const contentField = ref("")
 const handleContentFieldChange = (value) => {
   contentField.value = value;
 };
+
+// TTS
+const ttsText = ref("안녕하세요");
+
 </script>
 
 <template>
@@ -44,6 +49,9 @@ const handleContentFieldChange = (value) => {
       <STT 
         @update:modelValue="handleContentFieldChange"
         />
+      <TTS
+        :tts-text="ttsText"
+      />
     </div>
 </template>
 
