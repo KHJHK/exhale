@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/**").permitAll()
                         .requestMatchers("/", "/general/**", "/email/**", "/rehabilitation","/rehabilitation/{course_id}", "/rehabilitation/problem/{category_id}",
-                                "/boards", "/boards/{board_id}", "/boards/search").permitAll()
+                                "/boards", "/boards/{board_id}", "/boards/search", "/articles/{article_id}", "/comments/list/{article_id}").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")

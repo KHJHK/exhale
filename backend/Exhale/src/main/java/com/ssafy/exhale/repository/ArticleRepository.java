@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long>, ArticleRepositoryCustom {
     List<Article> findAllByBoardIdAndIsDelete(Integer boardId, PageRequest page, Boolean isDelete);
+    List<Article> findByIsDelete(PageRequest page, Boolean isDelete);
     Article findByIdAndIsDelete(Long articleId, Boolean isDelete);
 }

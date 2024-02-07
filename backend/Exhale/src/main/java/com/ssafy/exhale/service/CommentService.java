@@ -12,6 +12,7 @@ import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.repository.ArticleRepository;
 import com.ssafy.exhale.repository.CommentRepository;
 import com.ssafy.exhale.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,8 @@ public class CommentService {
             commentRepository.save(commentDto.toEntity(articleEntity, memberEntity, commentEntity));
         } catch (DataIntegrityViolationException exception){
             throw new InValidParameterException("상위 댓글이 없습니다.");
+        } catch (EntityNotFoundException exception) {
+            throw new InValidParameterException("현재 게시글에 존재하지 않는 댓글에 대댓글을 작성했습니다.");
         }
     }
 

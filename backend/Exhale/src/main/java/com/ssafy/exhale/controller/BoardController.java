@@ -22,6 +22,13 @@ public class BoardController {
         return CommonResponse.ok(boardService.getBoardList());
     }
 
+
+    //게시판 전제 게시글 목록
+    @GetMapping("/all")
+    public ResponseEntity<CommonResponse> getBoardAllList(@RequestParam("page") int page) {
+        return CommonResponse.ok(articleService.getArticleList(page));
+    }
+
     //게시판별 게시글 목록
     @GetMapping("/{board_id}")
     public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page) {

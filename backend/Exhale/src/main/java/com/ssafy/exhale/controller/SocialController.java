@@ -34,7 +34,7 @@ public class SocialController {
         KakaoTokenDto kakaoTokenResponse = oauthService.requestKakaoToken(code, "login").getBody();
         KakaoInfoDto kakaoInfoDto = oauthService.requestKakaoUserInfo(kakaoTokenResponse);
         MemberDto memberDto = oauthService.findUserByEmail(kakaoInfoDto);
-        if(memberDto == null){
+        if(memberDto == null) {
             return CommonResponse.dataError(4, "해당 회원 정보 없음");
         }
         if(memberDto.getWithdraw()){
