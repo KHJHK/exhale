@@ -1,6 +1,7 @@
 <template>
-  <div :style="{ fontSize: fontSize + 'px' }">
-<div id="content">
+<div :style="{ fontSize: fontSize + 'px' }">
+
+  <div id="content">
   <header>
     <section class="main-nav">
       <div class="navbar-logo-link">
@@ -20,9 +21,12 @@
           >
           <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
           >
-          <RouterLink class="breadlink" :to="{name: 'PostStoryListView'}">환자이야기</RouterLink>
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
         </div>
-        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">{{ msg }}</button> 
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+        </button> 
       </section>
     
       
@@ -211,11 +215,11 @@ const board_list = async () => {
 
 const fetchPosts = async () => {
   try {
-    // URL 쿼리 파라미터를 기반으로 필터링된 포스트를 가져옵니다.
     const searchBy = route.query.searchBy;
     const keyword = route.query.keyword;
     const { data } = await getPosts(searchBy, keyword);
     posts.value = data;
+    console.log(response)
   } catch (error) {
     console.error(error);
   }

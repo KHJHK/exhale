@@ -1,50 +1,91 @@
 <template>
-    <div>
+<div :style="{ fontSize: fontSize + 'px' }">
+<div id="content">
+    <section class="main-nav">
+      <div class="navbar-logo-link">
+        <RouterLink :to="{ name: 'MainPage' }">
+          <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
+        </RouterLink>
+      </div>
+      <div class="menu" @click="toggleMenu">
+        <PostMenu v-if="!show" />
+        <CommunityMenu v-else />
+      </div>
+    </section>
+
+      <section class="sub-nav1">
+        <div id="breadcrum">
+          <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
+          >
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
+          >
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
+        </div>
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+        </button> 
+      </section>
+
+
+      <svg-icon type="mdi" :path="path"></svg-icon>
+      <PostSlider class="postslider" />
+
+      <img src="@/assets/double-quote.svg" class="double-quote" >
+
+      <div class="box-container">
         <h2>{{ post.title }}</h2>
         <p>{{ post.content }}</p>
         <p class="text-muted">{{ post.create_date}}</p>
-        <hr class="my-4" />
-        <div class="row g-2">
-            <div class="col-auto">
-                <button class="btn btn-outline-dark" @click="navigateToPost(-1)">이전글</button>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-outline-dark" @click="navigateToPost(1)">다음글</button>
-            </div>
-            <div class="col-auto me-auto"></div>
-            <div class="col-auto">
-                <button class="btn btn-outline-dark" @click="goListPage">목록</button>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-outline-primary" @click="goEditPage">수정</button>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-outline-danger" @click="remove" >삭제</button>
-            </div>
-        </div>
+      </div>
+
+
+      <div id="buttonss">
+        <button class="btn" @click="goListPage">
+          <img src="@/assets/list.svg" class="list" >
+          목록</button>
+        <button class="btn" @click="goEditPage">
+          <img src="@/assets/edit.svg" class="edit" >
+          수정</button>
+        <button class="btn" @click="remove" >
+          <img src="@/assets/delete.svg" class="delete" >
+          삭제</button>
+      </div>
+    
+    <div class="commentlist">
+      <CommentsList :postId="Number(postId)" />
     </div>
-    <hr>
     <div class="comments">
-        <CommentsCreate/>
+      <CommentsCreate/>
     </div>
-    <div>
-
-        <CommentsList :postId="Number(postId)" />
-    </div>
-
+    
+    
+  </div>
   
+  <div class="arrows">
+    <img src="@/assets/left-arrow.svg" class="left-arrow" @click="navigateToPost(-1)">
+    <img src="@/assets/right-arrow.svg" class="right-arrow" @click="navigateToPost(1)">
+  </div>
   
-  
+  <footer class="footer">
+    <Footers/>
+  </footer>
+</div>
 </template>
 
 <script setup>
 import { getPostById, deletePost } from '@/api/posts';
-import { ref, onMounted, watch, provide, reactive } from 'vue';
+import { ref, onMounted, watch, provide, reactive, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineProps } from 'vue';
 import CommentsCreate from '@/components/comments/CommentsCreate.vue';
 import CommentsList from '@/components/comments/CommentsList.vue';
 import { getComments, getPosts } from '@/api/posts.js';
+import CommunityMenu from '@/components/modals/CommunityMenu.vue';
+import PostItem from '@/components/posts/PostItem.vue';
+import PostMenu from '@/components/posts/PostMenu.vue';
+import PostSlider from '@/components/posts/PostSlider.vue';
+import Footers from '@/components/common/Footers.vue';
 
 
 
@@ -63,6 +104,27 @@ const post = ref({
     content: null,
     create_date: null,
 })
+
+
+const show = ref(false)
+
+function toggleMenu() {
+  show.value = !show.value
+}
+
+// vuetify Tabs components
+const tab = ref(null);
+
+const fontSize = ref(16);
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+const enlarge = () => {
+  fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  };
+};
+
+
 
 console.log
 const fetchPosts = async () => {
@@ -164,11 +226,7 @@ provide('post', post)
 
 </script>
 
-<style scoped>
-.comments {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
+<style lang="scss" scoped>
+@import "@/assets/scss/pages/_postdetail.scss";
+@import "@/assets/scss/layout/_article.scss";
 </style>

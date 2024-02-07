@@ -46,17 +46,26 @@
 
 .enlarge {
   color: gray;
-  width: 100px;
+  width: 105px;
+  padding: 2px 0px;
   margin-right: 4vw;
   border-radius: 20px;
-  border: gray solid 3px;
+  border: rgb(159, 159, 159) solid 3px;
   font-family: 'NotoSansKR';
   &:hover {
     color: rgb(108, 159, 156);
     border: rgb(108, 159, 156) solid 3px;
+    & .plus {
+      width: 0px;
+    }
+  }
+  & .plus {
+    width: 19px;
+    padding-bottom: 3px;
+    padding-right: 2px;
+    opacity: 80%;
   }
 }
-
 
 
 .v-btn{

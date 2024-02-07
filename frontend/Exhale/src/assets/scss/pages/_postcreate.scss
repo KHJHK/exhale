@@ -50,17 +50,18 @@
 .twoButton {
   display: flex;
   flex-direction: row;
-  margin-left: 72%;
-  margin-top: 5%;
+  margin-left: 76%;
+  margin-top: 4%;
 }
 
 .buttons {
     margin-right: -1%;
     margin-left: 8%;
     border: none;
-    background-color: lightgray;
+    // background-color: lightgray;
     padding: 5px 11px;
-    border-radius: 7px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
     font-family: 'NotoSansKR';
 
 }
@@ -79,7 +80,7 @@
 
 .mb-3 {
   width: 85%;
-  margin-left: 6%;
+  margin-left: 7%;
 }
 
 .imageBackground {
@@ -104,6 +105,27 @@
   background: transparent;
   color: rgb(50, 50, 50);
   outline: none;
+  }
+
+  .howtowrite {
+    font-family: 'NotoSerifKR';
+    font-size: large;
+    margin-top: -20px;
+  }
+  .textcontent {
+    width: 590px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background: transparent;
+    border: none;
+    font-family: 'NotoSansKR';
+  }
+
+  .textcontent:focus {
+    border-color: none;
+    background: transparent;
+    color: rgb(50, 50, 50);
+    outline: none;
   }
   
   .author {
@@ -159,3 +181,4 @@
   margin-top: 2.5%;
   margin-left: 9%;
 }
+

@@ -20,9 +20,12 @@
           >
           <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
           >
-          <RouterLink class="breadlink" :to="{name: 'PostStoryListView'}">환자이야기</RouterLink>
+          <RouterLink class="breadlink" :to="{name: 'PostReviewListView'}">치료 후기</RouterLink>
         </div>
-        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">{{ msg }}</button> 
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+        </button> 
       </section>
     
       

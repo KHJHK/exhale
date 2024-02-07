@@ -95,8 +95,34 @@
   border-radius: 20px;
   border: rgb(108, 159, 156) solid 2px;
   background-color: none;
-  
+  // transform: scale(1);
+  // transition: 5s ease-in;
+  // transition-delay: 0.2s;
   }
+
+  // .enlarge {
+  //   color: gray;
+  //   width: 105px;
+  //   padding: 2px 0px;
+  //   margin-right: 4vw;
+  //   border-radius: 20px;
+  //   border: rgb(159, 159, 159) solid 3px;
+  //   font-family: 'NotoSansKR';
+  //   &:hover {
+  //     color: rgb(108, 159, 156);
+  //     border: rgb(108, 159, 156) solid 3px;
+  //     & .plus {
+  //       width: 0px;
+  //     }
+  //   }
+  //   & .plus {
+  //     width: 19px;
+  //     padding-bottom: 3px;
+  //     padding-right: 2px;
+  //     opacity: 80%;
+  //   }
+  // }
+
   .eye-icon {
   position: absolute;
   right: 30px;
@@ -144,12 +170,12 @@
   html,
   body {
   height: 100vh;
-  overflow: hidden;
+  // overflow: hidden;
   }
   
   .container {
   position: relative;
-  min-height: 100vh;
+  min-height: 150vh;
   padding-right: 0;
   padding-left: 0;
   margin-left: 0;
@@ -175,16 +201,16 @@
   }
   
   .form {
-  padding: 35px 75px;
+  padding: 40px 75px;
   background-color: var(--white);
   border-radius: 1.5rem;
   width: 100%;
   box-shadow: rgba(71, 71, 71, 0.35) 25px 20px 25px;
-  // transform: scale(0);
-  // transition: .5s ease-in-out;
-  // transition-delay: 0.2s;
+  transform: scale(0);
+  transition: 2s ease-in-out;
+  transition-delay: 0.2s;
   margin-bottom: 1vh;
-  margin-top: -80vh;
+  margin-top: -87vh;
   background-color: #ffffff;
   }
   
@@ -306,69 +332,6 @@
     color: rgb(63, 63, 63);
   }
   
-  // .social-list {
-  // margin: 2rem 0;
-  // padding: 1rem;
-  // border-radius: 1.5rem;
-  // width: 100%;
-  // box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  // transform: scale(0);
-  // transition: .5s ease-in-out;
-  // transition-delay: 1.2s;
-  // }
-  
-  // .social-list>div {
-  // color: var(--white);
-  // margin: 0 .5rem;
-  // padding: .7rem;
-  // cursor: pointer;
-  // border-radius: .5rem;
-  // cursor: pointer;
-  // transform: scale(0);
-  // transition: .5s ease-in-out;
-  // }
-  
-  // .social-list>div:nth-child(1) {
-  // transition-delay: 1.4s;
-  // }
-  
-  // .social-list>div:nth-child(2) {
-  // transition-delay: 1.6s;
-  // }
-  
-  // .social-list>div:nth-child(3) {
-  // transition-delay: 1.8s;
-  // }
-  
-  // .social-list>div:nth-child(4) {
-  // transition-delay: 2s;
-  // }
-  
-  // .social-list>div>i {
-  // font-size: 1.5rem;
-  // transition: .4s ease-in-out;
-  // }
-  
-  // .social-list>div:hover i {
-  // transform: scale(1.5);
-  // }
-  
-  // .facebook-bg {
-  // background-color: var(--facebook-color);
-  // }
-  
-  // .google-bg {
-  // background-color: var(--google-color);
-  // }
-  
-  // .twitter-bg {
-  // background-color: var(--twitter-color);
-  // }
-  
-  // .insta-bg {
-  // background-color: var(--insta-color);
-  // }
-  
   .pointer {
   cursor: pointer;
   }
@@ -391,12 +354,12 @@
   z-index: 6;
   width: 100%;
   }
-  
+
   .text {
   margin: 4rem;
   color: var(--white);
   }
-  
+
   .text label {
   // font-size: 3.5rem;
   // font-weight: 800;
@@ -427,7 +390,7 @@
   
   .text.sign-up h2,
   .img.sign-up img {
-  transform: translateX(350%);
+  transform: translateX(280%);
   position: absolute;
   color: white;
   font-family: 'NotoSerifKR';
@@ -462,26 +425,26 @@
   position: absolute;
   top: 0;
   right: 0;
-  // height: 100vh;
-  // width: 300vw;
-  // transform: translate(35%, 0);
-  // background-color: rgb(108, 159, 156);
+  height: 100vh;
+  width: 200vw;
+  transform: translate(35%, 0);
+  background-color: rgb(108, 159, 156);
   /* background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%); */
-  // transition: 2s ease-in-out;
-  // z-index: 6;
+  transition: 2s ease-in-out;
+  z-index: 6;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-bottom-right-radius: max(50vw, 50vh);
   border-top-left-radius: max(50vw, 50vh);
   }
   
-  .container.sign-in::before {
-  transform: translate(0, 0);
-  right: 50%;
-  }
+  // .container.sign-in::before {
+  // transform: translate(0, 0);
+  // right: 50%;
+  // }
   
   .container.sign-up::before {
   transform: translate(100%, 0);
-  right: 35%;
+  right: 30%;
   }
   
   
@@ -568,3 +531,16 @@
       // font-size: 2rem;
   }
   }
+
+  .intro-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 40%;
+  margin-left: 1500px;
+  padding-top: 43%;
+  // margin-top: 500px;
+  z-index: 25;
+  opacity: 30%;
+}
