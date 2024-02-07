@@ -29,6 +29,7 @@ public class KakaoInfoDto {
                 null,
                 null,
                 null,
+                null,
                 null
         );
     }

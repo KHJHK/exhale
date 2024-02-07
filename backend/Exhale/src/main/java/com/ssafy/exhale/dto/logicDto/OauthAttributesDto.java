@@ -61,6 +61,7 @@ public class OauthAttributesDto {
                 null,
                 null,
                 null,
+                null,
                 null
         );
     }
