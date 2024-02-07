@@ -8,68 +8,65 @@
         {{ msg }}
       </button> 
       <!-- FORM SECTION -->
-      <form>
+      <form :class="{ 'form-enlarge': show }">
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
           <img src="@/assets/logo_white.png" class="intro-logo">
           <div class="form-wrapper align-items-center">
             <div class="form sign-up">
               <div class="input-group">
-                <i class='bx bxs-user'></i>
-                <p v-show="userIdErr" style="color: red; font-weight: bold;" >
-                  아이디는 4자리 이상의 영문,숫자가 조합되어야합니다.
-                </p>
-                <p v-show="userIdDuplicated" style="color: red; font-weight: bold;" >
-                  다른 유저와 중복되는 아이디 입니다.
-                </p>
                 <div class="input-group-flex">
                   <input class="input" v-model.trim="userId" id="userId" placeholder="아이디" type="text" />
                   <button class="doubleCheck" @click.prevent="id_Duplicated">중복확인</button>
                 </div>
               </div>
-              <div class="input-group">
-                <i class='bx bx-mail-send'></i>
-                <p v-show="emailErr" style="color: red; font-weight: bold;">
-                  유효한 이메일 주소를 입력하세요.
+              <div>
+                <p v-show="userIdErr" style="color: red; font-size: small;" >
+                  아이디는 4자리 이상의 영문,숫자가 조합되어야합니다.
                 </p>
+                <p v-show="userIdDuplicated" style="color: red; font-size: small;" >
+                  다른 유저와 중복되는 아이디 입니다.
+                </p>
+              </div>
+              <div class="input-group">
                 <div class="input-group-flex">
                   <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" /> 
                   <button class="doubleCheck" @click.prevent="handleClick">중복확인</button>
                   <EmailAuthentication v-if="show" />
                 </div >
-                
-                
               </div>
+              <p v-show="emailErr" style="color: red; font-size: small;">
+                유효한 이메일 주소를 입력하세요.
+              </p>
+
               <div class="input-group">
-                <i class='bx bxs-lock-alt'></i>
                 <input class="input" v-model.trim="fullname" id="fullname" placeholder="성명" type="text"/>
               </div>
               
               <div class="input-group">
-                <i class='bx bxs-lock-alt'></i>
                 <input class="input" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="Date"/>
               </div>
               
               <div class="input-group">
-                <i class='bx bxs-lock-alt'></i>
-                <p v-show="passwordErr" style="color: red; font-weight: bold;">
-                  비밀번호는 10자리 이상의 영문,숫자,특수문자가 조합되어야 합니다.
-                </p>
                 <input class="input" v-model="password" id="password" :type="passwordType" placeholder="비밀번호"/>
                 <span @click.prevent="toggleVisibility1('password')" class="eye-icon">
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
+              <p v-show="passwordErr" style="color: red; font-size: small;">
+                비밀번호는 10자리 이상의 영문,숫자,특수문자가 조합되어야 합니다.
+              </p>
+              
+
               <div class="input-group">
-                <p v-show="passwordConfirmErr" style="color: red; font-weight: bold;">
-                  비밀번호와 비밀번호확인이 다릅니다.
-                </p>
-                <i class='bx bxs-lock-alt'></i>
                 <input v-model="passwordConfirm" id="password-confirm" :type="passwordConfirmType" placeholder="비밀번호 확인"/>
                 <span @click.prevent="toggleVisibility2('passwordConfirm')" class="eye-icon">
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
+              <p v-show="passwordConfirmErr" style="color: red; font-size: small; margin: 0; padding-right: 20px 20px;">
+                비밀번호와 비밀번호확인이 다릅니다.
+              </p>
               
               <div class="input-group">
                 <input v-model="nickName" id="nickname" placeholder="닉네임" type="text"/>
