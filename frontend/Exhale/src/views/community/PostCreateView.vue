@@ -12,7 +12,7 @@
         </section>
 
             <div>
-                <input v-model="form.title" class="titleInput" id="title" placeholder="제목을 입력하세요">
+                <input v-model="title" class="titleInput" id="title" placeholder="제목을 입력하세요">
             </div>
             <div class="author">
                 (작성자명) 
@@ -101,7 +101,7 @@
                 
             <div class="mb-3">
                 <p class="howtowrite">어떻게 쓰나요?</p>
-                <textarea v-model="form.content" class="textcontent" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
+                <textarea v-model="content" class="textcontent" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
             </div>
             
             <div class="twoButton">
