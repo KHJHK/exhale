@@ -19,7 +19,7 @@ public class CommentRepositoryCustomImpl implements CommentRepositoryCustom{
     public List<Comment> getParentCommentListByArticleId(Long articleId) {
         JPAQuery<Comment> query = queryFactory.select(comment)
                 .from(comment)
-                .where(comment.parentComment.id.isNull());
+                .where(comment.parentComment.id.isNull(), comment.article.id.eq(articleId));
         return query.fetch();
     }
 }
