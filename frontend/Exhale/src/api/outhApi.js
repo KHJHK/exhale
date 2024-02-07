@@ -28,7 +28,7 @@ const formDataHeader = {"Content-Type":
 
             const verifyNumberCreate = async (email_id, email_domain) => {
                 try {
-                    const response = await axios.post('http://192.168.192.3:8080/api/email/certification', {
+                    const response = await axios.post('http://i10b208.p.ssafy.io/api/email/certification', {
                         email_id: email_id,
                         email_domain : email_domain
                     })

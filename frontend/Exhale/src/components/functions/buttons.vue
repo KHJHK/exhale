@@ -1,5 +1,8 @@
 <template>
-        <button class="enlarge" @click="enlarge">{{ msg }}</button>    
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+        </button>     
       <div class="p" :style="{ fontSize: fontSize + 'px' }">
     </div>
 </template>

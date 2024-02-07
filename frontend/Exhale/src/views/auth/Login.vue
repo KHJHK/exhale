@@ -1,8 +1,11 @@
 <template>
-  <button class="enlarge" @click="enlarge" style="z-index: 200;">{{ msg }}</button>
+  <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+    <img src="@/assets/plus.svg" class="plus">
+    {{ msg }}
+  </button> 
+  
   <div :style="{ fontSize: fontSize + 'px' }">
-
-    <div class="container" ref="container">
+    <div id="container" class="container" ref="container">
     <!-- FORM SECTION -->
     <form @submit.prevent="submitLogin">
       <!-- <p>날;숨입니다. 여러분의 회복을 기원합니다.</p> -->
@@ -109,20 +112,25 @@ const log_In = async () => {
   router.push('/mainpage')
 } 
 
+////////////////////////////////////////////////////////
+const toggle = () => {
+  router.push({ name: 'SignUp'})
+};
 
-  // 컴포넌트의 root element를 찾기 위한 ref를 생성합니다.
-  const container = ref(null);
+const container = ref(null);
 
-  // toggle 함수를 선언합니다. 이 함수는 container의 classList를 조작합니다.
-  const toggle = () => {
-    router.push({ name: 'SignUp'})
-  };
-
-
+// container ref가 mount 되었을 때 sign-in class 추가
+  onMounted(() => {
+  setTimeout(() => {
+    if (container.value) {
+      container.value.classList.add('sign-in')
+    }
+  }, 300)
+  })
+////////////////////////////////////////////////////////
 
   const authStore = useAuthStore(); 
 
-  
   const toggleVisibility = (field) => {
   if (field === 'password') {
     passwordType.value = passwordType.value === 'password' ? 'text' : 'password';
@@ -148,7 +156,7 @@ const created = () => {
 
   </script>
   
-  <style scoped>
+  <style lang="scss" scoped>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
   @import "@/assets/scss/pages/_login.scss";
   </style>

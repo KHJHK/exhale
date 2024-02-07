@@ -1,12 +1,14 @@
-  <template>
-  
+<template>
   <!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
   
-  <button class="enlarge" @click="enlarge" style="z-index: 1;">{{ msg }}</button>
   <div :style="{ fontSize: fontSize + 'px' }">
     <div  class="container" ref="container">
-    <!-- FORM SECTION -->
-    <form>
+      <button class="enlarge" @click="enlarge" style="z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+      </button> 
+      <!-- FORM SECTION -->
+      <form>
         <!-- SIGN UP -->
         <div class="col align-items-center flex-col sign-up">
           <img src="@/assets/logo_white.png" class="intro-logo">
@@ -32,8 +34,11 @@
                 </p>
                 <div class="input-group-flex">
                   <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" /> 
-                  <button class="doubleCheck" @click.prevent="verify_Number_Create">중복확인</button>
-                </div>
+                  <button class="doubleCheck" @click.prevent="handleClick">중복확인</button>
+                  <EmailAuthentication v-if="show" />
+                </div >
+                
+                
               </div>
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
@@ -44,7 +49,7 @@
                 <i class='bx bxs-lock-alt'></i>
                 <input class="input" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="Date"/>
               </div>
-
+              
               <div class="input-group">
                 <i class='bx bxs-lock-alt'></i>
                 <p v-show="passwordErr" style="color: red; font-weight: bold;">
@@ -52,7 +57,7 @@
                 </p>
                 <input class="input" v-model="password" id="password" :type="passwordType" placeholder="비밀번호"/>
                 <span @click.prevent="toggleVisibility1('password')" class="eye-icon">
-                <img src="@/assets/eye.png" alt="">
+                  <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
               <div class="input-group">
@@ -65,11 +70,11 @@
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
-
+              
               <div class="input-group">
                 <input v-model="nickName" id="nickname" placeholder="닉네임" type="text"/>
               </div>
-
+              
               <div class="submit1" >
                 <button class="btn-bottom" type="submit" @click.prevent="sign_up">
                   회원가입
@@ -81,21 +86,21 @@
                   </button>
                 </div>
               </div>
-
+              
               <p>
                 <span>
                   이미 계정이 있으신가요?
                 </span>
                 <b @click="toggle" class="pointer">로그인</b>
               </p>
-          </div>
+            </div>
           </div>
         </div>
         <!-- END SIGN UP -->
       </form>
       <!-- END FORM SECTION -->
-
-
+    
+      
       <!-- CONTENT SECTION -->
       <div class="row content-row">
         <!-- SIGN UP CONTENT -->
@@ -110,8 +115,8 @@
         <!-- END SIGN UP CONTENT -->
       </div>
     </div>
-
-</div>
+    
+  </div>
 </template>
 
 <script setup>
@@ -121,6 +126,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { isIdDuplicated ,signUp, kakaoLogin, verifyNumberCreate, logOut } from '@/api/outhApi.js';
+import EmailAuthentication from '@/components/modals/EmailAuthentication.vue'
+
 const store = useAuthStore()
 const fontSize = ref(16);
 const router = useRouter();
@@ -136,6 +143,13 @@ const nickName = ref('');
 const passwordType = ref("password");
 const passwordConfirmType = ref("password");
 
+
+// 이메일 인증 모달 창
+const show = ref(false)
+
+const handleClick = () => {
+  show.value = !show.value;
+}
 
 // 이메일 도메인 분리
 watch(email, () => {
@@ -352,17 +366,28 @@ const emailVerifyRequest = async (email, emailDomain) => {
   }
 };
 
+////////////////////////////////////////////////////////
 const toggle = () => {
     router.push({ name: 'Login'})
   };
+const container = ref(null);
 
+// container ref가 mount 되었을 때 sign-in class 추가
+  onMounted(() => {
+  setTimeout(() => {
+    if (container.value) {
+      container.value.classList.add('sign-up')
+    }
+  }, 300)
+})
+////////////////////////////////////////////////////////
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
   @import "@/assets/scss/pages/_signup.scss";
-  .input-danger{
+  /* .input-danger{
   border-bottom: 2px solid red !important;
   color: red;
 }
@@ -375,7 +400,7 @@ const toggle = () => {
     line-height: 16px;
     font-size: 11px;
     color: red;
-  }
+  } */
 
 
 </style>

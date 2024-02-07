@@ -1,9 +1,9 @@
 <template>
   <form @submit.prevent="submitComment">
-    <div class="comments-container">
-      <div class="input-group">
-        <input v-model="newComment" type="text" class="form-control" placeholder="댓글을 작성하세요..." />
-        <button class="btn btn-primary" type="submit" >등록</button>
+    <div>
+      <div class="group">
+        <textarea v-model="newComment" class="commentInput" placeholder="댓글을 작성하세요..."></textarea>
+        <button class="submitBtn" >등록</button>
       </div>
     </div>
   </form>
@@ -46,8 +46,53 @@ const submitComment = async () => {
 
 
 <style scoped>
-.form-control {
-  width: 500px;
+
+/* .titleInput {
+  background: transparent;
+  border: none;
+  font-family: 'NotoSerifKR';
+  margin-top: 6.5%;
+  margin-left: 31.5%;
+  font-size: 50px;
+}
+
+.titleInput:focus {
+  width: 30%;
+  border-color: none;
+  background: transparent;
+  color: rgb(50, 50, 50);
+  outline: none;
+  } */
+
+.commentInput {
+  width: 45vw;
+  border: none;
+  background: transparent;
+}
+
+.commentInput:focus {
+  border-color: none;
+  background: transparent;
+  outline: none;
+}
+
+.submitBtn {
+  cursor: pointer;
+  /* background-color: lightgray; */
+  border: 1px solid lightgray;
+  border-radius: 30px;
+  width: 50px;
+}
+
+.submitBtn:hover {
+  background-color: rgb(108, 159, 156);
+  color: white;
+}
+
+
+.group {
+  display: flex;
+  justify-content: space-between;
 }
 
 </style>

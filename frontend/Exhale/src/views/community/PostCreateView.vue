@@ -1,18 +1,18 @@
 <template>
+<form @submit.prevent="save">
 <div class="imageBackground">
         <section class="sub-nav1">
             <div id="breadcrum">
-                <RouterLink :to="{name: 'MainPage'}">메인 홈</RouterLink>
+                <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
                 >
-                <RouterLink :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
+                <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
                 >
-                <RouterLink :to="{name: 'PostCreateView'}">글쓰기</RouterLink>
+                <RouterLink class="breadlink" :to="{name: 'PostCreateView'}">글쓰기</RouterLink>
             </div>
         </section>
 
-        <!-- <form @submit.prevent="save"> -->
             <div>
-                <input class="titleInput" placeholder="제목을 입력하세요">
+                <input v-model="form.title" class="titleInput" id="title" placeholder="제목을 입력하세요">
             </div>
             <div class="author">
                 (작성자명)
@@ -37,7 +37,7 @@
 
 <div class="contentBackground">
     <div>
-        <form>
+        <div>
         <v-container class='toggles'>
         <v-row>
 
@@ -101,15 +101,15 @@
     </v-container>
                 
             <div class="mb-3">
-                <label for="content" class="form-label">어떻게 쓰나요?</label>
-                <textarea v-model="form.content" class="form-control" id="content" rows="3" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
+                <p class="howtowrite">어떻게 쓰나요?</p>
+                <textarea v-model="form.content" class="textcontent" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
             </div>
             
             <div class="twoButton">
                 <button class="buttons" type="button" @click="goListPage">목록</button>
                 <button class="buttons" type="button" @click="save">저장</button>
             </div>
-        </form>
+        </div>
 
         </div>
     </div>
@@ -133,6 +133,7 @@
                     >
         </v-file-input>
     </div>
+</form>
 </template>
 
 <script setup>
@@ -151,7 +152,7 @@ const form = ref({
 
 const rules = ref([
   value => {
-    return !value || !value.length || value[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
+    return !value || !value.length || value[0].size < 2000000 || '2MB 이하의 사진파일만 첨부 가능해요'
   },
 ])
 
