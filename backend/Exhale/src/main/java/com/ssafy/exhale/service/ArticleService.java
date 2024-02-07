@@ -39,6 +39,18 @@ public class ArticleService {
     private final S3Util s3Util;
     private final int PAGE_SIZE = 10;
 
+    public List<ArticleResponse> getArticleList(int page) {
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
+        List<Article> articleEntityList = articleRepository.findByIsDelete(pageRequest, false);
+
+        return articleEntityList.stream()
+                .map(article -> {
+                    ArticleDto articleDto = ArticleDto.from(article);
+                    return ArticleResponse.fromAll(articleDto);
+                })
+                .collect(Collectors.toList());
+    }
+
     public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page) {
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
         List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);

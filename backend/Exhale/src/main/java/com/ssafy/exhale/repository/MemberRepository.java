@@ -18,4 +18,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByLoginIdAndEmailIdAndEmailDomainAndWithdrawFalse(String loginId, String emailId, String emailDomain);
 
     Optional<Member> findByLoginIdAndWithdrawIs(String login_id, boolean withDrawIs);
+
+    Optional<Member> findByEmailIdAndEmailDomain(String emailId, String emailDomain);
 }

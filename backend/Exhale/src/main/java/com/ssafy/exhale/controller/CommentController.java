@@ -30,7 +30,7 @@ public class CommentController {
     }
 
     @GetMapping("/list/{article_id}")
-    public ResponseEntity<CommonResponse> getCommentList(@PathVariable("article_id") Long articleId){
+    public ResponseEntity<CommonResponse> getCommentList(@PathVariable("article_id") Long articleId) {
         return CommonResponse.ok(commentService.getCommentListByArticleId(articleId));
     }
 

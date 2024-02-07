@@ -31,13 +31,11 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-
         return configuration.getAuthenticationManager();
     }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -64,8 +62,8 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(HttpMethod.GET, "/comments/**").permitAll()
-                        .requestMatchers("/", "/general/**", "/email/**","/rehabilitation/{course_id}", "/rehabilitation/problem/{category_id}",
-                                "/boards", "/boards/{board_id}", "/boards/search").permitAll()
+                        .requestMatchers("/", "/general/**", "/email/**", "/rehabilitation","/rehabilitation/{course_id}", "/rehabilitation/problem/{category_id}",
+                                "/boards", "/boards/{board_id}", "/boards/search", "/articles/{article_id}", "/comments/list/{article_id}").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("USER")
