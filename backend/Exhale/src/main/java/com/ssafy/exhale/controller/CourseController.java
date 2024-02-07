@@ -84,8 +84,20 @@ public class CourseController {
     }
 
     @PostMapping("/letter/result")
-    public ResponseEntity<CommonResponse> registerLetterRecode(@Validated @RequestBody LetterRecodeRequest letterRecodeRequest) {
+    public ResponseEntity<CommonResponse> registerLetterRecode(@Validated @RequestBody LetterRecodeRequest letterRecodeRequest, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            throw new InValidParameterException();
+        }
+
+        if(letterRecodeRequest.getWrongCnt() == 0 && letterRecodeRequest.getCorrectCnt() == 0) {
+            throw new InValidParameterException();
+        }
+
+        if(letterRecodeRequest.getWrongCnt() > 0 && letterRecodeRequest.getCorrectCnt() > 0) {
+            throw new InValidParameterException();
+        }
+
         rehabilitationService.registerLetterRecode(letterRecodeRequest, tokenPayloadUtil.getLoginId());
-        return CommonResponse.ok(rehabilitationService.getLetterList());
+        return CommonResponse.ok(null);
     }
 }
