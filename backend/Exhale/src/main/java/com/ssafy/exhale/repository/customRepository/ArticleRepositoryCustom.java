@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ArticleRepositoryCustom {
     List<Article> search(ArticleSearchRequest articleSearchRequest, PageRequest pageRequest);
+    Long countSearchedArticles(ArticleSearchRequest articleSearchRequest);
 }

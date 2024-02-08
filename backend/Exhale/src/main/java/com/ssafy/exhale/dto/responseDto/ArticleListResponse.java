@@ -1,47 +1,34 @@
 package com.ssafy.exhale.dto.responseDto;
 
-import com.ssafy.exhale.dto.logicDto.ArticleDto;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class ArticleListResponse {
-    Long id;
-    String title;
-    int view;
-    String nickname;
-    LocalDateTime createDate;
-    String thumbnail;
-    Long memberId;
+    Integer page;
+    @JsonProperty("page_size")
+    Integer pageSize;
+    @JsonProperty("page_total_count")
+    Long pageTotalCount;
+    @JsonProperty("article_total_count")
+    Long articleTotalCount;
+    @JsonProperty("article_list")
+    List<ArticleResponse> articleList;
 
-    public static ArticleListResponse of(Long id, String title, int view, String nickname,
-                                         LocalDateTime createDate, String thumbnail, Long memberId)
-    {
-        return new ArticleListResponse(
-                id,
-                title,
-                view,
-                nickname,
-                createDate,
-                thumbnail,
-                memberId
-        );
-    }
-
-    public static ArticleListResponse from(ArticleDto articleDto){
-        return new ArticleListResponse(
-                articleDto.getId(),
-                articleDto.getTitle(),
-                articleDto.getView(),
-                articleDto.getNickname(),
-                articleDto.getCreateDate(),
-                articleDto.getThumbnail(),
-                articleDto.getMemberDto().getId()
-        );
+    public static ArticleListResponse of(
+            Integer page,
+            Integer pageSize,
+            Long pageTotalCount,
+            Long articleTotalCount,
+            List<ArticleResponse> articleList){
+        return new ArticleListResponse(page, pageSize, pageTotalCount, articleTotalCount, articleList);
     }
 }

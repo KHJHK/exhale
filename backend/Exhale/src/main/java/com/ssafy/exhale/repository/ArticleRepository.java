@@ -11,4 +11,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
     List<Article> findAllByBoardIdAndIsDelete(Integer boardId, PageRequest page, Boolean isDelete);
     List<Article> findByIsDelete(PageRequest page, Boolean isDelete);
     Article findByIdAndIsDelete(Long articleId, Boolean isDelete);
+    Long countBy();
+    Long countByBoardId(Integer boardId);
 }
