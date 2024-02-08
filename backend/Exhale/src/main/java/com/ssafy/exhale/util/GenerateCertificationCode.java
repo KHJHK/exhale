@@ -5,11 +5,13 @@ import java.util.Random;
 
 public class GenerateCertificationCode {
     public static String getCertificationNumber(){
-        String certificationNumber = "";
+        SecureRandom secureRandom = new SecureRandom();
+        StringBuilder certificationNumber = new StringBuilder();
+
         for(int cnt = 0; cnt<6; cnt++){
-            certificationNumber += (int) (Math.random()*10);
+            certificationNumber.append(secureRandom.nextInt(10));
         }
-        return certificationNumber;
+        return certificationNumber.toString();
     }
 
     public static String getRandomPassword() {
