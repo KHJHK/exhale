@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const baseURL ='http://i10b208.p.ssafy.io';
+const baseURL = import.meta.env.VITE_BASE_URL;
   // 코스 조회
   const getCourseList = async (token) => {
-    axios.get(baseURL + '/api/rehabilitation',{
+    return await axios.get(baseURL + '/api/rehabilitation',{
     headers: {
         Authorization: token
       }
