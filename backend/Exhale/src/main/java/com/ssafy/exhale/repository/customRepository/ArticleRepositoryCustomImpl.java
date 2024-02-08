@@ -21,9 +21,17 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
                 .from(article)
                 .where(article.board.id.eq(articleSearchRequest.getBoardId()))
                 .where(checkSearchType(articleSearchRequest.getSearchType(), articleSearchRequest.getSearchContent()))
-                .offset(pageRequest.getPageNumber() * 10L)
+                .offset((long) pageRequest.getPageNumber() * pageRequest.getPageSize())
                 .limit(pageRequest.getPageSize());
         return query.fetch();
+    }
+
+    public Long countSearchedArticles(ArticleSearchRequest articleSearchRequest) {
+        JPAQuery<Long> query =  queryFactory.select(article.count())
+                .from(article)
+                .where(article.board.id.eq(articleSearchRequest.getBoardId()))
+                .where(checkSearchType(articleSearchRequest.getSearchType(), articleSearchRequest.getSearchContent()));
+        return query.fetchOne();
     }
 
     private BooleanExpression checkSearchType(String searchType, String searchContent){
