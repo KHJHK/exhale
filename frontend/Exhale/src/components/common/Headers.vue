@@ -27,48 +27,46 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/stores/auth';
-import { useCounterStore } from '@/stores/counter';
-import { reactive } from 'vue';
-const {logout} = useAuthStore()
+import { reactive, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth.js'
+
+const authStore = useAuthStore()
+
+const logout = authStore.logout
+
+const state = reactive({
+  loggedIn: authStore.isLogIn,
+})
+
 
 
 </script>
 
+
 <style scoped>
 .navbar-links {
-  margin-left: 60vw;
+  margin-left: 66.3vw;
+  display: flex;
+  align-items: center;
+  gap: 98px;
+  border-bottom: none;
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
-}
-.navbar > .navbar-links {
-  display: flex;
-  align-items: center;
-  width: 100%
-}
-
-/* nav a:first-of-type {
-  gap: 80px;
-} */
-
-.navbar-links {
-  display: flex;
-  align-items: center;
-  gap: 50px; 
+  margin-right: -10vw;
 }
 
 .nav-link {
   text-decoration: none;
-  color: #333; /* Text color */
-  padding-bottom: 0.5rem; /* Space for the underline */
-  border-bottom: 2px solid transparent; /* Invisible underline */
-  transition: border-color 0.3s; /* Smooth transition for hover effect */
+  color: #333;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
   display: inline-block;
+  margin-top: -22vh;
 }
 
 

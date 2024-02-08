@@ -13,7 +13,7 @@
         <div class="col align-items-center flex-col sign-up">
           <img src="@/assets/logo_white.png" class="intro-logo">
           <div class="form-wrapper align-items-center">
-            <div class="form sign-up">
+            <div class="form sign-up" :style="formStyle">
               <div class="input-group">
                 <div class="input-group-flex">
                   <input class="input" v-model.trim="userId" id="userId" placeholder="아이디" type="text" />
@@ -21,10 +21,10 @@
                 </div>
               </div>
               <div>
-                <p v-show="userIdErr" style="color: red; font-size: small;" >
+                <p v-show="userIdErr" class="subtext" style="color: red; font-size: small;" >
                   아이디는 4자리 이상의 영문,숫자가 조합되어야합니다.
                 </p>
-                <p v-show="userIdDuplicated" style="color: red; font-size: small;" >
+                <p v-show="userIdDuplicated" class="subtext" style="color: red; font-size: small;" >
                   다른 유저와 중복되는 아이디 입니다.
                 </p>
               </div>
@@ -35,7 +35,7 @@
                   <EmailAuthentication v-if="show" />
                 </div >
               </div>
-              <p v-show="emailErr" style="color: red; font-size: small;">
+              <p v-show="emailErr" class="subtext" style="color: red; font-size: small;">
                 유효한 이메일 주소를 입력하세요.
               </p>
 
@@ -44,7 +44,7 @@
               </div>
               
               <div class="input-group">
-                <input class="input" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="Date"/>
+                <input class="input-birth" v-model.trim="birthdate" id="birthdate" placeholder="생년월일" type="Date"/>
               </div>
               
               <div class="input-group">
@@ -53,7 +53,7 @@
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
-              <p v-show="passwordErr" style="color: red; font-size: small;">
+              <p v-show="passwordErr" class="subtext" style="color: red; font-size: small;">
                 비밀번호는 10자리 이상의 영문,숫자,특수문자가 조합되어야 합니다.
               </p>
               
@@ -64,7 +64,7 @@
                   <img src="@/assets/eye.png" alt="">
                 </span>
               </div>
-              <p v-show="passwordConfirmErr" style="color: red; font-size: small; margin: 0; padding-right: 20px 20px;">
+              <p v-show="passwordConfirmErr" class="subtext" style="color: red; font-size: small; margin: 0; padding-right: 20px 20px;">
                 비밀번호와 비밀번호확인이 다릅니다.
               </p>
               
@@ -140,6 +140,23 @@ const nickName = ref('');
 const passwordType = ref("password");
 const passwordConfirmType = ref("password");
 
+// 에러변수 Boolean
+const userIdErr = ref(false);
+const emailErr = ref(false);
+const passwordErr = ref(false);
+const passwordConfirmErr = ref(false);
+const userIdDuplicated = ref(false)
+
+
+// 에러메세지 보이면 form 크기 확장
+const formStyle = reactive({
+  transform: 'translateY(2%)',
+})
+watch([userIdErr, userIdDuplicated, emailErr, passwordErr, passwordConfirmErr], () => {
+  const visibleSubtexts = [userIdErr, userIdDuplicated, emailErr, passwordErr, passwordConfirmErr].filter(ref => ref.value).length
+  formStyle.transform = `translateY(${visibleSubtexts * 2}%)`
+})
+
 
 // 이메일 인증 모달 창
 const show = ref(false)
@@ -157,12 +174,6 @@ watch(email, () => {
     }
 });
 
-// 에러변수 Boolean
-const userIdErr = ref(false);
-const emailErr = ref(false);
-const passwordErr = ref(false);
-const passwordConfirmErr = ref(false);
-const userIdDuplicated = ref(false)
 //유저아이디 조건
 function check_userId() {
   const userIdValid = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{4,}$/
