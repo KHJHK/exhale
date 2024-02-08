@@ -60,7 +60,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         try{
             response.getWriter().write(objectMapper.writeValueAsString(CommonResponse.connectionError(HttpStatus.valueOf(401),"유효하지 않는 사용자").getBody()));
         }catch (IOException e){
-            e.printStackTrace();
+            System.err.println(e);
         }
     }
 }
