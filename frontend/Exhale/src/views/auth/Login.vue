@@ -7,7 +7,7 @@
   <div :style="{ fontSize: fontSize + 'px' }">
     <div id="container" class="container" ref="container">
     <!-- FORM SECTION -->
-    <form @submit.prevent="submitLogin">
+    <form @submit.prevent="submit">
       <!-- <p>날;숨입니다. 여러분의 회복을 기원합니다.</p> -->
       <!-- SIGN IN -->
       <div class="col align-items-center flex-col sign-in">
@@ -29,12 +29,12 @@
             </div>
             
             
-            <button class="loginBtn" type="submit" @click.prevent="log_In">
+            <button class="Btn" type="submit" @click.prevent="log_In">
               로그인
             </button>
 
-            <button @click="kakaoLogin" class="kakaoLogin">
-              <img src="@/assets/kakao-logo.png" alt="login">&nbsp;
+            <button @click="kakao" class="kakao">
+              <img src="@/assets/kakao-logo.png" alt="">&nbsp;
               <label>카카오로 시작하기</label>
             </button>
           
@@ -94,8 +94,8 @@ import { useAuthStore} from '@/stores/auth';
 
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { logIn } from '@/api/outhApi';
-  // import { kakaoLogin } from '@/api/outhApi';
+import {  } from '@/api/outhApi';
+  // import { kakao } from '@/api/outhApi';
   const router = useRouter()
   const fontSize = ref(16);
   const passwordType = ref("password");
@@ -105,7 +105,7 @@ import { logIn } from '@/api/outhApi';
 
 
 const log_In = async () => {
-  const response = await logIn(
+  const response = await (
     userId.value,
     password.value
   )

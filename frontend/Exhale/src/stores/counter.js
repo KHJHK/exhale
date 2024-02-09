@@ -1,67 +1,30 @@
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 export const useCounterStore = defineStore('counter', () => {
   const router = useRouter()
-  const posts = ref([])
-  const username = ref(localStorage.getItem('username')|| '')
-  const API_URL = ''
-  const token = ref(localStorage.getItem('token')|| null)
-  const isAuthenticated = computed(() => !!token.value)
+  const tab = ref(0)
   
-  // const signUp = function (payload) {
-  //   const {userId, email, fullname, birthdate,password, passwordconfirm, nickname } = payload
-  //   console.log('sending request with payload:',payload)
-    
-  //   axios({
-  //     method: 'post',
-  //     url: `${API_URL}/api/v1/accounts/signup/`,
-  //     headers: {
-  //       'Content-Type':'application/json'
-  //     },
-  //     data: JSON.stringify({
-  //       userId, email, fullname, birthdate,password, passwordconfirm, nickname
-  //     })
-  //   })
-  //   .then((res) => {
-  //     console.log(res)
-  //     const password = password
-  //     logIn({ userId, email, fullname, birthdate,password, nickname})
-  //   })
-  //   .catch((err) =>{
-  //     console.error('Error:', err)
-  //   })
-  // }
-
-  // const logIn = function (payload) {
-  //   const {userId, password} = payload
-
-  //   axios({
-  //     method: 'post',
-  //     url: `${API_URL}/api/v1/accounts/login/`,
-  //     data: { 
-  //       userId, password
-  //     }
-  //   })
-  //   .then((res) => {
-  //     token.value = res.data.key
-  //     userId.value = userId
-  //     localStorage.setItem('token', token.value)
-  //     localStorage.setItem('userId', userId)
-  //     router.push({ name: 'Recommendation' })
-  //   })
-  //   .catch((err) => {
-  //     console.log(err)
-  //   })
-  // }
-
-  // const logOut = function () {
-  //   token.value = null
-  //   localStorage.removeItem('token')
-  //   router.push({name: 'Intro'})
-  // }
-
-  return { posts, API_URL, getposts }
+  const go_tab = watch(tab, (newValue) => {
+    // 탭 값에 따라 board_id를 업데이트하는 로직
+    switch(newValue) {
+      case 0:
+        tab.value = 0; // "전체" 탭에 해당하는 board_id 설정
+        break;
+      case 1:
+        tab.value = 1; // "정보 글" 탭에 해당하는 board_id 설정
+        break;
+      case 2:
+        tab.value = 2; // "치료 후기" 탭에 해당하는 board_id 설정
+        break;
+      case 3:
+        tab.value = 3; // "환자 이야기" 탭에 해당하는 board_id 설정
+        break;
+      default:
+        tab.value = 0; // 기본값
+    }
+  })
+  return { tab }
 })

@@ -5,8 +5,6 @@ import App from './App.vue'
 import router from './router/index.js'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap"
-import dayjs from './plugins/dayjs';
-import { mdiAccount } from '@mdi/js'
 
 // fontawesome import
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -35,6 +33,5 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(createPinia())
 app.use(router)
-app.use(dayjs);
 app.use(vuetify)
 app.mount('#app')

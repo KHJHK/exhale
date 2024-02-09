@@ -41,16 +41,17 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  const logout = async (key) => {
+  const logout = async (KEY) => {
+    
     try {
         const response = await axios.get('http://i10b208.p.ssafy.io/api/users/logout', {
-            None
+           ' key' : `${KEY}`
         },{
             headers : {
-                'Authorization': `${key}`
+                'Authorization': `${refreshToken}`
             }
         })
-        JWTtoken.value = null
+        // JWTtoken.value = 
         localStorage.removeItem('JWT_token')
         localStorage.removeItem('refresh_token')
         localStorage.removeItem('key')

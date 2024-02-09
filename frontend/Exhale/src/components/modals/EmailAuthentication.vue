@@ -1,20 +1,28 @@
 <template>
+  
+<div class="authentication">  
+  <img src="@/assets/logo_white.png">
+  <hr class="hr">
+  <button class="closeBtn" @click="closeModal">
+    <img src="@/assets/backArrow2.svg" class="close" >
+  </button>
 
-<div class="authentication">
+  <div class="texts">
+    <p>날숨 서비스 이용을 위해</p>
+    <p class="secondTexts">이메일 인증이 한 번 필요해요.</p>
+  </div>
   
-  <img src="@/assets/Nav.png" alt="hamburgerMenu" class="hamburgerMenu" >
-  <hr class="">
-  <button>닫기</button>
-  
-  <p>날;숨 서비스 이용을 위해</p>
-  <p>이메일 인증이 한 번 필요해요.</p>
-  
-  <label for="">이메일로 전송된 인증코드를 입력해주세요.</label>
+  <div class="text2">
+    <p>이메일로 전송된 인증코드를 입력해주세요.</p>
+  </div>
+
   <div class="text-center">
     <v-otp-input
+      ref="otpInputRef"
       focus-all
       v-model="otp"
       :loading="loading"
+      min-width="700"
       length="6"
       variant="underlined"
       class="numberInput"
@@ -22,64 +30,50 @@
 
     <v-btn
       :disabled="otp.length < 6 || loading"
-      class="my-5"
-      color="surface-variant"
-      text="Submit"
+      class="submitBtn"
       variant="tonal"
       @click="onClick"
-    ></v-btn>
+    >전송</v-btn>
   </div>
-  <p>! 이메일을 받지 못하샸나요? 
-    <a href="">이메일 재전송하기</a>
+  
+  <p class="texts3">
+    이메일을 받지 못하셨나요?
+    <a class="emailSubmit">&nbsp;&nbsp;&nbsp;이메일 재전송하기</a>
   </p>
-
-  <button>
-
-  </button>
 
 </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, defineEmits } from 'vue';
 
-// 반응형 데이터 정의
-const loading = ref(false);
-const otp = ref('');
+const otpInputRef = ref(null)
+const loading = ref(false)
+const otp = ref('')
+const emit = defineEmits(['close'])
 
-// 메소드 정의
+// 모달창 마운트되면 인증코드 입력필드에 포커스 주는 함수(전송하면 해제)
+onMounted(() => {
+  otpInputRef.value.focus()
+})
 const onClick = () => {
-  loading.value = true;
+  loading.value = true
 
   setTimeout(() => {
-    loading.value = false;
-  }, 2000);
-};
+    otpInputRef.value.blur()
+    loading.value = false
+  }, 2000)
+}
+
+// 모달창 닫기 SignUp.vue에 전달
+const closeModal = () => {
+  emit('close')
+}
 
 </script>
 
 <style lang="scss" scoped>
-.authentication {
-  z-index: 10;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgb(108, 159, 156);
-  opacity: 80%;
+@import "@/assets/scss/components/_modal.scss";
 
-}
 
-.numberInput {
-  position: fixed;
-  top: 40vh;
-  left: 38vw;
-  color: white;
-  font-family: 'NotoSansKR';
-  border: 2px solid white;
-  padding: 20px 40px;
-
-}
 </style>
