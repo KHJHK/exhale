@@ -150,10 +150,10 @@ const resultProcessing = (sttText) =>{
   }else{  // 오답
     _isRight = false;
   }
-  saveSolvedProblem();
- 
   isRight.value = _isRight;
   resultDialog.value = true;
+  saveSolvedProblem();
+ 
 
 }
 
