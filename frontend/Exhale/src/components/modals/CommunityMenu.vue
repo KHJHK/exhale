@@ -29,8 +29,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import "@/assets/scss/components/_buttons.scss";
-
 /* .background {
   position: absolute;
   top: 0;

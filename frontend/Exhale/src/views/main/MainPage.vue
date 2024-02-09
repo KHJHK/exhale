@@ -26,16 +26,16 @@
         이름대기
 
         <div class="subbox1" :class="{ 'show': subboxStates.box1, 'hide': !subboxStates.box1 }">
-          <div class="b1-1">
+          <div class="b1-1" @click="navigateToReview1('행동')" >
             행동
           </div>
-          <div class="b1-2">
+          <div class="b1-2" @click="navigateToReview1('생물')">
             생물
           </div>
-          <div class="b1-3">
+          <div class="b1-3" @click="navigateToReview1('무생물')">
             무생물
           </div>
-          <div class="b1-4">
+          <div class="b1-4" @click="navigateToReview1('장소')">
             장소
           </div>
         </div>
@@ -45,10 +45,10 @@
       <div @click="toggleSubbox('box2')" class="box2">
         따라 말하기
         <div class="subbox2" :class="{ 'show': subboxStates.box2, 'hide': !subboxStates.box2 }">
-          <div class="b2-1">
+          <div class="b2-1" @click="navigateToReview2('2음절 연습')">
             2음절 연습
           </div>
-          <div class="b2-2">
+          <div class="b2-2" @click="navigateToReview2('3음절 연습')">
             3음절 연습
           </div>
         </div>
@@ -59,10 +59,10 @@
       <div @click="toggleSubbox('box3')" class="box3">
         듣고 이해하기
         <div class="subbox3" :class="{ 'show': subboxStates.box3, 'hide': !subboxStates.box3 }">
-          <div class="b3-1">
+          <div class="b3-1" @click="navigateToReview3('그림 고르기')">
             그림 고르기
           </div>
-          <div class="b3-2">
+          <div class="b3-2" @click="navigateToReview3('텍스트 고르기')">
             텍스트 고르기
           </div>
         </div>
@@ -72,7 +72,7 @@
       <div @click="toggleSubbox('box4')" class="box4">
         유창성
         <div class="subbox4" :class="{ 'show': subboxStates.box4, 'hide': !subboxStates.box4 }">
-            <div class="b4-1">
+            <div class="b4-1" @click="navigateToReview4('대화하기')">
               대화하기
             </div>
         </div>
@@ -94,6 +94,7 @@ import { useRouter } from "vue-router";
 import Headers from "@/components/common/Headers.vue";
 import Footers from "@/components/common/Footers.vue";
 import { RouterView } from "vue-router";
+import router from "@/router";
 
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -105,7 +106,7 @@ const enlarge = () => {
 };
 
 
-// 클릭하면 subbox 나오는 함수
+// 클릭하면 subbox 나옴
 const showSubbox = ref(false);
 const animationDirection = ref('');
 
@@ -123,21 +124,21 @@ const toggleSubbox = (boxKey) => {
   })
 }
 
-// export default {
-//   mounted() {
-//     // URL에서 인가 코드 추출
-//     const queryParams = new URLSearchParams(window.location.search);
-//     const code = queryParams.get('code');
-    
-//     if (code) {
-//       // 인가 코드를 로컬 스토리지에 저장
-//       localStorage.setItem('kakao_auth_code', code);
 
-//       // 추가적인 처리가 필요할 수 있음
-//     }
-//   }
-// }
-// const value = localStorage.getItem('kakao_auth_code')
+// 위 name에 각 게임 페이지 링크 이름 넣어야 함
+// 해당 게임 유형으로 이동
+const navigateToReview1 = (category) => {
+  router.push({ name: '', params: { category } })
+}
+const navigateToReview2 = (category) => {
+  router.push({ name: 'FollowUpSpeech', params: { category } })
+}
+const navigateToReview3 = (category) => {
+  router.push({ name: 'listening-comprehension', params: { category } })
+}
+const navigateToReview4 = (category) => {
+  router.push({ name: 'fluency', params: { category } })
+}
 
 </script>
 

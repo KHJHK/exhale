@@ -1,6 +1,8 @@
 <template>
   <!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
-  
+  <transition name="fade">
+    <EmailAuthentication v-if="show" @close="handleCloseModal" />
+  </transition>
   <div :style="{ fontSize: fontSize + 'px' }">
     <div  class="container" ref="container">
       <button class="enlarge" @click="enlarge" style="z-index: 10;">
@@ -32,7 +34,6 @@
                 <div class="input-group-flex">
                   <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" /> 
                   <button class="doubleCheck" @click.prevent="handleClick">중복확인</button>
-                  <EmailAuthentication v-if="show" />
                 </div >
               </div>
               <p v-show="emailErr" class="subtext" style="color: red; font-size: small;">
@@ -163,6 +164,11 @@ const show = ref(false)
 
 const handleClick = () => {
   show.value = !show.value;
+}
+
+// 이메일 인증 모달 창 닫기
+const handleCloseModal = () => {
+  show.value = false
 }
 
 // 이메일 도메인 분리

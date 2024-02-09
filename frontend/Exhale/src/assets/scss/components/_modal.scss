@@ -1,0 +1,99 @@
+.authentication {
+  z-index: 28;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(108, 159, 156);
+  opacity: 80%;
+  display: flex;
+  justify-content: center;
+}
+
+.close {
+  width: 60px;
+  position: fixed;
+  top: 3.5%;
+  left: 85%;
+}
+
+.text-center {
+  position: fixed;
+  top: 52%;
+  left: 31.5%;
+  color: white;
+  font-family: 'NotoSansKR';
+  // border: 2px solid white;
+  padding: 10px 40px;
+}
+
+
+.submitBtn {
+  margin-top: 40px;
+  color: white;
+  font-size: large;
+  letter-spacing: 5px;
+  padding-top: 10px;
+  padding-bottom: 40px;
+  padding-left: 350px;
+  padding-right: 350px;
+}
+
+img {
+  width: 155px;
+  height: 110px;
+  position: fixed;
+  top: 2%;
+  left: 10%;
+}
+
+.hr {
+  border: 0;
+  height: 3px;
+  background: #ffffff;
+  width: 82%;
+  position: fixed;
+  top: 15%;
+  opacity: 50;
+}
+
+.closeBtn {
+  position: fixed;
+  color: white;
+  top: 2%;
+
+}
+
+.texts {
+  position: fixed;
+  top: 25%;
+  color: white;
+  font-size: 50px;
+  font-weight: 800;
+  font-family: 'NotoSansKR';
+}
+
+.authentication .texts .secondTexts {
+  margin-top: -20px;
+}
+
+.text2 {
+  position: fixed;
+  top: 47%;
+  left: 34%;
+  color: white;
+}
+
+.texts3 {
+  position: fixed;
+  top: 85%;
+  left: 42.5%;
+  color: white;
+  &.texts3 a {
+    text-decoration: none;
+    font-size: larger;
+    color: white;
+  }
+}
