@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <button @click="newWidow">게임 시작</button>
     </div>
 </template>
 
@@ -14,6 +14,11 @@
 //   }
 // };
 // getCourses();
+
+const newWidow = () => {
+    window.open('http://localhost:5173/say-object');
+}
+
 </script>
 
 <style lang="scss" scoped>

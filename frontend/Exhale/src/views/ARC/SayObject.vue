@@ -7,6 +7,7 @@ import STT from '@/components/ARC/STT.vue';
 // import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 
+
 // todo routing으로 받기
 const courseName='';
 const categoryName='';
@@ -24,6 +25,8 @@ let no = ref(1);
 // 다이어로그
 const resultDialog = ref(false);
 const isRight = ref(false);
+const isExit = ref(false);
+const isPause = ref(false);
 
 const problem = {
   problemId : ref(''),
@@ -109,7 +112,6 @@ const saveReviewProblem = async () => {
   }
 };
 
-
 // TTS
 // const ttsText = ref("안녕하세요");
 
@@ -151,18 +153,26 @@ const resultProcessing = (sttText) =>{
 
 }
 
+const onExit = () => {
+  stopTimer();
+  
+  resultDialog.value = true;
+  isExit.value = true;
+}
+const onPause = () => {
+  stopTimer();
+
+  resultDialog.value = true;
+  isPause.value = true;
+}
 const handleContentFieldChange = (text) => {
   resultProcessing(text);
-};
-
-
-const handleResultDialogChange = (value) => {
-  resultDialog.value = false;
 };
 
 const handleNextTickChange = (value) => {
   stopTimer();
   nextProblem();
+  resultDialog.value = false;
 };
 const handleReviewTickChange = (value) => {
   stopTimer();
@@ -172,8 +182,12 @@ const handleAgainTickChange = (value) => {
   stopTimer();
   elapsedTime.value = overTime;
   startTimer();  
+  resultDialog.value = false;
 };
-
+const handleIsCloseChange = (value) => {
+  console.log("종료하기")
+  window.close();
+};
 
 onMounted(startTimer);
 onBeforeUnmount(stopTimer);
@@ -188,13 +202,18 @@ getProblems();
       <div v-if="resultDialog">
         <ResultDialog 
           :dialog = "resultDialog"
-          :isRight = "isRight"      
-          @update:dialog="handleResultDialogChange"
+          :isRight = "isRight"
+          :isExit = "isExit"
+          :isPause = "isPause"      
           @update:nextTick="handleNextTickChange"
           @update:reviewTick="handleReviewTickChange"
           @update:againTick="handleAgainTickChange"
+          @update:isClose="handleIsCloseChange"
+
           />
       </div>
+      <button @click="onExit">연습 종료</button>
+      <button @click="onPause">일시 정지</button>
       <h1>경과 시간: {{ elapsedTime }}</h1>
       <div>{{ no }}. 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
       <STT 
@@ -203,7 +222,6 @@ getProblems();
       <div>{{ problem.answer.value }}</div>
       <div>{{ problem.hint.value }}</div>
       <div><img :src="problem.imgUrl.value"/></div>
-      <!-- <button @click="nextProblem">다음</button> -->
       <!-- <TTS
         :tts-text="ttsText"
       /> -->
