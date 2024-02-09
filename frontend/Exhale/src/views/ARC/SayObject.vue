@@ -60,7 +60,6 @@ const getProblems = async () => {
       // todo api 응답 예외 처리
       return;
     }
-    console.log(data)
     problemIdx = data.response.first_problem_index;
     problemSet = data.response.problemResponseList;
 
@@ -68,13 +67,13 @@ const getProblems = async () => {
     problem.answer.value = problemSet[problemIdx].answer;
     problem.hint.value = problemSet[problemIdx].hint;
     problem.imgUrl.value = problemSet[problemIdx].img_url;
-    console.log( problem.problemId.value )
 
   } catch (error) {
     console.error(error); 
   }
 };
 const saveSolvedProblem = async() => {
+
   try{
     const params = {
       problemId: problem.problemId.value,
@@ -84,26 +83,20 @@ const saveSolvedProblem = async() => {
     const {data} = await postSolvedProblem(params, token);
     if(data.dataStatus.code!=1){
       // todo api 응답 예외 처리
-      console.log("문제 저장 예외",data);
       return;
     }
-    console.log("문제 저장 예외 아님",data);  
   } catch(error){
     console.error(error); 
   }
 }
-// STT
 
 const saveReviewProblem = async () => {
   try {
-    console.log("pid",problem.problemId.value)
     const { data } = await postReview(problem.problemId.value);
     if(data.dataStatus.code==2){
       // todo api 응답 예외 처리
-      console.log("이미 저장된 문제입니다.")
       return;
     }else if(data.dataStatus.code!=1){
-      console.log("복습 예외 발생")
     }
     alert("저장 완료");
 
@@ -135,6 +128,7 @@ const nextProblem = () => {
   problem.hint.value = problemSet[problemIdx].hint;
   problem.imgUrl.value = problemSet[problemIdx].img_url;
   no.value++;
+
 
   // 초기화
   elapsedTime.value = overTime;
@@ -173,7 +167,6 @@ const handleNextTickChange = (value) => {
 const handleReviewTickChange = (value) => {
   stopTimer();
   saveReviewProblem();
-  console.log("복습")
 };
 const handleAgainTickChange = (value) => {
   stopTimer();
