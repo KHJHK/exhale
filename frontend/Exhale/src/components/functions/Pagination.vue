@@ -6,7 +6,7 @@
 					() => {
                         if (leftmostPage > 1) {
 						leftmostPage -= PAGE_PER_SECTION;
-						// onChangeCurPage(leftmostPage);
+						onChangeCurPage(leftmostPage);
                         				}}
 				"
 				>&lt;</a
@@ -30,65 +30,59 @@
 				id="move"
 				@click="
 					() => {
-                        // if (leftmostPage + PAGE_PER_SECTION <= totalPage){
+                        if (leftmostPage + PAGE_PER_SECTION <= totalPage){
 						leftmostPage += PAGE_PER_SECTION;
 						onChangeCurPage(leftmostPage);
-					}
+					}}
 				"
 				>&gt;</a
 			>
 		</span>
 	</div>
+
+	<div>
+		<v-col
+        v-for="(post, index) in posts"
+        :key="post.id"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="4"
+		/>
+	</div>
 </template>
 
-<script>
-import { ref } from 'vue';
-
-export default {
-	props: {
-		list: Array,
-		ITEM_PER_PAGE: Number,
-		PAGE_PER_SECTION: Number,
-	},
-	emits: ['change-page'],
-	setup(props, { emit }) {
-		return {
-			...usePagination(props, emit),
-		};
-	},
+<script setup>
+import { ref, computed, defineProps } from 'vue';
+import { useCrudStore } from '@/stores/crud';
+import { onMounted } from 'vue';
+const { curPage, totalPage, ITEM_PER_PAGE, PAGE_PER_SECTION, setCurrentPage } = useCrudStore();
+const leftmostPage = ref(1);
+const posts = ([])
+onMounted(() => {
+	posts.value = props.posts
+})
+const props = defineProps(['posts'])
+const getPaginationArray = (left) => {
+	const res = [];
+	for (let i = left; i < Math.min(totalPage + 1, left + PAGE_PER_SECTION); i++) {
+		res.push(i);
+	}
+	return res;
 };
 
-const usePagination = (props, emit) => {
-	const curPage = ref(1);
-	const leftmostPage = ref(1);
-	const totalPage = Math.ceil(props.list.length / (props.ITEM_PER_PAGE || 1));
-
-	const getPaginationArray = (left) => {
-		// [left,left+1,left+2...] 로 원소의 개수를 PAGE_PER_SECTION 개 만드는 함수
-		const res = [];
-		for (let i = left; i < Math.min(totalPage + 1, left + props.PAGE_PER_SECTION); i++) {
-			res.push(i);
-		}
-		return res;
-	};
-
-	const onChangeCurPage = (page) => {
-		curPage.value = page;
-		emit('change-page', page);
-	};
-
-	return {
-		leftmostPage,
-		curPage,
-		totalPage,
-		//
-		getPaginationArray,
-		onChangeCurPage,
-	};
+const onChangeCurPage = (page) => {
+	setCurrentPage(page)
 };
+
+const perPage = ref(10);
+
+
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/components/_pagination.scss";
 
 </style>
+
+  

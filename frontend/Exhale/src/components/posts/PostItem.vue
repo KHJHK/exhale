@@ -19,7 +19,6 @@
 import { defineProps, defineEmits } from 'vue'
 
 const props = defineProps({
-  number: Number,
   title: String,
   content: String,
   author: String,
@@ -28,9 +27,9 @@ const props = defineProps({
 })
 
 
-const emit = defineEmits(['go-to-detail'])
+const emit = defineEmits(['board_detail'])
 const handleClick = () => {
-  emit('go-to-detail', props.id)
+  emit('board_detail', props.id)
 }
 </script>
 

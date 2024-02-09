@@ -80,13 +80,13 @@ import { useRoute, useRouter } from 'vue-router';
 import { defineProps } from 'vue';
 import CommentsCreate from '@/components/comments/CommentsCreate.vue';
 import CommentsList from '@/components/comments/CommentsList.vue';
-
+import { boardList } from '@/api/boards';
 import CommunityMenu from '@/components/modals/CommunityMenu.vue';
 import PostItem from '@/components/posts/PostItem.vue';
 import PostMenu from '@/components/posts/PostMenu.vue';
 import PostSlider from '@/components/posts/PostSlider.vue';
 import Footers from '@/components/common/Footers.vue';
-
+import { useCrudStore } from '@/stores/crud';
 
 
 const router = useRouter()
@@ -96,13 +96,20 @@ const posts = ref([])
 
 const props = defineProps({
     postId: Number,
+    title: String,
+    content: String,
+    create_date: String,
+    view: Number,
+    nickname: String
 })
 
 const post = ref({
-    id : postId,
-    title: null,
-    content: null,
-    create_date: null,
+    id : article_id,
+    title: title,
+    content: content,
+    create_date: create_date,
+    view: view,
+    nickname: nickname
 })
 
 
@@ -112,8 +119,6 @@ function toggleMenu() {
   show.value = !show.value
 }
 
-// vuetify Tabs components
-const tab = ref(null);
 
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -126,17 +131,19 @@ const enlarge = () => {
 
 
 
-const fetchPosts = async () => {
+const board_list = async () => {
   try {
-    const response = await getPosts(); // 모든 게시글 불러오기
-    posts.value = response.data;
+    const response = await boardList(
+      tab.value,
+      curPage.value,
+      )
   } catch (error) {
     console.error(error);
   }
 };
 
 onMounted(async () => {
-  await fetchPosts();
+  await board_list()
 });
 
 

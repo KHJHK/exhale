@@ -152,6 +152,14 @@ const content = ref('')
 const thumbnail = ref(null);
 const board_id = ref('')
 
+const props = defineProps({
+    tab: Number
+})
+const emit = defineEmits(['update:tab'])
+
+watch(() => props.tab, (newVal) => {
+  localTab.value = newVal
+})
 
 const rules = ref([
   value => {

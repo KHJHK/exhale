@@ -37,28 +37,29 @@
       align-tabs="center"
     >
       <v-tab 
-        :value="1"
+        
         :to="{name: 'PostWholeListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostWholeListView'}"
         active-class="active"
       >전체</v-tab>
       <v-tab 
-        :value="2"
+        
         :to="{name: 'PostInfoListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostInfoListView' }"
         active-class="active"
       >정보 글</v-tab>
       <v-tab 
-        :value="3"
+       
+        
         :to="{name: 'PostReviewListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostReviewListView' }"
         active-class="active"
       >치료 후기</v-tab>
       <v-tab 
-        :value="4"
+        
         :to="{name: 'PostStoryListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostStoryListView' }"
@@ -87,9 +88,8 @@
         <section class="box-item">
           <article>
             <!-- <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" > -->
-            <div v-for="(post, index) in filteredPosts" :key="post.id" >  
+            <div v-for="(post, index) in posts" :key="post.id" >  
               <PostItem
-              :number="pageStartIdx + index + 1"
               :title="post.title"
               :content="post.content"
               :create_date="post.create_date"
@@ -118,29 +118,32 @@
     <Footers/>
   </footer>
 </div>
+<scrollTop/>
 </template>
 
 <script setup>
-import { computed, onUpdated, ref, watch } from 'vue'
+import { computed, onUpdated, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
 
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 import CommunityMenu from '@/components/modals/CommunityMenu.vue'
-
+import scrollTop from '@/components/functions/scrollTop.vue'
 import PostMenu from '@/components/posts/PostMenu.vue'
 import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
-
+import {boardList} from '@/api/boards' 
+import { useCrudStore } from '@/stores/crud'
+const crud = useCrudStore()
 const searchOption = ref(null);
 const searchKeyword = ref('');
 
 const handleSearch = ({ option, keyword }) => {
   searchOption.value = option;
   searchKeyword.value = keyword;
-  fetchPosts(); // 필터링된 포스트를 다시 가져옵니다.
+  
 };
 
 const filteredPosts = computed(() => {
@@ -160,20 +163,6 @@ function toggleMenu() {
   show.value = !show.value
 }
 
-// vuetify Tabs components
-const tab = ref(null);
-
-
-// const open = () => {
-//   show.value = !show.value
-//   return show
-// }
-
-// console.log(show.value)
-
-
-
-
 const posts = ref([])
 const route = useRoute()
 const router = useRouter()
@@ -190,41 +179,54 @@ const enlarge = () => {
     fontSize.value = 16
   };
 };
-
-const articles = new Array(111)
-
-  for (let i = 0; i < articles.length; i++) {
-    articles[i] = `Article ${i + 1}`;
-  }
  
-  const ITEM_PER_PAGE = ref(10);
-  const PAGE_PER_SECTION = ref(10);
-  let curPage = ref(1);
 
-  const pageStartIdx = computed(() => {
-    return (curPage.value - 1) * ITEM_PER_PAGE.value;
-  });
+  // const onChangePage = (data) => {
+  //   curPage.value = data;
+  // };
 
-  const onChangePage = (data) => {
-curPage.value = data;
-};
+  // const updateTab = (newTab) => {
+  //   tab.value = newTab
+  // }
 
-const fetchPosts = async () => {
+  const board_list = async () => {
   try {
-    // URL 쿼리 파라미터를 기반으로 필터링된 포스트를 가져옵니다.
-    const searchBy = route.query.searchBy;
-    const keyword = route.query.keyword;
-    const { data } = await getPosts(searchBy, keyword);
-    posts.value = data;
-  } catch (error) {
-    console.error(error);
-  }
-};
+    const response = await boardList(
+      crud.tab,
+      crud.curPage
+      )
+      console.log(crud.curPage)
+      posts.value = response.data.response.article_list
+      crud.totalPage = response.data.response.article_total_count
+      crud.ITEM_PER_PAGE = response.data.response.page_size
+      crud.PAGE_PER_SECTION = response.data.response.page_total_count
+      
+    }
+   catch (error) {
+      console.log(error)
+   }}
+  
 
 
-const goPage = (id) => {
-router.push(`/posts/${id}`)
-}
+watch(crud.curPage, () => {
+
+    board_list(crud.curPage)
+   })
+
+
+  onMounted(() => {
+    crud.tab = 1
+    board_list()
+  })
+
+  onUnmounted(() => {
+    board_list()
+  })
+
+
+// const goPage = (id) => {
+// router.push(`/posts/${id}`)
+// }
 
 </script>
 

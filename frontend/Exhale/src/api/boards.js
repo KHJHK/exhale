@@ -1,5 +1,5 @@
 import axios from "axios";
-const accessToken = localStorage.getItem('JWT_token')
+
 //카테고리 조회 요청
 // const boardCategory = async () => {
 //     try {
@@ -13,17 +13,18 @@ const accessToken = localStorage.getItem('JWT_token')
 // }   
 
 //글 목록 조회 ~
+// const boardList = async (board_id, page) => {
+//     try {
+//     const response = await axios.get(`http://i10b208.p.ssafy.io/api/boards/${board_id}?page=${page}`)
+//     return response.data.response
+//     } catch (error) {
+//         console.error('글 목록을 가져오지 못했어요.', error)
+//     }
+// }
+// R
 const boardList = async (board_id, page) => {
-    try {
-    const response = await axios.get(`http://i10b208.p.ssafy.io/api/boards/${board_id}?page=${page}`, {
-        board_id: board_id,
-        page: page
-        
-    })
-        console.log(response.data)
-    } catch (error) {
-        console.error('글 목록을 가져오지 못했어요.', error)
-    }}
+    return await axios.get(`http://i10b208.p.ssafy.io/api/boards/${board_id}?page=${page}`)
+}
 
 //게시글 검색 x
 const boardSearch = async (board_id, searchType, searchContent, page) => {
@@ -36,22 +37,13 @@ const boardSearch = async (board_id, searchType, searchContent, page) => {
     }) 
     } catch (error) {
         console.error('검색을 완료하지 못했습니다.', error)
-    }
-}
+    }}
 
 //글 상세 정보 조회 x
-const boardDetail = async () => {
-    try {
-    const response = await axios.get('http://i10b208.p.ssafy.io/api/articles/{article_id}', {
-        
-        headers: {
-            'Authorization': `${accessToken}`
-        }
-    })
-    } catch (error) {
-        console.log('게시물을 찾을 수 없습니다.', error)
-    }
-}
+const boardDetail = async (article_id) => {
+    return await axios.get(`http://i10b208.p.ssafy.io/api/articles/${article_id}`, {
+    }) 
+    };
 
 //게시글 생성 O
 const articleCreate = async (title, content, thumbnail, board_id) => {
@@ -85,16 +77,11 @@ const saveImg = async (file) => {
     })
  } catch (error) {
     console.error('이미지를 저장할 수 없어요', error)
- }
-}
+ }}
 
-
-
-
-
-
-
+ 
 export {
+  
     boardList,
     boardSearch,
     boardDetail,
