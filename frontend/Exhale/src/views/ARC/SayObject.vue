@@ -4,7 +4,8 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getCourseList, getProblem  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
-import TTS from '@/components/ARC/TTS.vue';
+// import TTS from '@/components/ARC/TTS.vue';
+import ResultDialog from '@/components/ARC/ResultDialog.vue'
 
 // todo routing으로 받기
 const courseName='';
@@ -19,6 +20,8 @@ const token = JWTtoken.value;
 let problemIdx=0;
 let problemSet=null;
 let no = ref(1);
+const resultDialog = ref(true);
+
 const problem = {
   answer: ref(''),
   hint: ref(''),
@@ -82,7 +85,6 @@ saveProblem();
 
 
 
-
 // TTS
 // const ttsText = ref("안녕하세요");
 
@@ -106,6 +108,7 @@ const nextProblem = () => {
 
 <template>
     <div v-if="problem">
+      <ResultDialog :dialog = "resultDialog"/>
       <h1>경과 시간: {{ elapsedTime }}</h1>
       <div>{{ no }}. 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
       <STT 
