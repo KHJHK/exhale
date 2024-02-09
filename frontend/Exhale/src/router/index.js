@@ -58,6 +58,11 @@ import CommentsDelete from '@/components/comments/CommentsDelete.vue'
 import CommentsEdit from '@/components/comments/commentsEdit.vue'
 import CommentsReply from '@/components/comments/CommentsReply.vue'
 
+// ARC
+import SayObject from '@/views/ARC/SayObject.vue';
+
+
+
 // Import Common views
 const history = createWebHistory();
 const router = createRouter({
@@ -76,6 +81,7 @@ const router = createRouter({
     { path: '/listening-comprehension', name:'ListeningComprehension', component: ListeningComprehension },
     { path: '/fluency', name:' Fluency', component: Fluency },
     { path: '/review', name: 'Review', component: Review },
+    { path: '/say-object', name: 'SayObject', component: SayObject },
 
     // community
     { path: '/posts/create', name: 'PostCreateView', component: PostCreateView },

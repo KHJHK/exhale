@@ -28,8 +28,10 @@ height: 100vh;
 // }
 
 .enlarge {
-width: 100px;
+width: 114px;
+height: 35px;
 position: fixed;
+font-size: 15px;
 top: 5%;
 left: 90%;
 border-radius: 20px;
@@ -99,9 +101,10 @@ height: auto;
 
 
 * {
-  font-family: 'MapoFlowerIsland';
+  font-family: 'intelone-mono-font-family-regular';
   padding: 0;
   box-sizing: border-box;
+//   letter-spacing: 1px;
 }
 
 html,
@@ -147,7 +150,8 @@ transform: scale(0);
 transition: .5s ease-in-out;
 transition-delay: 0.2s;
 margin-bottom: 10vh;
-margin-top: -20vh;
+margin-top: -10vh;
+margin-left: 17vw;
 background-color: #ffffff;
 }
 
@@ -211,7 +215,7 @@ flex-direction: column;
 
 .forgot {
   text-decoration: none;
-  color: rgb(63, 63, 63);
+  color: rgb(95, 95, 95);
 }
 
 .pointer {
@@ -224,7 +228,7 @@ cursor: pointer;
 .container.sign-up .form.sign-up,
 .container.sign-up .social-list.sign-up,
 .container.sign-up .social-list.sign-up>div {
-transform: scale(1);
+transform: scale(1.3);
 }
 
 
