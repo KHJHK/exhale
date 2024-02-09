@@ -10,7 +10,7 @@
   </template>
   
   <script setup>
-  import { ref, watch, defineEmits, defineProps } from 'vue';
+  import { ref, watch, defineEmits } from 'vue';
   
   // props로 전달된 sttText를 자식 컴포넌트 내부에서 사용하기 위해 ref로 감싸줍니다.
   const sttText = ref("");
@@ -61,7 +61,8 @@
           .map(speech => speech.transcript)
           .join(' ');
       console.log("transcript :", transcript);
-      sttText.value = sttTextValue + " " + transcript;
+      disableStt();
+      sttText.value = transcript;
   };
   
   speechRecognition.onerror = (e) => {
@@ -72,6 +73,5 @@
   </script>
   
   <style scoped>
-  /* 필요한 스타일을 작성하세요 */
   </style>
   

@@ -27,8 +27,13 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 푼문제 저장
-  const postSolvedProblem = async (params) => {
-    return await axios.post(baseURL + '/api/rehabilitation/result',params,{
+  const postSolvedProblem = async (params, token) => {
+    const datas = {
+      problem_id : params.problemId,
+      is_right : params.isRight,
+      time : params.time
+    }
+    return await axios.post(baseURL + '/api/rehabilitation/result',datas,{
     headers: {
         Authorization: token
       }
@@ -61,8 +66,11 @@ const baseURL = import.meta.env.VITE_BASE_URL;
   };
 
   // 복습 문제 저장
-  const postReview = async (params) => {
-    return await axios.post(baseURL + '/api/rehabilitation/review',params,{
+  const postReview = async (problem_id, token) => {
+    const datas = {
+      problem_id : problem_id
+    }
+    return await axios.post(baseURL + '/api/rehabilitation/review',datas,{
     headers: {
         Authorization: token
       }
