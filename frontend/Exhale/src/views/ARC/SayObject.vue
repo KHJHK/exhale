@@ -34,7 +34,7 @@ const isComplete = ref(false);
 const sttText = ref(".");
 
 const problem = {
-  problemId : ref(''),
+  problemId : ref(0),
   answer: ref(''),
   hint: ref(''),
   imgUrl : ref('')
