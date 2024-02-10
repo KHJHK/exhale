@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount  } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
@@ -16,7 +16,7 @@ const categoryId = 1;
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken.value;
+const token = JWTtoken;
 
 let problemIdx=0;
 let problemSet=null;
@@ -205,10 +205,43 @@ onBeforeUnmount(stopTimer);
 
 getProblems();
 
+
+const fontSize = ref(16);
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+const enlarge = () => {
+  fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  };
+};
+
+
 </script>
 
 <template>
-    <div v-if="problem">
+      
+<div :style="{ fontSize: fontSize + 'px' }">
+
+  <div class="background">
+
+
+    <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
+
+    <section class="sub-nav1">
+        <div id="breadcrum">
+          <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
+          >
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
+          >
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
+        </div>
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+        </button> 
+    </section>
+
+    <div class="problem" v-if="problem">
       <div >
         <ResultDialog 
           :dialog = "resultDialog"
@@ -226,21 +259,32 @@ getProblems();
           />
       </div>
 
-      <h1>경과 시간: {{ elapsedTime }}</h1>
-      <div>{{ no }}. 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
-      <STT 
-        @update:modelValue="handleContentFieldChange"
-        />
-      <div>{{ problem.answer.value }}</div>
-      <div>{{ problem.hint.value }}</div>
-      <div><img :src="problem.imgUrl.value"/></div>
-      <!-- <TTS
-        :tts-text="ttsText"
-      /> -->
+        <div class="timer">
+          <h1>경과 시간: {{ elapsedTime }}</h1>
+        </div>
+
+        <div class="content">
+            <div>{{ no }}. &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
+            <STT 
+              @update:modelValue="handleContentFieldChange"
+              />
+              <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
+              <div class="answer">{{ problem.answer.value }}</div>
+              <div class="hint">{{ problem.hint.value }}</div>
+        </div>
+        <!-- <button @click="nextProblem">다음</button> -->
+        <!-- <TTS
+          :tts-text="ttsText"
+        /> -->
     </div>
+
+
+  </div>
+
+</div>
 </template>
 
 
 <style lang="scss" scoped>
-
+@import '@/assets/scss/layout/gamebackground.scss'
 </style>

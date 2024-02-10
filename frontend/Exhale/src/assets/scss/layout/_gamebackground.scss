@@ -1,0 +1,83 @@
+.sub-nav1 {
+  margin-top: 0;
+  position: fixed;
+  top: 20%;
+  left: 2%;
+  font-family: 'NotoSansKR';
+  font-size: 150%;
+  // letter-spacing: 3%;
+}
+
+.enlarge {
+  width: 155px;
+  height: 55px;
+  padding: -5px 0px;
+  font-size: 24px;
+  border-radius: 30px;
+  border: 4px solid rgb(175, 175, 175); 
+  &:hover {
+    border: rgb(108, 159, 156) solid 3px;
+    & .plus {
+      width: 0px;
+    }
+}
+  & .plus {
+    width: 30px;
+  }
+}
+
+.background {
+  width: 100vw;
+  height: 100vh;
+  background: rgb(108,159,156);
+  background: radial-gradient(circle, rgba(108,159,156,0.6008053221288515) 0%, rgba(240,245,245,1) 50%);
+  z-index: -1;
+}
+
+.navbar-logo {
+  width: 8%;
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  z-index: 2;
+}
+
+.problem {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.timer {
+  margin-top: 80px;
+  margin-bottom: 50px;
+}
+
+.content {
+  font-size: 150%;
+  color: rgb(98, 98, 98);
+  font-family: 'NotoSansKR';
+  letter-spacing: 1px;
+}
+
+.imgurl {
+  position: fixed;
+  top: 28%;
+  left: 33%;
+  width: 800px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.answer {
+  position: fixed;
+  top: 80%;
+  left: 50%;
+}
+
+.hint {
+  position: fixed;
+  top: 85%;
+  left: 50%;
+}
