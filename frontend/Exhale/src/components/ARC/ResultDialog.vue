@@ -24,6 +24,9 @@
                 <div v-if="isExit">
                   <img src="../../assets/stop.svg"/>
                 </div>
+                <div v-else-if="isComplete">
+                  <img src="../../assets/complete.svg"/>
+                </div>
                 <div v-else-if="isPause">
                   <img src="../../assets/stop.svg"/>  <!-- todo 사진 변경 -->
                 </div>
@@ -36,13 +39,16 @@
                 <div v-if="isExit">
                   <button @click="isClose = true; isExit=false; dialog=false;">종료하기</button>
                 </div>
+                <div v-else-if="isComplete">
+                  <button @click="isClose = true; dialog=false;">창 닫기</button>
+                </div>
                 <div v-else-if="isPause">
                   <button @click="isReturn=true; dialog=false;">돌아가기</button>
                 </div>
                 <div v-else-if="dialog">
                   <button v-if="isRight" @click="reviewTick=true;">저장하기</button>
                   <button v-if="!isRight" @click="againTick=true; dialog=false">다시풀기</button>
-                  <button @click="nextTick = true;  dialog=false;">넘어가기</button>
+                  <button @click="nextTick = !nextTick;  dialog=false;">넘어가기</button>
                 </div>
               </div>
             </div>
@@ -54,16 +60,20 @@
         const props = defineProps({
           dialog: Boolean,
           isRight: Boolean,
+          reviewTick: Boolean,
+          againTick: Boolean,
           isPause: Boolean,
           isReturn: Boolean,
+          isComplete: Boolean,
         });  
         const dialog = ref(props.dialog);
         const isRight = ref(props.isRight);
         const isPause = ref(props.isPause);
         const isReturn = ref(props.isReturn);
+        const isComplete = ref(props.isComplete);
         const nextTick = ref(false);
-        const reviewTick = ref(false);
-        const againTick = ref(false);
+        const reviewTick = ref(props.reviewTick);
+        const againTick = ref(props.againTick);
 
         const isExit = ref(false);
         const isClose = ref(false);
@@ -75,6 +85,7 @@
           "update:againTick", 
           "update:isClose", 
           "update:isPause",
+          "update:isExit",
           "update:isReturn",
         ]);
         watch(dialog, () => {
@@ -95,6 +106,9 @@
         watch(isPause, () => {
           emit('update:isPause', isPause.value);
         });
+        watch(isExit, () => {
+          emit('update:isExit', isExit.value);
+        });
         watch(isReturn, () => {
           emit('update:isReturn', isReturn.value);
         });
@@ -102,8 +116,10 @@
         watch(props, () => {
             dialog.value = props.dialog;
             isRight.value = props.isRight;
+            againTick.value = props.againTick;
             isPause.value = props.isPause;
             isReturn.value = props.isReturn;
+            isComplete.value = props.isComplete;
         });
     </script>
 
