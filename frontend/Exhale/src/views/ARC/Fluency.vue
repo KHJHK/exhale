@@ -16,11 +16,10 @@ const categoryId = 4;
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken;
-
+// const token = JWTtoken;
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo1LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NTY2OTE5LCJleHAiOjE3MDc1Njg3MTl9.oN2CLYBl8rEGFFZCgGii0mrbtARtARNRYK_PMapLgjw';
 let problemIdx=0;
 let problemSet=null;
-// let no = ref(1);
 
 // 다이어로그
 const resultDialog = ref(false);
@@ -31,7 +30,9 @@ const isPause = ref(false);
 const isReturn = ref(false);
 const isComplete = ref(false);
 
-const sttText = ref(".");
+const sttText = ref("");
+const ttsText = ref("");
+const isReading = ref(false);
 
 const problem = {
   problemId : ref(0),
@@ -41,6 +42,8 @@ const problem = {
 // 타이머
 const elapsedTime = ref(overTime);
 let timerId;
+
+const ableSpeak = ref(false);
 
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
@@ -72,7 +75,9 @@ const getProblems = async () => {
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
-
+    // ttsText.value = problem.question.value;
+    ttsText.value = "안녕안녕"
+    console.log(ttsText.value)
   } catch (error) {
     console.error(error); 
   }
@@ -113,8 +118,6 @@ const saveReviewProblem = async () => {
   }
 };
 
-// TTS
-// const ttsText = ref("안녕하세요");
 
 const nextProblem = () => {
 
@@ -128,6 +131,7 @@ const nextProblem = () => {
   problemIdx++;
   problem.problemId.value = problemSet[problemIdx].problem_id;
   problem.question.value = problemSet[problemIdx].question;
+  ttsText.value = problem.question.value;
 
   // 초기화
   stopTimer();
@@ -153,11 +157,15 @@ const resultProcessing = (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = ".";
   resultProcessing(text);
+};
+
+const handleIsReadingChange = (value) => {
+  isReading.value = value;
 };
 const handleDialogChange = (value) => {
   resultDialog.value = value;
+  ableSpeak.value = false;
   if(!value){
     isPause.value = false;
     isReturn.value=false;
@@ -270,18 +278,20 @@ const enlarge = () => {
         <div class="timer">
           <h1>경과 시간: {{ elapsedTime }}</h1>
         </div>
-
+        {{ sttText }}
         <div class="content">
-            <STT 
-              :sttText="sttText"
-              @update:sttText="handleSttTextChange"
-              />
-      
+            <div>{{ isReading }}</div>
+            <div :style="isReading ? {'pointer-events': 'none'} : {'pointer-events':'auto'}">
+                <STT 
+                :sttText="sttText"
+                @update:sttText="handleSttTextChange"
+                />
+            </div>
         </div>
-        <!-- <button @click="nextProblem">다음</button> -->
-        <!-- <TTS
-          :tts-text="ttsText"
-        /> -->
+        <TTS
+        :ttsText="ttsText"
+        @update:isReading="handleIsReadingChange"
+        />
     </div>
 
 
