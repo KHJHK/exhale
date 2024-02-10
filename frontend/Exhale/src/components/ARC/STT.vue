@@ -1,8 +1,17 @@
 <template>
-    <div>
-      <button @click="enableStt" v-show="!sttRunning">마이크</button>
-      <button @click="disableStt" v-show="sttRunning">마이크</button>
-      <div>{{ message }}</div>
+    <div class="speak">
+      <div class="speakBtn">
+        <button @click="enableStt" v-show="!sttRunning">
+          <img src="@/assets/mic.svg" class="mic" >
+        </button>
+        <button @click="disableStt" v-show="sttRunning">
+          <img src="@/assets/mic.svg" class="mic" >
+        </button>
+        <div class="message">{{ message }}</div>
+      </div>
+      <form @submit.prevent="onSubmit" ref="sttForm">
+        <textarea class="textarea" name="sttText" v-model="sttText"></textarea>
+      </form>
     </div>
   </template>
   
@@ -65,6 +74,35 @@
   
   </script>
   
-  <style scoped>
+  <style lang="scss" scoped>
+
+  .speak {
+    position: fixed;
+    top: 77%;
+    left: 36%;
+    color: rgb(108, 159, 156);
+  }
+
+  .mic {
+    position: fixed;
+    top: 70%;
+    width: 70px;
+    box-shadow: 2px 10px 15px 5px rgb(193, 193, 193);
+    border-radius: 100%;
+  }
+
+  .message {
+    position: fixed;
+    left: 36.3%;
+  }
+
+  .textarea {
+  position: fixed;
+  top: 73%;
+  left: 44%;
+  width: 15%;
+  height: 5%;
+  }
+
   </style>
   
