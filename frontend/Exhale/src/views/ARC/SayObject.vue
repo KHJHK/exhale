@@ -25,8 +25,8 @@ let no = ref(1);
 // 다이어로그
 const resultDialog = ref(false);
 const isRight = ref(false);
-const isExit = ref(false);
 const isPause = ref(false);
+const isReturn = ref(false);
 
 const problem = {
   problemId : ref(''),
@@ -116,7 +116,6 @@ const saveReviewProblem = async () => {
 // const ttsText = ref("안녕하세요");
 
 const nextProblem = () => {
-  console.log(problemIdx)
 
   if(problemIdx>=problemSet.length-1){
     // todo 게임 종료
@@ -153,22 +152,17 @@ const resultProcessing = (sttText) =>{
 
 }
 
-const onExit = () => {
-  stopTimer();
-  
-  resultDialog.value = true;
-  isExit.value = true;
-}
-const onPause = () => {
-  stopTimer();
-
-  resultDialog.value = true;
-  isPause.value = true;
-}
 const handleContentFieldChange = (text) => {
   resultProcessing(text);
 };
+const handleDialogChange = (value) => {
+  resultDialog.value = value;
+  if(!value){
+    isPause.value = false;
+    isReturn.value=false;
+  }
 
+};
 const handleNextTickChange = (value) => {
   stopTimer();
   nextProblem();
@@ -185,8 +179,24 @@ const handleAgainTickChange = (value) => {
   resultDialog.value = false;
 };
 const handleIsCloseChange = (value) => {
-  console.log("종료하기")
+  stopTimer();
   window.close();
+};
+const handleIsPauseChange = (value) => {
+  
+  stopTimer();
+  resultDialog.value = true;
+  isPause.value = value;
+  isReturn.value = false;
+};
+
+const handleIsReturnChange = (value) => {
+  startTimer();  
+  
+  resultDialog.value = false;
+  isPause.value = false;
+  isReturn.value = false;
+
 };
 
 onMounted(startTimer);
@@ -199,21 +209,23 @@ getProblems();
 
 <template>
     <div v-if="problem">
-      <div v-if="resultDialog">
+      <div >
         <ResultDialog 
           :dialog = "resultDialog"
-          :isRight = "isRight"
-          :isExit = "isExit"
-          :isPause = "isPause"      
+          :isRight = "isRight"  
+          :isPause = "isPause"
+          :isReturn = "isReturn"  
+          @update:dialog="handleDialogChange"
           @update:nextTick="handleNextTickChange"
           @update:reviewTick="handleReviewTickChange"
           @update:againTick="handleAgainTickChange"
           @update:isClose="handleIsCloseChange"
+          @update:isPause="handleIsPauseChange"
+          @update:isReturn="handleIsReturnChange"
 
           />
       </div>
-      <button @click="onExit">연습 종료</button>
-      <button @click="onPause">일시 정지</button>
+
       <h1>경과 시간: {{ elapsedTime }}</h1>
       <div>{{ no }}. 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
       <STT 

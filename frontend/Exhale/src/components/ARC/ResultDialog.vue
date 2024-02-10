@@ -4,16 +4,12 @@
         fullscreen
         :scrim="false"
         transition="dialog-bottom-transition"
-      >
-        <!-- <template v-slot:activator="{ props }">
-          <v-btn
-            color="primary"
-            dark
-            v-bind="props"
-          >
-            Open Dialog
-          </v-btn>
-        </template> -->
+      >        
+        <template v-slot:activator="{ props }">
+          <v-btn @click="isExit=true; dialog=true;">연습 종료</v-btn>
+          <v-btn @click="isPause=!isPause; dialog=true;">일시 정지</v-btn>
+        </template>
+   
         <v-card class="custom-dialog-card">
           
             <!-- <v-btn
@@ -25,22 +21,28 @@
             </v-btn> -->
             <div class="content">
               <div class="images">
-                <div v-if="!isExit">
-                  <img v-if="isRight" src="../../assets/right.png"/>              
-                  <img v-if="!isRight" src="../../assets/wrong.svg"/>
-                </div>
                 <div v-if="isExit">
                   <img src="../../assets/stop.svg"/>
+                </div>
+                <div v-else-if="isPause">
+                  <img src="../../assets/stop.svg"/>  <!-- todo 사진 변경 -->
+                </div>
+                <div v-else-if="dialog">
+                  <img v-if="isRight" src="../../assets/right.png"/>              
+                  <img v-if="!isRight" src="../../assets/wrong.svg"/>
                 </div>
               </div>
               <div class="buttons">
                 <div v-if="isExit">
-                  <button @click="isClose = true;">종료하기</button>
+                  <button @click="isClose = true; isExit=false; dialog=false;">종료하기</button>
                 </div>
-                <div v-if="!isExit">
+                <div v-else-if="isPause">
+                  <button @click="isReturn=true; dialog=false;">돌아가기</button>
+                </div>
+                <div v-else-if="dialog">
                   <button v-if="isRight" @click="reviewTick=true;">저장하기</button>
-                  <button v-if="!isRight" @click="againTick=true;">다시풀기</button>
-                  <button @click="nextTick = true;  dialog=false; ">넘어가기</button>
+                  <button v-if="!isRight" @click="againTick=true; dialog=false">다시풀기</button>
+                  <button @click="nextTick = true;  dialog=false;">넘어가기</button>
                 </div>
               </div>
             </div>
@@ -52,20 +54,32 @@
         const props = defineProps({
           dialog: Boolean,
           isRight: Boolean,
-          isExit: Boolean,
+          isPause: Boolean,
+          isReturn: Boolean,
         });  
         const dialog = ref(props.dialog);
         const isRight = ref(props.isRight);
-        const isExit = ref(props.isExit);
         const isPause = ref(props.isPause);
+        const isReturn = ref(props.isReturn);
         const nextTick = ref(false);
         const reviewTick = ref(false);
         const againTick = ref(false);
 
+        const isExit = ref(false);
         const isClose = ref(false);
 
-        const emit = defineEmits(["update:nextTick", "update:reviewTick",  "update:againTick", "update:isClose"]);
-  
+        const emit = defineEmits([
+          "update:dialog",
+          "update:nextTick", 
+          "update:reviewTick",  
+          "update:againTick", 
+          "update:isClose", 
+          "update:isPause",
+          "update:isReturn",
+        ]);
+        watch(dialog, () => {
+          emit('update:dialog', dialog.value);
+        });  
         watch(nextTick, () => {
           emit('update:nextTick', nextTick.value);
         });
@@ -77,6 +91,19 @@
         });        
         watch(isClose, () => {
           emit('update:isClose', isClose.value);
+        });
+        watch(isPause, () => {
+          emit('update:isPause', isPause.value);
+        });
+        watch(isReturn, () => {
+          emit('update:isReturn', isReturn.value);
+        });
+
+        watch(props, () => {
+            dialog.value = props.dialog;
+            isRight.value = props.isRight;
+            isPause.value = props.isPause;
+            isReturn.value = props.isReturn;
         });
     </script>
 
