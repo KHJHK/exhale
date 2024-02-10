@@ -282,7 +282,7 @@ const enlarge = () => {
             <div>{{ no }}. &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
             <STT 
               :sttText="sttText"
-              @update:modelValue="handleContentFieldChange"
+              @update:sttText="handleSttTextChange"
               />
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
               <div class="answer">{{ problem.answer.value }}</div>
