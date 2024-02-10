@@ -139,7 +139,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getPostById, updatePost } from '@/api/posts'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -161,7 +161,7 @@ const fetchPost = async () => {
 const setForm = ({ title, content }) => {
   form.value = { title, content }
 }
-fetchPost()
+
 
 const edit = async () => {
   try {

@@ -74,13 +74,13 @@
 </template>
 
 <script setup>
-import { getPostById, deletePost } from '@/api/posts';
+
 import { ref, onMounted, watch, provide, reactive, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { defineProps } from 'vue';
 import CommentsCreate from '@/components/comments/CommentsCreate.vue';
 import CommentsList from '@/components/comments/CommentsList.vue';
-import { getComments, getPosts } from '@/api/posts.js';
+
 import CommunityMenu from '@/components/modals/CommunityMenu.vue';
 import PostItem from '@/components/posts/PostItem.vue';
 import PostMenu from '@/components/posts/PostMenu.vue';
@@ -126,7 +126,6 @@ const enlarge = () => {
 
 
 
-console.log
 const fetchPosts = async () => {
   try {
     const response = await getPosts(); // 모든 게시글 불러오기
@@ -142,46 +141,45 @@ onMounted(async () => {
 
 
 
-const fetchPost = async (postId) => {
-  try {
-    const { data } = await getPostById(postId)
-    // const response = await getPostById(postId);
-    // post.value = response.data;
-    post.value = data
-    setPost(data)
-  } catch (error) {
-    console.error(error);
-  }  
-};
+// const fetchPost = async (postId) => {
+//   try {
+//     const { data } = await getPostById(postId)
+  
+//     post.value = data
+//     setPost(data)
+//   } catch (error) {
+//     console.error(error);
+//   }  
+// };
 
-const setPost = ({title, content, create_date }) => {
-    post.value.title = title
-    post.value.content = content
-    post.value.create_date = create_date
-}
-fetchPost()
+// const setPost = ({title, content, create_date }) => {
+//     post.value.title = title
+//     post.value.content = content
+//     post.value.create_date = create_date
+// }
 
-const remove = async () => {
-    try {
-        if (confirm('삭제 하시겠습니까?') === false) {
-            return
-        }
-        await deletePost(id)
-        router.push({ name: 'PostWholeListView' })
-    } catch (error) {
-        console.error(error)
-    }
-}
 
-const fetchComments = async (postId) => {
-  try {
-    const response = await getComments(postId);
-    comments.value = response.data
+// const remove = async () => {
+//     try {
+//         if (confirm('삭제 하시겠습니까?') === false) {
+//             return
+//         }
+//         await deletePost(id)
+//         router.push({ name: 'PostWholeListView' })
+//     } catch (error) {
+//         console.error(error)
+//     }
+// }
+
+// const fetchComments = async (postId) => {
+//   try {
+//     const response = await getComments(postId);
+//     comments.value = response.data
    
-  } catch (error) {
-    console.error('댓글을 불러오던 중 강도를 만났어요',error);
-  }
-};
+//   } catch (error) {
+//     console.error('댓글을 불러오던 중 강도를 만났어요',error);
+//   }
+// };
 
 
 const navigateToPost = (direction) => {
@@ -214,15 +212,15 @@ const goEditPage = () => {
   router.push({ name: 'PostEditView', params: { id } })
 }
 
-watch(() => route.params.id, async (newId) => {
-  await fetchPost(newId);
-  await fetchComments(newId);
-}, { immediate: true });
-onMounted(() => {
-  fetchPost(postId.value);
-  fetchComments(postId.value)
-});
-provide('post', post)
+// watch(() => route.params.id, async (newId) => {
+//   await fetchPost(newId);
+//   await fetchComments(newId);
+// }, { immediate: true });
+// onMounted(() => {
+//   fetchPost(postId.value);
+//   fetchComments(postId.value)
+// });
+// provide('post', post)
 
 </script>
 

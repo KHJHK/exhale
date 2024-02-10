@@ -10,7 +10,7 @@
 </template>
 <script setup>
 import { ref, inject } from 'vue';
-import { createComments } from '@/api/posts';
+
 const post = inject('post')
 
 const emit = defineEmits(['commentCreated']);

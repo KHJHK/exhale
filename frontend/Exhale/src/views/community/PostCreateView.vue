@@ -136,14 +136,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { createPost } from '@/api/posts'
-import EmojiPicker from 'vue3-emoji-picker'
-import 'vue3-emoji-picker/css'
-import { watch } from 'vue'
-import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js'
-import { articleCreate } from '@/api/boards'
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
+import EmojiPicker from 'vue3-emoji-picker';
+import 'vue3-emoji-picker/css';
+import { watch } from 'vue';
+import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js';
+import { articleCreate } from '@/api/boards';
+
 
 const selectedCategory = ref('');
 const router = useRouter()
@@ -151,10 +151,7 @@ const title = ref('');
 const content = ref('')
 const thumbnail = ref(null);
 const board_id = ref('')
-const form = ref({
-    title: null,
-    content: null,
-})
+
 
 const rules = ref([
   value => {
@@ -216,22 +213,17 @@ const article_create = async () => {
             content.value,
             thumbnail.value,
             board_id.value
-       )
-       if (response) {
-        alert('게시글 등록 완료!')
-        router.push('/post-whole-list') 
-    }
+       ) 
     } catch (error) {
         console.error('게시글 등록에 실패하였습니다.', error)
-    }
+        
+    } finally { router.push('/post-whole-list') } 
 }
 
 // 게시물 종류 선택시 게시물 아이디 정해짐
 const onCategoryChange = () => {
   board_id.value =  parseInt(selectedCategory.value, 10);
 };
-
-
 
 
 </script>

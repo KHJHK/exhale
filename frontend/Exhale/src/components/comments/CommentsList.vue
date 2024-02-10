@@ -39,7 +39,7 @@
   </template>
   
   <script>
-  import { getComments } from '@/api/posts';
+
   import { ref, onMounted, defineProps, defineEmits } from 'vue'; 
   export default {
     props: {
