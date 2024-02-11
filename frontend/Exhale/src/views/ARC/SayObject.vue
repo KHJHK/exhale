@@ -7,7 +7,6 @@ import STT from '@/components/ARC/STT.vue';
 // import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 
-
 // todo routing으로 받기
 const courseName='';
 const categoryName='';
@@ -38,6 +37,8 @@ const problem = {
 // 타이머
 const elapsedTime = ref(overTime);
 let timerId;
+const timerWidth = computed(() => (elapsedTime.value / overTime) * 100);
+
 
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
@@ -47,7 +48,7 @@ const startTimer = () => {
       elapsedTime.value = 0;
       resultProcessing("");
     }
-  }, 1000);
+  }, 100000);
 };
 
 // 컴포넌트가 언마운트될 때 타이머 정리
@@ -241,6 +242,9 @@ const enlarge = () => {
         </button> 
     </section>
 
+
+    
+
     <div class="problem" v-if="problem">
       <div >
         <ResultDialog 
@@ -260,7 +264,10 @@ const enlarge = () => {
       </div>
 
         <div class="timer">
-          <h1>경과 시간: {{ elapsedTime }}</h1>
+          <div class="timer-bar" :style="{ width: timerWidth + '%' }">
+            <img src="@/assets/clock1.svg" class="clock">
+          </div>
+          <!-- <h1>경과 시간: {{ elapsedTime }}</h1> -->
         </div>
 
         <div class="content">

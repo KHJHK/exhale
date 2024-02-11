@@ -49,11 +49,34 @@
 }
 
 .timer {
-  margin-top: 80px;
-  margin-bottom: 50px;
+  position: fixed;
+  top: 8.5%;
+  width: 35%;
+  height: 65px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.timer-bar {
+  position: relative;
+  height: 100%;
+  background-color: rgb(108, 159, 156);
+  transition: width 1s linear;
+}
+
+.clock {
+  position: absolute;
+  top: 10px;
+  left: -430px;
+  width: 1000px;
+  height: 43px;
+
 }
 
 .content {
+  position: fixed;
+  top: 18%;
   font-size: 150%;
   color: rgb(98, 98, 98);
   font-family: 'NotoSansKR';

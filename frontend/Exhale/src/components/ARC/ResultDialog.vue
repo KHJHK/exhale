@@ -5,9 +5,9 @@
         :scrim="false"
         transition="dialog-bottom-transition"
       >        
-        <template v-slot:activator="{ props }">
-          <v-btn @click="isExit=true; dialog=true;">연습 종료</v-btn>
-          <v-btn @click="isPause=!isPause; dialog=true;">일시 정지</v-btn>
+        <template id="stopBtns" v-slot:activator="{ props }">
+          <button class="finishBtn" @click="isExit=true; dialog=true;">연습 종료</button>
+          <button class="pauseBtn" @click="isPause=!isPause; dialog=true;">일시 정지</button>
         </template>
    
         <v-card class="custom-dialog-card">
@@ -138,5 +138,33 @@
     }
 
   }
+
+  .finishBtn{
+    position: fixed;
+    top: 30%;
+    right: 4%;
+    border: 4px solid rgb(175, 175, 175);
+    border-radius: 30px;
+    font-size: 24px;
+    width: 155px;
+    height: 55px;
+    padding: -5px 0px;
+    font-family: 'NotoSansKR';
+    color: gray;
+  }
+  .pauseBtn{
+    position: fixed;
+    top: 80%;
+    right: 4%;
+    border: 4px solid rgb(175, 175, 175);
+    border-radius: 30px;
+    font-size: 24px;
+    width: 155px;
+    height: 55px;
+    padding: -5px 0px;
+    font-family: 'NotoSansKR';
+    color: gray;
+  }
+
   </style>
 
