@@ -35,6 +35,7 @@ public class BoardController {
     public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId,
                                                          @RequestParam("page") Integer page,
                                                          @RequestParam(value = "page_size", required = false) Integer pageSize) {
+        if(boardId == 0) return CommonResponse.ok(articleService.getArticleList(page, pageSize));
         return CommonResponse.ok(articleService.getArticleListByBoardId(boardId, page, pageSize));
     }
 

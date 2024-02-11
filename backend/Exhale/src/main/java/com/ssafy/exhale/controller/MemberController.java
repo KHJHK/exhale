@@ -119,4 +119,8 @@ public class MemberController {
         return CommonResponse.ok(null);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<?> getProfile() {
+        return CommonResponse.ok(memberService.getProfile(tokenPayloadUtil.getMemberId()));
+    }
 }

@@ -37,7 +37,7 @@ public class ArticleService {
 
     public ArticleListResponse getArticleList(Integer page, Integer pageSize) {
         pageSize = pageSize == null ? PAGE_SIZE : pageSize;
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         List<Article> articleEntityList = articleRepository.findByIsDelete(pageRequest, false);
         Long articleTotalCount = articleRepository.countBy();
         Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
@@ -54,7 +54,7 @@ public class ArticleService {
 
     public ArticleListResponse getArticleListByBoardId(Integer boardId, Integer page, Integer pageSize) {
         pageSize = pageSize == null ? PAGE_SIZE : pageSize;
-        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);
         Long articleTotalCount = articleRepository.countByBoardId(boardId);
         Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
@@ -67,7 +67,6 @@ public class ArticleService {
                 .toList();
 
         return ArticleListResponse.of(page, pageSize, pageTotalCount, articleTotalCount, articleList);
-
     }
 
     public ArticleResponse getArticle(Long articleId) {
@@ -154,7 +153,7 @@ public class ArticleService {
     public ArticleListResponse search(ArticleSearchRequest searchRequest, Integer page, Integer pageSize){
         try{
             pageSize = pageSize != null ? pageSize : PAGE_SIZE;
-            PageRequest pageRequest = PageRequest.of(page, pageSize);
+            PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
             List<Article> articleEntityList = articleRepository.search(searchRequest, pageRequest);
             Long articleTotalCount = articleRepository.countSearchedArticles(searchRequest);
             Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);

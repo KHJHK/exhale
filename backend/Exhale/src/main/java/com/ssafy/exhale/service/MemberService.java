@@ -9,6 +9,7 @@ import com.ssafy.exhale.dto.logicDto.ProfileImageDto;
 import com.ssafy.exhale.dto.requestDto.EmailRequest;
 import com.ssafy.exhale.dto.requestDto.MemberRequest;
 import com.ssafy.exhale.dto.requestDto.NicknameRequest;
+import com.ssafy.exhale.dto.responseDto.MemberProfileResponse;
 import com.ssafy.exhale.exception.handler.DuplicateDataException;
 import com.ssafy.exhale.exception.handler.NoSuchDataException;
 import com.ssafy.exhale.repository.MemberRepository;
@@ -146,5 +147,10 @@ public class MemberService {
         },()->{
             throw new NoSuchDataException();
         });
+    }
+
+    public MemberProfileResponse getProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(NoSuchDataException::new);
+        return MemberProfileResponse.from(member);
     }
 }
