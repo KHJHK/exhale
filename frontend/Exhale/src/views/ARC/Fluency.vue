@@ -17,7 +17,7 @@ const categoryId = 4;
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
 // const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo1LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjM4OTUwLCJleHAiOjE3MDc2NDA3NTB9.h-YQURWknbNkBvyKCTe80gvqGfRMnyw2QDO4dEIGgj0';
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo1LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjQwOTc0LCJleHAiOjE3MDc2NDI3NzR9.ryCnrBpkKVvtQDVYaT4dYUoPssmhHYa5ft9PBuIDp7I';
 let problemIdx=0;
 let problemSet=null;
 
@@ -31,8 +31,9 @@ const isReturn = ref(false);
 const isComplete = ref(false);
 
 const sttText = ref("");
-const ttsText = ref("");
+const question = ref("");
 const isReading = ref(false);
+let isFirst = true;
 
 const problem = {
   problemId : ref(0),
@@ -74,10 +75,7 @@ const getProblems = async () => {
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
-    ttsText.value = problem.question.value;
-
-    ttsText.value = "아리아리요 스리스리요"
-    console.log(ttsText.value);
+    question.value = problem.question.value;
 } catch (error) {
     console.error(error); 
   }
@@ -131,7 +129,7 @@ const nextProblem = () => {
   problemIdx++;
   problem.problemId.value = problemSet[problemIdx].problem_id;
   problem.question.value = problemSet[problemIdx].question;
-  ttsText.value = problem.question.value;
+  question.value = problem.question.value;
 
   // 초기화
   stopTimer();
@@ -142,7 +140,7 @@ const nextProblem = () => {
 const resultProcessing = (text) =>{
   clearInterval(timerId);
   let _isRight = false;
-  if(text!="" && text == problem.answer.value){  // 정답
+  if(text!="" && text == problem.question.value){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
@@ -160,6 +158,10 @@ const handleSttTextChange = (text) => {
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
+    if(isFirst && value){
+        isFirst = false;
+        startTimer();
+    }
   isReading.value = value;
 };
 
@@ -183,10 +185,10 @@ const handleReviewTickChange = (value) => {
 };
 const handleAgainTickChange = (value) => {
   stopTimer();
+  isFirst = true;
   elapsedTime.value = overTime;
   againTick.value = false;
   resultDialog.value = false;
-  startTimer();  
 };
 const handleIsCloseChange = (value) => {
   stopTimer();
@@ -212,7 +214,6 @@ const handleIsReturnChange = (value) => {
 
 };
 
-onMounted(startTimer);
 onBeforeUnmount(stopTimer);
 
 
@@ -278,6 +279,7 @@ const enlarge = () => {
         <div class="timer">
           <h1>경과 시간: {{ elapsedTime }}</h1>
         </div>
+        {{ question }}
         {{ sttText }}
         <div class="content">
             <div>{{ isReading }}</div>
@@ -289,7 +291,7 @@ const enlarge = () => {
             </div>
         </div>
         <TTS
-        :ttsText="ttsText"
+        :text="question"
         :isReading="isReading"
         @update:isReading="handleIsReadingChange"
         />
@@ -307,7 +309,7 @@ const enlarge = () => {
 
 .stt-able{
     pointer-events: none;
-    background-color : rgba(128, 128, 128, 0.9);
+    background-color : rgba(128, 128, 128, 0.8);
 }
 
 .stt-disable{

@@ -7,15 +7,15 @@
 <script setup>
 import { ref, defineProps, watch } from 'vue';
 const props = defineProps({
-  ttsText: String,
+  text: String,
   });  
 
   const selectedLang = ref("ko-KR");
-  const text = ref(props.ttsText);
+  const text = ref(props.text);
   const isReading = ref(props.isReading);
   
   watch(props, () => {
-    text.value = props.ttsText;
+    text.value = props.text;
   }); 
   
   const emit = defineEmits(["update:isReading"]);
@@ -25,7 +25,6 @@ const props = defineProps({
 
 
   function speak() {
-    console.log("start")
     isReading.value = true;
   if (typeof SpeechSynthesisUtterance === "undefined" || typeof window.speechSynthesis === "undefined") {
     alert("이 브라우저는 음성 합성을 지원하지 않습니다.")
