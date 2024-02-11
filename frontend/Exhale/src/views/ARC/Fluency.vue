@@ -17,7 +17,7 @@ const categoryId = 4;
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
 // const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo1LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NTY2OTE5LCJleHAiOjE3MDc1Njg3MTl9.oN2CLYBl8rEGFFZCgGii0mrbtARtARNRYK_PMapLgjw';
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo1LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjM4OTUwLCJleHAiOjE3MDc2NDA3NTB9.h-YQURWknbNkBvyKCTe80gvqGfRMnyw2QDO4dEIGgj0';
 let problemIdx=0;
 let problemSet=null;
 
@@ -43,7 +43,6 @@ const problem = {
 const elapsedTime = ref(overTime);
 let timerId;
 
-const ableSpeak = ref(false);
 
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
@@ -75,10 +74,11 @@ const getProblems = async () => {
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
-    // ttsText.value = problem.question.value;
-    ttsText.value = "안녕안녕"
-    console.log(ttsText.value)
-  } catch (error) {
+    ttsText.value = problem.question.value;
+
+    ttsText.value = "아리아리요 스리스리요"
+    console.log(ttsText.value);
+} catch (error) {
     console.error(error); 
   }
 };
@@ -159,13 +159,13 @@ const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
   resultProcessing(text);
 };
-
 const handleIsReadingChange = (value) => {
   isReading.value = value;
 };
+
+
 const handleDialogChange = (value) => {
   resultDialog.value = value;
-  ableSpeak.value = false;
   if(!value){
     isPause.value = false;
     isReturn.value=false;
@@ -281,7 +281,7 @@ const enlarge = () => {
         {{ sttText }}
         <div class="content">
             <div>{{ isReading }}</div>
-            <div :style="isReading ? {'pointer-events': 'none'} : {'pointer-events':'auto'}">
+            <div :class="isReading ? 'stt-able' :  'stt-disable'">
                 <STT 
                 :sttText="sttText"
                 @update:sttText="handleSttTextChange"
@@ -290,6 +290,7 @@ const enlarge = () => {
         </div>
         <TTS
         :ttsText="ttsText"
+        :isReading="isReading"
         @update:isReading="handleIsReadingChange"
         />
     </div>
@@ -302,5 +303,15 @@ const enlarge = () => {
 
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/gamebackground.scss'
+@import '@/assets/scss/layout/gamebackground.scss';
+
+.stt-able{
+    pointer-events: none;
+    background-color : rgba(128, 128, 128, 0.9);
+}
+
+.stt-disable{
+    pointer-events: cursor;
+    background-color: '';
+}
 </style>
