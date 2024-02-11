@@ -50,7 +50,8 @@
       </v-dialog>
   </template>
     <script setup>
-        import { ref, defineProps ,defineEmits, watch} from 'vue';
+        import { isReactive } from 'vue';
+import { ref, defineProps ,defineEmits, watch} from 'vue';
         const props = defineProps({
           dialog: Boolean,
           isRight: Boolean,
@@ -135,32 +136,33 @@
       border-radius: 90px;
       color: rgba(255, 255, 255);
       font-weight: 900;
+      margin: 30px 50px;
     }
 
   }
 
   .finishBtn{
     position: fixed;
-    top: 30%;
-    right: 4%;
-    border: 4px solid rgb(175, 175, 175);
+    top: 135px;
+    left: 1290px;
+    border: 3px solid rgb(175, 175, 175);
     border-radius: 30px;
-    font-size: 24px;
-    width: 155px;
-    height: 55px;
+    font-size: 18px;
+    width: 117px;
+    height: 40px;
     padding: -5px 0px;
     font-family: 'NotoSansKR';
     color: gray;
   }
   .pauseBtn{
     position: fixed;
-    top: 80%;
-    right: 4%;
-    border: 4px solid rgb(175, 175, 175);
+    top: 575px;
+    left: 1290px;
+    border: 3px solid rgb(175, 175, 175);
     border-radius: 30px;
-    font-size: 24px;
-    width: 155px;
-    height: 55px;
+    font-size: 18px;
+    width: 117px;
+    height: 40px;
     padding: -5px 0px;
     font-family: 'NotoSansKR';
     color: gray;

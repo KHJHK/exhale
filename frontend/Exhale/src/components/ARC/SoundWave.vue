@@ -58,7 +58,7 @@ const waveStyle = computed(() => {
   justify-content: center;
   align-items: center;
   width: 500px;
-  background-color: rgb(108, 159, 156);
+
   /* transform: scaleY(0.2); */
   /* position: relative; */
 }
@@ -69,8 +69,8 @@ const waveStyle = computed(() => {
   /* bottom: 50%; */
   /* top:50%; */
   width: 10px;
-  background-color: rgb(108, 159, 156);
-  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
   /* transform-origin: center; */
   transform: scaleY(0.2);
 }

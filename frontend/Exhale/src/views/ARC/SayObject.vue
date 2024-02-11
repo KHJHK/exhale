@@ -40,6 +40,12 @@ let timerId;
 const timerWidth = computed(() => (elapsedTime.value / overTime) * 100);
 
 
+// 힌트 토글 함수
+const showHint = ref(false);
+const toggleHint = () => {
+  showHint.value = !showHint.value;
+};
+
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
   timerId = setInterval(() => {
@@ -116,6 +122,23 @@ const saveReviewProblem = async () => {
 // TTS
 // const ttsText = ref("안녕하세요");
 
+const sttText = ref("");
+
+const handleModelValueUpdate = (newValue) => {
+  sttText.value = newValue;
+  // 정답 여부 판별 로직
+  if (newValue.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()) {
+    // 정답인 경우
+    isRight.value = true;
+  } else {
+    // 오답인 경우
+    isRight.value = false;
+  }
+
+  // ResultDialog 컴포넌트에 정답 여부 전달
+  resultDialog.value = true; // ResultDialog를 표시합니다.
+}
+
 const nextProblem = () => {
 
   if(problemIdx>=problemSet.length-1){
@@ -131,8 +154,10 @@ const nextProblem = () => {
   problem.imgUrl.value = problemSet[problemIdx].img_url;
   no.value++;
 
+  // 입력창 초기화
+  sttText.value = "";
 
-  // 초기화
+  // 타이머 초기화
   elapsedTime.value = overTime;
   startTimer();  
 }
@@ -220,7 +245,8 @@ const enlarge = () => {
 </script>
 
 <template>
-      
+
+
 <div :style="{ fontSize: fontSize + 'px' }">
 
   <div class="background">
@@ -230,11 +256,7 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
@@ -272,12 +294,15 @@ const enlarge = () => {
 
         <div class="content">
             <div>{{ no }}. &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
-            <STT 
-              @update:modelValue="handleContentFieldChange"
-              />
+            <STT v-model="sttText" @update:modelValue="handleModelValueUpdate" />
+            <!-- <STT 
+              @update:modelValue="handleContentFieldChange" 
+              @update:sttText="updateSttText"
+              /> -->
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
-              <div class="answer">{{ problem.answer.value }}</div>
-              <div class="hint">{{ problem.hint.value }}</div>
+              <!-- <div class="answer">{{ problem.answer.value }}</div> -->
+              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
+              <div class="hint" v-if="showHint">{{ problem.hint.value }}</div>
         </div>
         <!-- <button @click="nextProblem">다음</button> -->
         <!-- <TTS
