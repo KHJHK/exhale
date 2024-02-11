@@ -136,10 +136,10 @@ const waveStyle = computed(() => {
         transform:scaleY(0.2);
     }
     50%{
-        transform:scaleY(0.5);
+        transform:scaleY(0.7);
     }
     100%{
-        transform:scaleY(1);
+        transform:scaleY(1.5);
     }
 }
 

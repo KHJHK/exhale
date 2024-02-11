@@ -54,7 +54,7 @@ const startTimer = () => {
       elapsedTime.value = 0;
       resultProcessing("");
     }
-  }, 100000);
+  }, 1000);
 };
 
 // 컴포넌트가 언마운트될 때 타이머 정리
@@ -293,7 +293,11 @@ const enlarge = () => {
         </div>
 
         <div class="content">
-            <div>{{ no }}. &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
+            <div class="problemtitle">
+              <label class="numbering">
+                {{ no }}.
+              </label>
+              &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
             <STT v-model="sttText" @update:modelValue="handleModelValueUpdate" />
             <!-- <STT 
               @update:modelValue="handleContentFieldChange" 

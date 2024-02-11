@@ -6,8 +6,12 @@
         transition="dialog-bottom-transition"
       >        
         <template id="stopBtns" v-slot:activator="{ props }">
-          <button class="finishBtn" @click="isExit=true; dialog=true;">연습 종료</button>
-          <button class="pauseBtn" @click="isPause=!isPause; dialog=true;">일시 정지</button>
+          <button class="finishBtn" @click="isExit=true; dialog=true;">
+            <img src="@/assets/quit.svg" class="quit">
+            연습 종료</button>
+          <button class="pauseBtn" @click="isPause=!isPause; dialog=true;">
+            <img src="@/assets/pause.svg" class="pause">
+            일시 정지</button>
         </template>
    
         <v-card class="custom-dialog-card">
@@ -153,6 +157,11 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
     padding: -5px 0px;
     font-family: 'NotoSansKR';
     color: gray;
+    & .quit {
+    width: 21px;
+    padding-bottom: 3px;
+    opacity: 40%;
+  }
   }
   .pauseBtn{
     position: fixed;
@@ -163,9 +172,13 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
     font-size: 18px;
     width: 117px;
     height: 40px;
-    padding: -5px 0px;
     font-family: 'NotoSansKR';
     color: gray;
+    & .pause {
+    width: 21px;
+    padding-bottom: 3px;
+    opacity: 40%;
+  }
   }
 
   </style>

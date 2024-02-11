@@ -86,6 +86,9 @@
   color: rgb(69, 69, 69);
   font-family: 'NotoSansKR';
   letter-spacing: 1px;
+  & .problemtitle {
+    width: 120%;
+  }
 }
 
 .imgurl {
@@ -193,4 +196,9 @@ color: rgb(68, 68, 68);
   width: 30%;
   max-width: 1000px;
   z-index: 50;
+}
+
+.numbering {
+  font-size: 150%;
+  margin-left: 2%;
 }
