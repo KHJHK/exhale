@@ -1,13 +1,369 @@
-<template>
-    <div>
-
-    </div>
-</template>
-
 <script setup>
+import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+import { getProblem, postSolvedProblem, postReview, checkfluencyAnswer  } from '@/api/course.js';
+import STT from '@/components/ARC/STT.vue';
+import TTS from '@/components/ARC/TTS.vue';
+import ResultDialog from '@/components/ARC/ResultDialog.vue'
+
+
+// todo routing으로 받기
+const courseName='';
+const categoryName='';
+const overTime = 10;
+const categoryId = 8; 
+
+const authStore = useAuthStore();
+const { JWTtoken } = storeToRefs(authStore);
+// const token = JWTtoken;
+
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjY1MjQwLCJleHAiOjE3MDc2NjcwNDB9.Vp70NxZe765iV5TwVpNY5JMa_2PMu0j6MdR9P6_HYdo';
+let problemIdx=0;
+let problemSet=null;
+
+// 다이어로그
+const resultDialog = ref(false);
+const isRight = ref(false);
+const againTick = ref(false);
+const reviewTick = ref(false);
+const isPause = ref(false);
+const isReturn = ref(false);
+const isComplete = ref(false);
+
+const sttText = ref("");
+const question = ref("");
+const isReading = ref(false);
+let isFirst = true;
+let isExplain = false;
+
+const problem = {
+  problemId : ref(0),
+  question: ref(''),
+  explain: ref(''),
+};
+
+// 타이머
+const elapsedTime = ref(overTime);
+let timerId;
+
+
+// 컴포넌트가 마운트될 때 시작하는 타이머 설정
+const startTimer = () => {
+
+  timerId = setInterval(() => {
+    elapsedTime.value--;
+    if (elapsedTime.value < 0) {
+      elapsedTime.value = 0;
+      resultProcessing("");
+    }
+  }, 1000);
+};
+
+// 컴포넌트가 언마운트될 때 타이머 정리
+const stopTimer = () => {
+  clearInterval(timerId);
+};
+
+
+const getProblems = async () => {
+  try {
+    const { data } = await getProblem(categoryId, token);
+    if(data.dataStatus.code!=1){
+      // todo api 응답 예외 처리
+      return;
+    }
+    problemIdx = data.response.first_problem_index;
+    problemSet = data.response.problemResponseList;
+
+    problem.problemId.value = problemSet[problemIdx].problem_id;
+    problem.question.value = problemSet[problemIdx].question;
+    question.value = problem.question.value;
+    clickTTSQustion();
+
+} catch (error) {
+    console.error(error); 
+  }
+};
+const saveSolvedProblem = async() => {
+
+  try{
+    const params = {
+      problemId: problem.problemId.value,
+      isRight: isRight.value,
+      time : overTime - elapsedTime.value
+    }
+    const {data} = await postSolvedProblem(params, token);
+    if(data.dataStatus.code!=1){
+      // todo api 응답 예외 처리
+      return;
+    }
+  } catch(error){
+    console.error(error); 
+  }
+}
+
+const saveReviewProblem = async () => {
+  try {
+    const { data } = await postReview(problem.problemId.value, token);
+    if(data.dataStatus.code==2){
+      // todo api 응답 예외 처리
+      return;
+    }else if(data.dataStatus.code!=1){
+    }
+    isComplete.value = true;
+  } catch (error) {
+    if(error.response.data.dataStatus==4){
+      console.log("이미 저장된 문제입니다.");
+    }
+    console.error(error);
+
+  }
+};
+
+
+const nextProblem = () => {
+
+  if(problemIdx>=problemSet.length-1){
+    // todo 게임 종료
+    isComplete.value = true;
+    return;
+  }
+  resultDialog.value = false;
+
+  problemIdx++;
+  problem.problemId.value = problemSet[problemIdx].problem_id;
+  problem.question.value = problemSet[problemIdx].question;
+  question.value = problem.question.value;
+
+  // 초기화
+  stopTimer();
+  elapsedTime.value = overTime;
+  startTimer();  
+}
+
+const resultProcessing = async (text) =>{
+  clearInterval(timerId);
+  let _isRight = false;
+  if(text != ""){
+    const params = {
+        question : question.value,
+        answer : text
+    };
+    const {data} = await checkfluencyAnswer(params, token);
+    if(data.dataStatus.code!=1){
+        // todo api 응답 예외 처리
+        return;
+    }
+    _isRight = data.response.result;
+    problem.explain.value = data.response.explain;
+    clickTTSAnswer();
+  }else{
+    _isRight = false;
+  }
+  isRight.value = _isRight;
+  isExplain = true;
+
+  
+  saveSolvedProblem();
+  
+
+}
+
+const handleSttTextChange = (text) => {
+  // todo sttText 반영 안되는 오류
+  resultProcessing(text);
+};
+const handleIsReadingChange = (value) => {
+    if(isFirst && !value){
+        isFirst = false;
+        startTimer();
+    }else if(isExplain && !value){
+        resultDialog.value = true;
+        isExplain = false;
+    }
+  isReading.value = value;
+};
+
+
+const handleDialogChange = (value) => {
+  resultDialog.value = value;
+  if(!value){
+    isPause.value = false;
+    isReturn.value=false;
+    problem.explain.value = '';
+  }
+
+};
+const handleNextTickChange = (value) => {
+  nextProblem();
+  clickTTSQustion();
+
+};
+const handleReviewTickChange = (value) => {
+  stopTimer();
+  saveReviewProblem();
+  reviewTick.value = value;
+  
+};
+const handleAgainTickChange = (value) => {
+  stopTimer();
+  isFirst = true;
+  elapsedTime.value = overTime;
+  againTick.value = false;
+  resultDialog.value = false;
+  problem.explain.value = '';
+};
+const handleIsCloseChange = (value) => {
+  stopTimer();
+  window.close();
+};
+const handleIsPauseChange = (value) => {
+  
+  stopTimer();
+  resultDialog.value = true;
+  isPause.value = value;
+  isReturn.value = false;
+};
+const handleIsExitChange = (value) => {
+  stopTimer();  
+};
+
+const handleIsReturnChange = (value) => {
+  startTimer();  
+  
+  resultDialog.value = false;
+  isPause.value = false;
+  isReturn.value = false;
+
+};
+
+const clickTTSQustion = async () => {
+  await nextTick(); 
+  const ttsButton = document.querySelector('#question > div > #tts-button');
+  if (ttsButton) {
+    ttsButton.click();
+  }
+};
+const clickTTSAnswer = async () => {
+  await nextTick(); 
+  const ttsButton = document.querySelector('#answer > div > #tts-button');
+  if (ttsButton) {
+    ttsButton.click();
+  }
+};
+
+onBeforeUnmount(stopTimer);
+
+
+getProblems();
+
+
+const fontSize = ref(16);
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+const enlarge = () => {
+  fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  };
+};
+
 
 </script>
 
-<style lang="scss" scoped>
+<template>
+      
+<div :style="{ fontSize: fontSize + 'px' }">
 
+  <div class="background">
+
+
+    <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
+
+    <section class="sub-nav1">
+        <div id="breadcrum">
+          <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
+          >
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
+          >
+          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
+        </div>
+        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <img src="@/assets/plus.svg" class="plus">
+        {{ msg }}
+        </button> 
+    </section>
+
+    <div class="problem" v-if="problem">
+      <div >
+        <ResultDialog 
+          :dialog = "resultDialog"
+          :isRight = "isRight"  
+          :reviewTick = "reviewTick"
+          :againTick = "againTick"
+          :isPause = "isPause"
+          :isReturn = "isReturn"  
+          :isComplete="isComplete"
+          @update:dialog="handleDialogChange"
+          @update:nextTick="handleNextTickChange"
+          @update:reviewTick="handleReviewTickChange"
+          @update:againTick="handleAgainTickChange"
+          @update:isClose="handleIsCloseChange"
+          @update:isPause="handleIsPauseChange"
+          @update:isExit="handleIsExitChange"
+          @update:isReturn="handleIsReturnChange"
+          
+          />
+      </div>
+        <div class="timer">
+          <h1>경과 시간: {{ elapsedTime }}</h1>
+        </div>
+        {{ question }}
+        {{ sttText }}
+        <div class="content">
+            <div>{{ isReading }}</div>
+            <div :class="isReading ? 'stt-able' :  'stt-disable'">
+                <STT 
+                :sttText="sttText"
+                @update:sttText="handleSttTextChange"
+                />
+            </div>
+        </div>
+        <div id="question">
+        <TTS 
+            :text="question"
+            :isReading="isReading"
+            @update:isReading="handleIsReadingChange"
+            />
+        </div>
+        <div id="answer">
+            <TTS
+            :text="problem.explain.value"
+            :isReading="isReading"
+            @update:isReading="handleIsReadingChange"
+            />
+        </div>
+        답 : {{ problem.explain.value }}
+        <button @click="click">클릭</button>
+    </div>
+
+
+  </div>
+
+</div>
+</template>
+
+
+<style lang="scss" scoped>
+@import '@/assets/scss/layout/gamebackground.scss';
+
+.stt-able{
+    pointer-events: none;
+    background-color : rgba(128, 128, 128, 0.8);
+}
+
+.stt-disable{
+    pointer-events: cursor;
+    background-color: '';
+}
 </style>
