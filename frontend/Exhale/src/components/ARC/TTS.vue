@@ -1,11 +1,11 @@
 <template>
   <div>
-    <button @click="speak">읽기</button>
+    <button @click="speak" id="tts-button">읽기</button>
   </div>
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from 'vue';
+import { ref, defineProps, watch} from 'vue';
 const props = defineProps({
   text: String,
   });  
@@ -14,7 +14,7 @@ const props = defineProps({
   const text = ref(props.text);
   const isReading = ref(props.isReading);
   
-  watch(props, () => {
+  watch(() => props.text, () => {
     text.value = props.text;
   }); 
   
@@ -38,7 +38,6 @@ const props = defineProps({
   speechMsg.pitch = 1.2; // 음높이: 0 ~ 2
   speechMsg.lang = selectedLang.value;
   speechMsg.text = text.value;
-  
 
   speechMsg.onend = function() {
     isReading.value = false;

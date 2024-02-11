@@ -1,8 +1,8 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed  } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
+import { getProblem, postSolvedProblem, postReview, checkfluencyAnswer  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
@@ -12,12 +12,13 @@ import ResultDialog from '@/components/ARC/ResultDialog.vue'
 const courseName='';
 const categoryName='';
 const overTime = 10;
-const categoryId = 4; 
+const categoryId = 8; 
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
 // const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo1LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjQwOTc0LCJleHAiOjE3MDc2NDI3NzR9.ryCnrBpkKVvtQDVYaT4dYUoPssmhHYa5ft9PBuIDp7I';
+
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjY1MjQwLCJleHAiOjE3MDc2NjcwNDB9.Vp70NxZe765iV5TwVpNY5JMa_2PMu0j6MdR9P6_HYdo';
 let problemIdx=0;
 let problemSet=null;
 
@@ -34,10 +35,12 @@ const sttText = ref("");
 const question = ref("");
 const isReading = ref(false);
 let isFirst = true;
+let isExplain = false;
 
 const problem = {
   problemId : ref(0),
   question: ref(''),
+  explain: ref(''),
 };
 
 // 타이머
@@ -76,6 +79,8 @@ const getProblems = async () => {
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
     question.value = problem.question.value;
+    clickTTSQustion();
+
 } catch (error) {
     console.error(error); 
   }
@@ -137,19 +142,31 @@ const nextProblem = () => {
   startTimer();  
 }
 
-const resultProcessing = (text) =>{
+const resultProcessing = async (text) =>{
   clearInterval(timerId);
   let _isRight = false;
-  if(text!="" && text == problem.question.value){  // 정답
-    _isRight = true;
-  }else{  // 오답
+  if(text != ""){
+    const params = {
+        question : question.value,
+        answer : text
+    };
+    const {data} = await checkfluencyAnswer(params, token);
+    if(data.dataStatus.code!=1){
+        // todo api 응답 예외 처리
+        return;
+    }
+    _isRight = data.response.result;
+    problem.explain.value = data.response.explain;
+    clickTTSAnswer();
+  }else{
     _isRight = false;
   }
   isRight.value = _isRight;
-  resultDialog.value = true;
+  isExplain = true;
 
   
   saveSolvedProblem();
+  
 
 }
 
@@ -158,9 +175,12 @@ const handleSttTextChange = (text) => {
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
-    if(isFirst && value){
+    if(isFirst && !value){
         isFirst = false;
         startTimer();
+    }else if(isExplain && !value){
+        resultDialog.value = true;
+        isExplain = false;
     }
   isReading.value = value;
 };
@@ -171,11 +191,14 @@ const handleDialogChange = (value) => {
   if(!value){
     isPause.value = false;
     isReturn.value=false;
+    problem.explain.value = '';
   }
 
 };
 const handleNextTickChange = (value) => {
   nextProblem();
+  clickTTSQustion();
+
 };
 const handleReviewTickChange = (value) => {
   stopTimer();
@@ -189,6 +212,7 @@ const handleAgainTickChange = (value) => {
   elapsedTime.value = overTime;
   againTick.value = false;
   resultDialog.value = false;
+  problem.explain.value = '';
 };
 const handleIsCloseChange = (value) => {
   stopTimer();
@@ -212,6 +236,21 @@ const handleIsReturnChange = (value) => {
   isPause.value = false;
   isReturn.value = false;
 
+};
+
+const clickTTSQustion = async () => {
+  await nextTick(); 
+  const ttsButton = document.querySelector('#question > div > #tts-button');
+  if (ttsButton) {
+    ttsButton.click();
+  }
+};
+const clickTTSAnswer = async () => {
+  await nextTick(); 
+  const ttsButton = document.querySelector('#answer > div > #tts-button');
+  if (ttsButton) {
+    ttsButton.click();
+  }
 };
 
 onBeforeUnmount(stopTimer);
@@ -290,11 +329,22 @@ const enlarge = () => {
                 />
             </div>
         </div>
-        <TTS
-        :text="question"
-        :isReading="isReading"
-        @update:isReading="handleIsReadingChange"
-        />
+        <div id="question">
+        <TTS 
+            :text="question"
+            :isReading="isReading"
+            @update:isReading="handleIsReadingChange"
+            />
+        </div>
+        <div id="answer">
+            <TTS
+            :text="problem.explain.value"
+            :isReading="isReading"
+            @update:isReading="handleIsReadingChange"
+            />
+        </div>
+        답 : {{ problem.explain.value }}
+        <button @click="click">클릭</button>
     </div>
 
 
