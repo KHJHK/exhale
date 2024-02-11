@@ -30,7 +30,7 @@ const isPause = ref(false);
 const isReturn = ref(false);
 const isComplete = ref(false);
 
-const sttText = ref(".");
+const sttText = ref("");
 
 const problem = {
   problemId : ref(0),
@@ -188,7 +188,7 @@ const resultProcessing = (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = ".";
+  sttText.value = "";
   resultProcessing(text);
 };
 const handleDialogChange = (value) => {
@@ -315,7 +315,10 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
-            <STT v-model="sttText" @update:modelValue="handleModelValueUpdate" />
+            <STT 
+            :sttText="sttText"
+            @update:sttText="handleSttTextChange"
+            />
             <!-- <STT 
               @update:modelValue="handleContentFieldChange" 
               @update:sttText="updateSttText"

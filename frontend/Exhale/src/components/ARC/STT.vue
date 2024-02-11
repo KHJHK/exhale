@@ -13,7 +13,7 @@
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm">
-      <input type="text" class="textarea" :value="props.modelValue" @input="updateSttText">
+      <input type="text" class="textarea" name="sttText" v-model="sttText">
 
     </form>
   </div>
@@ -81,32 +81,36 @@
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 import SoundWave from './SoundWave.vue';
-const sttText = ref(''); 
-const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
-  modelValue: String
-});
+    sttText: String,
+  });
+  const sttText = ref(props.sttText);
+  watch(props, () => {
+    sttText.value = props.sttText;
+  });
 
 
 // props의 modelValue가 변경될 때마다 이벤트를 발생시킵니다.
-watch(() => props.modelValue, (newValue) => {
-  emit("update:modelValue", newValue);
-});
+// watch(() => props.modelValue, (newValue) => {
+//   emit("update:modelValue", newValue);
+// });
 
 // textarea에 입력된 값을 sttText에 반영하는 함수
-const updateSttText = (event) => {
-  emit('update:modelValue', event.target.value);
-};
+// const updateSttText = (event) => {
+//   emit('update:modelValue', event.target.value);
+// };
+
+const emit = defineEmits(["update:sttText"]);
 
 // sttText 데이터가 변경될 때마다 부모 컴포넌트로 변경된 값을 emit하여 전달합니다.
-// watch(sttText, () => {
-//   emit('update:modelValue', sttText.value);
-// });
+watch(sttText, () => {
+  emit('update:sttText', sttText.value);
+});
 
 const message = ref("Click!"); // 초기값 변경
 const volume = ref(0); // 볼륨 상태
-const sttFormRef = ref(null); // 이름 변경
+// const sttFormRef = ref(null); // 이름 변경
 let sttTextValue = "";
 let audioContext = null;
 let analyser = null;
@@ -121,7 +125,7 @@ speechRecognition.continuous = true;
 const sttRunning = ref(false);
 
 const enableStt = () => {
-    sttTextValue = props.modelValue;
+    sttTextValue = sttText.value;
     speechRecognition.start();
     message.value = "지금 듣고 있어요!";
     sttRunning.value = true;
@@ -137,10 +141,10 @@ const disableStt = () => {
     
 };
 
-const onSubmit = () => {
-    enableStt();
+// const onSubmit = () => {
+//     enableStt();
    
-};
+// };
 
 speechRecognition.onresult = (e) => {
     console.log(e.results);
@@ -161,11 +165,14 @@ speechRecognition.onerror = (e) => {
 };
 
 
+
+
+
 // 볼륨 모니터링을 시작하는 함수
 const startVolumeMonitoring = () => {
   if (navigator.mediaDevices) {
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-          if (!audioContext) {
+          if (audioContext === null) {
               audioContext = new AudioContext();
               analyser = audioContext.createAnalyser();
               microphone = audioContext.createMediaStreamSource(stream);
@@ -176,7 +183,6 @@ const startVolumeMonitoring = () => {
               javascriptNode.connect(audioContext.destination);
 
               javascriptNode.onaudioprocess = () => {
-                if (analyser) {  
                 const array = new Uint8Array(analyser.frequencyBinCount);
                   analyser.getByteFrequencyData(array);
                   let values = 0;
@@ -186,11 +192,10 @@ const startVolumeMonitoring = () => {
                   }
                   let average = values / length;
                   volume.value = Math.round(average); // 볼륨 상태 업데이트
-                }
               };
           }
       }).catch((error) => {
-          console.error("Error accessing microphone", error);
+          console.error("마이크 접근 오류입니다.", error);
       });
   } else {
       alert("귀하의 브라우저는 오디오 모니터링을 지원하지 않습니다.");
@@ -199,8 +204,7 @@ const startVolumeMonitoring = () => {
 
 // 볼륨 모니터링을 중지하는 함수
 const stopVolumeMonitoring = () => {
-  if (javascriptNode) {
-      javascriptNode.onaudioprocess = null;
+  if (audioContext && microphone && javascriptNode) {
       javascriptNode.disconnect();
       analyser.disconnect();
       microphone.disconnect();
@@ -210,6 +214,15 @@ const stopVolumeMonitoring = () => {
       microphone = null;
       javascriptNode = null;
   }
+  
+  // const props = defineProps({
+  //   sttText: String,
+  // });
+  // const sttText = ref(props.sttText);
+  // watch(props, () => {
+  //   sttText.value = props.sttText;
+  // });
+
 };
 
 onMounted(() => {
