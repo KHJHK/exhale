@@ -5,9 +5,13 @@
         :scrim="false"
         transition="dialog-bottom-transition"
       >        
-        <template v-slot:activator="{ props }">
-          <v-btn @click="isExit=true; dialog=true;">연습 종료</v-btn>
-          <v-btn @click="isPause=!isPause; dialog=true;">일시 정지</v-btn>
+        <template id="stopBtns" v-slot:activator="{ props }">
+          <button class="finishBtn" @click="isExit=true; dialog=true;">
+            <img src="@/assets/quit.svg" class="quit">
+            연습 종료</button>
+          <button class="pauseBtn" @click="isPause=!isPause; dialog=true;">
+            <img src="@/assets/pause.svg" class="pause">
+            일시 정지</button>
         </template>
    
         <v-card class="custom-dialog-card">
@@ -56,7 +60,8 @@
       </v-dialog>
   </template>
     <script setup>
-        import { ref, defineProps ,defineEmits, watch} from 'vue';
+        import { isReactive } from 'vue';
+import { ref, defineProps ,defineEmits, watch} from 'vue';
         const props = defineProps({
           dialog: Boolean,
           isRight: Boolean,
@@ -151,8 +156,46 @@
       border-radius: 90px;
       color: rgba(255, 255, 255);
       font-weight: 900;
+      margin: 30px 50px;
     }
 
   }
+
+  .finishBtn{
+    position: fixed;
+    top: 135px;
+    left: 1290px;
+    border: 3px solid rgb(175, 175, 175);
+    border-radius: 30px;
+    font-size: 18px;
+    width: 117px;
+    height: 40px;
+    padding: -5px 0px;
+    font-family: 'NotoSansKR';
+    color: gray;
+    & .quit {
+    width: 21px;
+    padding-bottom: 3px;
+    opacity: 40%;
+  }
+  }
+  .pauseBtn{
+    position: fixed;
+    top: 575px;
+    left: 1290px;
+    border: 3px solid rgb(175, 175, 175);
+    border-radius: 30px;
+    font-size: 18px;
+    width: 117px;
+    height: 40px;
+    font-family: 'NotoSansKR';
+    color: gray;
+    & .pause {
+    width: 21px;
+    padding-bottom: 3px;
+    opacity: 40%;
+  }
+  }
+
   </style>
 
