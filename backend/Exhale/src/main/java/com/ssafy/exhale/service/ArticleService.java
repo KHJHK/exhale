@@ -1,19 +1,17 @@
 package com.ssafy.exhale.service;
 
 import com.ssafy.exhale.domain.Article;
-import com.ssafy.exhale.domain.ArticleFile;
 import com.ssafy.exhale.domain.Board;
 import com.ssafy.exhale.domain.Member;
 import com.ssafy.exhale.dto.logicDto.ArticleDto;
-import com.ssafy.exhale.dto.logicDto.ArticleFileDto;
 import com.ssafy.exhale.dto.logicDto.BoardDto;
 import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.ArticleRequest;
 import com.ssafy.exhale.dto.requestDto.ArticleSearchRequest;
+import com.ssafy.exhale.dto.responseDto.ArticleListResponse;
 import com.ssafy.exhale.dto.responseDto.ArticleResponse;
 import com.ssafy.exhale.exception.handler.NoSuchDataException;
 import com.ssafy.exhale.exception.handler.UserPermissionException;
-import com.ssafy.exhale.repository.ArticleFileRepository;
 import com.ssafy.exhale.repository.ArticleRepository;
 import com.ssafy.exhale.repository.BoardRepository;
 import com.ssafy.exhale.repository.MemberRepository;
@@ -27,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,32 +32,42 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-    private final ArticleFileRepository articleFileRepository;
     private final S3Util s3Util;
-    private final int PAGE_SIZE = 10;
+    private final Integer PAGE_SIZE = 10;
 
-    public List<ArticleResponse> getArticleList(int page) {
-        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
+    public ArticleListResponse getArticleList(Integer page, Integer pageSize) {
+        pageSize = pageSize == null ? PAGE_SIZE : pageSize;
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
         List<Article> articleEntityList = articleRepository.findByIsDelete(pageRequest, false);
+        Long articleTotalCount = articleRepository.countBy();
+        Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
 
-        return articleEntityList.stream()
-                .map(article -> {
-                    ArticleDto articleDto = ArticleDto.from(article);
-                    return ArticleResponse.fromAll(articleDto);
-                })
-                .collect(Collectors.toList());
-    }
-
-    public List<ArticleResponse> getArticleListByBoardId(Integer boardId, int page) {
-        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
-        List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);
-
-        return articleEntityList.stream()
+        List<ArticleResponse> articleList = articleEntityList.stream()
                 .map(article -> {
                     ArticleDto articleDto = ArticleDto.from(article);
                     return ArticleResponse.from(articleDto);
                 })
-                .collect(Collectors.toList());
+                .toList();
+
+        return ArticleListResponse.of(page, pageSize, pageTotalCount, articleTotalCount, articleList);
+    }
+
+    public ArticleListResponse getArticleListByBoardId(Integer boardId, Integer page, Integer pageSize) {
+        pageSize = pageSize == null ? PAGE_SIZE : pageSize;
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);
+        Long articleTotalCount = articleRepository.countByBoardId(boardId);
+        Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
+
+        List<ArticleResponse> articleList = articleEntityList.stream()
+                .map(article -> {
+                    ArticleDto articleDto = ArticleDto.from(article);
+                    return ArticleResponse.from(articleDto);
+                })
+                .toList();
+
+        return ArticleListResponse.of(page, pageSize, pageTotalCount, articleTotalCount, articleList);
+
     }
 
     public ArticleResponse getArticle(Long articleId) {
@@ -144,16 +151,23 @@ public class ArticleService {
         }
     }
 
-    public List<ArticleResponse> search(ArticleSearchRequest searchRequest){
+    public ArticleListResponse search(ArticleSearchRequest searchRequest, Integer page, Integer pageSize){
         try{
-            PageRequest pageRequest = PageRequest.of(searchRequest.getPage(), PAGE_SIZE);
+            pageSize = pageSize != null ? pageSize : PAGE_SIZE;
+            PageRequest pageRequest = PageRequest.of(page, pageSize);
             List<Article> articleEntityList = articleRepository.search(searchRequest, pageRequest);
-            return articleEntityList.stream()
-                    .map(article -> {
-                        ArticleDto articleDto = ArticleDto.from(article);
-                        return ArticleResponse.from(articleDto);
-                    })
-                    .collect(Collectors.toList());
+            Long articleTotalCount = articleRepository.countSearchedArticles(searchRequest);
+            Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
+
+
+            List<ArticleResponse> articleList =
+                    articleEntityList.stream()
+                            .map(article -> {
+                                ArticleDto articleDto = ArticleDto.from(article);
+                                return ArticleResponse.from(articleDto);
+                            })
+                            .toList();
+            return ArticleListResponse.of(page, pageSize, pageTotalCount, articleTotalCount, articleList);
         } catch (NullPointerException e){
             throw new NoSuchDataException();
         }
@@ -186,4 +200,9 @@ public class ArticleService {
         }
     }
      */
+
+    public Long countTotalPage(Long articleTotalCount, Integer pageSize){
+        return (long) Math.ceil((double) articleTotalCount / pageSize);
+    }
+
 }

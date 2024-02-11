@@ -20,7 +20,7 @@ public class ProfileImage {
     private String image;
     @Column(name = "create_at")
     private LocalDateTime createAt;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
     @PrePersist

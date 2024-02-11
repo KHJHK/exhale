@@ -25,19 +25,24 @@ public class BoardController {
 
     //게시판 전제 게시글 목록
     @GetMapping("/all")
-    public ResponseEntity<CommonResponse> getBoardAllList(@RequestParam("page") int page) {
-        return CommonResponse.ok(articleService.getArticleList(page));
+    public ResponseEntity<CommonResponse> getBoardAllList(@RequestParam("page") Integer page,
+                                                          @RequestParam(value = "page_size", required = false) Integer pageSize) {
+        return CommonResponse.ok(articleService.getArticleList(page, pageSize));
     }
 
     //게시판별 게시글 목록
     @GetMapping("/{board_id}")
-    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId, @RequestParam("page") int page) {
-        return CommonResponse.ok(articleService.getArticleListByBoardId(boardId, page));
+    public ResponseEntity<CommonResponse> getArticleList(@PathVariable("board_id") int boardId,
+                                                         @RequestParam("page") Integer page,
+                                                         @RequestParam(value = "page_size", required = false) Integer pageSize) {
+        return CommonResponse.ok(articleService.getArticleListByBoardId(boardId, page, pageSize));
     }
 
     //검색
     @PostMapping("/search")
-    public ResponseEntity<CommonResponse> search(@RequestBody ArticleSearchRequest articleSearchRequest){
-        return CommonResponse.ok(articleService.search(articleSearchRequest));
+    public ResponseEntity<CommonResponse> search(@RequestBody ArticleSearchRequest articleSearchRequest,
+                                                 @RequestParam("page") Integer page,
+                                                 @RequestParam(value = "page_size", required = false) Integer pageSize){
+        return CommonResponse.ok(articleService.search(articleSearchRequest, page, pageSize));
     }
 }
