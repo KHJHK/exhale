@@ -1,6 +1,7 @@
 <template>
     <div>
-
+        <button @click="newWidow">이름대기</button>
+        <button @click="openFluency">유창성</button>
     </div>
 </template>
 
@@ -14,6 +15,13 @@
 //   }
 // };
 // getCourses();
+
+const newWidow = () => {
+    window.open('http://localhost:5173/say-object');
+}
+const openFluency = () => {
+    window.open('http://localhost:5173/fluency');
+}
 </script>
 
 <style lang="scss" scoped>

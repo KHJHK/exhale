@@ -57,8 +57,12 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 유창성 정답 확인 요청
-  const checkfluencyAnswer = async (params) => {
-    return await axios.post(baseURL + '/api/rehabilitation/fluency-check',params,{
+  const checkfluencyAnswer = async (params, token) => {
+    const datas = {
+      question: params.question,
+      answer: params.answer
+    }
+    return await axios.post(baseURL + '/api/rehabilitation/fluency-check',datas,{
     headers: {
         Authorization: token
       }
