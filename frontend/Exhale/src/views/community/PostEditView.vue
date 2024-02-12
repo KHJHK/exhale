@@ -7,12 +7,12 @@
                 >
                 <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
                 >
-                <RouterLink class="breadlink" :to="{name: 'PostCreateView'}">글쓰기</RouterLink>
+                <RouterLink class="breadlink" :to="{name: 'PostEditView'}">게시글 수정</RouterLink>
             </div>
         </section>
 
             <div>
-                <input v-model="form.title" class="titleInput" id="title" placeholder="제목을 입력하세요">
+                <input v-model="title" class="titleInput" id="title" placeholder="제목을 입력하세요">
             </div>
             <div class="author">
                 (작성자명)
@@ -102,7 +102,7 @@
 
       <div class="mb-3">
       <label for="content" class="form-label">어떻게 쓰나요?</label>
-      <textarea v-model="form.content" class="form-control" id="content" rows="3" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
+      <textarea v-model="content" class="form-control" id="content" rows="3" placeholder="여기를 클릭해서 글을 작성하거나, 오른쪽 이미지나 이모티콘 아이콘을 클릭해서 첨부한 후 작성하면 됩니다."></textarea>
       </div>
       
       <div class="twoButton">
@@ -137,40 +137,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, onMounted, defineProps } from 'vue'
 
+import { useRoute, useRouter } from 'vue-router'
+import {updatePost} from '@/api/boards'
+import { useAuthStore } from '@/stores/auth';
+import { useCrudStore } from '@/stores/crud';
+const store = useAuthStore()
+const crud = useCrudStore()
+const accessToken = store.JWTtoken
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
+const props = defineProps({
+    post: Array
 
-const form = ref ({
-  title: null,
-  content: null,
 })
 
-// const fetchPost = async () => {
-//     try {
-//         const { data } = await getPostById(id)
-//         setForm(data)
-//     } catch (error) {
-//         console.error(error)
-//     }
-// }
-const setForm = ({ title, content }) => {
-  form.value = { title, content }
-}
-
-
+const title = ref('')
+const content = ref('')
+const thumbnail = ref('')
+const post = ref([props.post])
+console.log('수정페이지',post)
 const edit = async () => {
   try {
-    await updatePost(id, {...form.value})
-    router.push({ name: 'PostDetailView', params: { id } })
+    await updatePost(title.value, content.value, thumbnail.value,accessToken, id)
+    router.push({ name: 'PostDetailView', params: { id} })
   } catch (error) {
     console.error(error)
   }
 }
+
+
 
 const goDetailPage = () => router.push({ name: 'PostDetailView', params: { id } })
 

@@ -28,12 +28,9 @@
 
 <script setup>
 import { reactive, computed } from 'vue'
-import { useAuthStore } from '@/stores/auth.js'
-
+import { logout } from '@/api/outhApi';
+import { useAuthStore } from '@/stores/auth';
 const authStore = useAuthStore()
-
-const logout = authStore.logout
-
 const state = reactive({
   loggedIn: authStore.isLogIn,
 })

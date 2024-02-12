@@ -71,12 +71,50 @@ const saveImg = async (file) => {
     console.error('이미지를 저장할 수 없어요', error)
  }}
 
+
+ const updatePost = async (title, content, thumbnail,accessToken, id) => {
+    try {
+    const response =  await axios.put(`http://i10b208.p.ssafy.io/api/articles/${id}`,{
+        title: title,
+        content: content,
+        thumbnail: null
+    }, {
+        headers: {
+            'Authorization': `${accessToken}`
+        }
+    })
+    alert('게시글 수정이 완료되었습니다.')
+
+    } catch(error) {
+        console.log('게시글 수정 실패',error)
+        alert('수정 권한이 없습니다.')
+    }
+ }
  
+const deletePost = async (id, token) => {
+    console.log(typeof id)
+ try {
+    const response = await axios.delete(`http://i10b208.p.ssafy.io/api/articles/${id}`,{
+    article_id : id
+},{
+    headers: {
+        'Authorization': token
+    }
+ })
+    alert('삭제되었습니다.')
+ } catch (error) {
+    console.log(error)
+ }};
+
+
+
+
 export {
-  
+    deletePost,
     boardList,
     boardSearch,
     boardDetail,
     articleCreate,
-    saveImg
+    saveImg,
+    updatePost
 };

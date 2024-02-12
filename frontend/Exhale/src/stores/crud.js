@@ -15,19 +15,16 @@ export const useCrudStore = defineStore('crud', ()=> {
     const posts = ref([])
     
     const board_list = async () => {
-        console.log('마킹', curPage.value)
+        
         isLoading.value = true
-        console.log("board_list 내부", tab.value)
+       
         try {
           const response = await boardList(
             curPage.value,
             tab.value
             )
-            console.log('내부 curpage', curPage.value)
-            console.log('내부 tab', tab.value)
-            console.log(response.data.response.article_list)
+        
             posts.value = response.data.response.article_list
-            console.log('asd', posts.value)
             totalPage.value = response.data.response.article_total_count
             ITEM_PER_PAGE.value = response.data.response.page_size
             PAGE_PER_SECTION.value = response.data.response.page_total_count
@@ -47,10 +44,6 @@ export const useCrudStore = defineStore('crud', ()=> {
             isLoading.value = false;
           }}
 
-    // watch (curPage, (newValue) => {
-    //     setCurrentPage(newValue)
-    //     console.log('새페이지',newValue)
-    // })
 
     function setCurrentPage(newPage) {
         curPage.value = newPage;

@@ -66,20 +66,21 @@ const onClick = () => {
   loading.value = true
 
   setTimeout(() => {
-    otpInputRef.value.blur()
+    otpInputRef.value
     loading.value = false
   }, 2000)
 }
 
 // 모달창 닫기 SignUp.vue에 전달
 const closeModal = () => {
-  emit('close', 'shut')
+  emit('close');
+  emit('shut');
 }
 
 
 const email_VerifyRequest = async () => {
   console.log(otp.value)
-  console.log('로딩중')
+  
 try{
   const response = await emailVerifyRequest(
     props.email_id,
@@ -87,6 +88,7 @@ try{
     otp.value
   )
   closeModal()
+  console.log('인증성공!')
 } catch(error){
   console.log('인증을 실패하였습니다', error)
 }

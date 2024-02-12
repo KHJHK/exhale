@@ -127,7 +127,7 @@ import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { isIdDuplicated ,signUp, kakaoLogin, verifyNumberCreate, logOut } from '@/api/outhApi.js';
+import { isIdDuplicated ,signUp, kakaoLogin, verifyNumberCreate} from '@/api/outhApi.js';
 import EmailAuthentication from '@/components/modals/EmailAuthentication.vue'
 const store = useAuthStore()
 const fontSize = ref(16);
@@ -143,6 +143,7 @@ const passwordConfirm = ref('');
 const nickName = ref('');
 const passwordType = ref("password");
 const passwordConfirmType = ref("password");
+const isVerifying = ref(false)
 
 // 에러변수 Boolean
 const userIdErr = ref(false);
@@ -182,6 +183,7 @@ const handleCloseModal = () => {
 
 const onEmailVerified = () => {
   isVerifying.value = true
+  console.log(isVerifying.value)
 }
 
 // 이메일 도메인 분리
@@ -343,7 +345,6 @@ const sendKakaoTokenToServer = async () => {
 //     throw error;
 //   }};
 
-const isVerifying = ref(false)
 
 // 이메일 인증요청
 const verify_Number_Create = async () => {

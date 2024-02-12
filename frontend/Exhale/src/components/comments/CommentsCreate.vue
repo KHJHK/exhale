@@ -9,39 +9,42 @@
   </form>
 </template>
 <script setup>
-import { ref, inject } from 'vue';
+import axios from 'axios';
+import { ref, inject} from 'vue';
+import { useRoute } from 'vue-router';
 
-const post = inject('post')
+import { useAuthStore } from '@/stores/auth';
+const route = useRoute()
+const postId = parseInt(route.params.id)
+const store = useAuthStore()
+const token = store.JWTtoken
 
-const emit = defineEmits(['commentCreated']);
-const postId = defineProps({
-  type: Number,
-  required: true
-});
+
 const newComment = ref('');
-console.log(post)
+
 const currentDate = new Date().toISOString();
 const submitComment = async () => {
+  console.log(postId)
   if (!newComment.value) {
     alert('댓글 내용을 입력해주세요.');
     return;
   }
-
   try {
-    // post 객체의 id 값을 사용하여 댓글과 연관된 postId를 설정
-    await createComments({ 
-      nickname: post.value.nickname,
-      postId: post.value.id, 
-      content: newComment.value ,
-      created_date:  currentDate
-    });
+    const response = await axios.post('http://i10b208.p.ssafy.io/api/comments' , {
+      article_id : postId,
+      content: newComment.value,
+      
+    }, {
+      headers: {
+            'Authorization': `${token}`
+        }
+    })  
     newComment.value = '';
-    emit('commentCreated');
   } catch (error) {
     console.error('댓글 생성 중 오류 발생:', error);
     alert('댓글을 생성하는 데 실패했습니다.');
-  }
-};
+  }};
+
 </script>
 
 
