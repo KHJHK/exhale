@@ -36,12 +36,6 @@ public class RehabilitationService {
     private final LetterRepository letterRepository;
     private final LetterRecodeRepository letterRecodeRepository;
 
-    private final NameProblemRepository nameProblemRepository;
-    private final ImageMatchingProblemRepository imageMatchingProblemRepository;
-    private final TextMatchingProblemRepository textMatchingProblemRepository;
-    private final SpeakingProblemRepository speakingProblemRepository;
-    private final FluencyProblemRepository fluencyProblemRepository;
-
     private final ChatGptUtil chatGptUtil;
 
     public List<CourseResponse> getCourseList() {

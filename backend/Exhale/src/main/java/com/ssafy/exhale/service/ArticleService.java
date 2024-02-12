@@ -203,5 +203,4 @@ public class ArticleService {
     public Long countTotalPage(Long articleTotalCount, Integer pageSize){
         return (long) Math.ceil((double) articleTotalCount / pageSize);
     }
-
 }
