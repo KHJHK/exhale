@@ -47,7 +47,7 @@ const editProfile = async () => {
     const formData = new FormData();
     formData.append("image", file);
 
-    //이미지 크기가 크면 저장 안됨
+    //이미지 크기가 너무 크면 저장 안됨. 줄여주기 필요
     const response = await editUserProfile.editUserProfile(
       nickname.value,
       formData

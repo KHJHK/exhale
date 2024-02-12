@@ -11,4 +11,29 @@ const getProfile = () => {
   });
 };
 
-export { getProfile };
+const checkPassword = (password) => {
+  const data = {
+    password: password,
+  };
+
+  return axios.post(baseURL + "users/check-password", data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+const rePassword = (old_password, new_password) => {
+  const data = {
+    old_password: old_password,
+    new_password: new_password,
+  };
+
+  return axios.post(baseURL + "users/repassword", data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+export { getProfile, checkPassword, rePassword };
