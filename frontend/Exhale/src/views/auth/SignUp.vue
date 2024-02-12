@@ -1,7 +1,11 @@
 <template>
   <!-- <img src="@/assets/logo_white.png" class="intro-logo"> -->
   <transition name="fade">
-    <EmailAuthentication v-if="show" @close="handleCloseModal" />
+    <EmailAuthentication 
+    :email_id="email_id"
+    :email_domain="email_domain"
+    v-if="show" @close="handleCloseModal"
+    @shut="onEmailVerified" />
   </transition>
   <div :style="{ fontSize: fontSize + 'px' }">
     <div  class="container" ref="container">
@@ -32,8 +36,8 @@
               </div>
               <div class="input-group">
                 <div class="input-group-flex">
-                  <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" /> 
-                  <button class="doubleCheck" @click.prevent="handleClick">중복확인</button>
+                  <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" :disabled="isVerifying"/> 
+                  <button class="doubleCheck" @click.prevent="handleClick" :disabled="isVerifying">인증</button>
                 </div >
               </div>
               <p v-show="emailErr" class="subtext" style="color: red; font-size: small;">
@@ -113,19 +117,18 @@
         <!-- END SIGN UP CONTENT -->
       </div>
     </div>
-    
+
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, computed, onMounted, watch } from 'vue';
+import { reactive, ref, computed, onMounted, watch, defineProps } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { isIdDuplicated ,signUp, kakaoLogin, verifyNumberCreate, logOut } from '@/api/outhApi.js';
 import EmailAuthentication from '@/components/modals/EmailAuthentication.vue'
-
 const store = useAuthStore()
 const fontSize = ref(16);
 const router = useRouter();
@@ -163,12 +166,22 @@ watch([userIdErr, userIdDuplicated, emailErr, passwordErr, passwordConfirmErr], 
 const show = ref(false)
 
 const handleClick = () => {
-  show.value = !show.value;
+  if (email.value && !emailErr.value)
+  {show.value = !show.value
+  verify_Number_Create()
+  }
+  else {
+    emailErr.value = true
+  }
 }
 
 // 이메일 인증 모달 창 닫기
 const handleCloseModal = () => {
   show.value = false
+}
+
+const onEmailVerified = () => {
+  isVerifying.value = true
 }
 
 // 이메일 도메인 분리
@@ -340,52 +353,45 @@ try{
     email_id.value,
     email_domain.value
     );
-    isVerifying.value = true
   }catch(error) {
-    
-  } finally {
-    isVerifying.value = false
-  }
-};
-  
+    console.log('에러발생',error)
+}};
 
-const emailVerifyRequest = async (email, emailDomain) => {
-  try {
-    const response = await axios({
-      method: 'post',
-      url: 'api/email/check',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: {
-        email_id : email.value,
-        email_domain: emailDomain.value
-      }
-    });
+
+
+// const emailVerifyRequest = async () => {
+  
+//   try {
+//     const response = await axios({
+
+//         email_id : email_id.value,
+//         email_domain: email_domain.value
+      
+//     });
     
-    if (response.data && response.data !== 1 || 2) {
-      // 서버로부터 응답을 받으면 인증 코드 저장
-      const verificationCode = response.data.verificationCode; 
-      localStorage.setItem(code, verificationCode);
-      console.log('사용가능한 이메일입니다.')
-    }
-    else {
-      if (response === 2) {
-        console.log('이미 가입된 이메일입니다.')
-        return true
-      }
-      else {
-        console.log('유효하지 않은 이메일입니다.')
-        return true
-      }
-    }
-  } 
-    catch (error) {
-    // 아예 에러 처리
-    console.error('이메일 인증 요청 에러:', error);
-    throw error;
-  }
-};
+//     if (response.data && response.data !== 1 || 2) {
+//       // 서버로부터 응답을 받으면 인증 코드 저장
+//       const verificationCode = response.data.verificationCode; 
+//       localStorage.setItem(code, verificationCode);
+//       console.log('사용가능한 이메일입니다.')
+//     }
+//     else {
+//       if (response === 2) {
+//         console.log('이미 가입된 이메일입니다.')
+//         return true
+//       }
+//       else {
+//         console.log('유효하지 않은 이메일입니다.')
+//         return true
+//       }
+//     }
+//   } 
+//     catch (error) {
+//     // 아예 에러 처리
+//     console.error('이메일 인증 요청 에러:', error);
+//     throw error;
+//   }
+// };
 
 ////////////////////////////////////////////////////////
 const toggle = () => {

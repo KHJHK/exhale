@@ -25,7 +25,7 @@
 				{{ page }}</a
 			>
 		</span>
-		<span v-if="leftmostPage + PAGE_PER_SECTION <= totalPage">
+		<span v-if="leftmostPage + PAGE_PER_SECTION <= totalPage">	
 			<a
 				id="move"
 				@click="
@@ -40,43 +40,52 @@
 		</span>
 	</div>
 
-	<div>
-		<v-col
-        v-for="(post, index) in posts"
-        :key="post.id"
-        cols="12"
-        sm="6"
-        md="4"
-        lg="4"
-		/>
-	</div>
+	
 </template>
 
 <script setup>
-import { ref, computed, defineProps } from 'vue';
+import { ref, computed, defineProps, defineEmits, watch, watchEffect } from 'vue';
 import { useCrudStore } from '@/stores/crud';
 import { onMounted } from 'vue';
-const { curPage, totalPage, ITEM_PER_PAGE, PAGE_PER_SECTION, setCurrentPage } = useCrudStore();
+import { boardList } from '@/api/boards';
+import { storeToRefs } from 'pinia'
+
+const crud = useCrudStore()
+const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoading} = storeToRefs(crud)
+
+
 const leftmostPage = ref(1);
-const posts = ([])
-onMounted(() => {
-	posts.value = props.posts
-})
-const props = defineProps(['posts'])
+
+// const props = defineProps({
+// 	curPage: Number,
+// 	totalPage: Number,
+// })
+// const posts = ref(props.posts)
+// const postsLength = posts.length
+console.log('페이지네이션의 토탈', crud.totalPage)
+
+
+
 const getPaginationArray = (left) => {
 	const res = [];
-	for (let i = left; i < Math.min(totalPage + 1, left + PAGE_PER_SECTION); i++) {
+	for (let i = left; i < Math.min(totalPage.value + 1, left + PAGE_PER_SECTION.value); i++) {
 		res.push(i);
+		
 	}
 	return res;
 };
 
-const onChangeCurPage = (page) => {
-	setCurrentPage(page)
-};
+const onChangeCurPage = async (page) => {
+  crud.curPage = page; // 현재 페이지 업데이트
 
-const perPage = ref(10);
+  await crud.board_list()
+}
 
+// watch(() => totalPage, (newValue) => {
+//   if (newValue !== undefined) {
+//     totalPage.value = newValue;
+//   }
+// }, { immediate: true });
 
 </script>
 
@@ -84,5 +93,3 @@ const perPage = ref(10);
 @import "@/assets/scss/components/_pagination.scss";
 
 </style>
-
-  

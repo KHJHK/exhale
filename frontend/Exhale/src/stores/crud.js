@@ -1,27 +1,66 @@
 import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
 import {ref, computed, watch} from 'vue'
-
+import { boardList } from "@/api/boards";
 
 
 export const useCrudStore = defineStore('crud', ()=> {
     const router = useRouter()
-    const tab = ref('')
-    const curPage = ref(0)
-    const ITEM_PER_PAGE = ref('');
-    const PAGE_PER_SECTION = ref('');
+    const tab = ref('all')
+    const curPage = ref(1)
+    const ITEM_PER_PAGE = ref(10);
+    const PAGE_PER_SECTION = ref(5);
     const totalPage = ref('')
+    const isLoading = ref(false)
+    const posts = ref([])
+    
+    const board_list = async () => {
+        console.log('마킹', curPage.value)
+        isLoading.value = true
+        console.log("board_list 내부", tab.value)
+        try {
+          const response = await boardList(
+            curPage.value,
+            tab.value
+            )
+            console.log('내부 curpage', curPage.value)
+            console.log('내부 tab', tab.value)
+            console.log(response.data.response.article_list)
+            posts.value = response.data.response.article_list
+            console.log('asd', posts.value)
+            totalPage.value = response.data.response.article_total_count
+            ITEM_PER_PAGE.value = response.data.response.page_size
+            PAGE_PER_SECTION.value = response.data.response.page_total_count
+            scrollToTop()
+            function scrollToTop() {
+                window.scrollTo({
+                  top: 100,
+                  behavior: 'auto'
+                });
+              }
+              
+          }
+         catch (error) {
+            console.log(error)
+         }
+         finally {
+            isLoading.value = false;
+          }}
+
+    // watch (curPage, (newValue) => {
+    //     setCurrentPage(newValue)
+    //     console.log('새페이지',newValue)
+    // })
 
     function setCurrentPage(newPage) {
         curPage.value = newPage;
+        board_list(newPage, tab.value)
     }
-    watch (curPage,(newValue) =>{
-        console.log(newValue)
+
+    watch (tab, (newValue)=> {
+        if (tab.value !== newValue)
+        {curPage.value = 1}
     })
-    watch (tab,(newValue)=>{
-        if (newValue) {
-        curPage.value = 0
-        }
-    })
-return {tab, curPage, ITEM_PER_PAGE,PAGE_PER_SECTION,totalPage, setCurrentPage}
+
+return {tab, curPage, setCurrentPage, ITEM_PER_PAGE, PAGE_PER_SECTION,totalPage,isLoading, board_list, posts}
 })

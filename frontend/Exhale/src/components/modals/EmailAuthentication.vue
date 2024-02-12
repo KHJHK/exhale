@@ -45,18 +45,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineEmits } from 'vue';
+import { ref, onMounted, defineEmits, defineProps } from 'vue';
+import {emailVerifyRequest} from '@/api/outhApi'
 
 const otpInputRef = ref(null)
 const loading = ref(false)
 const otp = ref('')
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'shut'])
 
+const props = defineProps({
+  email_id:String,
+  email_domain:String
+})
 // 모달창 마운트되면 인증코드 입력필드에 포커스 주는 함수(전송하면 해제)
 onMounted(() => {
   otpInputRef.value.focus()
 })
 const onClick = () => {
+    email_VerifyRequest()
   loading.value = true
 
   setTimeout(() => {
@@ -67,7 +73,23 @@ const onClick = () => {
 
 // 모달창 닫기 SignUp.vue에 전달
 const closeModal = () => {
-  emit('close')
+  emit('close', 'shut')
+}
+
+
+const email_VerifyRequest = async () => {
+  console.log(otp.value)
+  console.log('로딩중')
+try{
+  const response = await emailVerifyRequest(
+    props.email_id,
+    props.email_domain,
+    otp.value
+  )
+  closeModal()
+} catch(error){
+  console.log('인증을 실패하였습니다', error)
+}
 }
 
 </script>

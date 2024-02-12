@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue'
+import { defineProps, defineEmits, ref } from 'vue'
 
 const props = defineProps({
   title: String,
@@ -25,11 +25,12 @@ const props = defineProps({
   create_date: [String, Date, Number],
   id: Number,
 })
+const article_id = ref([props.id])
 
 
 const emit = defineEmits(['board_detail'])
 const handleClick = () => {
-  emit('board_detail', props.id)
+  emit('board_detail', article_id)
 }
 </script>
 

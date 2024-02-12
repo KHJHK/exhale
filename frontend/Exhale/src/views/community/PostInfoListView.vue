@@ -135,8 +135,10 @@ import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
 import {boardList} from '@/api/boards' 
+import { storeToRefs } from 'pinia'
 import { useCrudStore } from '@/stores/crud'
 const crud = useCrudStore()
+const {curPage, tab,ITEM_PER_PAGE,PAGE_PER_SECTION,totalPage, posts} = storeToRefs(crud)
 const searchOption = ref(null);
 const searchKeyword = ref('');
 
@@ -163,7 +165,6 @@ function toggleMenu() {
   show.value = !show.value
 }
 
-const posts = ref([])
 const route = useRoute()
 const router = useRouter()
 const params = ref({
@@ -190,16 +191,16 @@ const enlarge = () => {
   // }
 
   const board_list = async () => {
+    curPage.value = (curPage.value)
   try {
     const response = await boardList(
-      crud.tab,
-      crud.curPage
+      curPage.value,
+      tab.value
       )
-      console.log(crud.curPage)
       posts.value = response.data.response.article_list
-      crud.totalPage = response.data.response.article_total_count
-      crud.ITEM_PER_PAGE = response.data.response.page_size
-      crud.PAGE_PER_SECTION = response.data.response.page_total_count
+      totalPage.value = response.data.response.article_total_count
+      ITEM_PER_PAGE.value = response.data.response.page_size
+      PAGE_PER_SECTION.value = response.data.response.page_total_count
       
     }
    catch (error) {
@@ -208,19 +209,15 @@ const enlarge = () => {
   
 
 
-watch(crud.curPage, () => {
 
-    board_list(crud.curPage)
-   })
-
-
-  onMounted(() => {
+   onMounted( async () => {
     crud.tab = 1
-    board_list()
+    await crud.board_list()
+    console.log('@@@@', posts)
   })
 
-  onUnmounted(() => {
-    board_list()
+  onUnmounted( async () => {
+    await crud.board_list()
   })
 
 

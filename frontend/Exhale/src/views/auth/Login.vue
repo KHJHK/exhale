@@ -94,7 +94,7 @@ import { useAuthStore} from '@/stores/auth';
 
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import {  } from '@/api/outhApi';
+import { logIn } from '@/api/outhApi';
   // import { kakao } from '@/api/outhApi';
   const router = useRouter()
   const fontSize = ref(16);
@@ -105,7 +105,7 @@ import {  } from '@/api/outhApi';
 
 
 const log_In = async () => {
-  const response = await (
+  const response = await logIn(
     userId.value,
     password.value
   )

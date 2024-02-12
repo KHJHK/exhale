@@ -1,5 +1,7 @@
 <template>
 <div :style="{ fontSize: fontSize + 'px' }">
+<div>
+</div>
 <div id="content">
     <section class="main-nav">
       <div class="navbar-logo-link">
@@ -35,6 +37,9 @@
 
       <div class="box-container">
         <h2>{{ post.title }}</h2>
+        <h3>{{ post.nickname }}</h3>
+        <p>{{ post.view }}</p>
+        
         <p>{{ post.content }}</p>
         <p class="text-muted">{{ post.create_date}}</p>
       </div>
@@ -80,38 +85,45 @@ import { useRoute, useRouter } from 'vue-router';
 import { defineProps } from 'vue';
 import CommentsCreate from '@/components/comments/CommentsCreate.vue';
 import CommentsList from '@/components/comments/CommentsList.vue';
-import { boardList } from '@/api/boards';
+import { boardDetail, boardList } from '@/api/boards';
 import CommunityMenu from '@/components/modals/CommunityMenu.vue';
 import PostItem from '@/components/posts/PostItem.vue';
 import PostMenu from '@/components/posts/PostMenu.vue';
 import PostSlider from '@/components/posts/PostSlider.vue';
 import Footers from '@/components/common/Footers.vue';
 import { useCrudStore } from '@/stores/crud';
+import { mdiPrinterPosEditOutline } from '@mdi/js';
+import { storeToRefs } from 'pinia'
+
+const crud = useCrudStore()
+const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoading} = storeToRefs(crud)
 
 
 const router = useRouter()
 const route = useRoute()
 const postId = ref(route.params.id)
-const posts = ref([])
+postId.value = postId.value.slice(1)
+const response = ref([])
 
-const props = defineProps({
-    postId: Number,
-    title: String,
-    content: String,
-    create_date: String,
-    view: Number,
-    nickname: String
-})
+// const props = defineProps({
+//     postId: Number,
+//     title: String,
+//     content: String,
+//     create_date: String,
+//     view: Number,
+//     nickname: String
+// })
 
-const post = ref({
-    id : article_id,
-    title: title,
-    content: content,
-    create_date: create_date,
-    view: view,
-    nickname: nickname
-})
+// const post = ref({
+//     id : response.value.id,
+//     content: response.value.content,
+//     create_date: response.value.create_date,
+//     view:response.value.view,
+//     nickname:response.value.nickname,
+//     title: response.value.title
+// })
 
+const post = ref({})
 
 const show = ref(false)
 
@@ -130,20 +142,13 @@ const enlarge = () => {
 };
 
 
-
-const board_list = async () => {
-  try {
-    const response = await boardList(
-      tab.value,
-      curPage.value,
-      )
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 onMounted(async () => {
-  await board_list()
+  
+  await boardDetail(route.params.id).then((res) => {
+    post.value = res.data.response
+    console.log(res.data.response)
+  })
+
 });
 
 
@@ -166,17 +171,17 @@ onMounted(async () => {
 // }
 
 
-// const remove = async () => {
-//     try {
-//         if (confirm('삭제 하시겠습니까?') === false) {
-//             return
-//         }
-//         await deletePost(id)
-//         router.push({ name: 'PostWholeListView' })
-//     } catch (error) {
-//         console.error(error)
-//     }
-// }
+const remove = async () => {
+    try {
+        if (confirm('삭제 하시겠습니까?') === false) {
+            return
+        }
+        await deletePost(id)
+        router.push({ name: 'PostWholeListView' })
+    } catch (error) {
+        console.error(error)
+    }
+}
 
 // const fetchComments = async (postId) => {
 //   try {
@@ -215,7 +220,7 @@ const navigateToPost = (direction) => {
 
 const goListPage = () => router.push({name: 'PostWholeListView'})
 const goEditPage = () => {
-  const id = post.value.id || props.id
+  const id = post.value.id || postId.value
   router.push({ name: 'PostEditView', params: { id } })
 }
 

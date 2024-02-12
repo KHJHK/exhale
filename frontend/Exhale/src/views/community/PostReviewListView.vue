@@ -134,11 +134,13 @@ import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
 import {boardList} from '@/api/boards' 
+import { storeToRefs } from 'pinia'
 import { useCrudStore } from '@/stores/crud'
 const crud = useCrudStore()
+const {curPage, tab,ITEM_PER_PAGE,PAGE_PER_SECTION,totalPage, posts} = storeToRefs(crud)
 const searchOption = ref(null);
 const searchKeyword = ref('');
-const posts = ref([])
+
 const route = useRoute()
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -175,35 +177,37 @@ function toggleMenu() {
 
 
 const board_list = async () => {
+  curPage.value = (curPage.value - 1)
   try {
     const response = await boardList(
-      crud.tab,
-      crud.curPage
+      curPage.value,
+      tab.value
       )
       posts.value = response.data.response.article_list
-      crud.totalPage = response.data.response.article_total_cnt
-      crud.ITEM_PER_PAGE = response.data.response.page_size
-      crud.PAGE_PER_SECTION = response.data.response.page_total_count
-      console.log(posts.value)
+      totalPage.value = response.data.response.article_total_count
+      ITEM_PER_PAGE.value = response.data.response.page_size
+      PAGE_PER_SECTION.value = response.data.response.page_total_count
     }
    catch (error) {
       console.log(error)
    }}
   
 
-watch(crud.curPage, () => {
+// watch(crud.curPage, () => {
    
-    board_list()
-   })
+//     board_list()
+//    })
 
 
 
-  onMounted(() => {
+onMounted( async () => {
     crud.tab = 2
-    board_list()
+    await crud.board_list()
+    
   })
-  onUnmounted(() => {
-    board_list()
+
+  onUnmounted( async () => {
+    await crud.board_list()
   })
 
   

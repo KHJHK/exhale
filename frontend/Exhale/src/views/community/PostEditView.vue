@@ -150,14 +150,14 @@ const form = ref ({
   content: null,
 })
 
-const fetchPost = async () => {
-    try {
-        const { data } = await getPostById(id)
-        setForm(data)
-    } catch (error) {
-        console.error(error)
-    }
-}
+// const fetchPost = async () => {
+//     try {
+//         const { data } = await getPostById(id)
+//         setForm(data)
+//     } catch (error) {
+//         console.error(error)
+//     }
+// }
 const setForm = ({ title, content }) => {
   form.value = { title, content }
 }

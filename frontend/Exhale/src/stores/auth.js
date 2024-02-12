@@ -10,9 +10,9 @@ export const useAuthStore = defineStore('auth', () => {
   const loginUser = ref([])
   const comments = ref([])
   const replies = ref([])
-  const JWTtoken = ref(localStorage.getItem('JWT_token') || null)
-  const refreshToken = ref(localStorage.getItem('refresh_token') || null)
-  const KEY = ref(localStorage.getItem('key') || null)
+  const JWTtoken = ref(localStorage.getItem('JWT_token'))
+  const refreshToken = ref(localStorage.getItem('refresh_token'))
+  const KEY = ref(localStorage.getItem('key'))
   const isAuthenticated = computed(() => !!JWTtoken.value)
 
  

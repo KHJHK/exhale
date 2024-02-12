@@ -143,8 +143,9 @@ import 'vue3-emoji-picker/css';
 import { watch } from 'vue';
 import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js';
 import { articleCreate } from '@/api/boards';
-
-
+import { useAuthStore } from "@/stores/auth";
+const store = useAuthStore()
+const accessToken = store.JWTtoken
 const selectedCategory = ref('');
 const router = useRouter()
 const title = ref('');
@@ -157,9 +158,9 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:tab'])
 
-watch(() => props.tab, (newVal) => {
-  localTab.value = newVal
-})
+// watch(() => props.tab, (newVal) => {
+//   localTab.value = newVal
+// })
 
 const rules = ref([
   value => {
@@ -215,12 +216,14 @@ const onSelectEmoji = (emoji) => {
 
 // 게시글 생성
 const article_create = async () => {
+    console.log('vue',accessToken)
     try {
        const response = articleCreate(
             title.value,
             content.value,
             thumbnail.value,
-            board_id.value
+            board_id.value,
+            accessToken
        ) 
     } catch (error) {
         console.error('게시글 등록에 실패하였습니다.', error)

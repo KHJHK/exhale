@@ -39,7 +39,7 @@
     >
       <v-tab 
         :value="all"
-        @click="crud.tab = all"
+        @click="onClickTab(0)"
         :to="{name: 'PostWholeListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostWholeListView'}"
@@ -47,7 +47,7 @@
       > 전체</v-tab>
       <v-tab 
         :value="1"
-        @click="crud.tab = 1"
+        @click="onClickTab(1)"
         :to="{name: 'PostInfoListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostInfoListView' }"
@@ -55,7 +55,7 @@
       >정보 글</v-tab>
       <v-tab 
         :value="2"
-        @click="crud.tab = 2"
+        @click="onClickTab(2)"
         :to="{name: 'PostReviewListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostReviewListView' }"
@@ -63,7 +63,7 @@
       > 치료 후기</v-tab>
       <v-tab 
         :value="3"
-        @click="crud.tab = 3"
+        @click="onClickTab(3)"
         :to="{name: 'PostStoryListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostStoryListView' }"
@@ -91,13 +91,12 @@
         
         <section class="box-item">
           <article>
-          <div v-for="(post, index) in posts" :key="post.id" >
+          <div v-for="(post, index) in crud.posts" :key="post.id" >
               <PostItem
               :title="post.title"
               :content="post.content"
               :create_date="post.create_date"
               :id="post.id"
-              @board_detail="board_detail"
               @click="board_detail(post.id)"
               ></PostItem>
             </div>
@@ -105,23 +104,21 @@
         </section>
         
         <section class="box-item">
+
+          <div>
+    <pagination/>
+  </div>
         </section> 
       </div>
     </main>
+
     
   </div>
   
   <footer class="footer">
     <Footers/>
   </footer>
-  <Pagination
-  :posts = "posts"
-  />
-  <!-- <v-pagination
-      v-model="page"
-      :length="totalPages"
-      rounded="circle"
-    ></v-pagination> -->
+  
 </div>
 <scrollTop/>
 </template>
@@ -138,7 +135,7 @@ import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
-import {boardList, boardDetail} from '@/api/boards' 
+import {boardDetail} from '@/api/boards' 
 import {useCounterStore} from '@/stores/counter.js'
 import PostInfoListView from './PostInfoListView.vue'
 import PostReviewListView from './PostReviewListView.vue'
@@ -147,14 +144,17 @@ import { tempPassword } from '@/api/outhApi'
 import { useAuthStore } from "@/stores/auth";
 import { useCrudStore } from '@/stores/crud'
 import scrollTop from '@/components/functions/scrollTop.vue'
+import { storeToRefs } from 'pinia'
 const store = useAuthStore()
 const crud = useCrudStore()
+const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoading} = storeToRefs(crud)
+
 const accessToken =store.accessToken
 
 
-const posts = ref([])
 const searchOption = ref(null);
 const searchKeyword = ref('');
+
 
 
 const handleSearch = ({ option, keyword }) => {
@@ -180,13 +180,11 @@ function toggleMenu() {
   show.value = !show.value
 }
 
+
+
 const route = useRoute()
 const router = useRouter()
-const params = ref({
-  _sort: 'createAt',
-  _order: 'desc',
-  _limit: 10
-});
+
 
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -208,6 +206,7 @@ const enlarge = () => {
  
 
   const board_detail = async (article_id) => {
+    console.log('정체',article_id)
     try {
       const response = await boardDetail(
         article_id
@@ -219,38 +218,23 @@ const enlarge = () => {
     }
 }  
 
-  const board_list = async () => {
-  try {
-    const response = await boardList(
-      crud.tab,
-      crud.curPage,
-      
-      )
-      posts.value = response.data.response.article_list
-      crud.totalPage = response.data.response.article_total_count
-      crud.ITEM_PER_PAGE = response.data.response.page_size
-      crud.PAGE_PER_SECTION = response.data.response.page_total_count
- 
-      console.log(response.data.response.article_total_count)
+const changePage = async(newPage) => {
+  await crud.board_list(newPage);
+}
 
-    }
-   catch (error) {
-      console.log(error)
-   }}
+const onClickTab = (tabName) => {
+  crud.curPage = 1
+  crud.tab = tabName
+}
+
+onMounted( async () => {
+    // crud.tab = 'all'
+    await crud.board_list()
   
+})
 
-   watch(crud.curPage, () => {
-    board_list()
-   })
-
-
-  onMounted(() => {
-    crud.tab = 'all'
-    board_list()
-  })
-
-  onUnmounted(() => {
-    board_list()
+  onUnmounted( async () => {
+    await crud.board_list()
   })
 
 </script>

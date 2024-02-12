@@ -89,7 +89,6 @@
             <!-- <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" > -->
             <div v-for="(post, index) in posts" :key="post.id" >  
               <PostItem
-               
               :title="post.title"
               :content="post.content"
               :create_date="post.create_date"
@@ -136,9 +135,11 @@ import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
 import {boardList} from '@/api/boards' 
 import { useCrudStore } from '@/stores/crud'
+import { storeToRefs } from 'pinia'
+const crud = useCrudStore()
+const {posts, curPage, tab,ITEM_PER_PAGE,PAGE_PER_SECTION,totalPage, board_list} = storeToRefs(crud)
 const searchOption = ref(null);
 const searchKeyword = ref('');
-const crud = useCrudStore()
 const handleSearch = ({ option, keyword }) => {
   searchOption.value = option;
   searchKeyword.value = keyword;
@@ -162,46 +163,21 @@ function toggleMenu() {
   show.value = !show.value
 }
 
-const board_list = async () => {
-  try {
-    const response = await boardList(
-      crud.tab,
-      crud.curPage
-      )
-      posts.value = response.data.response.article_list
-      crud.totalPage = response.data.response.article_total_count
-      crud.ITEM_PER_PAGE = response.data.response.page_size
-      crud.PAGE_PER_SECTION = response.data.response.page_total_count
-      
-    }
-   catch (error) {
-      console.log(error)
-   }}
+
   
 
-watch(crud.curPage, () => {
-     
-    board_list()
-   })
 
 
 
-  onMounted(() => {
+onMounted( async () => {
     crud.tab = 3
-    board_list()
+    await crud.board_list()
   })
 
-onUnmounted(() => {
-    board_list()
+  onUnmounted( async () => {
+    await crud.board_list()
   })
 
-// const updateTab = (newTab) => {
-//   tab.value = newTab
-// }
-
-
-
-const posts = ref([])
 const route = useRoute()
 const router = useRouter()
 const params = ref({

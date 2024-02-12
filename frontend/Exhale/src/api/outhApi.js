@@ -40,12 +40,16 @@ const accessToken = localStorage.getItem('JWT_token')
 
                  }}; 
             
-            const emailVerifyRequest = async (email_id, email_domain) => {
+            const emailVerifyRequest = async (email_id,email_domain,code) => {
                 return await axios.post('http://i10b208.p.ssafy.io/api/email/check',  {
                     email_id: email_id,
-                    email_domain : email_domain
+                    email_domain:email_domain,
+                    code: code
                 })
             };
+
+
+
             
             const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
                 try {
