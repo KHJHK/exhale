@@ -50,6 +50,7 @@ import WaitingArea from "@/components/modals/WaitingArea.vue";
 // common
 import Headers from "@/components/common/Headers.vue";
 import Footers from "@/components/common/Footers.vue";
+import SimpleHeader from "@/components/common/SimpleHeader.vue";
 
 // comments
 import CommentsCreate from "@/components/comments/CommentsCreate.vue";
@@ -201,6 +202,7 @@ const router = createRouter({
     // common
     { path: "/Headers", name: "Headers", component: Headers },
     { path: "/Footers", name: "Footers", component: Footers },
+    { path: "/SimpleHeader", name: "SimpleHeader", component: SimpleHeader },
   ],
 });
 
