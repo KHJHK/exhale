@@ -24,11 +24,16 @@ let no = ref(1);
 // 다이어로그
 const resultDialog = ref(false);
 const isRight = ref(false);
+const againTick = ref(false);
+const reviewTick = ref(false);
 const isPause = ref(false);
 const isReturn = ref(false);
+const isComplete = ref(false);
+
+const sttText = ref("");
 
 const problem = {
-  problemId : ref(''),
+  problemId : ref(0),
   answer: ref(''),
   hint: ref(''),
   imgUrl : ref('')
@@ -48,6 +53,7 @@ const toggleHint = () => {
 
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
+
   timerId = setInterval(() => {
     elapsedTime.value--;
     if (elapsedTime.value < 0) {
@@ -102,14 +108,13 @@ const saveSolvedProblem = async() => {
 
 const saveReviewProblem = async () => {
   try {
-    const { data } = await postReview(problem.problemId.value);
+    const { data } = await postReview(problem.problemId.value, token);
     if(data.dataStatus.code==2){
       // todo api 응답 예외 처리
       return;
     }else if(data.dataStatus.code!=1){
     }
-    alert("저장 완료");
-
+    isComplete.value = true;
   } catch (error) {
     if(error.response.data.dataStatus==4){
       console.log("이미 저장된 문제입니다.");
@@ -121,8 +126,6 @@ const saveReviewProblem = async () => {
 
 // TTS
 // const ttsText = ref("안녕하세요");
-
-const sttText = ref("");
 
 const handleModelValueUpdate = (newValue) => {
   sttText.value = newValue;
@@ -143,10 +146,11 @@ const nextProblem = () => {
 
   if(problemIdx>=problemSet.length-1){
     // todo 게임 종료
-    console.log('게임 종료')
+    isComplete.value = true;
     return;
   }
-  
+  resultDialog.value = false;
+
   problemIdx++;
   problem.problemId.value = problemSet[problemIdx].problem_id;
   problem.answer.value = problemSet[problemIdx].answer;
@@ -154,31 +158,33 @@ const nextProblem = () => {
   problem.imgUrl.value = problemSet[problemIdx].img_url;
   no.value++;
 
-  // 입력창 초기화
   sttText.value = "";
 
-  // 타이머 초기화
+  // 초기화
+  stopTimer();
   elapsedTime.value = overTime;
   startTimer();  
 }
 
-const resultProcessing = (sttText) =>{
+const resultProcessing = (text) =>{
   clearInterval(timerId);
-
   let _isRight = false;
-  if(sttText == problem.answer.value){  // 정답
+  if(text!="" && text == problem.answer.value){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
   }
   isRight.value = _isRight;
   resultDialog.value = true;
+
+  
   saveSolvedProblem();
- 
 
 }
 
-const handleContentFieldChange = (text) => {
+const handleSttTextChange = (text) => {
+  // todo sttText 반영 안되는 오류
+  sttText.value = ".";
   resultProcessing(text);
 };
 const handleDialogChange = (value) => {
@@ -190,22 +196,23 @@ const handleDialogChange = (value) => {
 
 };
 const handleNextTickChange = (value) => {
-  stopTimer();
   nextProblem();
-  resultDialog.value = false;
 };
 const handleReviewTickChange = (value) => {
   stopTimer();
   saveReviewProblem();
+  reviewTick.value = value;
+  
 };
 const handleAgainTickChange = (value) => {
   stopTimer();
   elapsedTime.value = overTime;
-  startTimer();  
+  againTick.value = false;
   resultDialog.value = false;
+  startTimer();  
 };
 const handleIsCloseChange = (value) => {
-  stopTimer();
+  console.log("종료")
   window.close();
 };
 const handleIsPauseChange = (value) => {
@@ -214,6 +221,9 @@ const handleIsPauseChange = (value) => {
   resultDialog.value = true;
   isPause.value = value;
   isReturn.value = false;
+};
+const handleIsExitChange = (value) => {
+  stopTimer();  
 };
 
 const handleIsReturnChange = (value) => {
@@ -272,19 +282,22 @@ const enlarge = () => {
         <ResultDialog 
           :dialog = "resultDialog"
           :isRight = "isRight"  
+          :reviewTick = "reviewTick"
+          :againTick = "againTick"
           :isPause = "isPause"
           :isReturn = "isReturn"  
+          :isComplete="isComplete"
           @update:dialog="handleDialogChange"
           @update:nextTick="handleNextTickChange"
           @update:reviewTick="handleReviewTickChange"
           @update:againTick="handleAgainTickChange"
           @update:isClose="handleIsCloseChange"
           @update:isPause="handleIsPauseChange"
+          @update:isExit="handleIsExitChange"
           @update:isReturn="handleIsReturnChange"
-
+          
           />
       </div>
-
         <div class="timer">
           <div class="timer-bar" :style="{ width: timerWidth + '%' }">
             <img src="@/assets/clock1.svg" class="clock">
@@ -298,11 +311,10 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
-            <STT v-model="sttText" @update:modelValue="handleModelValueUpdate" />
-            <!-- <STT 
-              @update:modelValue="handleContentFieldChange" 
-              @update:sttText="updateSttText"
-              /> -->
+            <STT 
+              :sttText="sttText"
+              @update:sttText="handleSttTextChange"
+              />
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
               <!-- <div class="answer">{{ problem.answer.value }}</div> -->
               <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
