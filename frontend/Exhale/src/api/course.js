@@ -40,7 +40,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 초성, 중성, 종성 리스트 요청
-  const getSyllableList = async (params) => {
+  const getMorphemeList = async (token) => {
     return await axios.get(baseURL + '/api/rehabilitation/letter',{
     headers: {
         Authorization: token
@@ -101,7 +101,7 @@ export {
     getCategoryList,
     getProblem,
     postSolvedProblem,
-    getSyllableList,
+    getMorphemeList,
     postSyllable,
     checkfluencyAnswer,
     postReview,

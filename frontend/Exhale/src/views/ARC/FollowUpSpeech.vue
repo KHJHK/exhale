@@ -2,10 +2,11 @@
 import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
+import { getProblem, postSolvedProblem, postReview, getMorphemeList  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
 
 // todo routing으로 받기
 const overTime = 10;
@@ -13,8 +14,8 @@ const categoryId = 4;
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken;
-
+// const token = JWTtoken;
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NzQzODg1LCJleHAiOjE3MDc3NDU2ODV9.b74xzKNPyTZUEymgMXhG2gFm3z7xSN_-xGxv_s2DFhw';
 let problemIdx=0;
 let problemSet=null;
 let no = ref(1);
@@ -140,14 +141,24 @@ const nextProblem = () => {
     elapsedTime.value = overTime;
 }
 
-const resultProcessing = (text) =>{
+const resultProcessing = async (text) =>{
   clearInterval(timerId);
   let _isRight = false;
   let answer = problem.question.value.replace(/\s+/g, '').toLowerCase(); 
-  if(text!="" &&text.replace(/\s+/g, '').toLowerCase() === answer){  // 정답
+  if(text!=""){
+    text = text.replace(/\s+/g, '').toLowerCase();
+  }
+  if(text!="" &&text === answer){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
+
+    const {data} = await getMorphemeList(token);
+    const morphemeList = data.response;
+    const statistics = generateStatistics(morphemeList, answer, text);
+    console.log(statistics);    
+   
+
   }
   isRight.value = _isRight;
   resultDialog.value = true;
@@ -229,6 +240,7 @@ const clickTTSQustion = async () => {
     ttsButton.click();
   }
 };
+
 
 onBeforeUnmount(stopTimer);
 
