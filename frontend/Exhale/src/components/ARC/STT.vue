@@ -13,11 +13,7 @@
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm">
-<<<<<<< HEAD
       <input type="text" class="textarea" :value="props.sttText" @input="updateSttText">
-=======
-      <input type="text" class="textarea" name="sttText" v-model="sttText">
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
 
     </form>
   </div>
@@ -85,7 +81,6 @@
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 import SoundWave from './SoundWave.vue';
-<<<<<<< HEAD
 const sttText = ref(''); 
 const sttRunning = ref(false);
 const emit = defineEmits(["update:sttText","update:sttRunning"]);
@@ -104,29 +99,6 @@ watch(() => props.sttText, (newValue) => {
 const updateSttText = (event) => {
   emit('update:sttText', event.target.value);
 };
-=======
-
-const props = defineProps({
-    sttText: String,
-  });
-  const sttText = ref(props.sttText);
-  watch(props, () => {
-    sttText.value = props.sttText;
-  });
-
-
-// props의 modelValue가 변경될 때마다 이벤트를 발생시킵니다.
-// watch(() => props.modelValue, (newValue) => {
-//   emit("update:modelValue", newValue);
-// });
-
-// textarea에 입력된 값을 sttText에 반영하는 함수
-// const updateSttText = (event) => {
-//   emit('update:modelValue', event.target.value);
-// };
-
-const emit = defineEmits(["update:sttText"]);
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
 
 watch(sttRunning, (value) => {
   emit("update:sttRunning", value);
@@ -154,11 +126,7 @@ speechRecognition.continuous = true;
 
 
 const enableStt = () => {
-<<<<<<< HEAD
     sttTextValue = props.sttText;
-=======
-    sttTextValue = sttText.value;
->>>>>>> feature/S10P12B208-194_커뮤니티페이지_화면설계
     speechRecognition.start();
     message.value = "지금 듣고 있어요!";
     sttRunning.value = true;
