@@ -214,7 +214,6 @@ const handleAgainTickChange = (value) => {
   startTimer();  
 };
 const handleIsCloseChange = (value) => {
-  console.log("종료")
   window.close();
 };
 const handleIsPauseChange = (value) => {
@@ -341,5 +340,5 @@ const enlarge = () => {
 
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/gamebackground.scss'
+@import '@/assets/scss/layout/gamebackground.scss';
 </style>

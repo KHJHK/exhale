@@ -126,6 +126,7 @@ speechRecognition.continuous = true;
 
 
 const enableStt = () => {
+
     sttTextValue = props.sttText;
     speechRecognition.start();
     message.value = "지금 듣고 있어요!";
