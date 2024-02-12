@@ -159,19 +159,21 @@ public class RehabilitationService {
     }
 
     @Transactional
-    public void registerLetterRecode(LetterRecodeRequest letterRecodeRequest, String loginId) {
-        Optional<Letter> letterOpt = letterRepository.findById(letterRecodeRequest.getLetterId());
-        Letter letter = letterOpt.orElseThrow(NoSuchDataException::new);
+    public void registerLetterRecode(List<LetterRecodeRequest> letterRecodeRequestList, String loginId) {
+        for(LetterRecodeRequest letterRecodeRequest : letterRecodeRequestList) {
+            Optional<Letter> letterOpt = letterRepository.findById(letterRecodeRequest.getLetterId());
+            Letter letter = letterOpt.orElseThrow(NoSuchDataException::new);
 
-        Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
-        Member member = memberOpt.orElseThrow(NoSuchDataException::new);
+            Optional<Member> memberOpt = memberRepository.findByLoginIdAndWithdrawIs(loginId, false);
+            Member member = memberOpt.orElseThrow(NoSuchDataException::new);
 
-        LetterRecode letterRecode = LetterRecode.of(
-                letterRecodeRequest.getCorrectCnt(),
-                letterRecodeRequest.getWrongCnt(),
-                member,
-                letter
-        );
-        letterRecodeRepository.save(letterRecode);
+            LetterRecode letterRecode = LetterRecode.of(
+                    letterRecodeRequest.getCorrectCnt(),
+                    letterRecodeRequest.getWrongCnt(),
+                    member,
+                    letter
+            );
+            letterRecodeRepository.save(letterRecode);
+        }
     }
 }

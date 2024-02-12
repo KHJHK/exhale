@@ -9,6 +9,7 @@ import com.ssafy.exhale.dto.responseDto.rehabilitationDto.ReviewProblemResponse;
 import com.ssafy.exhale.exception.handler.InValidParameterException;
 import com.ssafy.exhale.service.RehabilitationService;
 import com.ssafy.exhale.util.TokenPayloadUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -84,20 +85,12 @@ public class CourseController {
     }
 
     @PostMapping("/letter/result")
-    public ResponseEntity<CommonResponse> registerLetterRecode(@Validated @RequestBody LetterRecodeRequest letterRecodeRequest, BindingResult bindingResult) {
+    public ResponseEntity<CommonResponse> registerLetterRecode(@Valid @RequestBody List<LetterRecodeRequest> letterRecodeRequestList, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             throw new InValidParameterException();
         }
 
-        if(letterRecodeRequest.getWrongCnt() == 0 && letterRecodeRequest.getCorrectCnt() == 0) {
-            throw new InValidParameterException();
-        }
-
-        if(letterRecodeRequest.getWrongCnt() > 0 && letterRecodeRequest.getCorrectCnt() > 0) {
-            throw new InValidParameterException();
-        }
-
-        rehabilitationService.registerLetterRecode(letterRecodeRequest, tokenPayloadUtil.getLoginId());
+        rehabilitationService.registerLetterRecode(letterRecodeRequestList, tokenPayloadUtil.getLoginId());
         return CommonResponse.ok(null);
     }
 }
