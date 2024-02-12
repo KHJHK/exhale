@@ -18,7 +18,7 @@ const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
 // const token = JWTtoken;
 
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NjY1MjQwLCJleHAiOjE3MDc2NjcwNDB9.Vp70NxZe765iV5TwVpNY5JMa_2PMu0j6MdR9P6_HYdo';
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NzE5MTU2LCJleHAiOjE3MDc3MjA5NTZ9.Lx88IAQz9WXdVri5FmkQc0AATVopXXmDMXRwXT6dHXg';
 let problemIdx=0;
 let problemSet=null;
 
@@ -137,9 +137,8 @@ const nextProblem = () => {
   question.value = problem.question.value;
 
   // 초기화
-  stopTimer();
+  clearInterval(timerId);
   elapsedTime.value = overTime;
-  startTimer();  
 }
 
 const resultProcessing = async (text) =>{
@@ -160,6 +159,7 @@ const resultProcessing = async (text) =>{
     clickTTSAnswer();
   }else{
     _isRight = false;
+    resultDialog.value = true;
   }
   isRight.value = _isRight;
   isExplain = true;
@@ -196,6 +196,7 @@ const handleDialogChange = (value) => {
 
 };
 const handleNextTickChange = (value) => {
+  isFirst = true;
   nextProblem();
   clickTTSQustion();
 
@@ -207,12 +208,12 @@ const handleReviewTickChange = (value) => {
   
 };
 const handleAgainTickChange = (value) => {
-  stopTimer();
   isFirst = true;
   elapsedTime.value = overTime;
   againTick.value = false;
   resultDialog.value = false;
   problem.explain.value = '';
+  clickTTSQustion();
 };
 const handleIsCloseChange = (value) => {
   stopTimer();
