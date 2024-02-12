@@ -7,7 +7,6 @@ import STT from '@/components/ARC/STT.vue';
 // import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 
-
 // todo routing으로 받기
 const courseName='';
 const categoryName='';
@@ -31,7 +30,8 @@ const isPause = ref(false);
 const isReturn = ref(false);
 const isComplete = ref(false);
 
-const sttText = ref(".");
+const sttText = ref("");
+const sttRunning = ref(false);
 
 const problem = {
   problemId : ref(0),
@@ -43,6 +43,14 @@ const problem = {
 // 타이머
 const elapsedTime = ref(overTime);
 let timerId;
+const timerWidth = computed(() => (elapsedTime.value / overTime) * 100);
+
+
+// 힌트 토글 함수
+const showHint = ref(false);
+const toggleHint = () => {
+  showHint.value = !showHint.value;
+};
 
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
@@ -120,6 +128,21 @@ const saveReviewProblem = async () => {
 // TTS
 // const ttsText = ref("안녕하세요");
 
+// const handleModelValueUpdate = (newValue) => {
+//   sttText.value = newValue;
+//   // 정답 여부 판별 로직
+//   if (newValue.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()) {
+//     // 정답인 경우
+//     isRight.value = true;
+//   } else {
+//     // 오답인 경우
+//     isRight.value = false;
+//   }
+
+//   // ResultDialog 컴포넌트에 정답 여부 전달
+//   resultDialog.value = true; // ResultDialog를 표시합니다.
+// }
+
 const nextProblem = () => {
 
   if(problemIdx>=problemSet.length-1){
@@ -145,7 +168,7 @@ const nextProblem = () => {
 const resultProcessing = (text) =>{
   clearInterval(timerId);
   let _isRight = false;
-  if(text!="" && text == problem.answer.value){  // 정답
+  if(text!="" &&text.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
@@ -160,8 +183,11 @@ const resultProcessing = (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = ".";
+  sttText.value = "";
   resultProcessing(text);
+};
+const handleSttRunningChange = (value) => {
+  sttRunning.value = value;
 };
 const handleDialogChange = (value) => {
   resultDialog.value = value;
@@ -188,7 +214,7 @@ const handleAgainTickChange = (value) => {
   startTimer();  
 };
 const handleIsCloseChange = (value) => {
-  stopTimer();
+  console.log("종료")
   window.close();
 };
 const handleIsPauseChange = (value) => {
@@ -231,7 +257,8 @@ const enlarge = () => {
 </script>
 
 <template>
-      
+
+
 <div :style="{ fontSize: fontSize + 'px' }">
 
   <div class="background">
@@ -241,17 +268,16 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
         {{ msg }}
         </button> 
     </section>
+
+
+    
 
     <div class="problem" v-if="problem">
       <div >
@@ -270,23 +296,36 @@ const enlarge = () => {
           @update:isClose="handleIsCloseChange"
           @update:isPause="handleIsPauseChange"
           @update:isExit="handleIsExitChange"
-          @update:isReturn="handleIsReturnChange"
-          
+          @update:isReturn="handleIsReturnChange"          
           />
       </div>
         <div class="timer">
-          <h1>경과 시간: {{ elapsedTime }}</h1>
+          <div class="timer-bar" :style="{ width: timerWidth + '%' }">
+            <img src="@/assets/clock1.svg" class="clock">
+          </div>
+          <!-- <h1>경과 시간: {{ elapsedTime }}</h1> -->
         </div>
 
         <div class="content">
-            <div>{{ no }}. &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
+            <div class="problemtitle">
+              <label class="numbering">
+                {{ no }}.
+              </label>
+              &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
             <STT 
-              :sttText="sttText"
-              @update:sttText="handleSttTextChange"
-              />
+            v-model="sttText" 
+            @update:sttText="handleSttTextChange" 
+            @update:sttRunning="handleSttRunningChange" 
+            />
+            <!-- <STT 
+              @update:modelValue="handleContentFieldChange" 
+              @update:sttText="updateSttText"
+              /> -->
+
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
-              <div class="answer">{{ problem.answer.value }}</div>
-              <div class="hint">{{ problem.hint.value }}</div>
+              <!-- <div class="answer">{{ problem.answer.value }}</div> -->
+              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
+              <div class="hint" v-if="showHint">{{ problem.hint.value }}</div>
         </div>
         <!-- <button @click="nextProblem">다음</button> -->
         <!-- <TTS
