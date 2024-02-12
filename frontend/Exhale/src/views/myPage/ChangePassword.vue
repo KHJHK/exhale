@@ -13,7 +13,7 @@
           >
           >
           <!-- to를 자기 자신(ChangePassword)로  잡으면 에러남-->
-          <RouterLink class="breadlink" :to="{ name: 'PostWholeListView' }"
+          <RouterLink class="breadlink" :to="{ name: 'ARCReport' }"
             >회원정보수정</RouterLink
           >
         </div>
@@ -176,17 +176,19 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 600px;
+  height: 60vh;
 }
 
 main > h2 {
   font-weight: bolder;
   font-size: 45px;
-  margin-top: 60px;
+  margin-top: 80px;
 }
 
 main > p {
   margin: 20px;
+  font-weight: bold;
+  color: #00000085;
 }
 
 .input-form {
