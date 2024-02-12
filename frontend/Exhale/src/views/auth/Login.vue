@@ -94,7 +94,6 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
 import { reactive, ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore} from '@/stores/auth'; 
@@ -110,35 +109,16 @@ import { logIn } from '@/api/outhApi';
   const password = ref('');
   const userId = ref('')
 
-=======
-import { reactive, ref, computed, onMounted } from "vue";
-import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
->>>>>>> 92a67dcb18f26fae08c5a7dd63f691139aeb46ea
 
-import { RouterLink } from "vue-router";
-import { useRouter } from "vue-router";
-import { logIn } from "@/api/outhApi";
-// import { kakao } from '@/api/outhApi';
-const router = useRouter();
-const fontSize = ref(16);
-const passwordType = ref("password");
-const password = ref("");
-const userId = ref("");
+
 
 const log_In = async () => {
-<<<<<<< HEAD
   const response = await logIn(
     userId.value,
     password.value
   )
   router.push('/mainpage')
 } 
-=======
-  const response = await logIn(userId.value, password.value);
-  router.push("/mainpage");
-};
->>>>>>> 92a67dcb18f26fae08c5a7dd63f691139aeb46ea
 
 ////////////////////////////////////////////////////////
 const toggle = () => {
