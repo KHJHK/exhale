@@ -168,7 +168,8 @@ const nextProblem = () => {
 const resultProcessing = (text) =>{
   clearInterval(timerId);
   let _isRight = false;
-  if(text!="" &&text.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()){  // 정답
+  let answer = problem.answer.value.replace(/\s+/g, '').toLowerCase(); 
+  if(text!="" &&text.replace(/\s+/g, '').toLowerCase() === answer){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
@@ -214,7 +215,6 @@ const handleAgainTickChange = (value) => {
   startTimer();  
 };
 const handleIsCloseChange = (value) => {
-  console.log("종료")
   window.close();
 };
 const handleIsPauseChange = (value) => {
@@ -341,5 +341,5 @@ const enlarge = () => {
 
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/gamebackground.scss'
+@import '@/assets/scss/layout/gamebackground.scss';
 </style>
