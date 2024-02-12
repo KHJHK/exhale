@@ -16,9 +16,8 @@ const categoryId = 8;
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
-// const token = JWTtoken;
+const token = JWTtoken;
 
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NzE5MTU2LCJleHAiOjE3MDc3MjA5NTZ9.Lx88IAQz9WXdVri5FmkQc0AATVopXXmDMXRwXT6dHXg';
 let problemIdx=0;
 let problemSet=null;
 
@@ -43,9 +42,11 @@ const problem = {
   explain: ref(''),
 };
 
+
 // 타이머
 const elapsedTime = ref(overTime);
 let timerId;
+const timerWidth = computed(() => (elapsedTime.value / overTime) * 100);
 
 
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
@@ -283,11 +284,7 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;유창성
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
@@ -316,11 +313,23 @@ const enlarge = () => {
           
           />
       </div>
-        <div class="timer">
-          <h1>경과 시간: {{ elapsedTime }}</h1>
+
+
+      <!-- <div class="timer">
+          <div class="timer-bar" :style="{ width: timerWidth + '%' }">
+            <img src="@/assets/clock1.svg" class="clock">
+          </div>
+
+        </div> -->
+
+        <div class="question">
+          {{ question }}
         </div>
-        {{ question }}
-        {{ sttText }}
+
+        <div class="sttText">
+          {{ sttText }}
+        </div>
+        
         <div class="content">
             <div>{{ isReading }}</div>
             <div :class="isReading ? 'stt-able' :  'stt-disable'">
