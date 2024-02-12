@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LetterStatisticsResponse {
+public class LetterDataResponse {
     private String letter;
     private long count;
     @JsonProperty("correct_count")
