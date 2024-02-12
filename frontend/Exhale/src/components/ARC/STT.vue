@@ -13,7 +13,7 @@
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm">
-      <input type="text" class="textarea" :value="props.modelValue" @input="updateSttText">
+      <input type="text" class="textarea" :value="props.sttText" @input="updateSttText">
 
     </form>
   </div>
@@ -82,22 +82,28 @@
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 import SoundWave from './SoundWave.vue';
 const sttText = ref(''); 
-const emit = defineEmits(["update:modelValue"]);
+const sttRunning = ref(false);
+const emit = defineEmits(["update:sttText","update:sttRunning"]);
 
 const props = defineProps({
-  modelValue: String
+  sttText: String
 });
 
 
-// props의 modelValue가 변경될 때마다 이벤트를 발생시킵니다.
-watch(() => props.modelValue, (newValue) => {
-  emit("update:modelValue", newValue);
+// props의 sttText 변경될 때마다 이벤트를 발생시킵니다.
+watch(() => props.sttText, (newValue) => {
+  emit("update:sttText", newValue);
 });
 
 // textarea에 입력된 값을 sttText에 반영하는 함수
 const updateSttText = (event) => {
-  emit('update:modelValue', event.target.value);
+  emit('update:sttText', event.target.value);
 };
+
+watch(sttRunning, (value) => {
+  emit("update:sttRunning", value);
+});
+
 
 // sttText 데이터가 변경될 때마다 부모 컴포넌트로 변경된 값을 emit하여 전달합니다.
 // watch(sttText, () => {
@@ -118,10 +124,9 @@ const speechRecognition = new SpeechRecognition();
 speechRecognition.lang = "ko-kr";
 speechRecognition.continuous = true;
 
-const sttRunning = ref(false);
 
 const enableStt = () => {
-    sttTextValue = props.modelValue;
+    sttTextValue = props.sttText;
     speechRecognition.start();
     message.value = "지금 듣고 있어요!";
     sttRunning.value = true;
@@ -149,7 +154,7 @@ speechRecognition.onresult = (e) => {
         .map(speech => speech.transcript)
         .join(' ');
     console.log("transcript :", transcript);
-    emit('update:modelValue', transcript);
+    emit('update:sttText', transcript);
     disableStt();
     sttText.value = transcript;
    

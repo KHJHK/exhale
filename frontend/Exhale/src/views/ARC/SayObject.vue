@@ -30,7 +30,8 @@ const isPause = ref(false);
 const isReturn = ref(false);
 const isComplete = ref(false);
 
-const sttText = ref(".");
+const sttText = ref("");
+const sttRunning = ref(false);
 
 const problem = {
   problemId : ref(0),
@@ -127,22 +128,20 @@ const saveReviewProblem = async () => {
 // TTS
 // const ttsText = ref("안녕하세요");
 
-// const sttText = ref("");
+// const handleModelValueUpdate = (newValue) => {
+//   sttText.value = newValue;
+//   // 정답 여부 판별 로직
+//   if (newValue.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()) {
+//     // 정답인 경우
+//     isRight.value = true;
+//   } else {
+//     // 오답인 경우
+//     isRight.value = false;
+//   }
 
-const handleModelValueUpdate = (newValue) => {
-  sttText.value = newValue;
-  // 정답 여부 판별 로직
-  if (newValue.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()) {
-    // 정답인 경우
-    isRight.value = true;
-  } else {
-    // 오답인 경우
-    isRight.value = false;
-  }
-
-  // ResultDialog 컴포넌트에 정답 여부 전달
-  resultDialog.value = true; // ResultDialog를 표시합니다.
-}
+//   // ResultDialog 컴포넌트에 정답 여부 전달
+//   resultDialog.value = true; // ResultDialog를 표시합니다.
+// }
 
 const nextProblem = () => {
 
@@ -162,10 +161,6 @@ const nextProblem = () => {
 
   // 초기화
   stopTimer();
-  // 입력창 초기화
-  sttText.value = "";
-
-  // 타이머 초기화
   elapsedTime.value = overTime;
   startTimer();  
 }
@@ -173,7 +168,7 @@ const nextProblem = () => {
 const resultProcessing = (text) =>{
   clearInterval(timerId);
   let _isRight = false;
-  if(text!="" && text == problem.answer.value){  // 정답
+  if(text!="" &&text.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
@@ -188,8 +183,11 @@ const resultProcessing = (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = ".";
+  sttText.value = "";
   resultProcessing(text);
+};
+const handleSttRunningChange = (value) => {
+  sttRunning.value = value;
 };
 const handleDialogChange = (value) => {
   resultDialog.value = value;
@@ -216,7 +214,7 @@ const handleAgainTickChange = (value) => {
   startTimer();  
 };
 const handleIsCloseChange = (value) => {
-  stopTimer();
+  console.log("종료")
   window.close();
 };
 const handleIsPauseChange = (value) => {
@@ -298,8 +296,7 @@ const enlarge = () => {
           @update:isClose="handleIsCloseChange"
           @update:isPause="handleIsPauseChange"
           @update:isExit="handleIsExitChange"
-          @update:isReturn="handleIsReturnChange"
-          
+          @update:isReturn="handleIsReturnChange"          
           />
       </div>
         <div class="timer">
@@ -315,11 +312,16 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
-            <STT v-model="sttText" @update:modelValue="handleModelValueUpdate" />
+            <STT 
+            v-model="sttText" 
+            @update:sttText="handleSttTextChange" 
+            @update:sttRunning="handleSttRunningChange" 
+            />
             <!-- <STT 
               @update:modelValue="handleContentFieldChange" 
               @update:sttText="updateSttText"
               /> -->
+
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
               <!-- <div class="answer">{{ problem.answer.value }}</div> -->
               <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
