@@ -22,7 +22,7 @@
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
 const sttRunning = ref(false);
-const emit = defineEmits(["update:sttText","update:sttRunning"]);
+const emit = defineEmits(["update:sttText","update:sttRunning","update:volume"]);
 
 const props = defineProps({
   sttText: String

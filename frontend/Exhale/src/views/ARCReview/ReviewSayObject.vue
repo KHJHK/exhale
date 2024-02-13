@@ -2,17 +2,14 @@
 import { ref, onMounted, onBeforeUnmount, computed  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
+import { getReviewProblem, postSolvedProblem, deleteReview  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
-// import TTS from '@/components/ARC/TTS.vue';
-import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import ReviewResultDialog from '@/components/ARCReview/ReviewResultDialog.vue'
 import SoundWave from '@/components/ARC/SoundWave.vue';
-import { useRoute } from 'vue-router';
 
 
-const route = useRoute()
-const overTime = route.params.time;
-const categoryId = route.params.id; 
+let overTime = 120;
+let courseId = 1; 
 const volume = ref(0);
 
 const authStore = useAuthStore();
@@ -39,7 +36,9 @@ const problem = {
   problemId : ref(0),
   answer: ref(''),
   hint: ref(''),
-  imgUrl : ref('')
+  imgUrl : ref(''),
+  categoryId: ref(0),
+  categoryName: ref('')
 };
 
 
@@ -79,18 +78,20 @@ const stopTimer = () => {
 
 const getProblems = async () => {
   try {
-    const { data } = await getProblem(categoryId, token);
+    const { data } = await getReviewProblem(courseId, token);
     if(data.dataStatus.code!=1){
       // todo api 응답 예외 처리
       return;
     }
-    problemIdx = data.response.first_problem_index;
-    problemSet = data.response.problemResponseList;
+    problemSet = data.response;
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.answer.value = problemSet[problemIdx].answer;
     problem.hint.value = problemSet[problemIdx].hint;
     problem.imgUrl.value = problemSet[problemIdx].img_url;
+    problem.categoryId.value = problemSet[problemIdx].category_id;
+    problem.categoryName.value = problemSet[problemIdx].category_name;
+    
 
   } catch (error) {
     console.error(error); 
@@ -113,9 +114,9 @@ const saveSolvedProblem = async() => {
   }
 }
 
-const saveReviewProblem = async () => {
+const deleteReviewProblem = async () => {
   try {
-    const { data } = await postReview(problem.problemId.value, token);
+    const { data } = await deleteReview(problem.problemId.value, token);
     if(data.dataStatus.code==2){
       // todo api 응답 예외 처리
       return;
@@ -129,24 +130,6 @@ const saveReviewProblem = async () => {
 
   }
 };
-
-// TTS
-// const ttsText = ref("안녕하세요");
-
-// const handleModelValueUpdate = (newValue) => {
-//   sttText.value = newValue;
-//   // 정답 여부 판별 로직
-//   if (newValue.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()) {
-//     // 정답인 경우
-//     isRight.value = true;
-//   } else {
-//     // 오답인 경우
-//     isRight.value = false;
-//   }
-
-//   // ResultDialog 컴포넌트에 정답 여부 전달
-//   resultDialog.value = true; // ResultDialog를 표시합니다.
-// }
 
 const nextProblem = () => {
 
@@ -209,7 +192,7 @@ const handleNextTickChange = (value) => {
 };
 const handleReviewTickChange = (value) => {
   stopTimer();
-  saveReviewProblem();
+  deleteReviewProblem();
   reviewTick.value = value;
   
 };
@@ -274,7 +257,7 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 복습 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기&nbsp; &nbsp;>&nbsp; &nbsp;{{ problem.categoryName.value }}
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
@@ -287,7 +270,7 @@ const enlarge = () => {
 
     <div class="problem" v-if="problem">
       <div >
-        <ResultDialog 
+        <ReviewResultDialog 
           :dialog = "resultDialog"
           :isRight = "isRight"  
           :reviewTick = "reviewTick"
@@ -309,7 +292,6 @@ const enlarge = () => {
           <div class="timer-bar" :style="{ width: timerWidth + '%' }">
             <img src="@/assets/clock1.svg" class="clock">
           </div>
-          <!-- <h1>경과 시간: {{ elapsedTime }}</h1> -->
         </div>
 
         <div class="content">
@@ -325,21 +307,13 @@ const enlarge = () => {
             @update:volume="handleVolumeUpdate" 
             class="sttcomponent1"
             />
-            <!-- <STT 
-              @update:modelValue="handleContentFieldChange" 
-              @update:sttText="updateSttText"
-              /> -->
 
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
-              <!-- <div class="answer">{{ problem.answer.value }}</div> -->
               <SoundWave :volume="volume" class="soundwave" />
               <button class="hintBtn" @click="toggleHint" >힌트</button>
               <div class="hint" v-if="showHint">{{ problem.hint.value }}</div>
         </div>
-        <!-- <button @click="nextProblem">다음</button> -->
-        <!-- <TTS
-          :tts-text="ttsText"
-        /> -->
+
     </div>
 
 

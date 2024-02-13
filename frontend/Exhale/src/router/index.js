@@ -11,7 +11,7 @@ import ForgotPassword from "@/views/auth/ForgotPassword.vue";
 import FollowUpSpeech from "@/views/ARC/FollowUpSpeech.vue";
 import ListeningComprehension from "@/views/ARC/ListeningComprehension.vue";
 import Fluency from "@/views/ARC/Fluency.vue";
-import Review from "@/views/ARC/Review.vue";
+import SayObject from "@/views/ARC/SayObject.vue";
 import MatchingImage from "@/views/ARC/MatchingImage.vue";
 import MatchingText from "@/views/ARC/MatchingText.vue";
 
@@ -60,8 +60,9 @@ import CommentsDelete from "@/components/comments/CommentsDelete.vue";
 import CommentsEdit from "@/components/comments/CommentsEdit.vue";
 import CommentsReply from "@/components/comments/CommentsReply.vue";
 
-// ARC
-import SayObject from "@/views/ARC/SayObject.vue";
+// ARC review
+import ReviewSayObject from "@/views/ARCReview/ReviewSayObject.vue";
+
 
 // Import Common views
 const history = createWebHistory();
@@ -91,10 +92,17 @@ const router = createRouter({
       component: ListeningComprehension,
     },
     { path: "/fluency/:id/:time", name: " Fluency", component: Fluency },
-    { path: "/review", name: "Review", component: Review },
     { path: "/say-object/:id/:time", name: "SayObject", component: SayObject },
     { path: "/matching-image/:id/:time", name: "Matching-image", component: MatchingImage },
     { path: "/matching-text/:id/:time", name: "Matching-text", component: MatchingText },
+
+    // Aphasia Recovery Course Review
+    {
+
+        path: "/review-say-object",
+        component: ReviewSayObject,
+    },
+
 
     // community
     {
