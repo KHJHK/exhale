@@ -187,11 +187,11 @@ const handleReviewTickChange = (value) => {
   
 };
 const handleAgainTickChange = (value) => {
-  stopTimer();
+  isFirst = true;
   elapsedTime.value = overTime;
   againTick.value = false;
   resultDialog.value = false;
-  startTimer();  
+  clickTTSQustion();
 };
 const handleIsCloseChange = (value) => {
   window.close();
