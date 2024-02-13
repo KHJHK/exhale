@@ -19,8 +19,8 @@
     </div>
   </header>
 
-  <main>
-    <h2>사용자 정보 변경</h2>
+  <main class="main">
+    <h2>회원정보수정</h2>
     <label class="preview" for="file">
       <img :src="image" />
     </label>
@@ -31,8 +31,11 @@
       accept="image/*"
       @change="changeImage"
     />
-    <input type="text" v-model="nickname" placeholder="닉네임" />
-    <button name="upload" class="upload" @click="editProfile">저장</button>
+    <div class="textbox">
+      <p>닉네임을 직접 설정하거나, 프로필 사진을 업로드 할 수 있어요.</p>
+      <input type="text" v-model="nickname" placeholder="닉네임" />
+      <button name="upload" class="upload" @click="editProfile">저장</button>
+    </div>
   </main>
 
   <footer class="footer">
@@ -100,11 +103,43 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-main {
+.main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 70vh;
+  height: 60vh;
+}
+
+.main > *{
+  margin:10px;
+}
+
+.main > h2{
+  font-weight: bold;
+}
+
+.textbox{
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+}
+
+.textbox > p{
+  color: #707070;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.textbox > input{
+  width: 90%;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding: 10px;
+  margin-bottom: 13px;
+  border-radius: 10px; /* 모서리를 둥글게 조절합니다. */
+  background-color: #f0f0f0; /* 입력 상자의 배경색을 지정합니다. */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* 음푹 패인 효과를 만듭니다. */
 }
 
 footer {
@@ -114,6 +149,7 @@ footer {
   margin-bottom: 15px;
 }
 .upload {
+  width: 90%;
   font-size: 20px;
   font-weight: bold;
   padding: 8px 16px; /* 버튼 패딩 설정 */
@@ -129,8 +165,9 @@ footer {
 }
 
 .preview {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
+  margin-top: 20px;
 }
 
 .preview:hover {
