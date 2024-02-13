@@ -31,6 +31,7 @@ import TestResultPage from "@/views/main/TestResultPage.vue";
 import ARCWaitingPage from "@/views/main/ARCWaitingPage.vue";
 import AboutUs from "@/views/main/AboutUs.vue";
 import MainPage from "@/views/main/MainPage.vue";
+import ReviewWaitingPage from "@/views/main/ReviewWaitingPage.vue";
 
 // myPage
 import ARCReport from "@/views/myPage/ARCReport.vue";
@@ -173,6 +174,11 @@ const router = createRouter({
       path: "/ARC-waiting-page",
       name: " ARCWaitingPage",
       component: ARCWaitingPage,
+    },
+    {
+      path: "/review-waiting-page",
+      name: " ReviewWaitingPage",
+      component: ReviewWaitingPage,
     },
     { path: "/about-us", name: "AboutUs", component: AboutUs },
 
