@@ -20,6 +20,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLogIn = computed(() => {
     if (localStorage.JWT_token !== undefined) {
     console.log('있나없나',localStorage.JWT_token)
+
     return true
     } else {
       console.log('있나없나',localStorage.JWT_token)

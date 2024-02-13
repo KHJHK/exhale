@@ -12,6 +12,8 @@ import FollowUpSpeech from "@/views/ARC/FollowUpSpeech.vue";
 import ListeningComprehension from "@/views/ARC/ListeningComprehension.vue";
 import Fluency from "@/views/ARC/Fluency.vue";
 import Review from "@/views/ARC/Review.vue";
+import MatchingImage from "@/views/ARC/MatchingImage.vue";
+import MatchingText from "@/views/ARC/MatchingText.vue";
 
 // community
 import PostCreateView from "@/views/community/PostCreateView.vue";
@@ -79,7 +81,7 @@ const router = createRouter({
 
     // Aphasia Recovery Course
     {
-      path: "/follow-up-speech",
+      path: "/follow-up-speech/:id/:time",
       name: " FollowUpSpeech",
       component: FollowUpSpeech,
     },
@@ -88,9 +90,11 @@ const router = createRouter({
       name: "ListeningComprehension",
       component: ListeningComprehension,
     },
-    { path: "/fluency", name: " Fluency", component: Fluency },
+    { path: "/fluency/:id/:time", name: " Fluency", component: Fluency },
     { path: "/review", name: "Review", component: Review },
-    { path: "/say-object", name: "SayObject", component: SayObject },
+    { path: "/say-object/:id/:time", name: "SayObject", component: SayObject },
+    { path: "/matching-image/:id/:time", name: "Matching-image", component: MatchingImage },
+    { path: "/matching-text/:id/:time", name: "Matching-text", component: MatchingText },
 
     // community
     {

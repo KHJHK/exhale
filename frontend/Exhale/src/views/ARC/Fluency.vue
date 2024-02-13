@@ -6,13 +6,12 @@ import { getProblem, postSolvedProblem, postReview, checkfluencyAnswer  } from '
 import STT from '@/components/ARC/STT.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import { useRoute } from 'vue-router';
 
 
-// todo routing으로 받기
-const courseName='';
-const categoryName='';
-const overTime = 10;
-const categoryId = 8; 
+const route = useRoute()
+const overTime = route.params.time;
+const categoryId = route.params.id; 
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
