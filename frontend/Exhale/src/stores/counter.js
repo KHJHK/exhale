@@ -5,13 +5,13 @@ import axios from 'axios'
 
 export const useCounterStore = defineStore('counter', () => {
   const router = useRouter()
-  const tab = ref(0)
+  const tab = ref('all')
   
   const go_tab = watch(tab, (newValue) => {
     // 탭 값에 따라 board_id를 업데이트하는 로직
     switch(newValue) {
-      case 0:
-        tab.value = 0; // "전체" 탭에 해당하는 board_id 설정
+      case `all`:
+        tab.value = `all`; // "전체" 탭에 해당하는 board_id 설정
         break;
       case 1:
         tab.value = 1; // "정보 글" 탭에 해당하는 board_id 설정
@@ -23,7 +23,7 @@ export const useCounterStore = defineStore('counter', () => {
         tab.value = 3; // "환자 이야기" 탭에 해당하는 board_id 설정
         break;
       default:
-        tab.value = 0; // 기본값
+        tab.value = `all`; // 기본값
     }
   })
   return { tab }

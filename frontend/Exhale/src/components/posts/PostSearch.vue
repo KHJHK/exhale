@@ -1,6 +1,4 @@
 <template>
-    
-
     <form class="search" @submit="onSearch">
 
       <select class="SelectSearch" v-model="selectedOption" name="WhichSearch">

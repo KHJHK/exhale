@@ -38,14 +38,16 @@
       align-tabs="center"
     >
       <v-tab 
-        :value="0"
+        :value="all"
+        @click="onClickTab(0)"
         :to="{name: 'PostWholeListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostWholeListView'}"
         active-class="active"
-      >전체</v-tab>
+      > 전체</v-tab>
       <v-tab 
         :value="1"
+        @click="onClickTab(1)"
         :to="{name: 'PostInfoListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostInfoListView' }"
@@ -53,18 +55,20 @@
       >정보 글</v-tab>
       <v-tab 
         :value="2"
+        @click="onClickTab(2)"
         :to="{name: 'PostReviewListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostReviewListView' }"
         active-class="active"
-      >치료 후기</v-tab>
+      > 치료 후기</v-tab>
       <v-tab 
         :value="3"
+        @click="onClickTab(3)"
         :to="{name: 'PostStoryListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostStoryListView' }"
         active-class="active"
-      >환자 이야기</v-tab>
+      > 환자 이야기</v-tab>
     </v-tabs>
   </div>
 
@@ -87,44 +91,42 @@
         
         <section class="box-item">
           <article>
-            <!-- <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" > -->
-            <div v-for="(post, index) in filteredPosts" :key="post.id" >  
+          <div v-for="(post, index) in crud.posts" :key="post.id" >
               <PostItem
-              :number="pageStartIdx + index + 1"
               :title="post.title"
               :content="post.content"
               :create_date="post.create_date"
               :id="post.id"
-              @go-to-detail="goPage"
+              @click="board_detail(post.id)"
               ></PostItem>
             </div>
           </article>
         </section>
         
         <section class="box-item">
+
           <div>
-            <Pagination 
-            :list="articles"
-            v-bind="{ITEM_PER_PAGE, PAGE_PER_SECTION}"
-            @change-page="onChangePage"
-            />
-          </div>
+    <pagination/>
+  </div>
         </section> 
       </div>
     </main>
+
     
   </div>
   
   <footer class="footer">
     <Footers/>
   </footer>
+  
 </div>
+<scrollTop/>
 </template>
 
 <script setup>
-import { computed, onUpdated, ref, watch, onMounted } from 'vue'
+import { computed, onUpdated, ref, watch, onMounted,onUnmounted, defineProps } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
-
+import axios from 'axios'
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 import CommunityMenu from '@/components/modals/CommunityMenu.vue'
@@ -133,24 +135,32 @@ import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
-import {boardList} from '@/api/boards' 
+import {boardDetail} from '@/api/boards' 
 import {useCounterStore} from '@/stores/counter.js'
+import PostInfoListView from './PostInfoListView.vue'
+import PostReviewListView from './PostReviewListView.vue'
+import PostStoryListView from './PostStoryListView.vue'
+import { tempPassword } from '@/api/outhApi'
+import { useAuthStore } from "@/stores/auth";
+import { useCrudStore } from '@/stores/crud'
+import scrollTop from '@/components/functions/scrollTop.vue'
+import { storeToRefs } from 'pinia'
+const store = useAuthStore()
+const crud = useCrudStore()
+const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoading} = storeToRefs(crud)
 
-const stroe = useCounterStore()
+const accessToken =store.accessToken
+
 
 const searchOption = ref(null);
 const searchKeyword = ref('');
-const board_id = ref(0)
 
-// const set_board_id = () => {
-
-// }
 
 
 const handleSearch = ({ option, keyword }) => {
   searchOption.value = option;
   searchKeyword.value = keyword;
-  fetchPosts(); // 필터링된 포스트를 다시 가져옵니다.
+  // 필터링된 포스트 가져오는 로직
 };
 
 const filteredPosts = computed(() => {
@@ -170,16 +180,11 @@ function toggleMenu() {
   show.value = !show.value
 }
 
-// vuetify Tabs components
-const tab = ref(0);
 
-const posts = ref([])
+
 const route = useRoute()
 const router = useRouter()
-const params = ref({
-  _sort: 'create_date',
-  _order: 'desc',
-})
+
 
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -190,84 +195,49 @@ const enlarge = () => {
   };
 };
 
-const articles = new Array(111)
-
-  for (let i = 0; i < articles.length; i++) {
-    articles[i] = `Article ${i + 1}`;
-  }
- 
-  const ITEM_PER_PAGE = ref(10);
-  const PAGE_PER_SECTION = ref(10);
-  const curPage = ref(1);
-
-  const pageStartIdx = computed(() => {
-    return (curPage.value - 1) * ITEM_PER_PAGE.value;
-  });
-
-  const onChangePage = (data) => {
-curPage.value = data;
-console.log(curPage.value)
-};
-
-
-const board_list = async () => {
-  const response = await boardList(
-  tab.value,
-  curPage.value
+// for (let i = 0; i < articles.length; i++) {
+  //   articles[i] = `Article ${i + 1}`;
+  // }
   
-  )
 
+  //   const onChangePage = (data) => {
+    // curPage.value = data;
+    // };
+ 
+
+  const board_detail = async (article_id) => {
+    console.log('정체',article_id)
+    try {
+      const response = await boardDetail(
+        article_id
+      )
+    
+      router.push(`/posts/${article_id}`)
+    } catch (error) {
+      console.log('게시글을 불러올 수 없습니다.', error)
+    }
+}  
+
+const changePage = async(newPage) => {
+  await crud.board_list(newPage);
 }
 
-onMounted(() => {
-  board_list()
+const onClickTab = (tabName) => {
+  crud.curPage = 1
+  crud.tab = tabName
+}
+
+onMounted( async () => {
+    // crud.tab = 'all'
+    await crud.board_list()
+  
 })
 
-// const go_tab = watch(tab, (newValue) => {
-//   // 탭 값에 따라 board_id를 업데이트하는 로직
-//   switch(newValue) {
-//     case 0:
-//       tab.value = 0; // "전체" 탭에 해당하는 board_id 설정
-//       break;
-//     case 1:
-//       tab.value = 1; // "정보 글" 탭에 해당하는 board_id 설정
-//       break;
-//     case 2:
-//       tab.value = 2; // "치료 후기" 탭에 해당하는 board_id 설정
-//       break;
-//     case 3:
-//       tab.value = 3; // "환자 이야기" 탭에 해당하는 board_id 설정
-//       break;
-//     default:
-//       tab.value = 0; // 기본값
-//   }
-// })
+  onUnmounted( async () => {
+    await crud.board_list()
+  })
 
-// const fetchPosts = async () => {
-//   try {
-//     const searchBy = route.query.searchBy;
-//     const keyword = route.query.keyword;
-//     const { data } = await getPosts(searchBy, keyword);
-//     posts.value = data;
-//     console.log(response)
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-// fetchPosts()
-
-// watch(() => route.query, fetchPosts);
-
-const goPage = (id) => {
-router.push(`/posts/${id}`)
-}
-
-function changeTab(newValue) {
-  store.tab = newValue
- 
-}
 </script>
-
 <style lang="scss" scoped>
   @import "@/assets/scss/layout/_article.scss";
   @import "@/assets/scss/layout/_grid.scss";

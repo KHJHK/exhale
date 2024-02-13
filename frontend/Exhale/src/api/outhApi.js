@@ -3,6 +3,8 @@ import { useAuthStore } from "@/stores/auth";
 const formDataHeader = {"Content-Type":
 "multipart/form-data"};
 const accessToken = localStorage.getItem('JWT_token')
+const refreshToken = localStorage.getItem('refresh_token')
+const KEY = localStorage.getItem('key')
     // 2 - 이미 존재하는 값
     const isIdDuplicated = async (userId) => {
         
@@ -40,12 +42,16 @@ const accessToken = localStorage.getItem('JWT_token')
 
                  }}; 
             
-            const emailVerifyRequest = async (email_id, email_domain) => {
+            const emailVerifyRequest = async (email_id,email_domain,code) => {
                 return await axios.post('http://i10b208.p.ssafy.io/api/email/check',  {
                     email_id: email_id,
-                    email_domain : email_domain
+                    email_domain:email_domain,
+                    code: code
                 })
             };
+
+
+
             
             const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
                 try {
@@ -114,7 +120,8 @@ const accessToken = localStorage.getItem('JWT_token')
                     localStorage.setItem('refresh_token', response.data.response.token.refresh_token)
                     localStorage.setItem('key',response.data.response.token.key);
                     console.log('로그인 성공:', response.data);
-                    alert('환영합니다.')
+                    alert(`${userId}님 환영합니다!`)
+                   
             } catch (error) {
                 // 로그인 실패 시 에러 처리
                 if (axios.isAxiosError(error) && error.response) {
@@ -199,20 +206,25 @@ const accessToken = localStorage.getItem('JWT_token')
                         })
                     };
                     
-                    // const logout = async (accessToken) => {
-                    //     try {
-                    //         const response = await axios.get('http://i10b208.p.ssafy.io/api/users/logout', {
-                    //             None
-                    //         },{
-                    //             headers : {
-                    //                 'Authorization': `Bearer ${accessToken}`
-                    //             }
-                    //         })
-                    //         token.value = null
-                    //         localStorage.removeItem('token')
-                    //         router.push( '/' )  
-                    //          }  catch (error) {
-                    //          }};
+                    const logout = async () => {
+                        console.log('키', KEY)
+                        console.log('리프레시',refreshToken)
+                        try {
+                            const response = await axios.post('http://i10b208.p.ssafy.io/api/users/logout', {
+                               key : KEY
+                            },{
+                                headers : {
+                                    "Authorization" : refreshToken
+                                }
+                            })
+                            alert('로그아웃 되셨습니다. 또 만나요!')
+                            localStorage.removeItem('JWT_token')
+                            localStorage.removeItem('refresh_token')
+                            localStorage.removeItem('key')
+                            location.reload()
+                            router.push( "/")
+                             }  catch (error) {
+                             }};
                 
                     
                     const kakaoLogin = () => {
@@ -225,13 +237,20 @@ const accessToken = localStorage.getItem('JWT_token')
                         return kakaoLogin
                       };
                     
-                      const logOut = function () {
-                        token.value = null
-                        // username.value = '' // 로그아웃 시 username 제거
-                        localStorage.removeItem('token')
-                        // localStorage.removeItem('username')
-                        router.push({ name: 'Intro' })
-                      }
+                    //   const logOut = async (key, refresh_token) => {
+                    //     return await axios.get('http://i10b208.p.ssafy.io/api/users/logout') ,{
+                    //         key : key
+                    //     }, {
+                    //         headers : {
+                    //             'Authorization': `${refresh_token}`
+                    //         }
+                    //     }
+                     
+                        // localStorage.removeItem('JWT_token')
+                        // localStorage.removeItem('refresh_token')
+                      
+                        // router.push('/')
+                    //   };
                     
                     export {
                         isIdDuplicated,
@@ -248,7 +267,7 @@ const accessToken = localStorage.getItem('JWT_token')
                         rePassword,
                         reFresh,
                         withDraw,
-                        logOut,
+                        logout,
                         kakaoLogin
                         
                     };
