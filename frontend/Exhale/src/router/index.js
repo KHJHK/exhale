@@ -13,6 +13,7 @@ import ListeningComprehension from "@/views/ARC/ListeningComprehension.vue";
 import Fluency from "@/views/ARC/Fluency.vue";
 import Review from "@/views/ARC/Review.vue";
 import MatchingImage from "@/views/ARC/MatchingImage.vue";
+import MatchingText from "@/views/ARC/MatchingText.vue";
 
 // community
 import PostCreateView from "@/views/community/PostCreateView.vue";
@@ -93,7 +94,8 @@ const router = createRouter({
     { path: "/review", name: "Review", component: Review },
     { path: "/say-object", name: "SayObject", component: SayObject },
     { path: "/matching-image", name: "Matching-image", component: MatchingImage },
-    
+    { path: "/matching-text", name: "Matching-text", component: MatchingText },
+
     // community
     {
       path: "/posts/create",
