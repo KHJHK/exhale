@@ -241,14 +241,14 @@ const handleIsReturnChange = (value) => {
 
 const clickTTSQustion = async () => {
   await nextTick(); 
-  const ttsButton = document.querySelector('#question > div > #tts-button');
+  const ttsButton = document.querySelector('#question > div > button > #tts-button');
   if (ttsButton) {
     ttsButton.click();
   }
 };
 const clickTTSAnswer = async () => {
   await nextTick(); 
-  const ttsButton = document.querySelector('#answer > div > #tts-button');
+  const ttsButton = document.querySelector('#answer > div > button > #tts-button');
   if (ttsButton) {
     ttsButton.click();
   }
