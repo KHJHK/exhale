@@ -5,8 +5,10 @@ const formDataHeader = {"Content-Type":
 const accessToken = localStorage.getItem('JWT_token')
 const refreshToken = localStorage.getItem('refresh_token')
 const KEY = localStorage.getItem('key')
-    // 2 - 이미 존재하는 값
-    const isIdDuplicated = async (userId) => {
+const kakaoCode = localStorage.getItem('kakao_auth_code')
+    
+
+const isIdDuplicated = async (userId) => {
         
         try {
         const response = await axios.post('http://i10b208.p.ssafy.io/api/general/id', {
@@ -50,9 +52,6 @@ const KEY = localStorage.getItem('key')
                 })
             };
 
-
-
-            
             const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
                 try {
                     const response = await axios.post('http://i10b208.p.ssafy.io/api/general/join', {
@@ -81,31 +80,32 @@ const KEY = localStorage.getItem('key')
                   }
                 };
             
+            // const sendKakaoCode = async () => {
+            //     return await axios.post('http://i10b208.p.ssafy.io/api/auth/kakao/join', {
+            //         code: kakaoCode
+            //     })
+            // };
             
-
-
-
-            const sendKakaoCode = async (kakaoCode) => {
-                return await axios.post('/api/outh/kakao/join', {
-                    code: kakaoCode
-                })
-            };
-            
-            
-            // [로그인 성공]
-            // { 
-                //  token: {
-                    //    JWT:STR,
-                    //    refresh token:STR, 
-                    //  },
-                    //  member: {
-                        //    member_id: LONG,
-                        //    role : STR
-                        //  }
-                        // }
-                        
-                        // [로그인 실패]
-                        // { }
+            // 리디렉션 후에 호출되어야 하는 함수입니다
+const handleKakaoRedirect = async () => {
+    // URL 파라미터를 파싱
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    console.log('카카오 코드',code)
+    if (code) {
+      try {
+        // 백엔드로 코드를 보내는 함수를 호출합니다
+        const response = await axios.post('http://i10b208.p.ssafy.io/api/auth/kakao/join', {
+          code: code
+        });
+        console.log('전송완료')
+      } catch (error) {
+        console.error(error);
+        
+      }
+    }
+  };
+ 
             const logIn = async (userId, password) => {
                 try {
                     const response = await axios.post('http://i10b208.p.ssafy.io/api/general/login', {
@@ -228,14 +228,13 @@ const KEY = localStorage.getItem('key')
                 
                     
                     const kakaoLogin = () => {
-                        const clientId = "64f53b3a322ebb16eabd9859392720c9"; // 클라이언트 ID를 문자열로 설정
-                        const redirectUri = 'http://localhost:5173/';
-                        const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
+                        // const clientId = "64f53b3a322ebb16eabd9859392720c9"; 
+                        const clientId = 'a1c1ca5ee0651d29efdddcf61a847865';
+                        const redirectUri = 'http://localhost:5173/mainpage';
+                        const url =`https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=http://i10b208.p.ssafy.io/api/auth/kakao/join&response_type=code`//리다렉트 url바꿔놓음
                         // 사용자를 카카오 로그인 페이지로 리디렉션
-                        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
-                        
-                        return kakaoLogin
-                      };
+                        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=http://i10b208.p.ssafy.io/api/auth/kakao/join`;
+                        };
                     
                     //   const logOut = async (key, refresh_token) => {
                     //     return await axios.get('http://i10b208.p.ssafy.io/api/users/logout') ,{
@@ -258,7 +257,7 @@ const KEY = localStorage.getItem('key')
                         emailVerifyRequest,
                         verifyNumberCreate,
                         signUp,
-                        sendKakaoCode,
+                        
                         logIn,
                         tempPassword,
                         reName,
@@ -268,6 +267,7 @@ const KEY = localStorage.getItem('key')
                         reFresh,
                         withDraw,
                         logout,
-                        kakaoLogin
+                        kakaoLogin,
+                        handleKakaoRedirect
                         
                     };

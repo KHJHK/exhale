@@ -1,7 +1,6 @@
 <template>
   <div class="postcard" @click="handleClick">
     <div class="card-number">
-        <p>{{ number }}</p>
     </div>
     <div class="card-body">
         <p class="card-title">{{ title }}</p>

@@ -154,7 +154,7 @@ const id = route.params.id
 const title = ref('')
 const content = ref('')
 const thumbnail = ref('')
-console.log('수정페이지',post)
+
 const edit = async () => {
   try {
     await updatePost(title.value, content.value, thumbnail.value,accessToken, id)

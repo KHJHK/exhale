@@ -94,6 +94,7 @@ import { useRouter } from "vue-router";
 import Headers from "@/components/common/Headers.vue";
 import Footers from "@/components/common/Footers.vue";
 import { RouterView } from "vue-router";
+import {handleKakaoRedirect} from "@/api/outhApi"
 import router from "@/router";
 
 const fontSize = ref(16);
@@ -139,6 +140,11 @@ const navigateToReview3 = (category) => {
 const navigateToReview4 = (category) => {
   router.push({ name: 'fluency', params: { category } })
 }
+
+
+// onMounted(() => {
+//   handleKakaoRedirect()
+// })
 
 </script>
 

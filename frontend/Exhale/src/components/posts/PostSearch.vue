@@ -6,13 +6,13 @@
         <option id="content" value="content">내용</option>
         <option id="author" value="author">작성자</option>
       </select>
-      <button @click="">
+      <button @click="board_search">
         <font-awesome-icon icon="chevron-down" class="search-icon2" />
       </button>
 
       <input class="keyword" v-model="keyword" type="text" name="search" maxlength="255" value="" autocomplete="off">
 
-      <button class="img-button" type="submit" name="click" value="">
+      <button class="img-button" type="submit" name="click" value="" @click="board_search">
         <font-awesome-icon icon="magnifying-glass" class="search-icon"/>
       </button>
 
@@ -48,27 +48,38 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { defineEmits } from 'vue'
-
+import { boardSearch } from '@/api/boards';
 const selectedOption = ref('title') // 기본값으로 'title'을 선택
 const keyword = ref('') // 입력된 검색어를 저장할 ref 생성
 const emit = defineEmits(['search'])
 const router = useRouter()
+const bSearch = ref('')
 
 const onSearch = (e) => {
+  console.log('이에요',e)
   e.preventDefault()
-  // PostWholeListView.vue로 라우팅하면서 선택된 옵션과 검색어를 쿼리 파라미터로 전달
+  // PostWholeListView.B vue로 라우팅하면서 선택된 옵션과 검색어를 쿼리 파라미터로 전달
   // router.push({ name: 'PostWholeListView', query: { searchBy: selectedOption.value, keyword: keyword.value } });
-  emit('search', { option: selectedOption.value, keyword: keyword.value })
+  emit('search', { option: selectedOption.value, keyword: keyword.value })  
 };
+
+// const board_search = async() => {
+//   await boardSearch(
+//   crud.tab,
+//   searchOption.value,
+//   searchKeyword.value,
+//   crud.curPage
+//   )
+// }
+
 
 watch(router.currentRoute, (newRoute) => {
   // 라우트가 변경될 때마다 선택된 옵션과 검색어를 초기화
   selectedOption.value = newRoute.query.searchBy || 'title'
   keyword.value = newRoute.query.keyword || ''
 });
-
 
 
 // import { ref } from 'vue'

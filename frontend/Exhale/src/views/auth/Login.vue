@@ -121,7 +121,7 @@ const log_In = async () => {
   
 } 
 
-////////////////////////////////////////////////////////
+
 const toggle = () => {
   router.push({ name: "SignUp" });
 };
@@ -136,7 +136,7 @@ onMounted(() => {
     }
   }, 300);
 });
-////////////////////////////////////////////////////////
+
 
 const authStore = useAuthStore();
 
@@ -161,7 +161,16 @@ const created = () => {
     console.log("인가 코드:", code);
   }
 };
-</script>
+
+const kakao = () => {
+ 
+  const clientId = "64f53b3a322ebb16eabd9859392720c9";
+  const redirectUri = 'http://localhost:5173/mainpage';
+  const url =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&prompt=select_account`
+  window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+}
+
+</script>j 
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
