@@ -12,9 +12,8 @@
       <div class="message">{{ message }}</div>
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
-    <form @submit.prevent="onSubmit" ref="sttForm">
-      <input type="text" class="textarea" :value="props.sttText" @input="updateSttText">
-
+    <form @submit.prevent="onSubmit" ref="sttForm" class="textform">
+      <input type="text" class="textarea" v-model="sttText" @input="updateSttText">
     </form>
   </div>
   </template>
@@ -237,5 +236,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/_gamebackground.scss'
+@import '@/assets/scss/layout/_gamebackground.scss';
+
 </style>

@@ -5,7 +5,6 @@
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
           </RouterLink>
           <nav class="navbar-links">
-            <RouterLink :to="{name: 'Review'}" class="nav-link">복습하기</RouterLink> 
             <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link">커뮤니티</RouterLink>
             <RouterLink :to="{name: 'ARCReport'}" class="nav-link">내 정보</RouterLink> 
             <div class="nav-link" @click="logout">로그아웃</div>
@@ -45,24 +44,29 @@ const state = reactive({
 
 <style scoped>
 .navbar-links {
-  margin-left: 66.3vw;
+  margin-left: 45vw;
   display: flex;
   align-items: center;
-  gap: 98px;
   border-bottom: none;
+  margin-right: -30vw;
+  width: 150%;
+}
+
+nav {
+  margin-bottom: -2vh;
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-right: -10vw;
+  /* justify-content: space-around; */
+  margin-left: 7vw;
+  margin-top: 2vh;
 }
 
 .nav-link {
   text-decoration: none;
   color: #333;
-  padding-bottom: 0.5rem;
   border-bottom: 2px solid transparent;
   transition: border-color 0.3s;
   display: inline-block;
@@ -71,11 +75,11 @@ const state = reactive({
 
 
 .nav-link:hover {
-  border-bottom: 2px solid rgb(108, 159, 156); /* 호버 시 밑줄이 나타납니다 */
+  border-bottom: 2px solid rgb(108, 159, 156);
   text-decoration: none;
   color: black;
   transition: 0.4s;
-  padding: 3px;
+  padding-bottom: 10px;
 }
 
 </style>
