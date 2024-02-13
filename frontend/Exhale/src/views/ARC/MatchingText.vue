@@ -81,7 +81,6 @@ const getProblems = async () => {
     problem.options.value = problemSet[problemIdx].options;
     problem.questionImage.value = problemSet[problemIdx].question_image;
     clickTTSQustion();
-    console.log(problemSet)
 
   } catch (error) {
     console.error(error); 

@@ -13,7 +13,7 @@
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm" class="textform">
-      <input type="text" class="textarea" v-model="sttText" @input="updateSttText">
+      <input type="text" class="textarea" v-model="sttText" readonly>
     </form>
   </div>
   </template>
@@ -21,24 +21,25 @@
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
-const sttText = ref(''); 
 const sttRunning = ref(false);
 const emit = defineEmits(["update:sttText","update:sttRunning"]);
 
 const props = defineProps({
   sttText: String
 });
+const sttText = ref(props.sttText); 
 
 
 // props의 sttText 변경될 때마다 이벤트를 발생시킵니다.
-watch(() => props.sttText, (newValue) => {
-  // emit("update:sttText", newValue);
+watch(() => props.sttText, () => {
+  sttText.value = props.sttText;
 });
 
 // textarea에 입력된 값을 sttText에 반영하는 함수
-const updateSttText = (event) => {
-  // emit('update:sttText', event.target.value);
-};
+// const updateSttText = (event) => {
+//   // emit('update:sttText', event.target.value);
+// };
+
 
 watch(sttRunning, (value) => {
   emit("update:sttRunning", value);

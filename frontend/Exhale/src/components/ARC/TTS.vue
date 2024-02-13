@@ -1,8 +1,8 @@
 <template>
   <div>
     <button @click="speak">
-      <img v-if="showButton" src="@/assets/headphone.svg" id="tts-button" alt="">
-      <span v-else>정답 듣고 넘어가기</span>
+      <img src="@/assets/headphone.svg" id="tts-button" alt="">
+      <span v-if="!showButton" @click="skip">해설 넘어가기</span>
     </button>
       <img src="@/assets/headphone.svg" class="tts-button2" alt="">
     <!-- <img src="@/assets/mic.svg" class="backcircle" > -->
@@ -32,7 +32,9 @@ const props = defineProps({
     emit('update:isReading', isReading.value);
   });
 
-
+  const skip = () => {
+    text.value=''; 
+  }
   function speak() {
     isReading.value = true;
   if (typeof SpeechSynthesisUtterance === "undefined" || typeof window.speechSynthesis === "undefined") {

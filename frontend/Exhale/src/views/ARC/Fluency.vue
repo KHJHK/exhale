@@ -111,6 +111,7 @@ const saveReviewProblem = async () => {
       return;
     }else if(data.dataStatus.code!=1){
     }
+    stopTimer();
     isComplete.value = true;
   } catch (error) {
     if(error.response.data.dataStatus.code==4){
@@ -139,11 +140,15 @@ const nextProblem = () => {
   // 초기화
   clearInterval(timerId);
   elapsedTime.value = overTime;
+
+  clickTTSQustion();
+
 }
 
 const resultProcessing = async (text) =>{
   clearInterval(timerId);
   let _isRight = false;
+
   if(text != ""){
     const params = {
         question : question.value,
@@ -172,6 +177,7 @@ const resultProcessing = async (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
+  sttText.value = text;
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
@@ -191,14 +197,15 @@ const handleDialogChange = (value) => {
   if(!value){
     isPause.value = false;
     isReturn.value=false;
-    problem.explain.value = '';
   }
 
 };
 const handleNextTickChange = (value) => {
   isFirst = true;
+  problem.explain.value = '';
+  sttText.value = ' ';
+
   nextProblem();
-  clickTTSQustion();
 
 };
 const handleReviewTickChange = (value) => {
@@ -209,10 +216,11 @@ const handleReviewTickChange = (value) => {
 };
 const handleAgainTickChange = (value) => {
   isFirst = true;
+  problem.explain.value = '';
   elapsedTime.value = overTime;
   againTick.value = false;
   resultDialog.value = false;
-  problem.explain.value = '';
+  
   clickTTSQustion();
 };
 const handleIsCloseChange = (value) => {
@@ -326,9 +334,9 @@ const enlarge = () => {
         </div>
         <img src="@/assets/triangle_left.svg" class="triangle_left">
 
-        <div class="sttText">
+        <!-- <div class="sttText">
           {{ sttText }}
-        </div>
+        </div> -->
 
         <img src="@/assets/triangle.svg" class="triangle">
       
