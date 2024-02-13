@@ -150,14 +150,16 @@ public class ArticleService {
         }
     }
 
-    public ArticleListResponse search(ArticleSearchRequest searchRequest, Integer page, Integer pageSize){
+    public ArticleListResponse search(ArticleSearchRequest searchRequest){
         try{
+            Integer pageSize = searchRequest.getPageSize();
+            Integer page = searchRequest.getPage();
+
             pageSize = pageSize != null ? pageSize : PAGE_SIZE;
             PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
             List<Article> articleEntityList = articleRepository.search(searchRequest, pageRequest);
             Long articleTotalCount = articleRepository.countSearchedArticles(searchRequest);
             Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
-
 
             List<ArticleResponse> articleList =
                     articleEntityList.stream()

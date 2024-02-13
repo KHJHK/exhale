@@ -22,4 +22,9 @@ public class ArticleSearchRequest {
     @NotNull
     @JsonProperty("search_content")
     String searchContent;
+
+    @NotNull
+    Integer page;
+
+    Integer pageSize;
 }

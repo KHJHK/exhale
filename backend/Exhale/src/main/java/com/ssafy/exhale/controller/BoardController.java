@@ -41,9 +41,7 @@ public class BoardController {
 
     //검색
     @PostMapping("/search")
-    public ResponseEntity<CommonResponse> search(@RequestBody ArticleSearchRequest articleSearchRequest,
-                                                 @RequestParam("page") Integer page,
-                                                 @RequestParam(value = "page_size", required = false) Integer pageSize){
-        return CommonResponse.ok(articleService.search(articleSearchRequest, page, pageSize));
+    public ResponseEntity<CommonResponse> search(@RequestBody ArticleSearchRequest articleSearchRequest) {
+        return CommonResponse.ok(articleService.search(articleSearchRequest));
     }
 }
