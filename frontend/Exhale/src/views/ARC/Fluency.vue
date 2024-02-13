@@ -3,7 +3,7 @@ import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview, checkfluencyAnswer  } from '@/api/course.js';
-import STT from '@/components/ARC/STT.vue';
+import STT_Fluency from '@/components/ARC/STT_Fluency.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { useRoute } from 'vue-router';
@@ -341,7 +341,7 @@ const enlarge = () => {
         <img src="@/assets/triangle.svg" class="triangle">
       
             <div :class="isReading ? 'stt-able' :  'stt-disable'">
-                <STT 
+                <STT_Fluency 
                 :sttText="sttText"
                 @update:sttText="handleSttTextChange"
                 class="sttcomponent"

@@ -4,14 +4,16 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview, getMorphemeList, postSyllable  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
-import TTS from '@/components/ARC/TTS.vue';
+import TTS_FollowUpSpeech from '@/components/ARC/TTS_FollowUpSpeech.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
 import { useRoute } from 'vue-router';
+import SoundWave from '@/components/ARC/SoundWave.vue';
 
 const route = useRoute()
 const overTime = route.params.time;
-const categoryId = route.params.id; 
+const categoryId = route.params.id;
+const volume = ref(0);
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
@@ -37,8 +39,15 @@ let isFirst = true;
 
 const problem = {
   problemId : ref(0),
-  question: ref('')
+  question: ref(''),
+  hint: ref('')
 };
+
+
+const handleVolumeUpdate = (newVolume) => {
+  volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
+};
+
 
 // 타이머
 const elapsedTime = ref(overTime);
@@ -81,6 +90,7 @@ const getProblems = async () => {
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
+    problem.hint.value = problemSet[problemIdx].hint;
     clickTTSQustion();
 
   } catch (error) {
@@ -135,9 +145,13 @@ const nextProblem = () => {
     problemIdx++;
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
+    problem.hint.value = problemSet[problemIdx].hint;
     no.value++;
 
     // 초기화
+    stopTimer();
+    startTimer(); 
+    toggleHint();
     clearInterval(timerId);
     elapsedTime.value = overTime;
 }
@@ -286,7 +300,7 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;따라말하기
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
@@ -324,24 +338,27 @@ const enlarge = () => {
         </div>
 
         <div class="content">
+          <!-- {{  elapsedTime}} -->
             <div class="problemtitle">
               <label class="numbering">
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
-              {{  elapsedTime}}
-            <STT 
-            v-model="sttText" 
-            @update:sttText="handleSttTextChange" 
-            @update:sttRunning="handleSttRunningChange" 
-            />
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
-              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
-              <TTS
+              <TTS_FollowUpSpeech 
                   :text="problem.question.value"
                   :isReading="isReading"
                   @update:isReading="handleIsReadingChange"
                   />
+            <STT 
+            v-model="sttText" 
+            @update:sttText="handleSttTextChange" 
+            @update:sttRunning="handleSttRunningChange" 
+            @update:volume="handleVolumeUpdate"
+            class="sttcomponent1"
+            />
+              <SoundWave :volume="volume" class="soundwave" />
+              <button class="hintBtn" @click="toggleHint">힌트</button>
+              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
         </div>
     </div>
 

@@ -14,74 +14,28 @@
       </div>
     
     <p class="title">언어재활코스</p>
-
+    
     <div class="mainbox">
-      <div v-for="course of courses" @click="toggleSubbox(course.course_id)" class="box1" :key="course.course_id">
+      <div v-for="course of courses" @click="toggleSubbox(course.course_id)" 
+      :class="{ 
+        'hide': activeBox !== null && activeBox !== course.course_id, 
+        'show': activeBox === course.course_id,
+        'array1': activeBox === courses[0].course_id,
+        'array2': activeBox === courses[1].course_id,
+        'array3': activeBox === courses[2].course_id,
+        'array4': activeBox === courses[3].course_id
+      }" class="box" :key="course.course_id">
         {{course.course_name}}
       </div>
-      <div v-if="categories">
+    
+      <div v-if="categories" class="subbox" :class="{ 'show': subboxStates.box1, 'hide': !subboxStates.box1 }">
         <div v-for="category of categories" :key="category.category_id">
-          <div class="b1-1" style="font-size: 90%;" @click="navigateToReview(category)" >
+          <div class="b" style="font-size: 90%;" @click="navigateToReview(category)" >
               {{category.category_name}}
           </div>
 
         </div>
       </div>
-
-      
-      <!-- <div @click="toggleSubbox('box1')" class="box1">
-        이름대기
-
-        <div class="subbox1" :class="{ 'show': subboxStates.box1, 'hide': !subboxStates.box1 }">
-          <div class="b1-1" style="font-size: 90%;" @click="navigateToReview1('행동')" >
-            행동
-          </div>
-          <div class="b1-2" style="font-size: 90%;" @click="navigateToReview1('생물, 무생물')">
-            생물<br>무생물
-          </div>
-          <div class="b1-3" style="font-size: 90%;" @click="navigateToReview1('장소')">
-            장소
-          </div>
-        </div>
-
-      </div>
-
-      <div @click="toggleSubbox('box2')" class="box2">
-        따라 말하기
-        <div class="subbox2" :class="{ 'show': subboxStates.box2, 'hide': !subboxStates.box2 }">
-          <div class="b2-1" style="font-size: 90%;" @click="navigateToReview2('2음절 연습')">
-            2음절 연습
-          </div>
-          <div class="b2-2" style="font-size: 90%;" @click="navigateToReview2('3음절 연습')">
-            3음절 연습
-          </div>
-        </div>
-
-      </div>
-
-
-      <div @click="toggleSubbox('box3')" class="box3">
-        듣고 이해하기
-        <div class="subbox3" :class="{ 'show': subboxStates.box3, 'hide': !subboxStates.box3 }">
-          <div class="b3-1" style="font-size: 90%;" @click="navigateToReview3('그림 고르기')">
-            그림<br>고르기
-          </div>
-          <div class="b3-2" style="font-size: 90%;" @click="navigateToReview3('텍스트 고르기')">
-            텍스트<br>고르기
-          </div>
-        </div>
-      </div>
-
-
-      <div @click="toggleSubbox('box4')" class="box4">
-        유창성
-        <div class="subbox4" :class="{ 'show': subboxStates.box4, 'hide': !subboxStates.box4 }">
-            <div class="b4-1" style="font-size: 90%;" @click="navigateToReview4()">
-              대화하기
-            </div>
-        </div>
-      </div> -->
-    
     </div>
 
 </div>
@@ -116,16 +70,33 @@ const subboxStates = ref({
   box3: false,
   box4: false,
 })
-
 const courses = ref([]);
 const categories = ref([]);
 let currentCourseId = 0;
 
 const appURL = import.meta.env.VITE_APP_API_URL;
 
+const activeBox = ref(null);
+
+
 const toggleSubbox = async (courseId) => {
+  if (currentCourseId === courseId) {
+    activeBox.value = null;
+    currentCourseId = 0;
+
+    subboxStates.value.box1 = false;
+    subboxStates.value.box2 = false;
+    subboxStates.value.box3 = false;
+    subboxStates.value.box4 = false;
+
+    
+    categories.value = [];
+    return;
+  }
   currentCourseId = courseId;
+  activeBox.value = courseId;
   await categoryList(courseId);
+  subboxStates.value.box1 = !subboxStates.value.box1;
   // subboxStates.value[boxKey] = !subboxStates.value[boxKey]
   // Object.keys(subboxStates.value).forEach(key => {
   //   if (key !== boxKey) subboxStates.value[key] = false
@@ -166,17 +137,31 @@ const navigateToReview = (category) => {
 const courseList = async () => {
   try {
     const { data } = await getCourseList();
-    if(data.dataStatus.code!=1){
+    
+    if (data.response) {
+      array1.value = data.response[0].course_id
+      array2.value = data.response[1].course_id
+      array3.value = data.response[2].course_id
+      array4.value = data.response[3].course_id
+      console.log('어레이1',array1.value)
+    }
+    else if(data.dataStatus.code!=1){
       // todo api 응답 예외 처리
       return;
     }
-    courses.value = data.response; 
+    courses.value = data.response;
+    courses.value.forEach((data) => {
+      console.log(data.course_name)
+    })
 
   } catch (error) {
     console.error(error); 
   }
 }
-
+const array1 = ref([])
+const array2 = ref([])
+const array3 = ref([])
+const array4 = ref([])
 const categoryList = async (courseId) => {
   try {
     const { data } = await getCategoryList(courseId);
@@ -191,7 +176,10 @@ const categoryList = async (courseId) => {
   }
 }
 
-courseList();
+onMounted(()=> {
+
+  courseList()
+})
 
 
 

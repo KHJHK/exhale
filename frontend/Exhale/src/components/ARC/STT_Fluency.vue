@@ -13,7 +13,7 @@
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm" class="textform">
-      <input type="text" class="textarea" v-model="sttText" readonly>
+      <input type="text" class="textarea" v-model="sttText" @input="updateSttText">
     </form>
   </div>
   </template>
@@ -21,25 +21,24 @@
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
+const sttText = ref(''); 
 const sttRunning = ref(false);
 const emit = defineEmits(["update:sttText","update:sttRunning"]);
 
 const props = defineProps({
   sttText: String
 });
-const sttText = ref(props.sttText); 
 
 
 // props의 sttText 변경될 때마다 이벤트를 발생시킵니다.
-watch(() => props.sttText, () => {
-  sttText.value = props.sttText;
+watch(() => props.sttText, (newValue) => {
+  // emit("update:sttText", newValue);
 });
 
 // textarea에 입력된 값을 sttText에 반영하는 함수
-// const updateSttText = (event) => {
-//   // emit('update:sttText', event.target.value);
-// };
-
+const updateSttText = (event) => {
+  // emit('update:sttText', event.target.value);
+};
 
 watch(sttRunning, (value) => {
   emit("update:sttRunning", value);
@@ -136,7 +135,6 @@ const startVolumeMonitoring = () => {
                   }
                   let average = values / length;
                   volume.value = Math.round(average); // 볼륨 상태 업데이트
-                  emit('update:volume', volume.value); 
               };
           }
       }).catch((error) => {
@@ -215,6 +213,7 @@ onUnmounted(() => {
   left: 35%;
   border-radius: 10px;
   padding: 15px 17px;
+  background-color: white;
   text-align: center;
   color: rgb(45, 45, 45);
   font-family: 'NotoSansKR';
