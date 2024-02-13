@@ -8,23 +8,33 @@ function generateStatistics(morphemeList, answer, text) {
 
     // 형태소 차이를 기반으로 통계 정보 업데이트
     differences.forEach(({ type, morpheme1, morpheme2 }) => {
-        // morpheme1과 morpheme2를 기반으로 해당하는 letter_id 찾기
-        const letter_id = morphemeList.find(morpheme => morpheme.letter_char === morpheme1 && morpheme.type === type)?.letter_id;
-        const statistics = {};
+        if(morpheme1!=''){
+            // morpheme1과 morpheme2를 기반으로 해당하는 letter_id 찾기
+            const letter_id = morphemeList.find(morpheme => morpheme.letter_char === morpheme1 && morpheme.type === type)?.letter_id;
 
-        if (!statistics[letter_id]) {
-            statistics[letter_id] = { letter_id: letter_id, correct_cnt: 0, wrong_cnt: 0 };
+            // 이미 list에 morpheme1이 존재하는 경우 해당 정보를 사용
+            const existingItem = list.find(item => item.letter_id === letter_id);
+            if (existingItem) {
+                if (morpheme1 === morpheme2) {
+                    existingItem.correct_cnt++;
+                } else {
+                    existingItem.wrong_cnt++;
+                }
+            } else {
+                // morpheme1이 list에 존재하지 않는 경우 statistics 생성
+                const statistics = {
+                    letter_id: letter_id,
+                    correct_cnt: morpheme1 === morpheme2 ? 1 : 0,
+                    wrong_cnt: morpheme1 === morpheme2 ? 0 : 1
+                };
+                list.push(statistics);
+            }
         }
-        if (morpheme1 === morpheme2) {
-            statistics[letter_id].correct_cnt++;
-        } else {
-            statistics[letter_id].wrong_cnt++;
-        }
-        list.push(statistics[letter_id]);
     });
 
-    return Object.values(statistics);
+    return list; // 변환된 결과 리스트 반환
 }
+
 
 export {
     generateStatistics

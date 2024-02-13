@@ -2,7 +2,7 @@
 import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { getProblem, postSolvedProblem, postReview, getMorphemeList  } from '@/api/course.js';
+import { getProblem, postSolvedProblem, postReview, getMorphemeList, postSyllable  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
@@ -15,7 +15,7 @@ const categoryId = 4;
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
 // const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3NzQzODg1LCJleHAiOjE3MDc3NDU2ODV9.b74xzKNPyTZUEymgMXhG2gFm3z7xSN_-xGxv_s2DFhw';
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3Nzg2NTMzLCJleHAiOjE3MDc3ODgzMzN9.U0dY7KqYkYASXyh5GIWbiJ2Gj6QkMWgsPaBDF3IxcXM';
 let problemIdx=0;
 let problemSet=null;
 let no = ref(1);
@@ -141,6 +141,26 @@ const nextProblem = () => {
     elapsedTime.value = overTime;
 }
 
+const getMorphemes = async (answer, text) =>{
+  const {data} = await getMorphemeList(token);
+  if(data.dataStatus.code!=1){
+    // todo 에러 처리
+    return;
+  }
+  
+  const morphemeList = data.response;
+  const statistics = generateStatistics(morphemeList, answer, text);
+  return statistics;
+} 
+
+const saveMorphemes = async (statistics) =>{
+  const {data} = await postSyllable(statistics, token);
+  if(data.dataStatus.code!=1){
+    // todo 에러 처리
+    return;
+  }
+} 
+
 const resultProcessing = async (text) =>{
   clearInterval(timerId);
   let _isRight = false;
@@ -152,14 +172,11 @@ const resultProcessing = async (text) =>{
     _isRight = true;
   }else{  // 오답
     _isRight = false;
-
-    const {data} = await getMorphemeList(token);
-    const morphemeList = data.response;
-    const statistics = generateStatistics(morphemeList, answer, text);
-    console.log(statistics);    
-   
-
   }
+
+  const statistics = await getMorphemes(answer, text);
+  await saveMorphemes(statistics);
+
   isRight.value = _isRight;
   resultDialog.value = true;
 

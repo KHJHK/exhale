@@ -38,7 +38,6 @@ function divideHangul(letter) {
 }
 
 function compareMorpheme(text1, text2) {
-    console.log(text1, text2)
     const result = [];
 
     const characters1 = text1.split('');

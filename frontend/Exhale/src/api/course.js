@@ -32,7 +32,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
       problem_id : params.problemId,
       is_right : params.isRight,
       time : params.time
-    }
+    } 
     return await axios.post(baseURL + '/api/rehabilitation/result',datas,{
     headers: {
         Authorization: token
@@ -49,7 +49,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
   };
 
   // 초성, 중성, 종성 기록 저장 요청
-  const postSyllable = async (params) => {
+  const postSyllable = async (params, token) => {
     return await axios.post(baseURL + '/api/rehabilitation/letter/result',params,{
     headers: {
         Authorization: token
