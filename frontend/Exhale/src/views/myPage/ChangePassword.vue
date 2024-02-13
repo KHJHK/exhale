@@ -182,7 +182,7 @@ main {
 main > h2 {
   font-weight: bolder;
   font-size: 45px;
-  margin-top: 80px;
+  margin-top: 40px;
 }
 
 main > p {
@@ -199,7 +199,7 @@ main > p {
 }
 
 .input-form > * > * {
-  margin: 10px;
+  margin: 5px;
 }
 
 .old-password-textbox {
