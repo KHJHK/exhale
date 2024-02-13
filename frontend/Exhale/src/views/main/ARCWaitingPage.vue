@@ -3,6 +3,7 @@
         <button @click="newWidow">이름대기</button>
         <button @click="openFluency">유창성</button>
         <button @click="openFollowUp">따라말하기</button>
+        <button @click="openMatchingImage">듣기이해력(그림짝짓기)</button>
     </div>
 </template>
 
@@ -25,6 +26,9 @@ const openFluency = () => {
 }
 const openFollowUp = () => {
     window.open('http://localhost:5173/follow-up-speech');
+}
+const openMatchingImage = () => {
+    window.open('http://localhost:5173/matching-image');
 }
 </script>
 
