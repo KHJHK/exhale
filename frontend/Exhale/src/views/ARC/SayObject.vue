@@ -6,6 +6,7 @@ import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
 // import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import SoundWave from '@/components/ARC/SoundWave.vue';
 
 // todo routing으로 받기
 const courseName='';
@@ -163,6 +164,7 @@ const nextProblem = () => {
   stopTimer();
   elapsedTime.value = overTime;
   startTimer();  
+  toggleHint();
 }
 
 const resultProcessing = (text) =>{
@@ -324,7 +326,8 @@ const enlarge = () => {
 
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
               <!-- <div class="answer">{{ problem.answer.value }}</div> -->
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
+              <SoundWave :volume="volume" class="soundwave" />
+              <button class="hintBtn" @click="toggleHint" >힌트</button>
               <div class="hint" v-if="showHint">{{ problem.hint.value }}</div>
         </div>
         <!-- <button @click="nextProblem">다음</button> -->

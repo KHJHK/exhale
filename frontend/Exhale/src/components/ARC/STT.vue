@@ -8,7 +8,7 @@
         <img src="@/assets/mic.svg" class="mic" >
       </button>
       <img src="@/assets/mic.svg" class="backcircle" >
-      <SoundWave :volume="volume" class="soundwave" />
+      
       <div class="message">{{ message }}</div>
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
@@ -79,7 +79,7 @@
 
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
-import SoundWave from './SoundWave.vue';
+
 const sttText = ref(''); 
 const sttRunning = ref(false);
 const emit = defineEmits(["update:sttText","update:sttRunning"]);
@@ -236,6 +236,48 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/_gamebackground.scss';
+.mic {
+  position: fixed;
+  top: 77%;
+  left: 35%;
+  width: 60px;
+  box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
+  border-radius: 100%;
+}
 
+.backcircle {
+  position: fixed;
+  top: 77%;
+  left: 35%;
+  width: 60px;
+  box-shadow: 1px 2px 10px 3px rgb(255, 255, 255);
+  border-radius: 100%;
+  z-index: -1;
+}
+
+.message {
+  position: fixed;
+  top: 86.5%;
+  left: 37.2%;
+  transform: translateX(-50%);
+  font-size: 85%;
+  opacity: 70%;
+}
+
+
+.textarea {
+  width: 29%;
+  margin-left: 33%;
+  margin-top: 20%;
+  border-radius: 10px;
+  padding: 15px 17px;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  color: rgb(45, 45, 45);
+  font-family: 'NotoSansKR';
+  letter-spacing: 1px;
+  &:focus {
+    outline: none;
+  }
+}
 </style>
