@@ -62,6 +62,7 @@ import CommentsReply from "@/components/comments/CommentsReply.vue";
 
 // ARC review
 import ReviewSayObject from "@/views/ARCReview/ReviewSayObject.vue";
+import ReviewFollowUpSpeech from "@/views/ARCReview/ReviewFollowUpSpeech.vue";
 
 
 // Import Common views
@@ -102,7 +103,7 @@ const router = createRouter({
         path: "/review-say-object",
         component: ReviewSayObject,
     },
-
+    { path: "/review-follow-up-speech", component: ReviewFollowUpSpeech},
 
     // community
     {
