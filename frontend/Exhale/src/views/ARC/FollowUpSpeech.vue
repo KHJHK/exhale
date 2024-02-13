@@ -7,15 +7,16 @@ import STT from '@/components/ARC/STT.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
+import { useRoute } from 'vue-router';
 
-// todo routing으로 받기
-const overTime = 10;
-const categoryId = 4; 
+const route = useRoute()
+const overTime = route.params.time;
+const categoryId = route.params.id; 
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
-// const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3Nzg2NTMzLCJleHAiOjE3MDc3ODgzMzN9.U0dY7KqYkYASXyh5GIWbiJ2Gj6QkMWgsPaBDF3IxcXM';
+const token = JWTtoken;
+
 let problemIdx=0;
 let problemSet=null;
 let no = ref(1);

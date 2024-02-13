@@ -81,7 +81,7 @@ const router = createRouter({
 
     // Aphasia Recovery Course
     {
-      path: "/follow-up-speech",
+      path: "/follow-up-speech/:id/:time",
       name: " FollowUpSpeech",
       component: FollowUpSpeech,
     },
@@ -90,11 +90,11 @@ const router = createRouter({
       name: "ListeningComprehension",
       component: ListeningComprehension,
     },
-    { path: "/fluency", name: " Fluency", component: Fluency },
+    { path: "/fluency/:id/:time", name: " Fluency", component: Fluency },
     { path: "/review", name: "Review", component: Review },
-    { path: "/say-object", name: "SayObject", component: SayObject },
-    { path: "/matching-image", name: "Matching-image", component: MatchingImage },
-    { path: "/matching-text", name: "Matching-text", component: MatchingText },
+    { path: "/say-object/:id/:time", name: "SayObject", component: SayObject },
+    { path: "/matching-image/:id/:time", name: "Matching-image", component: MatchingImage },
+    { path: "/matching-text/:id/:time", name: "Matching-text", component: MatchingText },
 
     // community
     {

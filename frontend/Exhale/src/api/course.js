@@ -2,21 +2,13 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
   // 코스 조회
-  const getCourseList = async (token) => {
-    return await axios.get(baseURL + '/api/rehabilitation',{
-    headers: {
-        Authorization: token
-      }
-    })
+  const getCourseList = async () => {
+    return await axios.get(baseURL + '/api/rehabilitation');
   };
 
   // 카테고리 조회
-  const getCategoryList = async (courseId, token) => {
-    return await axios.get(baseURL + `/api/rehabilitation/${courseId}`,{
-    headers: {
-        Authorization: token
-      }
-    })
+  const getCategoryList = async (courseId) => {
+    return await axios.get(baseURL + `/api/rehabilitation/${courseId}`);
   };
   // 문제 조회
   const getProblem = async (categoryId, token) => {

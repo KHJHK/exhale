@@ -16,8 +16,20 @@
     <p class="title">언어재활코스</p>
 
     <div class="mainbox">
+      <div v-for="course of courses" @click="toggleSubbox(course.course_id)" class="box1" :key="course.course_id">
+        {{course.course_name}}
+      </div>
+      <div v-if="categories">
+        <div v-for="category of categories" :key="category.category_id">
+          <div class="b1-1" style="font-size: 90%;" @click="navigateToReview(category)" >
+              {{category.category_name}}
+          </div>
+
+        </div>
+      </div>
+
       
-      <div @click="toggleSubbox('box1')" class="box1">
+      <!-- <div @click="toggleSubbox('box1')" class="box1">
         이름대기
 
         <div class="subbox1" :class="{ 'show': subboxStates.box1, 'hide': !subboxStates.box1 }">
@@ -68,7 +80,7 @@
               대화하기
             </div>
         </div>
-      </div>
+      </div> -->
     
     </div>
 
@@ -81,6 +93,8 @@ import { useRouter } from "vue-router";
 import Headers from "@/components/common/Headers.vue";
 import { RouterView } from "vue-router";
 import router from "@/router";
+import { getCourseList, getCategoryList } from '@/api/course.js';
+import SayObject from "../ARC/SayObject.vue";
 
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
@@ -103,28 +117,83 @@ const subboxStates = ref({
   box4: false,
 })
 
-const toggleSubbox = (boxKey) => {
-  subboxStates.value[boxKey] = !subboxStates.value[boxKey]
-  Object.keys(subboxStates.value).forEach(key => {
-    if (key !== boxKey) subboxStates.value[key] = false
-  })
-}
+const courses = ref([]);
+const categories = ref([]);
+let currentCourseId = 0;
 
+const appURL = import.meta.env.VITE_APP_API_URL;
+
+const toggleSubbox = async (courseId) => {
+  currentCourseId = courseId;
+  await categoryList(courseId);
+  // subboxStates.value[boxKey] = !subboxStates.value[boxKey]
+  // Object.keys(subboxStates.value).forEach(key => {
+  //   if (key !== boxKey) subboxStates.value[key] = false
+  // })
+}
 
 // 위 name에 각 게임 페이지 링크 이름 넣어야 함
 // 해당 게임 유형으로 이동
-const navigateToReview1 = (category) => {
-  router.push({ name: 'SayObject', params: { category } })
+const navigateToReview = (category) => {
+  let target = '';
+  switch(currentCourseId){
+    case 1:
+      target = 'say-object';
+      break;
+    case 2:
+      target = 'follow-up-speech';
+      break;
+    case 3:
+      if(category.category_id==6)target = 'matching-image';
+      else if(category.category_id==7)target = 'matching-text';
+      break;
+    case 4:
+      target = 'fluency';
+      break;
+  }
+  window.open(`${appURL}${target}/${category.category_id}/${category.over_time_sec}`);
+  
 }
-const navigateToReview2 = (category) => {
-  router.push({ name: ' FollowUpSpeech', params: { category } })
+// const navigateToReview2 = (category) => {
+//   router.push({ name: ' FollowUpSpeech', params: { category } })
+// }
+// const navigateToReview3 = (category) => {
+//   router.push({ name: 'ListeningComprehension', params: { category } })
+// }
+// const navigateToReview4 = () => {
+//   router.push({ name: ' Fluency' })
+// }
+const courseList = async () => {
+  try {
+    const { data } = await getCourseList();
+    if(data.dataStatus.code!=1){
+      // todo api 응답 예외 처리
+      return;
+    }
+    courses.value = data.response; 
+
+  } catch (error) {
+    console.error(error); 
+  }
 }
-const navigateToReview3 = (category) => {
-  router.push({ name: 'ListeningComprehension', params: { category } })
+
+const categoryList = async (courseId) => {
+  try {
+    const { data } = await getCategoryList(courseId);
+    if(data.dataStatus.code!=1){
+      // todo api 응답 예외 처리
+      return;
+    }
+    categories.value = data.response;
+    console.log(categories.value)
+  } catch (error) {
+    console.error(error); 
+  }
 }
-const navigateToReview4 = () => {
-  router.push({ name: ' Fluency' })
-}
+
+courseList();
+
+
 
 </script>
 

@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
  
 
   const isLogIn = computed(() => {
-    if (localStorage.JWT_token.value === null) {
+    if (localStorage.JWT_token?.value === null) {
     return false
     } else {
     return true
