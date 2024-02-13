@@ -122,6 +122,8 @@ const deleteReviewProblem = async () => {
       return;
     }else if(data.dataStatus.code!=1){
     }
+    alert("문제를 삭제 했습니다");
+    resultDialog.value = false;
   } catch (error) {
     if(error.response.data.dataStatus.code==4){
       console.log("이미 저장된 문제입니다.");
@@ -145,6 +147,9 @@ const nextProblem = () => {
   problem.answer.value = problemSet[problemIdx].answer;
   problem.hint.value = problemSet[problemIdx].hint;
   problem.imgUrl.value = problemSet[problemIdx].img_url;
+  problem.categoryId.value = problemSet[problemIdx].category_id;
+  problem.categoryName.value = problemSet[problemIdx].category_name;
+    
   no.value++;
 
   // 초기화
@@ -194,6 +199,7 @@ const handleReviewTickChange = (value) => {
   stopTimer();
   deleteReviewProblem();
   reviewTick.value = value;
+  nextProblem();
   
 };
 const handleAgainTickChange = (value) => {
