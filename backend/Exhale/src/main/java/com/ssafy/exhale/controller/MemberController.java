@@ -92,7 +92,7 @@ public class MemberController {
         return CommonResponse.ok(null);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@Validated @RequestBody KeyRequest keyRequest, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             throw new InValidParameterException();
