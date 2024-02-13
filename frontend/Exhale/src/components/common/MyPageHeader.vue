@@ -52,7 +52,7 @@ const state = reactive({
   margin-left: 66.3vw;
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 98px;
   border-bottom: none;
 }
 

@@ -36,17 +36,43 @@
       </div>
     </div>
     <div id="main">
-      <div id="solved-data"></div>
-      <div id="letter-data">bb</div>
+      <div id="solved-data">
+        <p class="data-title">문제 풀이 통계</p>
+        <div id="problem-category-list">
+          <button class="round-button" @click="select_button(1)">
+            이름 대기
+          </button>
+          <button class="round-button" @click="select_button(2)">
+            따라 말하기
+          </button>
+          <button class="round-button" @click="select_button(3)">
+            듣기 이해력
+          </button>
+          <button class="round-button" @click="select_button(4)">유창성</button>
+        </div>
+        <div id="problem-data-list">
+          <div class="problem-data" v-for="item in select_problem_data_list">
+            {{ item.course_id }}
+            <p>날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
+            <p>
+              푼 문제 : <span>{{ item.correct_count + item.wrong_count }}</span
+              >, 맞춘 문제 : <span>{{ item.correct_count }}</span> , 틀린 문제 :
+              <span>{{ item.wrong_count }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div id="letter-data">
+        <div class="pie-chart"></div>
+      </div>
     </div>
     <Footers />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import MyPageHeader from "@/components/common/MyPageHeader.vue";
-import Headers from "@/components/common/Headers.vue";
 import Footers from "@/components/common/Footers.vue";
 
 import * as report from "@/api/report";
@@ -54,25 +80,35 @@ import * as mypage from "@/api/mypage";
 
 const nickname = ref("");
 const image = ref("");
-const letterDataList = [];
-const solvedDataList = [];
+const letterDataList = ref([]);
+const solvedDataList = ref([]);
 
+const select_course_id = ref(4);
+const select_button = (course_id) => {
+  select_course_id.value = course_id;
+};
+
+const select_problem_data_list = computed(() => {
+  return solvedDataList.value.filter(
+    (item) => item.course_id === select_course_id.value
+  );
+});
+
+//API 호출
 const getProfile = async () => {
   const response = await mypage.getProfile();
   nickname.value = response.data.response.nickname;
   image.value = response.data.response.image_url;
-  console.log(nickname.value);
-  console.log(image.value);
-};
-
-const getLetterData = async () => {
-  const response = await report.getLetterData();
-  console.log(response);
 };
 
 const getSolvedData = async () => {
   const response = await report.getSolvedData();
-  console.log(response);
+  solvedDataList.value = response.data.response;
+};
+
+const getLetterData = async () => {
+  const response = await report.getLetterData();
+  letterDataList.value = response.data.response;
 };
 
 onMounted(() => {
@@ -94,7 +130,7 @@ onMounted(() => {
 //sidebar 관련
 #sidebar {
   min-height: 80%;
-  width: 25%;
+  width: 20%;
   padding: 0% 7%;
   //background-color: rgb(169, 170, 170);
   position: absolute;
@@ -124,27 +160,52 @@ onMounted(() => {
 //main 관련
 #main {
   min-height: 80%;
-  width: 75%;
+  width: 80%;
   //background-color: aquamarine;
-  margin-left: 25%;
+  margin-left: 20%;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
 #solved-data {
-  width: 100px;
-  height: 100px;
-  background-color: brown;
+  width: 40%;
+  height: 900px;
+  background-color: white;
 }
 
 #letter-data {
-  width: 100px;
-  height: 100px;
-  background-color: bisque;
+  width: 40%;
+  height: 900px;
+  background-color: white;
 }
 
-#mypage-header {
-  color: white;
+.data-title {
+  margin-top: 35px;
+  text-align: center;
+  font-size: 30px;
+}
+
+//solved-data 관련
+#problem-category-list {
+  display: flex;
+}
+
+.round-button {
+  border: 2px solid #555;
+  background-color: #fff;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 0 10px;
+}
+
+//letter-data 관련
+.pie-chart {
+  display: inline-block;
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background: conic-gradient(#8b22ff 0% 25%, #ffc33b 25% 56%, #21f3d6 56% 100%);
+  border-radius: 50%;
 }
 </style>
