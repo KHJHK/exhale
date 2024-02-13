@@ -66,7 +66,7 @@ public class ChatGptUtil {
 
             String content = response.getChoices().get(0).getMessage().getContent();
             if (content.startsWith("맞았어요")) {
-                fluencyCheckResponse = FluencyCheckResponse.of(true,  null);
+                fluencyCheckResponse = FluencyCheckResponse.of(true,  content);
             } else if (content.startsWith("틀렸어요")) {
                 fluencyCheckResponse = FluencyCheckResponse.of(false, content);
             }
