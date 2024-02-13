@@ -138,7 +138,7 @@
 
 <script setup>
 import { ref, onMounted, defineProps } from 'vue'
-
+import { boardDetail } from '@/api/boards';
 import { useRoute, useRouter } from 'vue-router'
 import {updatePost} from '@/api/boards'
 import { useAuthStore } from '@/stores/auth';
@@ -150,15 +150,10 @@ const accessToken = store.JWTtoken
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
-const props = defineProps({
-    post: Array
-
-})
 
 const title = ref('')
 const content = ref('')
 const thumbnail = ref('')
-const post = ref([props.post])
 console.log('수정페이지',post)
 const edit = async () => {
   try {
@@ -172,7 +167,11 @@ const edit = async () => {
 
 
 const goDetailPage = () => router.push({ name: 'PostDetailView', params: { id } })
-
+onMounted(async () => {
+  const response = await boardDetail(id);
+  title.value = response.data.response.title; // API 응답 구조에 맞게 조정 필요
+  content.value = response.data.response.content; // API 응답 구조에 맞게 조정 필요
+});
 </script>
 
 <style lang="scss" scoped>

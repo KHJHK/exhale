@@ -16,7 +16,7 @@ export const useCrudStore = defineStore('crud', ()=> {
     
     const board_list = async () => {
         
-        isLoading.value = true
+
        
         try {
           const response = await boardList(

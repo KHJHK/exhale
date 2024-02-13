@@ -11,35 +11,42 @@
 <script setup>
 import axios from 'axios';
 import { ref, inject} from 'vue';
-import { useRoute } from 'vue-router';
-
+import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 const route = useRoute()
 const postId = parseInt(route.params.id)
 const store = useAuthStore()
 const token = store.JWTtoken
-
+const router = useRouter()
 
 const newComment = ref('');
 
 const currentDate = new Date().toISOString();
 const submitComment = async () => {
-  console.log(postId)
   if (!newComment.value) {
     alert('댓글 내용을 입력해주세요.');
     return;
   }
   try {
     const response = await axios.post('http://i10b208.p.ssafy.io/api/comments' , {
-      article_id : postId,
-      content: newComment.value,
+      "article_id" : postId,
+      "content" : newComment.value,
       
     }, {
       headers: {
-            'Authorization': `${token}`
+            "Authorization" : token
         }
-    })  
-    newComment.value = '';
+    }) 
+      if (response.status === 200) {
+        newComment.value = '';
+        confirm('댓글을 등록하시겠습니까?') 
+        window.location.reload()
+      }
+      else {
+        alert('댓글을 생성하는 데 실패했습니다.');
+        console.log(err)
+      }
+  
   } catch (error) {
     console.error('댓글 생성 중 오류 발생:', error);
     alert('댓글을 생성하는 데 실패했습니다.');

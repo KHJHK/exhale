@@ -35,7 +35,7 @@ const state = reactive({
   loggedIn: authStore.isLogIn,
 })
 
-
+console.log(state)
 
 </script>
 

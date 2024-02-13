@@ -62,7 +62,7 @@ const leftmostPage = ref(1);
 // })
 // const posts = ref(props.posts)
 // const postsLength = posts.length
-console.log('페이지네이션의 토탈', crud.totalPage)
+
 
 
 

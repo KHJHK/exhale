@@ -1,6 +1,7 @@
 <template>
 <form @submit.prevent="save">
-<div class="imageBackground">
+<div class="imageBackground "  :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center', backgr  }">
+
         <section class="sub-nav1">
             <div id="breadcrum">
                 <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
@@ -9,14 +10,16 @@
                 >
                 <RouterLink class="breadlink" :to="{name: 'PostCreateView'}">글쓰기</RouterLink>
             </div>
+            
         </section>
-
-            <div>
-                <input v-model="title" class="titleInput" id="title" placeholder="제목을 입력하세요">
-            </div>
-            <div class="author">
-                (작성자명) 
-            </div>
+        
+        <div>
+            <input v-model="title" class="titleInput" id="title" placeholder="제목을 입력하세요">
+        </div>
+        <div class="author">
+            (작성자명) 
+        </div>
+    
 </div>
 
 <div class="category">
@@ -121,16 +124,20 @@
         </div>
         </div>
 
-        <v-file-input
+        <!-- <v-file-input
                     class="custom-file-input-icon"
                     :rules="rules"
                     accept="image/png, image/jpeg, image/bmp"
                     placeholder=""
                     prepend-icon="mdi-folder-image"
                     label="이미지 선택"
-                    show-input="false"
+                    show-input="true"
                     >
-        </v-file-input>
+        </v-file-input> -->
+<div class="file-upload">
+  <input type="file" @change="onFileChange" accept="image/*" />
+</div>
+
     </div>
 </form>
 </template>
@@ -142,8 +149,9 @@ import EmojiPicker from 'vue3-emoji-picker';
 import 'vue3-emoji-picker/css';
 import { watch } from 'vue';
 import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js';
-import { articleCreate } from '@/api/boards';
+import { articleCreate, saveImg } from '@/api/boards';
 import { useAuthStore } from "@/stores/auth";
+import { render } from 'vue';
 const store = useAuthStore()
 const accessToken = store.JWTtoken
 const selectedCategory = ref('');
@@ -153,14 +161,57 @@ const content = ref('')
 const thumbnail = ref(null);
 const board_id = ref('')
 
+let pic = null
+const file = ref(null); // 선택된 파일을 저장할 ref 생성
+const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
+
+// 파일이 선택되었을 때 호출될 메서드
+const onFileChange = (event) => {
+  const files = event.target.files;
+  if (files.length > 0) {
+    file.value = files[0]; // 첫 번째 선택된 파일을 저장
+    // 이미지 미리보기를 위한 URL 생성
+    imageUrl.value = URL.createObjectURL(file.value);
+  }
+};
 const props = defineProps({
     tab: Number
 })
 const emit = defineEmits(['update:tab'])
 
-// watch(() => props.tab, (newVal) => {
-//   localTab.value = newVal
-// })
+
+// const inConing = (event) => {
+//     const files = event.target?.files;
+//     if (files.length > 0) {
+//         file = files[0];
+
+//         const reader = new FileReader();
+
+//         render.onload = (e) => {
+//             images.value = e.target.result
+//         };
+//         reader.readAsDataURL(file)
+//     }
+// };
+
+const pictures = async() => {
+    try {
+        const pic = new FormData();
+        pic.append("pic", file)
+        console.log(pic)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const save_img = async() => {
+    await saveImg(
+        pic
+    )}
+
+watch(() => props.tab, (newVal) => {
+  localTab.value = newVal
+})
 
 const rules = ref([
   value => {
@@ -216,7 +267,6 @@ const onSelectEmoji = (emoji) => {
 
 // 게시글 생성
 const article_create = async () => {
-    console.log('vue',accessToken)
     try {
        const response = articleCreate(
             title.value,
@@ -240,6 +290,14 @@ const onCategoryChange = () => {
 </script>
 
 <style lang="scss" scoped>
+.imageBackground {
+  width: 100%;
+  height: 100%;
+  z-index: 1; 
+ 
+}
+
+
 
 @import "@/assets/scss/pages/_postcreate.scss"
 </style>

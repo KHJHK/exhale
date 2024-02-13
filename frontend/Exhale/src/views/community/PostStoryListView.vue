@@ -93,7 +93,7 @@
               :content="post.content"
               :create_date="post.create_date"
               :id="post.id"
-              @go-to-detail="goPage"
+              @click="board_detail(post.id)"
               ></PostItem>
             </div>
           </article>
@@ -123,7 +123,7 @@
 <script setup>
 import { computed, onUpdated, ref, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router' 
-
+import {boardDetail} from '@/api/boards' 
 import PostItem from '@/components/posts/PostItem.vue'
 import Pagination from '@/components/functions/Pagination.vue'
 import CommunityMenu from '@/components/modals/CommunityMenu.vue'
@@ -133,7 +133,6 @@ import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
-import {boardList} from '@/api/boards' 
 import { useCrudStore } from '@/stores/crud'
 import { storeToRefs } from 'pinia'
 const crud = useCrudStore()
@@ -163,7 +162,18 @@ function toggleMenu() {
   show.value = !show.value
 }
 
-
+const board_detail = async (article_id) => {
+    console.log('정체',article_id)
+    try {
+      const response = await boardDetail(
+        article_id
+      )
+    
+      router.push(`/posts/${article_id}`)
+    } catch (error) {
+      console.log('게시글을 불러올 수 없습니다.', error)
+    }
+}  
   
 
 
@@ -180,10 +190,7 @@ onMounted( async () => {
 
 const route = useRoute()
 const router = useRouter()
-const params = ref({
-  _sort: 'create_date',
-  _order: 'desc',
-})
+
 
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');

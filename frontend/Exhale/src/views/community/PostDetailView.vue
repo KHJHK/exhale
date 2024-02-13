@@ -57,17 +57,19 @@
           삭제</button>
       </div>
     
-    <div class="commentlist">
-      <CommentsList/>
-    </div>
-    <div class="comments">
-      <CommentsCreate/>
-    </div>
-    
-    <PostEditView
-    v-if="isLoaded"
-    :post="post"
-    />
+      <div class="comments">
+        <CommentsCreate
+        
+        />
+      </div>
+      
+      <!-- <PostEditView
+        :post="post"
+        /> -->
+        <div class="commentlist">
+          <CommentsList
+          />
+        </div>
   </div>
   
   <div class="arrows">
@@ -106,10 +108,10 @@ const store = useAuthStore()
 const token = store.JWTtoken
 const router = useRouter()
 const route = useRoute()
-const postId = parseInt(route.params.id)
+const postId = route.params.id
 //url의 id앞에 콜론 제거
 // postId.value = postId.value.slice(1)
-const response = ref([])
+
 
 // const post = ref({
 //     id : response.value.id,
@@ -140,9 +142,7 @@ const enlarge = () => {
 onMounted(async () => {
   await boardDetail(route.params.id).then((res) => {
     post.value = res.data.response
- 
   })
-  console.log('디테일 내부',post.value)
 
 });
 
@@ -171,7 +171,7 @@ const remove = async () => {
             return
         }
         await deletePost(postId, token)
-        // router.push({ name: 'PostWholeListView' })
+        router.push({ name: 'PostWholeListView' })
     } catch (error) {
         console.error(error)
     }

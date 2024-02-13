@@ -121,6 +121,7 @@ const KEY = localStorage.getItem('key')
                     localStorage.setItem('key',response.data.response.token.key);
                     console.log('로그인 성공:', response.data);
                     alert(`${userId}님 환영합니다!`)
+                   
             } catch (error) {
                 // 로그인 실패 시 에러 처리
                 if (axios.isAxiosError(error) && error.response) {
@@ -209,19 +210,19 @@ const KEY = localStorage.getItem('key')
                         console.log('키', KEY)
                         console.log('리프레시',refreshToken)
                         try {
-                            const response = await axios.get('http://i10b208.p.ssafy.io/api/users/logout', {
+                            const response = await axios.post('http://i10b208.p.ssafy.io/api/users/logout', {
                                key : KEY
                             },{
                                 headers : {
-                                    "Authorization" :refreshToken
+                                    "Authorization" : refreshToken
                                 }
                             })
-                            
                             alert('로그아웃 되셨습니다. 또 만나요!')
                             localStorage.removeItem('JWT_token')
                             localStorage.removeItem('refresh_token')
                             localStorage.removeItem('key')
-                            router.push( '/' )  
+                            location.reload()
+                            router.push( "/")
                              }  catch (error) {
                              }};
                 

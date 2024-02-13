@@ -5,7 +5,7 @@ import SignUp from "@/views/auth/SignUp.vue";
 import Login from "@/views/auth/Login.vue";
 import ForgotId from "@/views/auth/ForgotId.vue";
 import ForgotPassword from "@/views/auth/ForgotPassword.vue";
-import Logout from "@/views/auth/Logout.vue";
+
 
 // Aphasia Recovery Course
 import FollowUpSpeech from "@/views/ARC/FollowUpSpeech.vue";
@@ -75,7 +75,7 @@ const router = createRouter({
       name: "ForgotPassword",
       component: ForgotPassword,
     },
-    { path: "/logout", name: "Logout", component: Logout },
+
 
     // Aphasia Recovery Course
     {
