@@ -1,6 +1,11 @@
 <template>
   <div>
-    <button @click="speak" id="tts-button">읽기</button>
+    <button @click="speak">
+      <img v-if="showButton" src="@/assets/headphone.svg" id="tts-button" alt="">
+      <span v-else>정답 확인</span>
+    </button>
+      <img src="@/assets/headphone.svg" class="tts-button2" alt="">
+    <!-- <img src="@/assets/mic.svg" class="backcircle" > -->
   </div>
 </template>
 
@@ -8,6 +13,10 @@
 import { ref, defineProps, watch} from 'vue';
 const props = defineProps({
   text: String,
+  showButton: {
+    type: Boolean,
+    default: true  // 이미지 버튼 기본적으로 표시
+  }
   });  
 
   const selectedLang = ref("ko-KR");
@@ -47,3 +56,27 @@ const props = defineProps({
   window.speechSynthesis.speak(speechMsg);
 }
 </script>
+
+<style lang="scss" scoped>
+
+#tts-button {
+  position: fixed;
+  top: 25%;
+  left: 33%;
+  box-shadow: 1px 5px 4px 3px rgb(170, 169, 169);
+  border-radius: 100%;
+  width: 60px;
+  z-index: 2;
+}
+
+.tts-button2 {
+  position: fixed;
+  top: 25%;
+  left: 33%;
+  width: 60px;
+  box-shadow: 1px -5px 10px -1px rgb(255, 255, 255);
+  border-radius: 100%;
+  z-index: -1;
+}
+
+</style>

@@ -44,7 +44,7 @@
   position: fixed;
   top: 27px;
   left: 75px;
-  z-index: 2;
+  // z-index: 2;
 }
 
 .problem {
@@ -133,12 +133,12 @@
 
 //////////<STT.vue>////////
 
-.speak {
-  position: fixed;
-  top: 77%;
-  left: 36%;
-  color: rgb(108, 159, 156);
-}
+// .speak {
+//   position: fixed;
+//   top: 77%;
+//   left: 36%;
+//   color: rgb(108, 159, 156);
+// }
 
 .mic {
   position: fixed;
@@ -170,16 +170,19 @@
 
 
 .textarea {
-position: fixed;
-top: 74%;
-left: 43.8%;
-width: 15%;
-height: 5%;
-text-align: center;
-color: rgb(68, 68, 68);
- &:focus {
-  outline: none;
- }
+  width: 29%;
+  margin-left: 33%;
+  margin-top: 20%;
+  border-radius: 10px;
+  padding: 15px 17px;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  color: rgb(45, 45, 45);
+  font-family: 'NotoSansKR';
+  letter-spacing: 1px;
+  &:focus {
+    outline: none;
+  }
 }
 
 .volume {
@@ -195,10 +198,11 @@ color: rgb(68, 68, 68);
   transform: translate(-50%, -50%);
   width: 30%;
   max-width: 1000px;
-  z-index: 50;
+  // z-index: 50;
 }
 
 .numbering {
   font-size: 150%;
   margin-left: 2%;
 }
+
