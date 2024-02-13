@@ -46,7 +46,7 @@ public class OauthService {
                 new HttpEntity<>(params, headers);
 
         // Http 요청하고 리턴값을 response 변수로 받기
-        System.out.println("KAKAO_TOKEN_REQUEST_URL = " + KAKAO_TOKEN_REQUEST_URL);
+        System.out.println("redirect_uri = " + params.get("redirect_uri"));
         return restTemplate.exchange(
                 KAKAO_TOKEN_REQUEST_URL, // Host
                 HttpMethod.POST, // Request Method
