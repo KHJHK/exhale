@@ -13,6 +13,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute()
 const overTime = route.params.time;
 const categoryId = route.params.id; 
+const volume = ref(0);
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
@@ -39,6 +40,11 @@ const problem = {
   answer: ref(''),
   hint: ref(''),
   imgUrl : ref('')
+};
+
+
+const handleVolumeUpdate = (newVolume) => {
+  volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
 };
 
 // 타이머
@@ -317,6 +323,7 @@ const enlarge = () => {
             v-model="sttText" 
             @update:sttText="handleSttTextChange" 
             @update:sttRunning="handleSttRunningChange" 
+            @update:volume="handleVolumeUpdate" 
             class="sttcomponent1"
             />
             <!-- <STT 
