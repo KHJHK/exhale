@@ -324,24 +324,26 @@ const enlarge = () => {
         </div>
 
         <div class="content">
+          <!-- {{  elapsedTime}} -->
             <div class="problemtitle">
               <label class="numbering">
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
-              {{  elapsedTime}}
-            <STT 
-            v-model="sttText" 
-            @update:sttText="handleSttTextChange" 
-            @update:sttRunning="handleSttRunningChange" 
-            />
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
-              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
               <TTS
                   :text="problem.question.value"
                   :isReading="isReading"
                   @update:isReading="handleIsReadingChange"
                   />
+            <STT 
+            v-model="sttText" 
+            @update:sttText="handleSttTextChange" 
+            @update:sttRunning="handleSttRunningChange" 
+            />
+              <div><img src="@/assets/ear.svg" alt=""></div>
+              <SoundWave :volume="volume" class="soundwave" />
+              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
+              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
         </div>
     </div>
 
