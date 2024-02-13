@@ -300,7 +300,7 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;따라말하기
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
