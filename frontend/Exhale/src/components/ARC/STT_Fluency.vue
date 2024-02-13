@@ -135,7 +135,6 @@ const startVolumeMonitoring = () => {
                   }
                   let average = values / length;
                   volume.value = Math.round(average); // 볼륨 상태 업데이트
-                  emit('update:volume', volume.value); 
               };
           }
       }).catch((error) => {
@@ -214,6 +213,7 @@ onUnmounted(() => {
   left: 35%;
   border-radius: 10px;
   padding: 15px 17px;
+  background-color: white;
   text-align: center;
   color: rgb(45, 45, 45);
   font-family: 'NotoSansKR';

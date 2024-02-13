@@ -4,14 +4,16 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview, getMorphemeList, postSyllable  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
-import TTS from '@/components/ARC/TTS.vue';
+import TTS_FollowUpSpeech from '@/components/ARC/TTS_FollowUpSpeech.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
 import { useRoute } from 'vue-router';
+import SoundWave from '@/components/ARC/SoundWave.vue';
 
 const route = useRoute()
 const overTime = route.params.time;
-const categoryId = route.params.id; 
+const categoryId = route.params.id;
+const volume = ref(0);
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
@@ -37,8 +39,15 @@ let isFirst = true;
 
 const problem = {
   problemId : ref(0),
-  question: ref('')
+  question: ref(''),
+  hint: ref('')
 };
+
+
+const handleVolumeUpdate = (newVolume) => {
+  volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
+};
+
 
 // 타이머
 const elapsedTime = ref(overTime);
@@ -81,6 +90,7 @@ const getProblems = async () => {
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
+    problem.hint.value = problemSet[problemIdx].hint;
     clickTTSQustion();
 
   } catch (error) {
@@ -135,9 +145,13 @@ const nextProblem = () => {
     problemIdx++;
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
+    problem.hint.value = problemSet[problemIdx].hint;
     no.value++;
 
     // 초기화
+    stopTimer();
+    startTimer(); 
+    toggleHint();
     clearInterval(timerId);
     elapsedTime.value = overTime;
 }
@@ -330,7 +344,7 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
-              <TTS
+              <TTS_FollowUpSpeech 
                   :text="problem.question.value"
                   :isReading="isReading"
                   @update:isReading="handleIsReadingChange"
@@ -339,10 +353,11 @@ const enlarge = () => {
             v-model="sttText" 
             @update:sttText="handleSttTextChange" 
             @update:sttRunning="handleSttRunningChange" 
+            @update:volume="handleVolumeUpdate"
+            class="sttcomponent1"
             />
-              <div><img src="@/assets/ear.svg" alt=""></div>
               <SoundWave :volume="volume" class="soundwave" />
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
+              <button class="hintBtn" @click="toggleHint">힌트</button>
               <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
         </div>
     </div>
