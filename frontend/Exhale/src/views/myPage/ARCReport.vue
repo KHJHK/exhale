@@ -12,28 +12,68 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 import SimpleHdear from "@/components/common/SimpleHeader.vue";
 import Footers from "@/components/common/Footers.vue";
+
+import * as mypage from "@/api/mypage";
+
+const nickname = ref("");
+const image = ref(null);
+
+const getProfile = async () => {
+  const response = await mypage.getProfile();
+  nickname.value = response.data.response.nickname;
+  image.value = response.data.response.image_url;
+};
+
+onMounted(() => {
+  getProfile();
+});
 </script>
 
 <style lang="scss" scoped>
-#page {
+.parent {
+  width: 100%;
   height: 100vh;
+  background-color: #6c9f9c;
 }
 
-#sidebar {
-  min-height: 80%;
-  width: 30%;
-  padding: 0% 7%;
-  background-color: aqua;
+main {
+  display: flex;
+  align-items: center;
+  height: 60vh;
+}
+
+.info {
+  width: 25%;
+  align-items: center;
+}
+
+.profile-image {
+  width: 200px;
+  height: 200px;
+}
+
+.profile-image > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 70%;
+}
+
+.report {
+  width: 75%;
+  align-items: center;
+}
+.report > h1 {
+  color: white;
+  text-align: center;
+}
+
+footer {
   position: fixed;
-  left: 0;
-}
-
-#main {
-  min-height: 80%;
-  width: 70%;
-  background-color: aquamarine;
-  margin-left: 30%;
+  bottom: 0;
+  width: 100%;
+  margin-bottom: 15px;
 }
 </style>

@@ -2,23 +2,23 @@
 import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { getProblem, postSolvedProblem, postReview, getMorphemeList, postSyllable  } from '@/api/course.js';
-import STT from '@/components/ARC/STT.vue';
+import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
-import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
 
 // todo routing으로 받기
+const courseName='';
+const categoryName='';
 const overTime = 10;
-const categoryId = 4; 
+const categoryId = 7; 
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
 // const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3Nzg2NTMzLCJleHAiOjE3MDc3ODgzMzN9.U0dY7KqYkYASXyh5GIWbiJ2Gj6QkMWgsPaBDF3IxcXM';
+const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3Nzk1MTU5LCJleHAiOjE3MDc3OTY5NTl9.STVgn9FlqQLBqSu3XUyDmTC66duFKil1_NxhPEEBA8s';
+
 let problemIdx=0;
 let problemSet=null;
-let no = ref(1);
 
 // 다이어로그
 const resultDialog = ref(false);
@@ -29,21 +29,21 @@ const isPause = ref(false);
 const isReturn = ref(false);
 const isComplete = ref(false);
 
-const sttText = ref("");
-const sttRunning = ref(false);
 const isReading = ref(false);
 let isFirst = true;
 
 const problem = {
   problemId : ref(0),
-  question: ref('')
+  answer: ref(''),
+  question: ref(''),
+  options : ref([]),
+  questionImage : ref('')
 };
 
 // 타이머
 const elapsedTime = ref(overTime);
 let timerId;
 const timerWidth = computed(() => (elapsedTime.value / overTime) * 100);
-
 
 // 힌트 토글 함수
 const showHint = ref(false);
@@ -54,18 +54,18 @@ const toggleHint = () => {
 // 컴포넌트가 마운트될 때 시작하는 타이머 설정
 const startTimer = () => {
 
-timerId = setInterval(() => {
-  elapsedTime.value--;
-  if (elapsedTime.value < 0) {
-    elapsedTime.value = 0;
-    resultProcessing("");
-  }
-}, 1000);
+    timerId = setInterval(() => {
+    elapsedTime.value--;
+    if (elapsedTime.value < 0) {
+        elapsedTime.value = 0;
+        resultProcessing("");
+    }
+    }, 1000);
 };
 
 // 컴포넌트가 언마운트될 때 타이머 정리
 const stopTimer = () => {
-clearInterval(timerId);
+  clearInterval(timerId);
 };
 
 const getProblems = async () => {
@@ -77,10 +77,13 @@ const getProblems = async () => {
     }
     problemIdx = data.response.first_problem_index;
     problemSet = data.response.problemResponseList;
-
     problem.problemId.value = problemSet[problemIdx].problem_id;
+    problem.answer.value = problemSet[problemIdx].answer;
     problem.question.value = problemSet[problemIdx].question;
+    problem.options.value = problemSet[problemIdx].options;
+    problem.questionImage.value = problemSet[problemIdx].question_image;
     clickTTSQustion();
+    console.log(problemSet)
 
   } catch (error) {
     console.error(error); 
@@ -104,6 +107,7 @@ const saveSolvedProblem = async() => {
     console.error(error); 
     }
 }
+
 const saveReviewProblem = async () => {
   try {
     const { data } = await postReview(problem.problemId.value, token);
@@ -133,50 +137,23 @@ const nextProblem = () => {
 
     problemIdx++;
     problem.problemId.value = problemSet[problemIdx].problem_id;
+    problem.answer.value = problemSet[problemIdx].answer;
     problem.question.value = problemSet[problemIdx].question;
-    no.value++;
-
-    // 초기화
+    problem.options.value = problemSet[problemIdx].options;
+    problem.questionImage.value = problemSet[problemIdx].question_image;
+     // 초기화
     clearInterval(timerId);
     elapsedTime.value = overTime;
 }
 
-const getMorphemes = async (answer, text) =>{
-  const {data} = await getMorphemeList(token);
-  if(data.dataStatus.code!=1){
-    // todo 에러 처리
-    return;
-  }
-  
-  const morphemeList = data.response;
-  const statistics = generateStatistics(morphemeList, answer, text);
-  return statistics;
-} 
-
-const saveMorphemes = async (statistics) =>{
-  const {data} = await postSyllable(statistics, token);
-  if(data.dataStatus.code!=1){
-    // todo 에러 처리
-    return;
-  }
-} 
-
-const resultProcessing = async (text) =>{
+const resultProcessing = (text) =>{
   clearInterval(timerId);
   let _isRight = false;
-  let answer = problem.question.value.replace(/\s+/g, '').toLowerCase(); 
-  if(text!=""){
-    text = text.replace(/\s+/g, '').toLowerCase();
-  }
-  if(text!="" &&text === answer){  // 정답
+  if(problem.answer.value == text){  // 정답
     _isRight = true;
   }else{  // 오답
     _isRight = false;
   }
-
-  const statistics = await getMorphemes(answer, text);
-  await saveMorphemes(statistics);
-
   isRight.value = _isRight;
   resultDialog.value = true;
 
@@ -185,11 +162,6 @@ const resultProcessing = async (text) =>{
 
 }
 
-const handleSttTextChange = (text) => {
-  // todo sttText 반영 안되는 오류
-  sttText.value = "";
-  resultProcessing(text);
-};
 const handleIsReadingChange = (value) => {
     if(isFirst && !value){
         isFirst = false;
@@ -198,9 +170,6 @@ const handleIsReadingChange = (value) => {
   isReading.value = value;
 };
 
-const handleSttRunningChange = (value) => {
-  sttRunning.value = value;
-};
 const handleDialogChange = (value) => {
   resultDialog.value = value;
   if(!value){
@@ -210,17 +179,18 @@ const handleDialogChange = (value) => {
 
 };
 const handleNextTickChange = (value) => {
-    isFirst = true;
+  isFirst = true;
   nextProblem();
   clickTTSQustion();
+
 };
 const handleReviewTickChange = (value) => {
+  stopTimer();
   saveReviewProblem();
   reviewTick.value = value;
   
 };
 const handleAgainTickChange = (value) => {
-//   stopTimer();
   isFirst = true;
   elapsedTime.value = overTime;
   againTick.value = false;
@@ -249,7 +219,6 @@ const handleIsReturnChange = (value) => {
   isReturn.value = false;
 
 };
-
 const clickTTSQustion = async () => {
   await nextTick(); 
   const ttsButton = document.querySelector('div > #tts-button');
@@ -258,6 +227,9 @@ const clickTTSQustion = async () => {
   }
 };
 
+const selectOption = (idx) => {
+    resultProcessing(idx+1);
+}
 
 onBeforeUnmount(stopTimer);
 
@@ -272,83 +244,82 @@ const enlarge = () => {
     fontSize.value = 16
   };
 };
-
 </script>
 
 <template>
+  
 <div :style="{ fontSize: fontSize + 'px' }">
 
-  <div class="background">
+<div class="background">
 
 
-    <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
+  <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
 
-    <section class="sub-nav1">
-        <div id="breadcrum">
-          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
-        </div>
-        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
-        <img src="@/assets/plus.svg" class="plus">
-        {{ msg }}
-        </button> 
-    </section>
-
-
-    
-
-    <div class="problem" v-if="problem">
-      <div >
-        <ResultDialog 
-          :dialog = "resultDialog"
-          :isRight = "isRight"  
-          :reviewTick = "reviewTick"
-          :againTick = "againTick"
-          :isPause = "isPause"
-          :isReturn = "isReturn"  
-          :isComplete="isComplete"
-          @update:dialog="handleDialogChange"
-          @update:nextTick="handleNextTickChange"
-          @update:reviewTick="handleReviewTickChange"
-          @update:againTick="handleAgainTickChange"
-          @update:isClose="handleIsCloseChange"
-          @update:isPause="handleIsPauseChange"
-          @update:isExit="handleIsExitChange"
-          @update:isReturn="handleIsReturnChange"          
-          />
+  <section class="sub-nav1">
+      <div id="breadcrum">
+        메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
       </div>
-        <div class="timer">
-          <div class="timer-bar" :style="{ width: timerWidth + '%' }">
-            <img src="@/assets/clock1.svg" class="clock">
-          </div>
-        </div>
+      <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+      <img src="@/assets/plus.svg" class="plus">
+      {{ msg }}
+      </button> 
+  </section>
 
-        <div class="content">
-            <div class="problemtitle">
-              <label class="numbering">
-                {{ no }}.
-              </label>
-              &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
-              {{  elapsedTime}}
-            <STT 
-            v-model="sttText" 
-            @update:sttText="handleSttTextChange" 
-            @update:sttRunning="handleSttRunningChange" 
-            />
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
-              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
-              <TTS
-                  :text="problem.question.value"
-                  :isReading="isReading"
-                  @update:isReading="handleIsReadingChange"
-                  />
-        </div>
+
+  
+
+  <div class="problem" v-if="problem">
+    <div >
+      <ResultDialog 
+        :dialog = "resultDialog"
+        :isRight = "isRight"  
+        :reviewTick = "reviewTick"
+        :againTick = "againTick"
+        :isPause = "isPause"
+        :isReturn = "isReturn"  
+        :isComplete="isComplete"
+        @update:dialog="handleDialogChange"
+        @update:nextTick="handleNextTickChange"
+        @update:reviewTick="handleReviewTickChange"
+        @update:againTick="handleAgainTickChange"
+        @update:isClose="handleIsCloseChange"
+        @update:isPause="handleIsPauseChange"
+        @update:isExit="handleIsExitChange"
+        @update:isReturn="handleIsReturnChange"          
+        />
     </div>
+      <div class="timer">
+        <div class="timer-bar" :style="{ width: timerWidth + '%' }">
+          <img src="@/assets/clock1.svg" class="clock">
+        </div>
+      </div>
 
+      <div class="content">
+        <div>
+            <TTS 
+                :text="problem.question.value"
+                :isReading="isReading"
+                @update:isReading="handleIsReadingChange"
+                />
+            <img :src="problem.questionImage.value" style="width: 100px;"/>
+            <div v-for="(option, idx) of problem.options.value" :key="idx"> 
+                <div @click="selectOption(idx)">
+                    {{ option}}
+                </div>
+            </div>
+        </div>
+        </div>
+            <button class="hintBtn" @click="toggleHint">힌트</button>
+            <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
+      </div>
 
   </div>
 
+
 </div>
+
 </template>
+
 
 <style lang="scss" scoped>
 @import '@/assets/scss/layout/gamebackground.scss';
