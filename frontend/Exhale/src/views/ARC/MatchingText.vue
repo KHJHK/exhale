@@ -13,7 +13,7 @@ const categoryId = route.params.id;
 
 const authStore = useAuthStore();
 const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken;
+const token = JWTtoken.value;
 
 let problemIdx=0;
 let problemSet=null;

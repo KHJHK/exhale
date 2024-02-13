@@ -32,12 +32,12 @@ const props = defineProps({
 
 // props의 sttText 변경될 때마다 이벤트를 발생시킵니다.
 watch(() => props.sttText, (newValue) => {
-  emit("update:sttText", newValue);
+  // emit("update:sttText", newValue);
 });
 
 // textarea에 입력된 값을 sttText에 반영하는 함수
 const updateSttText = (event) => {
-  emit('update:sttText', event.target.value);
+  // emit('update:sttText', event.target.value);
 };
 
 watch(sttRunning, (value) => {
@@ -46,9 +46,10 @@ watch(sttRunning, (value) => {
 
 
 // sttText 데이터가 변경될 때마다 부모 컴포넌트로 변경된 값을 emit하여 전달합니다.
-watch(sttText, () => {
-  emit('update:sttText', sttText.value);
-});
+// watch(sttText, () => {
+//   console.log(sttText)
+//   emit('update:sttText', sttText.value);
+// });
 
 const message = ref("Click!"); // 초기값 변경
 const volume = ref(0); // 볼륨 상태
@@ -89,12 +90,12 @@ const disableStt = () => {
 // };
 
 speechRecognition.onresult = (e) => {
-    console.log(e.results);
+    // console.log(e.results);
     const transcript = Array.from(e.results)
         .map(result => result[0])
         .map(speech => speech.transcript)
         .join(' ');
-    console.log("transcript :", transcript);
+    // console.log("transcript :", transcript);
     emit('update:sttText', transcript);
     disableStt();
     sttText.value = transcript;

@@ -182,7 +182,7 @@ main {
 main > h2 {
   font-weight: bolder;
   font-size: 45px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 main > p {
