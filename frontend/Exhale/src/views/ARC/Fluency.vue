@@ -326,16 +326,18 @@ const enlarge = () => {
           {{ question }}
         </div>
         <img src="@/assets/triangle_left.svg" class="triangle_left">
-        
+
         <div class="sttText">
           {{ sttText }}
         </div>
+
         <img src="@/assets/triangle.svg" class="triangle">
       
             <div :class="isReading ? 'stt-able' :  'stt-disable'">
                 <STT 
                 :sttText="sttText"
                 @update:sttText="handleSttTextChange"
+                class="sttcomponent"
                 />
             </div>
 
@@ -356,7 +358,7 @@ const enlarge = () => {
             @update:isReading="handleIsReadingChange"
             />
         </div>
-        <div class="answerText">답 : {{ problem.explain.value }}</div>
+        <div class="answerText">{{ problem.explain.value }}</div>
         <!-- <button @click="click">클릭</button> -->
     </div>
 
@@ -370,213 +372,7 @@ const enlarge = () => {
 
 
 <style lang="scss" scoped>
-
-.sub-nav1 {
-  margin-top: 0;
-  position: fixed;
-  top: 19%;
-  left: 6%;
-  font-family: 'NotoSansKR';
-  font-size: 15px;
-  color: rgb(153, 153, 153);
-  // letter-spacing: 3%;
-}
-
-.enlarge {
-  position: fixed;
-  top: 64px;
-  left: 1290px;
-  width: 117px;
-  height: 40px;
-  padding: -5px 0px;
-  font-size: 18px;
-  border-radius: 30px;
-  border: 3px solid rgb(175, 175, 175); 
-  &:hover {
-    border: rgb(108, 159, 156) solid 3px;
-    & .plus {
-      width: 0px;
-    }
-}
-  & .plus {
-    width: 21px;
-  }
-}
-
-.background {
-  width: 100vw;
-  height: 100vh;
-  background: rgb(108,159,156);
-  background: radial-gradient(circle, rgba(108,159,156,0.9506653002998074) 0%, rgba(255,255,255,1) 50%);
-  z-index: -1;
-}
-
-.navbar-logo {
-  width: 8%;
-  position: fixed;
-  top: 27px;
-  left: 75px;
-  // z-index: 2;
-}
-
-.problem {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.timer {
-  position: fixed;
-  top: 8.5%;
-  left: 34.2%;
-  width: 35%;
-  height: 40px;
-  background-color: #ffffff;
-  border-radius: 30px;
-  overflow: hidden;
-}
-
-.timer-bar {
-  position: relative;
-  height: 100%;
-  background-color: rgb(108, 159, 156);
-  transition: width 1s linear;
-}
-
-.clock {
-  position: absolute;
-  top: 9px;
-  left: -410px;
-  width: 900px;
-  height: 23px;
-}
-
-.content {
-  position: fixed;
-  top: 19%;
-  font-size: 120%;
-  color: rgb(69, 69, 69);
-  font-family: 'NotoSansKR';
-  letter-spacing: 1px;
-  & .problemtitle {
-    width: 120%;
-  }
-}
-
-.imgurl {
-  position: fixed;
-  top: 28%;
-  left: 35%;
-  width: 500px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 20px;
-}
-
-.answer {
-  position: fixed;
-  top: 80%;
-  left: 50%;
-}
-
-.hint {
-  position: fixed;
-  top: 86%;
-  left: 49.5%;
-  color: rgb(155, 155, 155);
-}
-
-.hintBtn {
-  font-size: 86%;
-  position: fixed;
-  top: 78%;
-  left: 63.5%;
-  color: white;
-  border: 3px solid white;
-  border-radius: 25px;
-  padding-top: 4px;
-  padding-bottom: 8px;
-  padding-left: 15px;
-  padding-right: 15px;
-  text-shadow: 5px 2px 7px rgb(171, 171, 171);
-  box-shadow: 1px 2px 5px rgb(211, 211, 211);
-}
-
-
-//////////<STT.vue>////////
-
-// .speak {
-//   position: fixed;
-//   top: 77%;
-//   left: 36%;
-//   color: rgb(108, 159, 156);
-// }
-
-.mic {
-  position: fixed;
-  top: 77%;
-  left: 35%;
-  width: 60px;
-  box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
-  border-radius: 100%;
-}
-
-.backcircle {
-  position: fixed;
-  top: 77%;
-  left: 35%;
-  width: 60px;
-  box-shadow: 1px 2px 10px 3px rgb(255, 255, 255);
-  border-radius: 100%;
-  z-index: -1;
-}
-
-.message {
-  position: fixed;
-  top: 86.5%;
-  left: 37.2%;
-  transform: translateX(-50%);
-  font-size: 85%;
-  opacity: 70%;
-}
-
-
-.textarea {
-  width: 24%;
-  margin-left: 37.7%;
-  margin-top: 20%;
-  border-radius: 10px;
-  padding: 15px 17px;
-  background-color: rgb(230, 230, 230);
-  text-align: center;
-  color: rgb(45, 45, 45);
-  &:focus {
-    outline: none;
-  }
-}
-
-.volume {
-  position: fixed;
-  top: 90%;
-  width: 70px;
-}
-
-.soundwave {
-  position: fixed;
-  top: 88%;
-  left: 54%;
-  transform: translate(-50%, -50%);
-  width: 30%;
-  max-width: 1000px;
-  // z-index: 50;
-}
-
-.numbering {
-  font-size: 150%;
-  margin-left: 2%;
-}
-
-
+@import '@/assets/scss/layout/_gamebackground.scss';
 
 .stt-able{
     pointer-events: none;
@@ -588,71 +384,60 @@ const enlarge = () => {
     // background-color: '';
 }
 
-// #question2 {
-//   // margin-left: 700%;
-//   // margin-top: 300%;
-//   width: 60px;
-//   box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
-//   border-radius: 100%;
-//   z-index: 20;
-// }
-
 .cloud-character {
   position: fixed;
-  top: 43%;
-  left: 65%;
+  top: 39%;
+  left: 64%;
   width: 90px;
 }
 
 .question {
   position: fixed;
-  top: 25%;
+  top: 23%;
   left: 41%;
   border-radius: 10px;
   text-align: center;
   padding: 15px 17px;
   background-color: rgb(255, 255, 255);
   color: rgb(45, 45, 45);
-  width: 29%;
+  width: 27.7%;
   font-family: 'NotoSansKR';
   letter-spacing: 1px;
 }
 
 .triangle {
   position: fixed;
-  top: 47%;
-  left: 62.2%;
+  top: 42%;
+  left: 61.5%;
   width: 20px;
 }
 
 .triangle_left {
   position: fixed;
-  top: 27%;
+  top: 25%;
   left: 40%;
   width: 20px;
 }
 
 #answer {
   position: fixed;
-  top: 85%;
-  left: 50%;
+  top: 83%;
+  left: 22%;
 }
 
 .answerText {
   position: fixed;
-  top: 90%;
-  left: 50%;
+  top: 80%;
+  left: 35%;
+  width: 35%;
+  font-family: 'NotoSansKR';
 }
 
-.sttText {
-  width: 40%;
-  height: 20%;
-  text-align: center;
-  &:focus {
-    outline: none;
-  }
+ .sttcomponent {
+ position: fixed;
+ top: 55%;
+ left: 50%;
 }
-
 
 
 </style>

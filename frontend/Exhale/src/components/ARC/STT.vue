@@ -18,65 +18,6 @@
   </div>
   </template>
   
-  <!-- <script setup>
-  import { ref, watch, defineEmits, defineProps } from 'vue';
-  const props = defineProps({
-    sttText: String,
-  });
-  const sttText = ref(props.sttText);
-  watch(props, () => {
-    sttText.value = props.sttText;
-  });
-  
-
-  const emit = defineEmits(["update:sttText"]);
-  
-  watch(sttText, () => {
-    emit('update:sttText', sttText.value);
-  });
-  
-  const message = ref("Click!"); // 초기값 변경
-  let sttTextValue = "";
-  
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const speechRecognition = new SpeechRecognition();
-  speechRecognition.lang = "ko-kr";
-  speechRecognition.continuous = true;
-  
-  const sttRunning = ref(false);
-  
-  const enableStt = () => {
-      sttTextValue = sttText.value;
-      speechRecognition.start();
-      message.value = "지금 듣고 있어요!";
-      sttRunning.value = true;
-  };
-  
-  const disableStt = () => {
-      speechRecognition.stop();
-      message.value = "Click!";
-      sttRunning.value = false;
-  };
-
-  
-  speechRecognition.onresult = (e) => {
-
-      const transcript = Array.from(e.results)
-          .map(result => result[0])
-          .map(speech => speech.transcript)
-          .join(' ');
-      console.log("transcript :", transcript);
-      disableStt();
-      sttText.value = transcript;
-  };
-  
-  speechRecognition.onerror = (e) => {
-      console.error(e);
-      disableStt();
-  };
-  
-  </script> -->
-
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
@@ -237,41 +178,41 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .mic {
-  position: fixed;
-  top: 77%;
-  left: 35%;
   width: 60px;
   box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
   border-radius: 100%;
+  z-index: 20;
 }
 
 .backcircle {
-  position: fixed;
-  top: 77%;
-  left: 35%;
+  position: absolute;
+  left: 0;
+  bottom: 10%;
   width: 60px;
-  box-shadow: 1px 2px 10px 3px rgb(255, 255, 255);
+  box-shadow: 1px 2px 7px 3px rgb(255, 255, 255);
   border-radius: 100%;
-  z-index: -1;
+  z-index: -10;
 }
 
 .message {
-  position: fixed;
-  top: 86.5%;
-  left: 37.2%;
+  position: absolute;
+  text-align: center;
+  left: 55%;
+  top: 120%;
+  width: 150px;
   transform: translateX(-50%);
-  font-size: 85%;
+  font-size: 100%;
   opacity: 70%;
 }
 
-
 .textarea {
-  width: 29%;
-  margin-left: 33%;
-  margin-top: 20%;
+  width: 27%;
+  position: fixed;
+  top: 40%;
+  left: 35%;
   border-radius: 10px;
   padding: 15px 17px;
-  background-color: rgb(255, 255, 255);
+  background-color: white;
   text-align: center;
   color: rgb(45, 45, 45);
   font-family: 'NotoSansKR';

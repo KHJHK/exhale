@@ -318,6 +318,7 @@ const enlarge = () => {
             v-model="sttText" 
             @update:sttText="handleSttTextChange" 
             @update:sttRunning="handleSttRunningChange" 
+            class="sttcomponent1"
             />
             <!-- <STT 
               @update:modelValue="handleContentFieldChange" 
