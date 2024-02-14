@@ -9,6 +9,8 @@ import com.ssafy.exhale.dto.logicDto.MemberDto;
 import com.ssafy.exhale.dto.requestDto.CommentRequest;
 import com.ssafy.exhale.dto.responseDto.CommentResponse;
 import com.ssafy.exhale.exception.handler.InValidParameterException;
+import com.ssafy.exhale.exception.handler.NoSuchDataException;
+import com.ssafy.exhale.exception.handler.UserPermissionException;
 import com.ssafy.exhale.repository.ArticleRepository;
 import com.ssafy.exhale.repository.CommentRepository;
 import com.ssafy.exhale.repository.MemberRepository;
@@ -86,8 +88,7 @@ public class CommentService {
         try{
             Comment comment = commentRepository.findById(commentId).get();
             if(!memberId.equals(comment.getMember().getId())){
-                //수정 권한 없음
-                return;
+                throw new UserPermissionException("수정 권한이 없습니다.");
             }
             CommentDto commentDto = CommentDto.from(comment, null);
             commentDto.setContent(content);
@@ -97,8 +98,7 @@ public class CommentService {
             Comment modifyComment = commentDto.toEntity(article, member, null);
             commentRepository.save(modifyComment);
         }catch (Exception e){
-            System.out.println("error");
-            //error 메세지 출력
+            throw new NoSuchDataException(e);
         }
     }
 
@@ -106,8 +106,7 @@ public class CommentService {
         try {
             Comment comment = commentRepository.findById(commentId).get();
             if(!memberId.equals(comment.getMember().getId())){
-                //수정 권한 없음
-                return;
+                throw new UserPermissionException("삭제 권한이 없습니다.");
             }
             CommentDto commentDto = CommentDto.from(comment, null);
             commentDto.setIsDelete(true);
@@ -116,9 +115,8 @@ public class CommentService {
             Member member = memberRepository.getReferenceById(commentDto.getMemberDto().getId());
             Comment modifyComment = commentDto.toEntity(article, member, null);
             commentRepository.save(modifyComment);
-        }catch (Exception e){
-            System.out.println("error");
-            //error 메세지 출력
+        } catch (Exception e){
+           throw new NoSuchDataException(e);
         }
     }
 }
