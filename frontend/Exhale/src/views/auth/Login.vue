@@ -187,20 +187,23 @@ const checkLoginCode = async () => {
   const code = url.searchParams.get('code')  //코드 받아옴
 
   try {
-    const data = await checkCode(code, 'login');
-    const jwtToken = data.data.response.token.access_token;
-    const refreshToken = data.data.response.token.refresh_token;
-    const key = data.data.response.token.key;  
-    const loginId = data.data.response.member.login_id;
-    const memberId = data.data.response.member.member_id;
-    const nickname = data.data.response.member.nickname;
-    
-    authStore.saveUserInfo(jwtToken, refreshToken, key, loginId ,memberId, nickname);
+    if(code!==null){
+      const data = await checkCode(code, 'login');
+      const jwtToken = data.data.response.token.access_token;
+      const refreshToken = data.data.response.token.refresh_token;
+      const key = data.data.response.token.key;  
+      const loginId = data.data.response.member.login_id;
+      const memberId = data.data.response.member.member_id;
+      const nickname = data.data.response.member.nickname;
+      
+      authStore.saveUserInfo(jwtToken, refreshToken, key, loginId ,memberId, nickname);
 
-    alert(`${nickname}님 환영합니다!`)
-    router.push('/mainpage')
+      alert(`${nickname}님 환영합니다!`)
+      router.push('/mainpage')
+    }
             
   } catch (error) {
+      console.log(error)
       if (axios.isAxiosError(error) && error.response) {
           console.error('로그인 실패:', error.response.data.message);
           alert(`로그인 실패: ${error.response.data.message}`);
