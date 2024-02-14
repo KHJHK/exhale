@@ -1,10 +1,9 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL + "/api/";
-const token = localStorage.getItem("JWT_token");
 
 //닉네임 변경
-const editNickname = (nickname) => {
+const editNickname = (nickname, token) => {
   const datas = {
     nickname: nickname,
   };
@@ -17,7 +16,7 @@ const editNickname = (nickname) => {
 };
 
 //이미지 변경
-const editProfileImage = (formData) => {
+const editProfileImage = (formData, token) => {
   return axios.post(baseURL + "users/profile-image", formData, {
     headers: {
       Authorization: token,
@@ -26,7 +25,7 @@ const editProfileImage = (formData) => {
 };
 
 //닉네임, 이미지 변경 요청 동시에 보내기
-const editUserProfile = (nickname, formData) => {
+const editUserProfile = (nickname, formData, token) => {
   const datas = {
     nickname: nickname,
   };

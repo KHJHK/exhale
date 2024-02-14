@@ -16,8 +16,8 @@ const categoryId = route.params.id;
 const volume = ref(0);
 
 const authStore = useAuthStore();
-const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken.value;
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;
@@ -121,7 +121,6 @@ const saveReviewProblem = async () => {
       return;
     }else if(data.dataStatus.code!=1){
     }
-    isComplete.value = true;
   } catch (error) {
     if(error.response.data.dataStatus.code==4){
       console.log("이미 저장된 문제입니다.");
