@@ -131,7 +131,6 @@ const nextProblem = () => {
     return;
   }
   resultDialog.value = false;
-
   problemIdx++;
   problem.problemId.value = problemSet[problemIdx].problem_id;
   problem.question.value = problemSet[problemIdx].question;
@@ -177,7 +176,7 @@ const resultProcessing = async (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = text;
+  sttText.value = "";
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
@@ -342,6 +341,7 @@ const enlarge = () => {
       
             <div :class="isReading ? 'stt-able' :  'stt-disable'">
                 <STT_Fluency 
+                :is-reading="isReading"
                 :sttText="sttText"
                 @update:sttText="handleSttTextChange"
                 class="sttcomponent"

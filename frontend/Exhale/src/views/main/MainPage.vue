@@ -78,6 +78,19 @@ const appURL = import.meta.env.VITE_APP_API_URL;
 
 const activeBox = ref(null);
 
+// 화면의 다른 부분을 클릭했을 때 실행될 함수
+const onBodyClick = (event) => {
+  // 클릭된 요소가 box 클래스 영역 외부인지 확인
+  if (!event.target.closest('.box')) {
+    // activeBox를 null로 설정하여 애니메이션을 원상태로 복원
+    activeBox.value = null;
+    // 모든 subbox 상태를 초기화
+    subboxStates.value.box1 = false;
+    subboxStates.value.box2 = false;
+    subboxStates.value.box3 = false;
+    subboxStates.value.box4 = false;
+  }
+};
 
 const toggleSubbox = async (courseId) => {
   if (currentCourseId === courseId) {
@@ -177,10 +190,13 @@ const categoryList = async (courseId) => {
 }
 
 onMounted(()=> {
-
   courseList()
+  document.addEventListener('click', onBodyClick);
 })
 
+onUnmounted(() => {
+  document.removeEventListener('click', onBodyClick);
+});
 
 
 </script>
