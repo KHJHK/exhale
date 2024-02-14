@@ -45,7 +45,7 @@
                 로그인
               </button>
 
-              <button @click="kakao" class="kakao">
+              <button @click="kakaoLogin('login')" class="kakao">
                 <img src="@/assets/kakao-logo.png" alt="" />&nbsp;
                 <label>카카오로 시작하기</label>
               </button>
@@ -99,7 +99,7 @@ import axios from 'axios';
 import { useAuthStore} from '@/stores/auth'; 
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { logIn } from '@/api/outhApi';
+import { logIn, kakaoLogin, checkCode } from '@/api/outhApi';
   // import { kakao } from '@/api/outhApi';
   const authStore = useAuthStore();
   // const {saveUserInfo} = authStore;
@@ -181,6 +181,38 @@ const created = () => {
     console.log("인가 코드:", code);
   }
 };
+
+const checkLoginCode = async () => {
+  let url = new URL(window.location.href);
+  const code = url.searchParams.get('code')  //코드 받아옴
+
+  try {
+    const data = await checkCode(code, 'login');
+    const jwtToken = data.data.response.token.access_token;
+    const refreshToken = data.data.response.token.refresh_token;
+    const key = data.data.response.token.key;  
+    const loginId = data.data.response.member.login_id;
+    const memberId = data.data.response.member.member_id;
+    const nickname = data.data.response.member.nickname;
+    
+    authStore.saveUserInfo(jwtToken, refreshToken, key, loginId ,memberId, nickname);
+
+    alert(`${nickname}님 환영합니다!`)
+    router.push('/mainpage')
+            
+  } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+          console.error('로그인 실패:', error.response.data.message);
+          alert(`로그인 실패: ${error.response.data.message}`);
+      } else {
+          console.error('undefined user:', error);
+          alert('등록되지 않은 아이디입니다.');
+      }
+      throw error;
+  }
+}
+
+checkLoginCode()
 </script>
 
 <style lang="scss" scoped>

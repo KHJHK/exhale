@@ -50,7 +50,7 @@ const clickLogout = async() => {
   await logout(key.value,refreshToken.value);    
   authStore.removeUserInfo();
   alert('로그아웃 되셨습니다. 또 만나요!')
-  router.push( "/")
+  router.push( "/mainpage")
 }
 </script>
 

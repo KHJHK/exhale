@@ -82,7 +82,7 @@
                   회원가입
                 </button>
                 <div class="kakaoLogin">
-                  <button @click="kakaoLogin" class="kakao">
+                  <button @click="kakaoLogin('signup')" class="kakao">
                     <img src="@/assets/kakao-logo.png" alt="signup">&nbsp;
                     <label>카카오로 시작하기</label>
                   </button>
@@ -415,6 +415,9 @@ const checkJoinCode = async() => {
   const code = url.searchParams.get('code')  //코드 받아옴
   if(code !== null){
     const response = await checkCode(code, 'join');
+    if(response === 2){
+      alert("이미 존재하는 회원입니다.", window.location.href = `http://localhost:80/signup`)
+    }
     const data = response.data.response;
     isVerifying.value=true;
     email.value = data.emailId + '@' + data.emailDomain
