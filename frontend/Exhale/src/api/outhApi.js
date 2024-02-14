@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
+const kakaoApiKey = import.meta.env.VITE_KAKAO_API_APP_KEY;
     // 2 - 이미 존재하는 값
     const isIdDuplicated = async (userId) => {
         
@@ -131,8 +132,6 @@ const kakaoLogin = () => {
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${redirectUri}&response_type=code`
     // 사용자를 카카오 로그인 페이지로 리디렉션
     window.location.href = url;
-    
-    return kakaoLogin
   };
 
 //   const logOut = async (key, refresh_token) => {
@@ -149,14 +148,11 @@ const kakaoLogin = () => {
   
     // router.push('/')
 //   };
-const checkCode = async(type) => {
-    let url = new URL(window.location.href);
-    const code = url.searchParams.get('code')  //코드 받아옴
-  
+const checkCode = async(code, type) => {
     if(code !== null){
       //code로 정보 요청
-        axios.get(baseURL + `auth/kakao/${type}`);
-        
+        // return await axios.get(baseURL + `auth/kakao/${type}?code=${code}`);
+        return await axios.get("http://localhost:8080/api/" + `auth/kakao/${type}?code=${code}`);
     }; 
 }
 
