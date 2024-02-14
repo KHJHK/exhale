@@ -18,6 +18,7 @@ import com.ssafy.exhale.repository.MemberRepository;
 import com.ssafy.exhale.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,7 +38,8 @@ public class ArticleService {
 
     public ArticleListResponse getArticleList(Integer page, Integer pageSize) {
         pageSize = pageSize == null ? PAGE_SIZE : pageSize;
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Sort sort = Sort.by("id").descending();
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, sort);
         List<Article> articleEntityList = articleRepository.findByIsDelete(pageRequest, false);
         Long articleTotalCount = articleRepository.countBy();
         Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
@@ -54,7 +56,8 @@ public class ArticleService {
 
     public ArticleListResponse getArticleListByBoardId(Integer boardId, Integer page, Integer pageSize) {
         pageSize = pageSize == null ? PAGE_SIZE : pageSize;
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+        Sort sort = Sort.by("id").descending();
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, sort);
         List<Article> articleEntityList = articleRepository.findAllByBoardIdAndIsDelete(boardId, pageRequest, false);
         Long articleTotalCount = articleRepository.countByBoardId(boardId);
         Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
@@ -83,6 +86,7 @@ public class ArticleService {
         try {
             Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
             Member member = memberRepository.getReferenceById(memberId);
+            System.out.println(member.toString());
 
             ArticleDto articleDto = articleRequest.toDto(
                     BoardDto.from(board),
@@ -156,7 +160,8 @@ public class ArticleService {
             Integer page = searchRequest.getPage();
 
             pageSize = pageSize != null ? pageSize : PAGE_SIZE;
-            PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
+            Sort sort = Sort.by("id").descending();
+            PageRequest pageRequest = PageRequest.of(page - 1, pageSize, sort);
             List<Article> articleEntityList;
             if(searchRequest.getBoardId() != 0) {
                 articleEntityList = articleRepository.search(searchRequest, pageRequest);
