@@ -1,5 +1,4 @@
 import axios from "axios";
-const accessToken = localStorage.getItem("JWT_token");
 
 const boardList = async (page, board_id) => {
   console.log('board.js 내부', board_id)
@@ -43,7 +42,6 @@ const boardDetail = async (article_id) => {
 
 //게시글 생성 
 const articleCreate = async (title, content, thumbnail, board_id, accessToken) => {
-    console.log('js',accessToken)
   try {
     const response = await axios.post(
       "http://i10b208.p.ssafy.io/api/articles",

@@ -73,7 +73,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 복습 문제 삭제
-  const deleteReview = async (problemId) => {
+  const deleteReview = async (problemId, token) => {
     return await axios.delete(baseURL + `/api/rehabilitation/review/${problemId}`,{
     headers: {
         Authorization: token
@@ -81,7 +81,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 복습 문제집 요청
-  const getReviewProblem = async (courseId) => {
+  const getReviewProblem = async (courseId, token) => {
     return await axios.get(baseURL + `/api/rehabilitation/review-problem/${courseId}`,{
     headers: {
         Authorization: token
