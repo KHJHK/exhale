@@ -36,7 +36,7 @@
       </div>
     </div>
     <div id="main">
-      <div id="solved-data">
+      <div id="solved">
         <p class="data-title">문제 풀이 통계</p>
         <div id="problem-category-list">
           <button class="round-button" @click="select_button(1)">
@@ -62,8 +62,13 @@
           </div>
         </div>
       </div>
-      <div id="letter-data">
-        <div class="pie-chart"></div>
+      <div id="letter">
+        <div id="pie-chart"></div>
+        <div id="letter-data-list">
+          <div class="letter-data" v-for="item in letterDataList">
+            {{ item }}
+          </div>
+        </div>
       </div>
     </div>
     <Footers />
@@ -168,15 +173,15 @@ onMounted(() => {
   align-items: center;
 }
 
-#solved-data {
+#solved {
   width: 40%;
-  height: 900px;
+  height: 600px;
   background-color: white;
 }
 
-#letter-data {
+#letter {
   width: 40%;
-  height: 900px;
+  height: 600px;
   background-color: white;
 }
 
@@ -200,7 +205,7 @@ onMounted(() => {
 }
 
 //letter-data 관련
-.pie-chart {
+#pie-chart {
   display: inline-block;
   position: relative;
   width: 200px;
