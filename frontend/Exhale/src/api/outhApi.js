@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
+import { ref } from "vue";
 const formDataHeader = {"Content-Type":
 "multipart/form-data"};
-const accessToken = localStorage.getItem('JWT_token')
-const refreshToken = localStorage.getItem('refresh_token')
-const KEY = localStorage.getItem('key')
+// const accessToken = localStorage.getItem('JWT_token')
+// const refreshToken = localStorage.getItem('refresh_token')
+// const KEY = localStorage.getItem('key')
+const baseURL = import.meta.env.VITE_BASE_URL;
     // 2 - 이미 존재하는 값
     const isIdDuplicated = async (userId) => {
         
@@ -13,12 +15,10 @@ const KEY = localStorage.getItem('key')
             login_id: userId
         });
        
-        console.log("사용 가능한 아이디입니다.");
         alert("사용 가능한 아이디입니다.");
         return false; 
     } catch (error) {
         if (error.response && error.response.status === 400) {
-            console.log("아이디가 이미 사용 중입니다.");
             alert("아이디가 이미 사용 중입니다.");
             return true; 
         } else {
@@ -64,7 +64,7 @@ const KEY = localStorage.getItem('key')
                       birth: birthdate,
                       nickname: nickName
                     });
-                    console.log('회원가입 성공:', response);
+                    // console.log('회원가입 성공:', response);
                     alert('날숨의 가족이 되신것을 환영해요! 다시 로그인 해주세요');
                     
                     // return response.data; 
@@ -106,33 +106,18 @@ const KEY = localStorage.getItem('key')
                         
                         // [로그인 실패]
                         // { }
-            const logIn = async (userId, password) => {
-                try {
-                    const response = await axios.post('http://i10b208.p.ssafy.io/api/general/login', {
-                        login_id: userId,
-                        password: password,
-                    }, {
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        }
-                    });
-                    localStorage.setItem('JWT_token', response.data.response.token.access_token)
-                    localStorage.setItem('refresh_token', response.data.response.token.refresh_token)
-                    localStorage.setItem('key',response.data.response.token.key);
-                    console.log('로그인 성공:', response.data);
-                    alert(`${userId}님 환영합니다!`)
-                   
-            } catch (error) {
-                // 로그인 실패 시 에러 처리
-                if (axios.isAxiosError(error) && error.response) {
-                    console.error('로그인 실패:', error.response.data.message);
-                    alert(`로그인 실패: ${error.response.data.message}`);
-                } else {
-                    console.error('undefined user:', error);
-                    alert('등록되지 않은 아이디입니다.');
-                }
-                throw error;
-            }};
+    const logIn = async (userId, password) => {
+        const response = await axios.post(`${baseURL}/api/general/login`, {
+            login_id: userId,
+            password: password,
+        }, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        });
+        return response.data;
+        
+    };
 
                     const tempPassword = async (userId, email_id, emailDomain) => {
                         return await axios.post('http://i10b208.p.ssafy.io/api/users/temp-password',  {
@@ -206,25 +191,16 @@ const KEY = localStorage.getItem('key')
                         })
                     };
                     
-                    const logout = async () => {
-                        console.log('키', KEY)
-                        console.log('리프레시',refreshToken)
-                        try {
-                            const response = await axios.post('http://i10b208.p.ssafy.io/api/users/logout', {
-                               key : KEY
-                            },{
-                                headers : {
-                                    "Authorization" : refreshToken
-                                }
-                            })
-                            alert('로그아웃 되셨습니다. 또 만나요!')
-                            localStorage.removeItem('JWT_token')
-                            localStorage.removeItem('refresh_token')
-                            localStorage.removeItem('key')
-                            location.reload()
-                            router.push( "/")
-                             }  catch (error) {
-                             }};
+                    const logout = async (key,refreshToken) => {
+                      
+                        return await axios.post(`${baseURL}/api/users/logout`, {
+                            key : key
+                        },{
+                            headers : {
+                                "Authorization" : refreshToken
+                            }
+                        })
+                    }
                 
                     
                     const kakaoLogin = () => {
