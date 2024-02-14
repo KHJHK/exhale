@@ -45,7 +45,7 @@
                 로그인
               </button>
 
-              <button @click="kakao" class="kakao">
+              <button @click="kakaoLogin('login')" class="kakao">
                 <img src="@/assets/kakao-logo.png" alt="" />&nbsp;
                 <label>카카오로 시작하기</label>
               </button>
@@ -99,7 +99,7 @@ import axios from 'axios';
 import { useAuthStore} from '@/stores/auth'; 
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
-import { logIn } from '@/api/outhApi';
+import { logIn, kakaoLogin, checkCode } from '@/api/outhApi';
   // import { kakao } from '@/api/outhApi';
   const authStore = useAuthStore();
   // const {saveUserInfo} = authStore;
@@ -182,15 +182,42 @@ const created = () => {
   }
 };
 
-const kakao = () => {
- 
-  const clientId = "64f53b3a322ebb16eabd9859392720c9";
-  const redirectUri = 'http://localhost:5173/mainpage';
-  const url =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&prompt=select_account`
-  window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+
+const checkLoginCode = async () => {
+  let url = new URL(window.location.href);
+  const code = url.searchParams.get('code')  //코드 받아옴
+
+  try {
+    if(code!==null){
+      const data = await checkCode(code, 'login');
+      const jwtToken = data.data.response.token.access_token;
+      const refreshToken = data.data.response.token.refresh_token;
+      const key = data.data.response.token.key;  
+      const loginId = data.data.response.member.login_id;
+      const memberId = data.data.response.member.member_id;
+      const nickname = data.data.response.member.nickname;
+      
+      authStore.saveUserInfo(jwtToken, refreshToken, key, loginId ,memberId, nickname);
+
+      alert(`${nickname}님 환영합니다!`)
+      router.push('/mainpage')
+    }
+            
+  } catch (error) {
+      console.log(error)
+      if (axios.isAxiosError(error) && error.response) {
+          console.error('로그인 실패:', error.response.data.message);
+          alert(`로그인 실패: ${error.response.data.message}`);
+      } else {
+          console.error('undefined user:', error);
+          alert('등록되지 않은 아이디입니다.');
+      }
+      throw error;
+  }
 }
 
-</script>j 
+checkLoginCode()
+</script>
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
