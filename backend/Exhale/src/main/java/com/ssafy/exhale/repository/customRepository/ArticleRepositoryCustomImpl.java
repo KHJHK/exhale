@@ -26,6 +26,16 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
         return query.fetch();
     }
 
+    @Override
+    public List<Article> searchAll(ArticleSearchRequest articleSearchRequest, PageRequest pageRequest) {
+        JPAQuery<Article> query =  queryFactory.select(article)
+                .from(article)
+                .where(checkSearchType(articleSearchRequest.getSearchType(), articleSearchRequest.getSearchContent()))
+                .offset((long) pageRequest.getPageNumber() * pageRequest.getPageSize())
+                .limit(pageRequest.getPageSize());
+        return query.fetch();
+    }
+
     public Long countSearchedArticles(ArticleSearchRequest articleSearchRequest) {
         JPAQuery<Long> query =  queryFactory.select(article.count())
                 .from(article)
