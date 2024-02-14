@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
@@ -48,8 +49,9 @@ public class SecurityConfig {
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration configuration = new CorsConfiguration();
                         //configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
-                        configuration.setAllowedOrigins(Collections.singletonList("http://i10b208.p.ssafy.io:80"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+//                        configuration.setAllowedOrigins(Collections.singletonList("http://i10b208.p.ssafy.io:80"));
+                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://i10b208.p.ssafy.io:80"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
