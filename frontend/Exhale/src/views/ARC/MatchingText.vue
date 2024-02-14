@@ -3,7 +3,8 @@ import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
-import TTS from '@/components/ARC/TTS.vue';
+import TTS_MatchingImage from '@/components/ARC/TTS_MatchingImage.vue';
+import SoundWave_MatchingImage from '@/components/ARC/SoundWave_MatchingImage.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { useRoute } from 'vue-router';
 
@@ -254,7 +255,8 @@ const enlarge = () => {
 
   <section class="sub-nav1">
       <div id="breadcrum">
-        메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
+        메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;듣고 이해하기
+        <p class="breadcrum2">(텍스트 고르기)</p>
       </div>
       <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
       <img src="@/assets/plus.svg" class="plus">
@@ -285,7 +287,7 @@ const enlarge = () => {
         @update:isReturn="handleIsReturnChange"          
         />
     </div>
-      <div class="timer">
+      <div class="timer2">
         <div class="timer-bar" :style="{ width: timerWidth + '%' }">
           <img src="@/assets/clock1.svg" class="clock">
         </div>
@@ -293,21 +295,28 @@ const enlarge = () => {
 
       <div class="content">
         <div>
-            <TTS 
+            <TTS_MatchingImage 
                 :text="problem.question.value"
                 :isReading="isReading"
+                @tts-start="isReading = true"
+                @tts-end="isReading = false"
                 @update:isReading="handleIsReadingChange"
                 />
-            <img :src="problem.questionImage.value" style="width: 100px;"/>
-            <div v-for="(option, idx) of problem.options.value" :key="idx"> 
-                <div @click="selectOption(idx)">
-                    {{ option}}
+                <p class="click">Click!</p>
+                <SoundWave_MatchingImage :isActive="isReading" class="soundwave_matchingimage" />
+                <img src="@/assets/triangle_left.svg" class="triangle_left">
+                <div class="options-grid">
+                  <img :src="problem.questionImage.value" class="option-image"/>
+                  <div v-for="(option, idx) of problem.options.value" :key="idx"> 
+                    <label class="option" @click="selectOption(idx)">
+                      &nbsp;{{ idx+1 }}. &nbsp;&nbsp;&nbsp;&nbsp; {{ option}}
+                      </label>
+                  </div>
                 </div>
-            </div>
         </div>
         </div>
-            <button class="hintBtn" @click="toggleHint">힌트</button>
-            <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
+            <button class="hintBtn2" @click="toggleHint" v-if="!showHint">힌트</button>
+            <div class="hint2" v-if="showHint">{{ problem.question.value }}</div>
       </div>
 
   </div>
@@ -320,4 +329,111 @@ const enlarge = () => {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/layout/gamebackground.scss';
+.timer2 {
+  position: fixed;
+  top: 8.5%;
+  left: 33.2%;
+  width: 35%;
+  height: 40px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.soundwave_matchingimage {
+  position: fixed;
+  top: 22%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  padding: 15px 17px;
+  // background-color: rgb(255, 255, 255);
+  width: 26%;
+  height: 60px;
+}
+
+.triangle_left {
+  position: fixed;
+  top: 20.5%;
+  left: 40%;
+  width: 20px;
+}
+
+.breadcrum2 {
+  margin-left: 64.8%;
+}
+
+.options-grid {
+  // display: grid;
+  // grid-gap: 20px 20px; 
+  justify-content: center; 
+  align-items: center;
+  margin: 80px auto;
+  margin-left: 0px;
+  width: 500px;
+  height: 180px;
+  object-fit: cover;
+}
+
+.option-image {
+  object-fit: cover;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+.option {
+  cursor: pointer;
+  background-color: white;
+  width: 100%;
+  margin: 7px 0px;
+  padding: 10px;
+  padding-left: 30px;
+  border-radius: 10px;
+  font-size: 80%;
+  font-family: 'NotoSansKR';
+}
+
+.option:hover {
+  cursor: pointer;
+  opacity: 50%;
+}
+
+
+.hintBtn2 {
+  font-size: 86%;
+  position: fixed;
+  top: 88%;
+  left: 48%;
+  color: white;
+  border: 3px solid white;
+  border-radius: 25px;
+  padding-top: 4px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-shadow: 5px 2px 7px rgb(171, 171, 171);
+  box-shadow: 1px 2px 5px rgb(211, 211, 211);
+}
+
+.hint2 {
+  position: fixed;
+  text-align: center;
+  width: 25%;
+  top: 88%;
+  left: 38%;
+  color: rgb(121, 121, 121);  
+  font-family: 'NotoSansKR';
+  letter-spacing: 1px;
+}
+
+.click {
+  position: fixed;
+  top: 27%;
+  left: 35%;
+  color: rgb(108, 159, 156);
+  font-size: 70%;
+}
+
 </style>

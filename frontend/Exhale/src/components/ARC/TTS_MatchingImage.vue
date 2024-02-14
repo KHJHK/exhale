@@ -74,8 +74,8 @@ const props = defineProps({
 #tts-button {
   filter: brightness(110%);
   position: fixed;
-  top: 20%;
-  left: 34%;
+  top: 18%;
+  left: 34.5%;
   box-shadow: 1px 5px 4px 3px rgb(170, 169, 169);
   border-radius: 100%;
   width: 55px;
@@ -84,8 +84,8 @@ const props = defineProps({
 
 .tts-button2 {
   position: fixed;
-  top: 20%;
-  left: 34%;
+  top: 18%;
+  left: 34.5%;
   width: 55px;
   box-shadow: 1px -2px 10px -1px rgb(255, 255, 255);
   border-radius: 100%;

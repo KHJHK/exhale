@@ -358,8 +358,8 @@ const enlarge = () => {
 
 .soundwave_matchingimage {
   position: fixed;
-  top: 24%;
-  left: 54%;
+  top: 22%;
+  left: 55%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
   padding: 15px 17px;
@@ -370,8 +370,8 @@ const enlarge = () => {
 
 .triangle_left {
   position: fixed;
-  top: 22.4%;
-  left: 40%;
+  top: 20.5%;
+  left: 41%;
   width: 20px;
 }
 
@@ -392,8 +392,8 @@ const enlarge = () => {
 
 .option-item {
   background-color: #ffffff; 
-  width: 220px;
-  height: 140px;
+  width: 240px;
+  height: 150px;
   border: 1px solid #ccc; 
   border-radius: 10px; 
   box-shadow: 0 15px 10px rgba(0, 0, 0, 0.1); 
@@ -443,7 +443,8 @@ const enlarge = () => {
 
 .click {
   position: fixed;
-  top: 29%;
+  left: 36%;
+  top: 27.5%;
   color: rgb(108, 159, 156);
   font-size: 70%;
 }

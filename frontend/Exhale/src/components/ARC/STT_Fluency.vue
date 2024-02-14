@@ -184,7 +184,6 @@ onUnmounted(() => {
   box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
   border-radius: 100%;
   z-index: 20;
-  opacity: 10%;
 }
 
 .backcircle {
@@ -192,10 +191,10 @@ onUnmounted(() => {
   left: 0;
   bottom: 10%;
   width: 60px;
-  box-shadow: 1px 2px 7px 3px rgb(255, 255, 255);
+  top: -7%;
+  box-shadow: -1px 5px 10px 3px rgb(255, 255, 255);
   border-radius: 100%;
   z-index: -10;
-  opacity: 40%;
 }
 
 .message {
@@ -207,6 +206,7 @@ onUnmounted(() => {
   transform: translateX(-50%);
   font-size: 100%;
   opacity: 70%;
+  color: #334F4E;
 }
 
 .textarea {
