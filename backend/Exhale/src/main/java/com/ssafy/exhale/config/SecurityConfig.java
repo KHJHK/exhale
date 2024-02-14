@@ -48,9 +48,10 @@ public class SecurityConfig {
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                         CorsConfiguration configuration = new CorsConfiguration();
                         //configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
-                        configuration.setAllowedOrigins(Collections.singletonList("*"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        configuration.setAllowedOrigins(Collections.singletonList("http://i10b208.p.ssafy.io:80"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
-                        //configuration.setAllowCredentials(true);
+                        configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);      // 1시간 동안 캐시하도록 설정
 
