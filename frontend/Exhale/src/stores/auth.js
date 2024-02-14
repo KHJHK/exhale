@@ -1,15 +1,8 @@
-  // stores/auth.js
   import { defineStore } from 'pinia';
-  import { useRouter } from 'vue-router'
-  import axios from 'axios'
-  import { ref, computed } from 'vue'
+  import { ref } from 'vue'
 
 
   export const useAuthStore = defineStore('auth', () => {
-    const router = useRouter()
-    // const loginUser = ref([])
-    // const comments = ref([])
-    // const replies = ref([])
     const jwtToken = ref('');
     const refreshToken = ref('');
     const key = ref('');
@@ -17,24 +10,7 @@
     const memberId = ref(0);
     const nickname = ref('');
     const isLogin = ref(false);
-    // const JWTtoken = ref(localStorage.getItem('JWT_token'))
-    // const refreshToken = ref(localStorage.getItem('refresh_token'))
-    // const KEY = ref(localStorage.getItem('key'))
-    // const login = ref(false);
-  
 
-    // const isLogIn = computed(() => {
-    //   console.log("ㅇㅇㅇㅇㅇ")
-    //   if (localStorage.JWT_token !== undefined) {
-    //   console.log('있나없나',localStorage.JWT_token)
-    //     // login.value = true;
-    //   return true
-    //   } else {
-    //     console.log('있나없나',localStorage.JWT_token)
-    //     // login.value = false;
-    //   return false
-    //   }
-    // })
     const saveUserInfo = (jwtTokenValue, refreshTokenValue, keyValue, loginIdValue, memberIdValue, nicknameValue) => {
       jwtToken.value = jwtTokenValue;
       refreshToken.value = refreshTokenValue;
@@ -53,30 +29,18 @@
       nickname.value = '';
       isLogin.value = false;
     }
-  
-    
-    // const isUser = () => {
-    //   axios({
-    //     method: 'get',
-    //     url: `${API_URL}/auth/user`,
-    //     headers: {
-    //       Authorization: `Token ${token.value}`
-    //     }
-    //   })
-    //   .then(res => {
-    //     loginUser.value = res.data
-    //   })
-    //   .catch(err => {
-    //     console.log(err)
-    //   })
-    // }
-
-
     return { saveUserInfo,removeUserInfo, isLogin, jwtToken, refreshToken, key, loginId, memberId, nickname}
-  } , { persist: true })
+  } , {
+    // persist 설정
+    persist: {
+      // persist 활성화
+      enabled: true,
+      // localStorage에 저장될 필드 선택 (기본적으로 모든 필드가 저장됨)
+      fields: ['loginId', 'memberId', 'nickname'],
+      // 필요한 경우 직렬화 및 역직렬화 함수 추가
+      // serializer: (value) => JSON.stringify(value),
+      // deserializer: (value) => JSON.parse(value)
+    }
+  })
 
-
-  // persist: {
-  //   enabled: true,
-  //   strategies: [{ storage: localStorage }],
-  // },
+ 
