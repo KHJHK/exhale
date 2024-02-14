@@ -32,6 +32,10 @@ const boardDetail = async (article_id) => {
 
 //게시글 생성 
 const articleCreate = async (title, content, thumbnail, board_id, accessToken) => {
+  if (!title && content && board_id ) {
+    alert('게시물 내용을 확인해주세요.')
+    return
+  }
   try {
     const response = await axios.post(
       "http://i10b208.p.ssafy.io/api/articles",
@@ -50,6 +54,7 @@ const articleCreate = async (title, content, thumbnail, board_id, accessToken) =
     if (response.status === 200) {
       alert("게시글 등록 완료!");
     }
+
   } catch (error) {
     console.error("게시글 등록에 실패하였습니다.", error);
     alert("로그인 후 이용해주세요."); // 원래는 status분기를 갈라서 다른 에러메시지를 출력해야함.

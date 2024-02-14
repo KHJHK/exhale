@@ -182,17 +182,7 @@ const created = () => {
   }
 };
 
-<<<<<<< HEAD
-const kakao = () => {
- 
-  const clientId = "64f53b3a322ebb16eabd9859392720c9";
-  const redirectUri = 'http://localhost:5173/mainpage';
-  const url =`https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&prompt=select_account`
-  window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
-}
 
-</script>j 
-=======
 const checkLoginCode = async () => {
   let url = new URL(window.location.href);
   const code = url.searchParams.get('code')  //코드 받아옴
@@ -228,7 +218,6 @@ const checkLoginCode = async () => {
 
 checkLoginCode()
 </script>
->>>>>>> front_dev
 
 <style lang="scss" scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");

@@ -46,7 +46,6 @@ import { ref, onMounted, onUnmounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import Headers from "@/components/common/Headers.vue";
 import { RouterView } from "vue-router";
-import {handleKakaoRedirect} from "@/api/outhApi"
 import router from "@/router";
 import { getCourseList, getCategoryList } from '@/api/course.js';
 import SayObject from "../ARC/SayObject.vue";

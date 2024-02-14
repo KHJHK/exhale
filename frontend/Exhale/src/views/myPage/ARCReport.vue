@@ -13,7 +13,7 @@
         <RouterLink
           class="breadlink"
           style="color: white"
-          :to="{ name: 'PostWholeListView' }"
+          :to="{ name: 'ARCReport' }"
           >마이페이지</RouterLink
         >
       </div>
