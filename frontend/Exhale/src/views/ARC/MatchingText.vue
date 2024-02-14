@@ -114,7 +114,6 @@ const saveReviewProblem = async () => {
       return;
     }else if(data.dataStatus.code!=1){
     }
-    isComplete.value = true;
   } catch (error) {
     if(error.response.data.dataStatus==4){
       console.log("이미 저장된 문제입니다.");

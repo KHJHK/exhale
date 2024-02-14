@@ -130,24 +130,6 @@ const saveReviewProblem = async () => {
   }
 };
 
-// TTS
-// const ttsText = ref("안녕하세요");
-
-// const handleModelValueUpdate = (newValue) => {
-//   sttText.value = newValue;
-//   // 정답 여부 판별 로직
-//   if (newValue.trim().toLowerCase() === problem.answer.value.trim().toLowerCase()) {
-//     // 정답인 경우
-//     isRight.value = true;
-//   } else {
-//     // 오답인 경우
-//     isRight.value = false;
-//   }
-
-//   // ResultDialog 컴포넌트에 정답 여부 전달
-//   resultDialog.value = true; // ResultDialog를 표시합니다.
-// }
-
 const nextProblem = () => {
 
   if(problemIdx>=problemSet.length-1){
@@ -190,7 +172,7 @@ const resultProcessing = (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = "";
+  sttText.value = text;
   resultProcessing(text);
 };
 const handleSttRunningChange = (value) => {
@@ -201,6 +183,7 @@ const handleDialogChange = (value) => {
   if(!value){
     isPause.value = false;
     isReturn.value=false;
+    showHint.value = false;
   }
 
 };
@@ -295,6 +278,7 @@ const enlarge = () => {
           :isPause = "isPause"
           :isReturn = "isReturn"  
           :isComplete="isComplete"
+          :sttText="sttText"
           @update:dialog="handleDialogChange"
           @update:nextTick="handleNextTickChange"
           @update:reviewTick="handleReviewTickChange"
@@ -309,7 +293,6 @@ const enlarge = () => {
           <div class="timer-bar" :style="{ width: timerWidth + '%' }">
             <img src="@/assets/clock1.svg" class="clock">
           </div>
-          <!-- <h1>경과 시간: {{ elapsedTime }}</h1> -->
         </div>
 
         <div class="content">
@@ -325,21 +308,12 @@ const enlarge = () => {
             @update:volume="handleVolumeUpdate" 
             class="sttcomponent1"
             />
-            <!-- <STT 
-              @update:modelValue="handleContentFieldChange" 
-              @update:sttText="updateSttText"
-              /> -->
-
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
-              <!-- <div class="answer">{{ problem.answer.value }}</div> -->
               <SoundWave :volume="volume" class="soundwave" />
               <button class="hintBtn" @click="toggleHint" >힌트</button>
               <div class="hint" v-if="showHint">{{ problem.hint.value }}</div>
         </div>
-        <!-- <button @click="nextProblem">다음</button> -->
-        <!-- <TTS
-          :tts-text="ttsText"
-        /> -->
+
     </div>
 
 

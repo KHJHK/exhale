@@ -203,7 +203,7 @@ const resultProcessing = async (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = "";
+  sttText.value = text;
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
@@ -222,6 +222,7 @@ const handleDialogChange = (value) => {
   if(!value){
     isPause.value = false;
     isReturn.value=false;
+    showHint.value = false;
   }
 
 };
@@ -323,6 +324,7 @@ const enlarge = () => {
           :isPause = "isPause"
           :isReturn = "isReturn"  
           :isComplete="isComplete"
+          :sttText="sttText"
           @update:dialog="handleDialogChange"
           @update:nextTick="handleNextTickChange"
           @update:reviewTick="handleReviewTickChange"
