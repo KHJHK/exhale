@@ -88,7 +88,7 @@
         <section class="box-item">
           <article>
             <!-- <div v-for="(post, index) in posts.slice(pageStartIdx, pageStartIdx+ ITEM_PER_PAGE)" :key="post.id" > -->
-            <div v-for="(post, index) in posts" :key="post.id" >  
+            <div v-for="post in posts" :key="post.id" >  
               <PostItem
               :title="post.title"
               :content="post.content"
