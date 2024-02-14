@@ -22,7 +22,7 @@
       focus-all
       v-model="otp"
       :loading="loading"
-      min-width="700"
+      min-width="600"
       length="6"
       variant="underlined"
       class="numberInput"
@@ -38,7 +38,7 @@
   
   <p class="texts3">
     이메일을 받지 못하셨나요?
-    <a class="emailSubmit">&nbsp;&nbsp;&nbsp;이메일 재전송하기</a>
+    <a class="emailSubmit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;이메일 재전송하기</a>
   </p>
 
 </div>

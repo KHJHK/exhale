@@ -2,7 +2,7 @@
   <button
     class="enlarge"
     @click="enlarge"
-    style="position: fixed; right: 0px; z-index: 10"
+    style="position: fixed; right: 0px; z-index: 1"
   >
     <img src="@/assets/plus.svg" class="plus" />
     {{ msg }}
@@ -46,11 +46,11 @@
               </button>
 
               <button @click="kakao" class="kakao">
-                <img src="@/assets/kakao-logo.png" alt="" />&nbsp;
+                <img src="@/assets/kakao-logo.png" alt="" />
                 <label>카카오로 시작하기</label>
               </button>
 
-              <p>
+              <p class="undertext1">
                 <b>
                   <RouterLink to="forgot-id" class="forgot"
                     >아이디 찾기</RouterLink
@@ -62,8 +62,8 @@
                 </b>
               </p>
 
-              <p>
-                <span> 새로 오셨나요? </span>
+              <p class="undertext2">
+                <span> 처음이신가요? </span>
                 <b @click="toggle" class="pointer"> 회원가입 </b>
               </p>
             </div>

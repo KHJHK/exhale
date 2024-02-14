@@ -1,8 +1,8 @@
 <template>
     <Headers />
-    <div class="hello">
+    <!-- <div class="hello">
       우리 반갑게 인사해볼까요?
-    </div>
+    </div> -->
     <!-- <div class="maintext">
       EXHALE
     </div> -->
@@ -136,11 +136,11 @@ nav {
 }
 
 .cloud-character {
-  width: 10%;
+  width: 8%;
   position: absolute;
-  left: 29%;
-  top: 20%;
-  transform: rotate(-14deg);
+  left: 46.5%;
+  top: 18%;
+  // transform: rotate(-14deg);
   opacity: 80%;
 }
 
