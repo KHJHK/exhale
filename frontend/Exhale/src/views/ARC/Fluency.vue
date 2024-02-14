@@ -131,7 +131,6 @@ const nextProblem = () => {
     return;
   }
   resultDialog.value = false;
-
   problemIdx++;
   problem.problemId.value = problemSet[problemIdx].problem_id;
   problem.question.value = problemSet[problemIdx].question;
@@ -177,13 +176,14 @@ const resultProcessing = async (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
-  sttText.value = text;
+  sttText.value = "";
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
     if(isFirst && !value){
         isFirst = false;
         startTimer();
+        isReading.value = value;
     }else if(isExplain && !value){
         resultDialog.value = true;
         isExplain = false;
@@ -342,6 +342,7 @@ const enlarge = () => {
       
             <div :class="isReading ? 'stt-able' :  'stt-disable'">
                 <STT_Fluency 
+                :is-reading="isReading"
                 :sttText="sttText"
                 @update:sttText="handleSttTextChange"
                 class="sttcomponent"
@@ -354,6 +355,8 @@ const enlarge = () => {
             :isReading="isReading"
             :showButton="true"
             @update:isReading="handleIsReadingChange"
+            @tts-start="handleIsReadingChange(true)"
+            @tts-end="handleIsReadingChange(false)"
             />
           <!-- <img src="@/assets/headphone.svg" id="tts-button" alt=""> -->
         </div>
@@ -362,6 +365,7 @@ const enlarge = () => {
             :text="problem.explain.value"
             :isReading="isReading"
             :showButton="false"
+            :showExplanationButton="problem.explain.value !== ''"
             @update:isReading="handleIsReadingChange"
             />
         </div>
@@ -433,16 +437,20 @@ const enlarge = () => {
 }
 
 .answerText {
-  position: fixed;
-  top: 80%;
-  left: 35%;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  position: absolute;
+  top: 68%;
+  left: 34%;
   width: 35%;
+  text-align: center;
   font-family: 'NotoSansKR';
 }
 
  .sttcomponent {
  position: fixed;
- top: 55%;
+ top: 53%;
  left: 50%;
 }
 

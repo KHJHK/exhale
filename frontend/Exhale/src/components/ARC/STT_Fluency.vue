@@ -1,15 +1,15 @@
 <template>
   <div class="speak">
     <div class="speakBtn">
-      <button @click="enableStt" v-show="!sttRunning">
-        <img src="@/assets/mic.svg" class="mic" >
+      <button @click="enableStt" v-show="!sttRunning" :class="{'low-opacity': isReading}">
+        <img src="@/assets/mic.svg" class="mic" :class="{'low-opacity': isReading}">
       </button>
-      <button @click="disableStt" v-show="sttRunning">
-        <img src="@/assets/mic.svg" class="mic" >
+      <button @click="disableStt" v-show="sttRunning" :class="{'low-opacity': isReading}">
+        <img src="@/assets/mic.svg" class="mic" :class="{'low-opacity': isReading}" >
       </button>
-      <img src="@/assets/mic.svg" class="backcircle" >
+      <img src="@/assets/mic.svg" class="backcircle" :class="{'medium-opacity': isReading}">
       
-      <div class="message">{{ message }}</div>
+      <div class="message" v-show="!isReading">{{ message }}</div>
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm" class="textform">
@@ -26,7 +26,8 @@ const sttRunning = ref(false);
 const emit = defineEmits(["update:sttText","update:sttRunning"]);
 
 const props = defineProps({
-  sttText: String
+  sttText: String,
+  isReading: Boolean 
 });
 
 
@@ -190,7 +191,8 @@ onUnmounted(() => {
   left: 0;
   bottom: 10%;
   width: 60px;
-  box-shadow: 1px 2px 7px 3px rgb(255, 255, 255);
+  top: -7%;
+  box-shadow: -1px 5px 10px 3px rgb(255, 255, 255);
   border-radius: 100%;
   z-index: -10;
 }
@@ -204,6 +206,7 @@ onUnmounted(() => {
   transform: translateX(-50%);
   font-size: 100%;
   opacity: 70%;
+  color: #334F4E;
 }
 
 .textarea {
@@ -221,5 +224,13 @@ onUnmounted(() => {
   &:focus {
     outline: none;
   }
+}
+
+.low-opacity {
+  opacity: 0.1;
+}
+
+.medium-opacity {
+  opacity: 0.4;
 }
 </style>
