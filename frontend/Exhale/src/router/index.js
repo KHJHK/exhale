@@ -9,7 +9,6 @@ import ForgotPassword from "@/views/auth/ForgotPassword.vue";
 
 // Aphasia Recovery Course
 import FollowUpSpeech from "@/views/ARC/FollowUpSpeech.vue";
-import ListeningComprehension from "@/views/ARC/ListeningComprehension.vue";
 import Fluency from "@/views/ARC/Fluency.vue";
 import SayObject from "@/views/ARC/SayObject.vue";
 import MatchingImage from "@/views/ARC/MatchingImage.vue";
@@ -64,6 +63,7 @@ import CommentsReply from "@/components/comments/CommentsReply.vue";
 // ARC review
 import ReviewSayObject from "@/views/ARCReview/ReviewSayObject.vue";
 import ReviewFollowUpSpeech from "@/views/ARCReview/ReviewFollowUpSpeech.vue";
+import ReviewListeningComprehension from "@/views/ARCReview/ReviewListeningComprehension.vue";
 
 
 // Import Common views
@@ -88,11 +88,6 @@ const router = createRouter({
       name: " FollowUpSpeech",
       component: FollowUpSpeech,
     },
-    {
-      path: "/listening-comprehension",
-      name: "ListeningComprehension",
-      component: ListeningComprehension,
-    },
     { path: "/fluency/:id/:time", name: " Fluency", component: Fluency },
     { path: "/say-object/:id/:time", name: "SayObject", component: SayObject },
     { path: "/matching-image/:id/:time", name: "Matching-image", component: MatchingImage },
@@ -105,7 +100,8 @@ const router = createRouter({
         component: ReviewSayObject,
     },
     { path: "/review-follow-up-speech", component: ReviewFollowUpSpeech},
-
+    { path: "/review-listening-comprehension", name: "review-listening-comprehension", component: ReviewListeningComprehension},
+    
     // community
     {
       path: "/posts/create",
