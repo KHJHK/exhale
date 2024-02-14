@@ -22,10 +22,9 @@
 
 </template>
 
-<script setup>
-import { ref, onMounted, onBeforeUnmount, computed  } from 'vue';
-import { logout } from '@/api/outhApi';
-import { useAuthStore } from '@/stores/auth';
+<script setup> 
+import { ref, onMounted, onUnmounted, watch } from "vue";
+import { useRouter } from "vue-router";
 import Headers from "@/components/common/Headers.vue";
 import Footers from '@/components/common/Footers.vue';
 import STT_initialPage from '@/components/ARC/STT_initialPage.vue';
@@ -44,7 +43,6 @@ const sttRunning = ref(false);
 const handleVolumeUpdate = (newVolume) => {
   volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
 };
-
 
 
 </script>

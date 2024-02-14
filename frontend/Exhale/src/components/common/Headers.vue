@@ -1,13 +1,13 @@
 <template>
 <div class="navbar">
-    <nav v-if="state.loggedIn">
+    <nav v-if="isLogin">
           <RouterLink  to="/">
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
           </RouterLink>
           <nav class="navbar-links">
             <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link">커뮤니티</RouterLink>
             <RouterLink :to="{name: 'ARCReport'}" class="nav-link">내 정보</RouterLink> 
-            <div class="nav-link" @click="logout">로그아웃</div>
+            <div class="nav-link" @click="clickLogout">로그아웃</div>
           </nav>
     </nav>
     <nav v-else>
@@ -26,16 +26,32 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
+import { reactive, computed, watch, ref } from 'vue'
 import { logout } from '@/api/outhApi';
+import { storeToRefs } from "pinia";
 import { useAuthStore } from '@/stores/auth';
-const authStore = useAuthStore()
-const state = reactive({
-  loggedIn: authStore.isLogIn,
+import { useRouter } from 'vue-router';
+
+const authStore = useAuthStore();
+// const state = reactive({
+//   loggedIn: authStore.isLogIn,
+// })
+
+const { refreshToken, key, isLogin } = storeToRefs(authStore);
+
+watch(() => isLogin, (token) => {
+
 })
 
-console.log(state)
+const router = useRouter();
 
+
+const clickLogout = async() => {
+  await logout(key.value,refreshToken.value);    
+  authStore.removeUserInfo();
+  alert('로그아웃 되셨습니다. 또 만나요!')
+  router.push( "/")
+}
 </script>
 
 

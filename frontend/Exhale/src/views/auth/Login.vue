@@ -97,12 +97,12 @@
 import { reactive, ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useAuthStore} from '@/stores/auth'; 
-
-
 import { RouterLink } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { logIn } from '@/api/outhApi';
   // import { kakao } from '@/api/outhApi';
+  const authStore = useAuthStore();
+  // const {saveUserInfo} = authStore;
   const router = useRouter()
   const fontSize = ref(16);
   const passwordType = ref("password");
@@ -113,13 +113,34 @@ import { logIn } from '@/api/outhApi';
 
 
 const log_In = async () => {
-  const response = await logIn(
-    userId.value,
-    password.value
-  )
-  router.push('/mainpage')
-  
-} 
+  try {
+    const data = await logIn(
+      userId.value,
+      password.value
+    )
+    const jwtToken = data.response.token.access_token;
+    const refreshToken = data.response.token.refresh_token;
+    const key = data.response.token.key;  
+    const loginId = data.response.member.login_id;
+    const memberId = data.response.member.member_id;
+    const nickname = data.response.member.nickname;
+    
+    authStore.saveUserInfo(jwtToken, refreshToken, key, loginId ,memberId, nickname);
+
+    alert(`${nickname}님 환영합니다!`)
+    router.push('/mainpage')
+            
+  } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+          console.error('로그인 실패:', error.response.data.message);
+          alert(`로그인 실패: ${error.response.data.message}`);
+      } else {
+          console.error('undefined user:', error);
+          alert('등록되지 않은 아이디입니다.');
+      }
+      throw error;
+  }
+};
 
 ////////////////////////////////////////////////////////
 const toggle = () => {
@@ -138,7 +159,6 @@ onMounted(() => {
 });
 ////////////////////////////////////////////////////////
 
-const authStore = useAuthStore();
 
 const toggleVisibility = (field) => {
   if (field === "password") {

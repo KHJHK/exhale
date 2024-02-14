@@ -51,6 +51,12 @@ import * as mypage from "@/api/mypage";
 import SimpleHdear from "@/components/common/SimpleHeader.vue";
 import Footers from "@/components/common/Footers.vue";
 
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";const authStore = useAuthStore();
+
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
+
 const image = ref(null);
 const nickname = ref("");
 let file = null;
@@ -88,7 +94,8 @@ const editProfile = async () => {
     //이미지 크기가 너무 크면 저장 안됨. 줄여주기 필요
     const response = await editUserProfile.editUserProfile(
       nickname.value,
-      formData
+      formData,
+      token
     );
 
     console.log(response);

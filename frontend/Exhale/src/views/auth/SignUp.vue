@@ -36,7 +36,7 @@
               </div>
               <div class="input-group">
                 <div class="input-group-flex">
-                  <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" :disabled="isVerifying"/> 
+                  <input class="input" v-model.trim="email" id="email" placeholder="이메일" type="email" :disabled="isVerifying" value="{{ email }}"/> 
                   <button class="doubleCheck" @click.prevent="handleClick" :disabled="isVerifying">인증</button>
                 </div >
               </div>
@@ -74,7 +74,7 @@
               </p>
               
               <div class="input-group">
-                <input v-model="nickName" id="nickname" placeholder="닉네임" type="text"/>
+                <input v-model="nickName" id="nickname" placeholder="닉네임" type="text" value="{{ nickName }}"/>
               </div>
               
               <div class="submit1" >
@@ -127,7 +127,7 @@ import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { isIdDuplicated ,signUp, kakaoLogin, verifyNumberCreate} from '@/api/outhApi.js';
+import { isIdDuplicated ,signUp, kakaoLogin, verifyNumberCreate, checkCode} from '@/api/outhApi.js';
 import EmailAuthentication from '@/components/modals/EmailAuthentication.vue'
 const store = useAuthStore()
 const fontSize = ref(16);
@@ -402,19 +402,45 @@ const container = ref(null);
 
 // container ref가 mount 되었을 때 sign-in class 추가
   onMounted(() => {
-  setTimeout(() => {
-    if (container.value) {
-      container.value.classList.add('sign-up')
-    }
-  }, 300)
+    setTimeout(() => {
+      if (container.value) {
+        container.value.classList.add('sign-up')
+      }
+    }, 300)
 })
 ////////////////////////////////////////////////////////
+
+const checkJoinCode = async() => {
+  let url = new URL(window.location.href);
+  const code = url.searchParams.get('code')  //코드 받아옴
+  if(code !== null){
+    const response = await checkCode(code, 'join');
+    const data = response.data.response;
+    isVerifying.value=true;
+    email.value = data.emailId + '@' + data.emailDomain
+    nickName.value = data.nickname;
+  }
+}
+
+checkJoinCode()
 
 </script>
 
 <style lang="scss" scoped>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
   @import "@/assets/scss/pages/_signup.scss";
+  .input{
+    width: 100%;
+  }
+
+  .input:disabled{
+    background-color: rgb(207, 206, 206);
+  }
+
+  .doubleCheck:disabled{
+    background-color: rgb(122, 122, 122);
+    pointer-events: none;
+  }
   /* .input-danger{
   border-bottom: 2px solid red !important;
   color: red;

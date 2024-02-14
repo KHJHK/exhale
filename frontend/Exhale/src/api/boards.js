@@ -1,5 +1,4 @@
 import axios from "axios";
-const accessToken = localStorage.getItem("JWT_token");
 
 const boardList = async (page, board_id) => {
   console.log('board.js 내부', board_id)
@@ -43,7 +42,6 @@ const boardDetail = async (article_id) => {
 
 //게시글 생성 
 const articleCreate = async (title, content, thumbnail, board_id, accessToken) => {
-    console.log('js',accessToken)
   try {
     const response = await axios.post(
       "http://i10b208.p.ssafy.io/api/articles",
@@ -150,22 +148,14 @@ const editComments = async (comment_id, content, token) => {
 
 // 댓글 삭제 (새로고침하면 부활)
 const deleteComments = async (comment_id, token) => {
-  console.log(token)
-  try {
-  const response = await axios.delete(`http://i10b208.p.ssafy.io/api/comments/${comment_id}`, { 
+  return await axios.delete(`http://i10b208.p.ssafy.io/api/comments/${comment_id}`, { 
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `${token}`
     }
-  });
-  if (response.status === 200) {
-    alert('삭제되었습니다.');
-    // location.reload()
-   
-  }
-} catch (error) {
-  console.error(error);
-}}
+  })
+};
+
 
 
 //   try {

@@ -18,7 +18,6 @@
       </div>
     </div>
   </header>
-
     <main>
         <div class="textbox">
             <h2>회원탈퇴</h2>
@@ -44,14 +43,20 @@
 
 <script setup>
     import { ref, watch } from "vue";
-    import { withdraw, logout, checkPassword } from "@/api/mypage"
+    import { withdraw, checkPassword } from "@/api/mypage"
+    import { logout } from "@/api/outhApi"
     import { useRouter } from "vue-router"
+    import { useAuthStore } from '@/stores/auth';
 
     import SimpleHdear from "@/components/common/SimpleHeader.vue";
     import Footers from "@/components/common/Footers.vue";
 
     const router = useRouter();
 
+    const authStore = useAuthStore();
+    const { jwtToken } = storeToRefs(authStore);
+    const token = jwtToken.value;
+    
     const errorMessage = ref("");
     const btnDisabled = ref(false);
     const password = ref("");
@@ -72,11 +77,9 @@
     }
 
     const withdrawUser = async () => {
-        const response = await withdraw();
+        const response = await withdraw(token);
         await logout();
-        localStorage.removeItem("JWT_token")
-        localStorage.removeItem("refresh_token")
-        localStorage.removeItem("key")
+        authStore.removeUserInfo();
         alert("회원탈퇴가 완료되었습니다.");
         router.push({ name: 'Login' })
     }
@@ -113,7 +116,7 @@
 
     const checkInputPassword = async () => {
         try {
-            const response = await checkPassword(password.value);
+            const response = await checkPassword(password.value, token);
             return true;
         } catch (error) {
             //에러처리 로직 필요

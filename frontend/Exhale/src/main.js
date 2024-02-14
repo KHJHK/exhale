@@ -1,6 +1,7 @@
 import '@/assets/scss/main.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import App from './App.vue'
 import router from './router/index.js'
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -33,6 +34,7 @@ app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.use(createPinia())
 app.use(pinia);
+pinia.use(piniaPluginPersistedstate); //새로고침시 데이터 유지를 위한 설정
 app.use(router)
 app.use(vuetify)
 app.mount('#app')
