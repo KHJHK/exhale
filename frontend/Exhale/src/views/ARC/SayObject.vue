@@ -22,7 +22,6 @@ const token = jwtToken.value;
 let problemIdx=0;
 let problemSet=null;
 let no = ref(1);
-
 // 다이어로그
 const resultDialog = ref(false);
 const isRight = ref(false);
@@ -301,7 +300,8 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
-            <STT 
+              <div class="process-number" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
+              <STT 
             v-model="sttText" 
             @update:sttText="handleSttTextChange" 
             @update:sttRunning="handleSttRunningChange" 

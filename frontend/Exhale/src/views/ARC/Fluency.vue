@@ -332,6 +332,8 @@ const enlarge = () => {
         <div class="question">
           {{ question }}
         </div>
+        <div class="process-number" style="position:absolute; top:110px;right:480px" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
+
         <img src="@/assets/triangle_left.svg" class="triangle_left">
 
         <!-- <div class="sttText">

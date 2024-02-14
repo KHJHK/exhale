@@ -345,6 +345,7 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
+              <div class="process-number" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx}} /{{ problemSet.length }}</div>
               <TTS_FollowUpSpeech 
                   :text="problem.question.value"
                   :isReading="isReading"

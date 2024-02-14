@@ -303,6 +303,8 @@ const enlarge = () => {
                 />
                 <p class="click">Click!</p>
                 <SoundWave_MatchingImage :isActive="isReading" class="soundwave_matchingimage" />
+                <div class="process-number" style="margin-top: 30px;" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
+
                 <img src="@/assets/triangle_left.svg" class="triangle_left">
                 <div class="options-grid">
                   <img :src="problem.questionImage.value" class="option-image"/>
@@ -367,7 +369,7 @@ const enlarge = () => {
   // grid-gap: 20px 20px; 
   justify-content: center; 
   align-items: center;
-  margin: 80px auto;
+  margin: 20px auto;
   margin-left: 0px;
   width: 500px;
   height: 180px;

@@ -308,16 +308,17 @@ const enlarge = () => {
 
       <div class="content">
         <div>
-            <TTS_MatchingImage 
-                :text="problem.question.value"
-                :isReading="isReading"
-                @tts-start="isReading = true"
-                @tts-end="isReading = false"
-                @update:isReading="handleIsReadingChange"
-                />
-                <p class="click">Click!</p>
-                <SoundWave_MatchingImage :isActive="isReading" class="soundwave_matchingimage" />
-                <img src="@/assets/triangle_left.svg" class="triangle_left">
+          <TTS_MatchingImage 
+          :text="problem.question.value"
+          :isReading="isReading"
+          @tts-start="isReading = true"
+          @tts-end="isReading = false"
+          @update:isReading="handleIsReadingChange"
+          />
+          <p class="click">Click!</p>
+          <SoundWave_MatchingImage :isActive="isReading" class="soundwave_matchingimage" />
+          <div class="process-number" style="margin-top: 30px;" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
+          <img src="@/assets/triangle_left.svg" class="triangle_left">
 
             <div class="options-grid">
             <div v-for="(img, idx) of problem.options.value" :key="idx" class="option-item" @click="selectOption(idx)"> 
@@ -383,7 +384,7 @@ const enlarge = () => {
   grid-gap: 20px 20px; 
   justify-content: center; 
   align-items: center;
-  margin: 90px auto;
+  margin: 20px auto;
   margin-left: 23px;
   // max-width: 500px;
 }
