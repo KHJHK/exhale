@@ -68,7 +68,10 @@ const leftmostPage = ref(1);
 
 const getPaginationArray = (left) => {
 	const res = [];
-	for (let i = left; i < Math.min(totalPage.value + 1, left + PAGE_PER_SECTION.value); i++) {
+	if (totalPage < 11) {
+		return res.push(1);
+	}
+	for (let i = left; i < Math.min(totalPage.value+ 1, left + PAGE_PER_SECTION.value); i++) {
 		res.push(i);
 		
 	}

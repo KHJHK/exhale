@@ -289,34 +289,29 @@ const toggleVisibility2 = (field2) => {
   };
 
 
-const queryParams = new URLSearchParams(window.location.search);
-    const code = queryParams.get('code');
-    
-    if (code) {
-      // 인가 코드를 로컬 스토리지에 저장
-      localStorage.setItem('kakao_outh_code', code);
+// const queryParams = new URLSearchParams(window.location.search);
+//     const code = queryParams.get('code');
+//     if (code) {
+//       localStorage.setItem('kakao_outh_code', code);
+//     }
 
-      // 추가적인 처리가 필요
-    }
+// const sendKakaoTokenToServer = async () => {
+//   const kakaoToken = localStorage.getItem('kakao_outh_code');
+//   if (!kakaoToken) {
+//     console.error('카카오 인증 코드가 없습니다.');
+//     return;
+//   }
+//   try {
+//     const response = await axios.post('api/outh/kakao/login', {
+//       code : kakaoToken
+//     });
 
-const sendKakaoTokenToServer = async () => {
-  const kakaoToken = localStorage.getItem('kakao_outh_code');
-  if (!kakaoToken) {
-    console.error('카카오 인증 코드가 없습니다.');
-    return;
-  }
-
-  try {
-    const response = await axios.post('api/outh/kakao/login', {
-      kakaoToken: kakaoToken
-    });
-
-    // 서버 응답 처리
-    console.log('서버 응답:', response.data);
-  } catch (error) {
-    console.error('서버 요청 에러:', error);
-  }
-};
+//     // 서버 응답 처리
+//     console.log('서버 응답:', response.data);
+//   } catch (error) {
+//     console.error('서버 요청 에러:', error);
+//   }
+// };
 
 // sendKakaoTokenToServer();
 
@@ -360,41 +355,6 @@ try{
 
 
 
-// const emailVerifyRequest = async () => {
-  
-//   try {
-//     const response = await axios({
-
-//         email_id : email_id.value,
-//         email_domain: email_domain.value
-      
-//     });
-    
-//     if (response.data && response.data !== 1 || 2) {
-//       // 서버로부터 응답을 받으면 인증 코드 저장
-//       const verificationCode = response.data.verificationCode; 
-//       localStorage.setItem(code, verificationCode);
-//       console.log('사용가능한 이메일입니다.')
-//     }
-//     else {
-//       if (response === 2) {
-//         console.log('이미 가입된 이메일입니다.')
-//         return true
-//       }
-//       else {
-//         console.log('유효하지 않은 이메일입니다.')
-//         return true
-//       }
-//     }
-//   } 
-//     catch (error) {
-//     // 아예 에러 처리
-//     console.error('이메일 인증 요청 에러:', error);
-//     throw error;
-//   }
-// };
-
-////////////////////////////////////////////////////////
 const toggle = () => {
     router.push({ name: 'Login'})
   };
@@ -408,7 +368,6 @@ const container = ref(null);
       }
     }, 300)
 })
-////////////////////////////////////////////////////////
 
 const checkJoinCode = async() => {
   let url = new URL(window.location.href);

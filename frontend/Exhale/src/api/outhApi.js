@@ -44,9 +44,6 @@ const emailVerifyRequest = async (email_id,email_domain,code) => {
     })
 };
 
-
-
-
 const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
     try {
         const response = await axios.post('http://i10b208.p.ssafy.io/api/general/join', {

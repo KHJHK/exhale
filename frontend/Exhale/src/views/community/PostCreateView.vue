@@ -1,6 +1,6 @@
 <template>
 <form @submit.prevent="save">
-<div class="imageBackground "  :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center', backgr  }">
+<div class="imageBackground "  :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center' }">
 
         <section class="sub-nav1">
             <div id="breadcrum">
@@ -109,7 +109,7 @@
             
             <div class="twoButton">
                 <button class="buttons" type="button" @click="goListPage">목록</button>
-                <button class="buttons" type="button" @click="article_create">저장</button>
+                <button class="buttons" type="button" @click="save_img">저장</button>
             </div>
         </div>
 
@@ -195,19 +195,23 @@ const emit = defineEmits(['update:tab'])
 //     }
 // };
 
-const pictures = async() => {
-    try {
-        const pic = new FormData();
-        pic.append("pic", file)
-        console.log(pic)
-    } catch (error) {
-        console.log(error)
-    }
-}
+// const pictures = async() => {
+//     try {
+//         const pic = new FormData();
+//         pic.append("pic", file)
+//         console.log(pic)
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 
 const save_img = async() => {
+    const formData = new FormData();
+    formData.append('image',  imageUrl.value)
+    console.log('이게 돼야해',formData)
+    console.log('넌 그냥 쩌리',imageUrl.value)
     await saveImg(
-        pic
+        formData
     )}
 
 watch(() => props.tab, (newVal) => {

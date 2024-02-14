@@ -55,7 +55,7 @@
       >정보 글</v-tab>
       <v-tab 
         :value="2"
-        @click="onClickTab(2)"
+        @click="onClickTab(2)" 
         :to="{name: 'PostReviewListView'}" 
         class="nav-link"
         :class="{ active: route.name === 'PostReviewListView' }"
@@ -135,14 +135,14 @@ import PostSlider from '@/components/posts/PostSlider.vue'
 import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
-import {boardDetail} from '@/api/boards' 
+import {boardDetail, boardSearch} from '@/api/boards' 
 import {useCounterStore} from '@/stores/counter.js'
 import PostInfoListView from './PostInfoListView.vue'
 import PostReviewListView from './PostReviewListView.vue'
 import PostStoryListView from './PostStoryListView.vue'
 import { tempPassword } from '@/api/outhApi'
 import { useAuthStore } from "@/stores/auth";
-import { useCrudStore } from '@/stores/crud'
+import { useCrudStore } from '@/stores/crud';
 import scrollTop from '@/components/functions/scrollTop.vue'
 import { storeToRefs } from 'pinia'
 const store = useAuthStore()
@@ -157,11 +157,20 @@ const searchKeyword = ref('');
 
 
 
-const handleSearch = ({ option, keyword }) => {
+const handleSearch = async({ option, keyword }) => {
   searchOption.value = option;
   searchKeyword.value = keyword;
   // 필터링된 포스트 가져오는 로직
+  await boardSearch(
+    tab.value,
+    searchOption.value,
+    searchKeyword.value,
+    curPage.value,
+  )
 };
+
+
+
 
 const filteredPosts = computed(() => {
   if (!searchOption.value || !searchKeyword.value) {
@@ -172,6 +181,17 @@ const filteredPosts = computed(() => {
     return valueToSearch && valueToSearch.includes(searchKeyword.value);
   });
 });
+
+
+// const board_search = async() => {
+//   await boardSearch(
+//   crud.tab,
+//   searchOption.value,
+//   searchKeyword.value,
+//   crud.curPage
+//   )
+// }
+
 
 
 const show = ref(false)
@@ -218,9 +238,9 @@ const enlarge = () => {
     }
 }  
 
-const changePage = async(newPage) => {
-  await crud.board_list(newPage);
-}
+// const changePage = async(newPage) => {
+//   await crud.board_list(newPage);
+// }
 
 const onClickTab = (tabName) => {
   crud.curPage = 1
@@ -233,6 +253,7 @@ onMounted( async () => {
   
 })
 
+console.log('ASD@@@@@@@', crud.curPage)
   onUnmounted( async () => {
     await crud.board_list()
   })
