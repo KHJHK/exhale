@@ -29,7 +29,7 @@ import java.util.List;
 )
 
 public interface LetterRecodeRepository extends JpaRepository<LetterRecode ,Long> {
-    @Query(value = "select new com.ssafy.exhale.dto.responseDto.statisticsDto.LetterDataResponse(lr.letter.content, sum(lr.correctCnt + lr.wrongCnt), sum(lr.correctCnt), sum(lr.wrongCnt)) from LetterRecode lr " +
+    @Query(value = "select new com.ssafy.exhale.dto.responseDto.statisticsDto.LetterDataResponse(lr.letter.content, sum(lr.correctCnt + lr.wrongCnt), sum(lr.correctCnt), sum(lr.wrongCnt), lr.letter.type) from LetterRecode lr " +
             "join lr.letter l " +
             "join lr.member m " +
             "where m.id = :memberId " +

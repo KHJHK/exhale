@@ -67,7 +67,7 @@ public class SocialController {
 
     @GetMapping("/kakao/join")
     public ResponseEntity<?> kakoAuthRequest(@RequestParam String code) throws ParseException {
-        KakaoTokenDto kakaoTokenResponse = oauthService.requestKakaoToken(code, "join").getBody();
+        KakaoTokenDto kakaoTokenResponse = oauthService.requestKakaoToken(code, "signup").getBody();
         KakaoInfoDto kakaoInfoDto = oauthService.requestKakaoUserInfo(kakaoTokenResponse);
         if(oauthService.findUserByEmail(kakaoInfoDto) != null){
             return CommonResponse.dataError(2, "이미 존재하는 회원 이메일");
