@@ -50,6 +50,18 @@ public class SecurityConfig {
                         CorsConfiguration configuration = new CorsConfiguration();
                         configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
                         //configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://i10b208.p.ssafy.io:80"));
+//                        // 요청이 온 Origin 헤더 확인
+//                        String origin = request.getHeader("Origin");
+//
+//                        // localhost:5173 출처에 대한 CORS 정책 설정
+//                        if ("http://localhost:5173".equals(origin)) {
+//                            configuration.setAllowedOrigins(Collections.singletonList(origin));
+//                        }
+//
+//                        // i10b208.p.ssafy.io:80 출처에 대한 CORS 정책 설정
+//                        if ("http://i10b208.p.ssafy.io:80".equals(origin)) {
+//                            configuration.setAllowedOrigins(Collections.singletonList(origin));
+//                        }
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
