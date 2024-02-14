@@ -49,10 +49,10 @@
         <button class="btn" @click="goListPage">
           <img src="@/assets/list.svg" class="list" >
           목록</button>
-        <button class="btn" @click="goEditPage">
+        <button v-if="post.member_id==memberId" class="btn" @click="goEditPage">
           <img src="@/assets/edit.svg" class="edit" >
           수정</button>
-        <button class="btn" @click="remove" >
+        <button v-if="post.member_id==memberId" class="btn" @click="remove" >
           <img src="@/assets/delete.svg" class="delete" >
           삭제</button>
       </div>
@@ -106,6 +106,7 @@ const crud = useCrudStore()
 const {posts} = storeToRefs(crud)
 const store = useAuthStore()
 const token = store.jwtToken
+const memberId = store.memberId;
 const router = useRouter()
 const route = useRoute()
 const postId = route.params.id

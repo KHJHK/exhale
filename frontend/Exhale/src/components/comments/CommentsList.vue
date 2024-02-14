@@ -1,6 +1,4 @@
 <template>
-  <h1>--------------댓글창--------------------</h1>
-  <br>
   <div v-if="lists.length > 0">
   <div v-for="list in lists" :key="list.id" >
     <div v-if="editMode && currentComment.id === list.id">
@@ -10,13 +8,15 @@
   </div>
   <div v-else>
         <h4 style="display: inline;">{{ list.id }}</h4>
-    |
+    
     <h4 style="display: inline;">{{ list.content }}</h4>
     <br>
-    <small>{{ list.createDate }}</small>
+    <small>{{ list.createDate.substring(0, 10) }}</small>
     <br>
-    <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
-    <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
+    <div v-if="memberId == list.memberId">
+      <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
+      <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
+    </div>
   </div>
     <hr>
 
@@ -35,6 +35,8 @@ import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 const store = useAuthStore()
 const token = store.jwtToken
+const memberId = ref(store.memberId);
+
 const route = useRoute()
 const article_id = route.params.id
 const lists = ref([])
@@ -54,17 +56,27 @@ const startEdit = (comment) => {
   editMode.value = true;
   currentComment.id = comment.id;
   currentComment.content = comment.content;
-  console.log(currentComment.content)
-  console.log(comment.content)
 };
 
 const delete_Comments = async (comment) => {
-  confirm('댓글을 삭제하시겠습니까?')
-  await deleteComments(
-    comment.id,
-    token
-  )
-  lists.value = lists.value.filter((item) => item.id !== comment.id);
+  if(confirm('댓글을 삭제하시겠습니까?')){
+    try{
+      const data = await deleteComments(
+        comment.id,
+        token
+      );
+      if (data.status === 200) {
+        alert('삭제되었습니다.');
+        location.reload()
+      }
+    }catch(error){
+
+    }
+    
+    console.log(data);
+    // lists.value = lists.value.filter((item) => item.id !== comment.id);
+
+  }
 };
 
 
