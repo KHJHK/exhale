@@ -4,18 +4,21 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview, getMorphemeList, postSyllable  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
-import TTS from '@/components/ARC/TTS.vue';
+import TTS_FollowUpSpeech from '@/components/ARC/TTS_FollowUpSpeech.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
+import { useRoute } from 'vue-router';
+import SoundWave from '@/components/ARC/SoundWave.vue';
 
-// todo routing으로 받기
-const overTime = 10;
-const categoryId = 4; 
+const route = useRoute()
+const overTime = route.params.time;
+const categoryId = route.params.id;
+const volume = ref(0);
 
 const authStore = useAuthStore();
-const { JWTtoken } = storeToRefs(authStore);
-// const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3Nzg2NTMzLCJleHAiOjE3MDc3ODgzMzN9.U0dY7KqYkYASXyh5GIWbiJ2Gj6QkMWgsPaBDF3IxcXM';
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
+
 let problemIdx=0;
 let problemSet=null;
 let no = ref(1);
@@ -36,8 +39,15 @@ let isFirst = true;
 
 const problem = {
   problemId : ref(0),
-  question: ref('')
+  question: ref(''),
+  hint: ref('')
 };
+
+
+const handleVolumeUpdate = (newVolume) => {
+  volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
+};
+
 
 // 타이머
 const elapsedTime = ref(overTime);
@@ -80,6 +90,7 @@ const getProblems = async () => {
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
+    problem.hint.value = problemSet[problemIdx].hint;
     clickTTSQustion();
 
   } catch (error) {
@@ -134,9 +145,13 @@ const nextProblem = () => {
     problemIdx++;
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
+    problem.hint.value = problemSet[problemIdx].hint;
     no.value++;
 
     // 초기화
+    stopTimer();
+    startTimer(); 
+    toggleHint();
     clearInterval(timerId);
     elapsedTime.value = overTime;
 }
@@ -285,7 +300,7 @@ const enlarge = () => {
 
     <section class="sub-nav1">
         <div id="breadcrum">
-          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;이름대기
+          메인 홈&nbsp; &nbsp;>&nbsp;&nbsp; 언어재활코스 &nbsp; &nbsp;>&nbsp; &nbsp;따라말하기
         </div>
         <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
@@ -323,24 +338,27 @@ const enlarge = () => {
         </div>
 
         <div class="content">
+          <!-- {{  elapsedTime}} -->
             <div class="problemtitle">
               <label class="numbering">
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
-              {{  elapsedTime}}
-            <STT 
-            v-model="sttText" 
-            @update:sttText="handleSttTextChange" 
-            @update:sttRunning="handleSttRunningChange" 
-            />
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
-              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
-              <TTS
+              <TTS_FollowUpSpeech 
                   :text="problem.question.value"
                   :isReading="isReading"
                   @update:isReading="handleIsReadingChange"
                   />
+            <STT 
+            v-model="sttText" 
+            @update:sttText="handleSttTextChange" 
+            @update:sttRunning="handleSttRunningChange" 
+            @update:volume="handleVolumeUpdate"
+            class="sttcomponent1"
+            />
+              <SoundWave :volume="volume" class="soundwave" />
+              <button class="hintBtn" @click="toggleHint">힌트</button>
+              <div class="hint" v-if="showHint">{{ problem.question.value }}</div>
         </div>
     </div>
 

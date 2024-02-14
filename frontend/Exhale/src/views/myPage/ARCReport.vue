@@ -80,8 +80,14 @@ import { ref, onMounted, computed } from "vue";
 import MyPageHeader from "@/components/common/MyPageHeader.vue";
 import Footers from "@/components/common/Footers.vue";
 
-import * as report from "@/api/report";
 import * as mypage from "@/api/mypage";
+import * as report from "@/api/report";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
+const authStore = useAuthStore();
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 const nickname = ref("");
 const image = ref("");
@@ -94,25 +100,27 @@ const select_button = (course_id) => {
 };
 
 const select_problem_data_list = computed(() => {
-  return solvedDataList.value.filter(
+  var alist = solvedDataList.value.filter(
     (item) => item.course_id === select_course_id.value
   );
+  console.log(alist);
+  return alist;
 });
 
 //API 호출
 const getProfile = async () => {
-  const response = await mypage.getProfile();
+  const response = await mypage.getProfile(token);
   nickname.value = response.data.response.nickname;
   image.value = response.data.response.image_url;
 };
 
 const getSolvedData = async () => {
-  const response = await report.getSolvedData();
+  const response = await report.getSolvedData(token);
   solvedDataList.value = response.data.response;
 };
 
 const getLetterData = async () => {
-  const response = await report.getLetterData();
+  const response = await report.getLetterData(token);
   letterDataList.value = response.data.response;
 };
 

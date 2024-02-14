@@ -1,135 +1,82 @@
 <template>
-
-  <div class="commentTitle">
-    <h3>댓글 {{  }}</h3>
-    <button class="commentWriteBtn">댓글 작성</button>
+  <h1>--------------댓글창--------------------</h1>
+  <br>
+  <div v-if="lists.length > 0">
+  <div v-for="list in lists" :key="list.id" >
+    <div v-if="editMode && currentComment.id === list.id">
+    <input type="text" v-model="currentComment.content">
+    <button @click="submitEdit" >저장</button> |
+    <button @click="cancelEdit">취소</button>
   </div>
+  <div v-else>
+        <h4 style="display: inline;">{{ list.id }}</h4>
+    |
+    <h4 style="display: inline;">{{ list.content }}</h4>
+    <br>
+    <small>{{ list.createDate }}</small>
+    <br>
+    <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
+    <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
+  </div>
+    <hr>
 
-  <hr>
+  </div>
+</div>
+  <div v-else>
+    <h4 style="text-align: center;">아직 댓글이 없습니다. 댓글을 남겨보세요!</h4>
+    <hr>
+  </div>
+</template>
 
-    <div v-for="comment in comments" :key="postId">
-      
-      <div class="comment">
-
-        <div class="commentContent">
-          <v-avatar size="65" class="avatar">
-            <v-img
-              src="https://cdn.vuetifyjs.com/images/john.jpg"
-              alt="John"
-            ></v-img>
-          </v-avatar>
-          <label for="">
-            <p class="commentNickname">{{ comment.nickname }}</p> 
-            <p class="commentCreatedate">{{ comment.create_date }}</p>
-            <p class="commentContent">{{ comment.content }}</p>
-            <button class="commentReview">답글달기</button>
-          </label>
-        </div>
-          
-          <div class="commentBtn">
-            <button class="editBtn">수정</button>
-            <button class="deleteBtn">삭제</button>
-          </div>
-        </div>
-        
-        <hr class="underHr">
-
-    </div>
-
-  </template>
-  
-  <script>
-
-  import { ref, onMounted, defineProps, defineEmits } from 'vue'; 
-  export default {
-    props: {
-      postId: {
-        type: Number,
-        required: true
-      }
-    },
-    data() {
-      return {
-        comments: []
-      };
-    },
-    async created() {
-      this.fetchComments();
-    },
-
-    methods: {
-      async fetchComments() {
-        const response = await getComments(this.postId);
-        this.comments = response.data;
-       
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .comment {
-    margin-top: 50px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-around;
+<script setup>
+import { getComments, editComments, deleteComments } from '@/api/boards';
+import { onMounted,ref,reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+const store = useAuthStore()
+const token = store.jwtToken
+const route = useRoute()
+const article_id = route.params.id
+const lists = ref([])
+const editMode = ref(false);
+const currentComment = reactive({ id: null, content: ' ' });
+onMounted(async () => {
+  try {
+    const response = await getComments(article_id);
+    lists.value = response.data.response;  
+  } 
+  catch (error) {
+    console.error('댓글을 불러오는데 실패했습니다', error);
   }
+});
+// editComments()
+const startEdit = (comment) => {
+  editMode.value = true;
+  currentComment.id = comment.id;
+  currentComment.content = comment.content;
+  console.log(currentComment.content)
+  console.log(comment.content)
+};
 
-  .commentTitle {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 5vh;
-  }
-  .commentTitle h3 {
-    color: lightgray;
-    font-family: 'NotoSansKR';
-    letter-spacing: 5px;
-  }
+const delete_Comments = async (comment) => {
+  confirm('댓글을 삭제하시겠습니까?')
+  await deleteComments(
+    comment.id,
+    token
+  )
+  lists.value = lists.value.filter((item) => item.id !== comment.id);
+};
 
-  hr {
-    width: 58%;
-    margin-left: 21%;
-  }
 
-  .underHr {
-    margin-top: 6vh;
-    color: rgb(177, 177, 177);
+const submitEdit = async () => {
+  if (editMode.value && currentComment.id && currentComment.content) {
+    await editComments(currentComment.id, currentComment.content, token);
+    // 성공적으로 수정된 후에는 editMode를 비활성화합니다.
+    editMode.value = false;
   }
-  .avatar {
-    margin-top: -35vh;
-    margin-right: 3vw;
-    margin-left: 4vw;
-    
-  }
+};
+</script>
 
-  .commentWriteBtn {
-    border: 1px solid lightgray;
-    border-radius: 30px;
-    padding: 10px 25px;
-  }
+<style lang="scss" scoped>
 
-  .commentCreatedate {
-    margin-top: -2vh;
-    color: lightgray;
-  }
-
-  .commentContent {
-    /* margin-top: vh; */
-    margin-bottom: 5vh;
-  }
-
-  .commentReview {
-    margin-top: 2vh;
-    color: gray;
-  }
-
-  .commentBtn {
-    padding-right: 70px;
-    color: gray;
-  }
-
-  .editBtn {
-    padding-right: 2vw;
-  }
-  </style>
-  
+</style>

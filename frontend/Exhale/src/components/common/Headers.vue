@@ -1,14 +1,13 @@
 <template>
 <div class="navbar">
-    <nav v-if="state.loggedIn">
+    <nav v-if="isLogin">
           <RouterLink  to="/">
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
           </RouterLink>
           <nav class="navbar-links">
-            <RouterLink :to="{name: 'Review'}" class="nav-link">복습하기</RouterLink> 
             <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link">커뮤니티</RouterLink>
             <RouterLink :to="{name: 'ARCReport'}" class="nav-link">내 정보</RouterLink> 
-            <div class="nav-link" @click="logout">로그아웃</div>
+            <div class="nav-link" @click="clickLogout">로그아웃</div>
           </nav>
     </nav>
     <nav v-else>
@@ -27,42 +26,60 @@
 </template>
 
 <script setup>
-import { reactive, computed } from 'vue'
-import { useAuthStore } from '@/stores/auth.js'
+import { reactive, computed, watch, ref } from 'vue'
+import { logout } from '@/api/outhApi';
+import { storeToRefs } from "pinia";
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
+// const state = reactive({
+//   loggedIn: authStore.isLogIn,
+// })
 
-const logout = authStore.logout
+const { refreshToken, key, isLogin } = storeToRefs(authStore);
 
-const state = reactive({
-  loggedIn: authStore.isLogIn,
+watch(() => isLogin, (token) => {
+
 })
 
+const router = useRouter();
 
 
+const clickLogout = async() => {
+  await logout(key.value,refreshToken.value);    
+  authStore.removeUserInfo();
+  alert('로그아웃 되셨습니다. 또 만나요!')
+  router.push( "/")
+}
 </script>
 
 
 <style scoped>
 .navbar-links {
-  margin-left: 66.3vw;
+  margin-left: 45vw;
   display: flex;
   align-items: center;
-  gap: 98px;
   border-bottom: none;
+  margin-right: -30vw;
+  width: 150%;
+}
+
+nav {
+  margin-bottom: -2vh;
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-right: -10vw;
+  /* justify-content: space-around; */
+  margin-left: 7vw;
+  margin-top: 2vh;
 }
 
 .nav-link {
   text-decoration: none;
   color: #333;
-  padding-bottom: 0.5rem;
   border-bottom: 2px solid transparent;
   transition: border-color 0.3s;
   display: inline-block;
@@ -71,11 +88,11 @@ const state = reactive({
 
 
 .nav-link:hover {
-  border-bottom: 2px solid rgb(108, 159, 156); /* 호버 시 밑줄이 나타납니다 */
+  border-bottom: 2px solid rgb(108, 159, 156);
   text-decoration: none;
   color: black;
   transition: 0.4s;
-  padding: 3px;
+  padding-bottom: 10px;
 }
 
 </style>

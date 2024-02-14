@@ -79,6 +79,12 @@ import Footers from "@/components/common/Footers.vue";
 
 import * as mypage from "@/api/mypage";
 
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";const authStore = useAuthStore();
+
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
+
 const oldPassword = ref("");
 const newPassword = ref("");
 const newPasswordCheck = ref("");
@@ -90,7 +96,7 @@ const isSaveButtonDisabled = ref(true);
 const checkPassword = async () => {
   //여기서 try-catch를 해버리니까 console에 mypage 로직 처리중 발생한 에러 로그가 남음
   try {
-    const response = await mypage.checkPassword(oldPassword.value);
+    const response = await mypage.checkPassword(oldPassword.value, token);
     isOldInputDisabled.value = !isOldInputDisabled.value;
     isNewInputDisabled.value = !isNewInputDisabled.value;
   } catch (error) {
@@ -121,7 +127,8 @@ const checkPassword = async () => {
 const changePassword = async () => {
   const response = await mypage.rePassword(
     oldPassword.value,
-    newPassword.value
+    newPassword.value,
+    token
   );
 };
 
@@ -182,7 +189,7 @@ main {
 main > h2 {
   font-weight: bolder;
   font-size: 45px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 main > p {

@@ -5,13 +5,13 @@ import SignUp from "@/views/auth/SignUp.vue";
 import Login from "@/views/auth/Login.vue";
 import ForgotId from "@/views/auth/ForgotId.vue";
 import ForgotPassword from "@/views/auth/ForgotPassword.vue";
-import Logout from "@/views/auth/Logout.vue";
+
 
 // Aphasia Recovery Course
 import FollowUpSpeech from "@/views/ARC/FollowUpSpeech.vue";
 import ListeningComprehension from "@/views/ARC/ListeningComprehension.vue";
 import Fluency from "@/views/ARC/Fluency.vue";
-import Review from "@/views/ARC/Review.vue";
+import SayObject from "@/views/ARC/SayObject.vue";
 import MatchingImage from "@/views/ARC/MatchingImage.vue";
 import MatchingText from "@/views/ARC/MatchingText.vue";
 
@@ -31,6 +31,7 @@ import TestResultPage from "@/views/main/TestResultPage.vue";
 import ARCWaitingPage from "@/views/main/ARCWaitingPage.vue";
 import AboutUs from "@/views/main/AboutUs.vue";
 import MainPage from "@/views/main/MainPage.vue";
+import ReviewWaitingPage from "@/views/main/ReviewWaitingPage.vue";
 
 // myPage
 import ARCReport from "@/views/myPage/ARCReport.vue";
@@ -60,8 +61,10 @@ import CommentsDelete from "@/components/comments/CommentsDelete.vue";
 import CommentsEdit from "@/components/comments/CommentsEdit.vue";
 import CommentsReply from "@/components/comments/CommentsReply.vue";
 
-// ARC
-import SayObject from "@/views/ARC/SayObject.vue";
+// ARC review
+import ReviewSayObject from "@/views/ARCReview/ReviewSayObject.vue";
+import ReviewFollowUpSpeech from "@/views/ARCReview/ReviewFollowUpSpeech.vue";
+
 
 // Import Common views
 const history = createWebHistory();
@@ -77,11 +80,11 @@ const router = createRouter({
       name: "ForgotPassword",
       component: ForgotPassword,
     },
-    { path: "/logout", name: "Logout", component: Logout },
+
 
     // Aphasia Recovery Course
     {
-      path: "/follow-up-speech",
+      path: "/follow-up-speech/:id/:time",
       name: " FollowUpSpeech",
       component: FollowUpSpeech,
     },
@@ -90,11 +93,18 @@ const router = createRouter({
       name: "ListeningComprehension",
       component: ListeningComprehension,
     },
-    { path: "/fluency", name: " Fluency", component: Fluency },
-    { path: "/review", name: "Review", component: Review },
-    { path: "/say-object", name: "SayObject", component: SayObject },
-    { path: "/matching-image", name: "Matching-image", component: MatchingImage },
-    { path: "/matching-text", name: "Matching-text", component: MatchingText },
+    { path: "/fluency/:id/:time", name: " Fluency", component: Fluency },
+    { path: "/say-object/:id/:time", name: "SayObject", component: SayObject },
+    { path: "/matching-image/:id/:time", name: "Matching-image", component: MatchingImage },
+    { path: "/matching-text/:id/:time", name: "Matching-text", component: MatchingText },
+
+    // Aphasia Recovery Course Review
+    {
+
+        path: "/review-say-object",
+        component: ReviewSayObject,
+    },
+    { path: "/review-follow-up-speech", component: ReviewFollowUpSpeech},
 
     // community
     {
@@ -164,6 +174,11 @@ const router = createRouter({
       path: "/ARC-waiting-page",
       name: " ARCWaitingPage",
       component: ARCWaitingPage,
+    },
+    {
+      path: "/review-waiting-page",
+      name: " ReviewWaitingPage",
+      component: ReviewWaitingPage,
     },
     { path: "/about-us", name: "AboutUs", component: AboutUs },
 

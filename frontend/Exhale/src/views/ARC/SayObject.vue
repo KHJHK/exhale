@@ -6,16 +6,18 @@ import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
 import STT from '@/components/ARC/STT.vue';
 // import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import SoundWave from '@/components/ARC/SoundWave.vue';
+import { useRoute } from 'vue-router';
 
-// todo routing으로 받기
-const courseName='';
-const categoryName='';
-const overTime = 10;
-const categoryId = 1; 
+
+const route = useRoute()
+const overTime = route.params.time;
+const categoryId = route.params.id; 
+const volume = ref(0);
 
 const authStore = useAuthStore();
-const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken;
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;
@@ -38,6 +40,11 @@ const problem = {
   answer: ref(''),
   hint: ref(''),
   imgUrl : ref('')
+};
+
+
+const handleVolumeUpdate = (newVolume) => {
+  volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
 };
 
 // 타이머
@@ -90,7 +97,6 @@ const getProblems = async () => {
   }
 };
 const saveSolvedProblem = async() => {
-
   try{
     const params = {
       problemId: problem.problemId.value,
@@ -115,9 +121,8 @@ const saveReviewProblem = async () => {
       return;
     }else if(data.dataStatus.code!=1){
     }
-    isComplete.value = true;
   } catch (error) {
-    if(error.response.data.dataStatus==4){
+    if(error.response.data.dataStatus.code==4){
       console.log("이미 저장된 문제입니다.");
     }
     console.error(error);
@@ -163,6 +168,7 @@ const nextProblem = () => {
   stopTimer();
   elapsedTime.value = overTime;
   startTimer();  
+  toggleHint();
 }
 
 const resultProcessing = (text) =>{
@@ -316,6 +322,8 @@ const enlarge = () => {
             v-model="sttText" 
             @update:sttText="handleSttTextChange" 
             @update:sttRunning="handleSttRunningChange" 
+            @update:volume="handleVolumeUpdate" 
+            class="sttcomponent1"
             />
             <!-- <STT 
               @update:modelValue="handleContentFieldChange" 
@@ -324,7 +332,8 @@ const enlarge = () => {
 
               <div><img class="imgurl" :src="problem.imgUrl.value"/></div>
               <!-- <div class="answer">{{ problem.answer.value }}</div> -->
-              <button class="hintBtn" @click="toggleHint" v-show="!sttRunning">힌트</button>
+              <SoundWave :volume="volume" class="soundwave" />
+              <button class="hintBtn" @click="toggleHint" >힌트</button>
               <div class="hint" v-if="showHint">{{ problem.hint.value }}</div>
         </div>
         <!-- <button @click="nextProblem">다음</button> -->

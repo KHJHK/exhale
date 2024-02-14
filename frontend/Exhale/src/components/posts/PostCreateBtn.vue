@@ -9,7 +9,7 @@
 
   const router = useRouter();
   const goPage = () => {
-   
+   router.push('/posts/create')
   };
 
 </script>

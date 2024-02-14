@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL + "/api/";
-const token = localStorage.getItem("JWT_token");
 
-const getLetterData = () => {
+const getLetterData = (token) => {
   return axios.get(baseURL + "statistics/letter", {
     headers: {
       Authorization: token,
@@ -11,7 +10,7 @@ const getLetterData = () => {
   });
 };
 
-const getSolvedData = () => {
+const getSolvedData = (token) => {
   return axios.get(baseURL + "statistics/solved-data", {
     headers: {
       Authorization: token,

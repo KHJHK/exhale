@@ -2,21 +2,13 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
   // 코스 조회
-  const getCourseList = async (token) => {
-    return await axios.get(baseURL + '/api/rehabilitation',{
-    headers: {
-        Authorization: token
-      }
-    })
+  const getCourseList = async () => {
+    return await axios.get(baseURL + '/api/rehabilitation');
   };
 
   // 카테고리 조회
-  const getCategoryList = async (courseId, token) => {
-    return await axios.get(baseURL + `/api/rehabilitation/${courseId}`,{
-    headers: {
-        Authorization: token
-      }
-    })
+  const getCategoryList = async (courseId) => {
+    return await axios.get(baseURL + `/api/rehabilitation/${courseId}`);
   };
   // 문제 조회
   const getProblem = async (categoryId, token) => {
@@ -81,7 +73,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 복습 문제 삭제
-  const deleteReview = async (problemId) => {
+  const deleteReview = async (problemId, token) => {
     return await axios.delete(baseURL + `/api/rehabilitation/review/${problemId}`,{
     headers: {
         Authorization: token
@@ -89,7 +81,7 @@ const baseURL = import.meta.env.VITE_BASE_URL;
     })
   };
   // 복습 문제집 요청
-  const getReviewProblem = async (courseId) => {
+  const getReviewProblem = async (courseId, token) => {
     return await axios.get(baseURL + `/api/rehabilitation/review-problem/${courseId}`,{
     headers: {
         Authorization: token

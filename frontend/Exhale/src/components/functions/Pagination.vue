@@ -6,7 +6,7 @@
 					() => {
                         if (leftmostPage > 1) {
 						leftmostPage -= PAGE_PER_SECTION;
-						// onChangeCurPage(leftmostPage);
+						onChangeCurPage(leftmostPage);
                         				}}
 				"
 				>&lt;</a
@@ -25,67 +25,68 @@
 				{{ page }}</a
 			>
 		</span>
-		<span v-if="leftmostPage + PAGE_PER_SECTION <= totalPage">
+		<span v-if="leftmostPage + PAGE_PER_SECTION <= totalPage">	
 			<a
 				id="move"
 				@click="
 					() => {
-                        // if (leftmostPage + PAGE_PER_SECTION <= totalPage){
+                        if (leftmostPage + PAGE_PER_SECTION <= totalPage){
 						leftmostPage += PAGE_PER_SECTION;
 						onChangeCurPage(leftmostPage);
-					}
+					}}
 				"
 				>&gt;</a
 			>
 		</span>
 	</div>
+
+	
 </template>
 
-<script>
-import { ref } from 'vue';
+<script setup>
+import { ref, computed, defineProps, defineEmits, watch, watchEffect } from 'vue';
+import { useCrudStore } from '@/stores/crud';
+import { onMounted } from 'vue';
+import { boardList } from '@/api/boards';
+import { storeToRefs } from 'pinia'
 
-export default {
-	props: {
-		list: Array,
-		ITEM_PER_PAGE: Number,
-		PAGE_PER_SECTION: Number,
-	},
-	emits: ['change-page'],
-	setup(props, { emit }) {
-		return {
-			...usePagination(props, emit),
-		};
-	},
+const crud = useCrudStore()
+const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoading} = storeToRefs(crud)
+
+
+const leftmostPage = ref(1);
+
+// const props = defineProps({
+// 	curPage: Number,
+// 	totalPage: Number,
+// })
+// const posts = ref(props.posts)
+// const postsLength = posts.length
+
+
+
+
+const getPaginationArray = (left) => {
+	const res = [];
+	for (let i = left; i < Math.min(totalPage.value + 1, left + PAGE_PER_SECTION.value); i++) {
+		res.push(i);
+		
+	}
+	return res;
 };
 
-const usePagination = (props, emit) => {
-	const curPage = ref(1);
-	const leftmostPage = ref(1);
-	const totalPage = Math.ceil(props.list.length / (props.ITEM_PER_PAGE || 1));
+const onChangeCurPage = async (page) => {
+  crud.curPage = page; // 현재 페이지 업데이트
 
-	const getPaginationArray = (left) => {
-		// [left,left+1,left+2...] 로 원소의 개수를 PAGE_PER_SECTION 개 만드는 함수
-		const res = [];
-		for (let i = left; i < Math.min(totalPage + 1, left + props.PAGE_PER_SECTION); i++) {
-			res.push(i);
-		}
-		return res;
-	};
+  await crud.board_list()
+}
 
-	const onChangeCurPage = (page) => {
-		curPage.value = page;
-		emit('change-page', page);
-	};
+// watch(() => totalPage, (newValue) => {
+//   if (newValue !== undefined) {
+//     totalPage.value = newValue;
+//   }
+// }, { immediate: true });
 
-	return {
-		leftmostPage,
-		curPage,
-		totalPage,
-		//
-		getPaginationArray,
-		onChangeCurPage,
-	};
-};
 </script>
 
 <style lang="scss" scoped>

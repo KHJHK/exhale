@@ -5,17 +5,15 @@ import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview  } from '@/api/course.js';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import { useRoute } from 'vue-router';
 
-// todo routing으로 받기
-const courseName='';
-const categoryName='';
-const overTime = 10;
-const categoryId = 7; 
+const route = useRoute()
+const overTime = route.params.time;
+const categoryId = route.params.id; 
 
 const authStore = useAuthStore();
-const { JWTtoken } = storeToRefs(authStore);
-// const token = JWTtoken;
-const token = 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJsb2dpbl9pZCI6InNzYWZ5MTAwIiwibWVtYmVyX2lkIjo2LCJyb2xlIjoiUk9MRV9VU0VSIiwiaWF0IjoxNzA3Nzk1MTU5LCJleHAiOjE3MDc3OTY5NTl9.STVgn9FlqQLBqSu3XUyDmTC66duFKil1_NxhPEEBA8s';
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;
@@ -83,7 +81,6 @@ const getProblems = async () => {
     problem.options.value = problemSet[problemIdx].options;
     problem.questionImage.value = problemSet[problemIdx].question_image;
     clickTTSQustion();
-    console.log(problemSet)
 
   } catch (error) {
     console.error(error); 

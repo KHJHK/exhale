@@ -1,6 +1,11 @@
 <template>
   <div>
-    <button @click="speak" id="tts-button">읽기</button>
+    <button @click="speak">
+      <img src="@/assets/headphone.svg" id="tts-button" alt="">
+      <span v-if="!showButton" @click="skip">해설 넘어가기</span>
+    </button>
+      <img src="@/assets/headphone.svg" class="tts-button2" alt="">
+    <!-- <img src="@/assets/mic.svg" class="backcircle" > -->
   </div>
 </template>
 
@@ -8,6 +13,10 @@
 import { ref, defineProps, watch} from 'vue';
 const props = defineProps({
   text: String,
+  showButton: {
+    type: Boolean,
+    default: true  // 이미지 버튼 기본적으로 표시
+  }
   });  
 
   const selectedLang = ref("ko-KR");
@@ -23,7 +32,9 @@ const props = defineProps({
     emit('update:isReading', isReading.value);
   });
 
-
+  const skip = () => {
+    text.value=''; 
+  }
   function speak() {
     isReading.value = true;
   if (typeof SpeechSynthesisUtterance === "undefined" || typeof window.speechSynthesis === "undefined") {
@@ -47,3 +58,43 @@ const props = defineProps({
   window.speechSynthesis.speak(speechMsg);
 }
 </script>
+
+<style lang="scss" scoped>
+
+#tts-button {
+  position: fixed;
+  top: 22%;
+  left: 34%;
+  box-shadow: 1px 5px 4px 3px rgb(170, 169, 169);
+  border-radius: 100%;
+  width: 60px;
+  z-index: 2;
+}
+
+.tts-button2 {
+  position: fixed;
+  top: 22%;
+  left: 34%;
+  width: 60px;
+  box-shadow: 1px -5px 10px -1px rgb(255, 255, 255);
+  border-radius: 100%;
+  z-index: -1;
+}
+
+span {
+font-family: 'NotoSansKR';
+letter-spacing: 2px;
+width: 30px;
+height: 100px;
+border: none;
+background-color: #EAEAEA;
+box-shadow: 1px 5px 4px 3px rgb(170, 169, 169);
+border-radius: 10px;
+padding-left: 8px;
+padding-right: 8px;
+padding-top: 20px;
+padding-bottom: 20px;
+}
+
+
+</style>

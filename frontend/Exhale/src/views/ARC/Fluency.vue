@@ -3,20 +3,19 @@ import { ref, onMounted, onBeforeUnmount, computed, nextTick  } from 'vue';
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import { getProblem, postSolvedProblem, postReview, checkfluencyAnswer  } from '@/api/course.js';
-import STT from '@/components/ARC/STT.vue';
+import STT_Fluency from '@/components/ARC/STT_Fluency.vue';
 import TTS from '@/components/ARC/TTS.vue';
 import ResultDialog from '@/components/ARC/ResultDialog.vue'
+import { useRoute } from 'vue-router';
 
 
-// todo routing으로 받기
-const courseName='';
-const categoryName='';
-const overTime = 10;
-const categoryId = 8; 
+const route = useRoute()
+const overTime = route.params.time;
+const categoryId = route.params.id; 
 
 const authStore = useAuthStore();
-const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken;
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;
@@ -43,7 +42,7 @@ const problem = {
 };
 
 
-// 타이머
+//타이머
 const elapsedTime = ref(overTime);
 let timerId;
 const timerWidth = computed(() => (elapsedTime.value / overTime) * 100);
@@ -112,12 +111,13 @@ const saveReviewProblem = async () => {
       return;
     }else if(data.dataStatus.code!=1){
     }
+    stopTimer();
     isComplete.value = true;
   } catch (error) {
-    if(error.response.data.dataStatus==4){
+    if(error.response.data.dataStatus.code==4){
       console.log("이미 저장된 문제입니다.");
     }
-    console.error(error);
+    // console.error(error);
 
   }
 };
@@ -140,11 +140,15 @@ const nextProblem = () => {
   // 초기화
   clearInterval(timerId);
   elapsedTime.value = overTime;
+
+  clickTTSQustion();
+
 }
 
 const resultProcessing = async (text) =>{
   clearInterval(timerId);
   let _isRight = false;
+
   if(text != ""){
     const params = {
         question : question.value,
@@ -173,6 +177,7 @@ const resultProcessing = async (text) =>{
 
 const handleSttTextChange = (text) => {
   // todo sttText 반영 안되는 오류
+  sttText.value = text;
   resultProcessing(text);
 };
 const handleIsReadingChange = (value) => {
@@ -192,14 +197,15 @@ const handleDialogChange = (value) => {
   if(!value){
     isPause.value = false;
     isReturn.value=false;
-    problem.explain.value = '';
   }
 
 };
 const handleNextTickChange = (value) => {
   isFirst = true;
+  problem.explain.value = '';
+  sttText.value = ' ';
+
   nextProblem();
-  clickTTSQustion();
 
 };
 const handleReviewTickChange = (value) => {
@@ -210,10 +216,11 @@ const handleReviewTickChange = (value) => {
 };
 const handleAgainTickChange = (value) => {
   isFirst = true;
+  problem.explain.value = '';
   elapsedTime.value = overTime;
   againTick.value = false;
   resultDialog.value = false;
-  problem.explain.value = '';
+  
   clickTTSQustion();
 };
 const handleIsCloseChange = (value) => {
@@ -242,14 +249,14 @@ const handleIsReturnChange = (value) => {
 
 const clickTTSQustion = async () => {
   await nextTick(); 
-  const ttsButton = document.querySelector('#question > div > #tts-button');
+  const ttsButton = document.querySelector('#question > div > button > #tts-button');
   if (ttsButton) {
     ttsButton.click();
   }
 };
 const clickTTSAnswer = async () => {
   await nextTick(); 
-  const ttsButton = document.querySelector('#answer > div > #tts-button');
+  const ttsButton = document.querySelector('#answer > div > button > #tts-button');
   if (ttsButton) {
     ttsButton.click();
   }
@@ -292,7 +299,7 @@ const enlarge = () => {
         </button> 
     </section>
 
-    <div class="problem" v-if="problem">
+    <div class="problem2" v-if="problem">
       <div >
         <ResultDialog 
           :dialog = "resultDialog"
@@ -315,48 +322,55 @@ const enlarge = () => {
       </div>
 
 
-      <!-- <div class="timer">
+      <div class="timer">
           <div class="timer-bar" :style="{ width: timerWidth + '%' }">
             <img src="@/assets/clock1.svg" class="clock">
           </div>
 
-        </div> -->
+        </div>
 
         <div class="question">
           {{ question }}
         </div>
+        <img src="@/assets/triangle_left.svg" class="triangle_left">
 
-        <div class="sttText">
+        <!-- <div class="sttText">
           {{ sttText }}
-        </div>
-        
-        <div class="content">
-            <div>{{ isReading }}</div>
+        </div> -->
+
+        <img src="@/assets/triangle.svg" class="triangle">
+      
             <div :class="isReading ? 'stt-able' :  'stt-disable'">
-                <STT 
+                <STT_Fluency 
                 :sttText="sttText"
                 @update:sttText="handleSttTextChange"
+                class="sttcomponent"
                 />
             </div>
-        </div>
-        <div id="question">
-        <TTS 
+
+        <div id="question" >
+        <TTS
             :text="question"
             :isReading="isReading"
+            :showButton="true"
             @update:isReading="handleIsReadingChange"
             />
+          <!-- <img src="@/assets/headphone.svg" id="tts-button" alt=""> -->
         </div>
         <div id="answer">
             <TTS
             :text="problem.explain.value"
             :isReading="isReading"
+            :showButton="false"
             @update:isReading="handleIsReadingChange"
             />
         </div>
-        답 : {{ problem.explain.value }}
-        <button @click="click">클릭</button>
+        <div class="answerText">{{ problem.explain.value }}</div>
+        <!-- <button @click="click">클릭</button> -->
     </div>
 
+
+    <img class="cloud-character" src="@/assets/character.png" alt="">
 
   </div>
 
@@ -365,15 +379,72 @@ const enlarge = () => {
 
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/gamebackground.scss';
+@import '@/assets/scss/layout/_gamebackground.scss';
 
 .stt-able{
     pointer-events: none;
-    background-color : rgba(128, 128, 128, 0.8);
+    // background-color : rgba(128, 128, 128, 0.8);
 }
 
 .stt-disable{
     pointer-events: cursor;
-    background-color: '';
+    // background-color: '';
 }
+
+.cloud-character {
+  position: fixed;
+  top: 39%;
+  left: 64%;
+  width: 90px;
+}
+
+.question {
+  position: fixed;
+  top: 23%;
+  left: 41%;
+  border-radius: 10px;
+  text-align: center;
+  padding: 15px 17px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(45, 45, 45);
+  width: 27.7%;
+  font-family: 'NotoSansKR';
+  letter-spacing: 1px;
+}
+
+.triangle {
+  position: fixed;
+  top: 42%;
+  left: 61.5%;
+  width: 20px;
+}
+
+.triangle_left {
+  position: fixed;
+  top: 25%;
+  left: 40%;
+  width: 20px;
+}
+
+#answer {
+  position: fixed;
+  top: 83%;
+  left: 22%;
+}
+
+.answerText {
+  position: fixed;
+  top: 80%;
+  left: 35%;
+  width: 35%;
+  font-family: 'NotoSansKR';
+}
+
+ .sttcomponent {
+ position: fixed;
+ top: 55%;
+ left: 50%;
+}
+
+
 </style>
