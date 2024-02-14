@@ -13,8 +13,8 @@ let courseId = 1;
 const volume = ref(0);
 
 const authStore = useAuthStore();
-const { JWTtoken } = storeToRefs(authStore);
-const token = JWTtoken.value;
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;

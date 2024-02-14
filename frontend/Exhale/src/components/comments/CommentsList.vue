@@ -34,7 +34,7 @@ import { onMounted,ref,reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 const store = useAuthStore()
-const token = store.JWTtoken
+const token = store.jwtToken
 const route = useRoute()
 const article_id = route.params.id
 const lists = ref([])

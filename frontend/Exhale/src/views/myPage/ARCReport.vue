@@ -35,14 +35,19 @@
 import { ref, onMounted } from "vue";
 import SimpleHdear from "@/components/common/SimpleHeader.vue";
 import Footers from "@/components/common/Footers.vue";
-
 import * as mypage from "@/api/mypage";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";
+
+const authStore = useAuthStore();
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
 
 const nickname = ref("");
 const image = ref(null);
 
 const getProfile = async () => {
-  const response = await mypage.getProfile();
+  const response = await mypage.getProfile(token);
   nickname.value = response.data.response.nickname;
   image.value = response.data.response.image_url;
 };

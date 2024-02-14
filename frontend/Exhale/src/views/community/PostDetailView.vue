@@ -105,7 +105,7 @@ import axios from 'axios';
 const crud = useCrudStore()
 const {posts} = storeToRefs(crud)
 const store = useAuthStore()
-const token = store.JWTtoken
+const token = store.jwtToken
 const router = useRouter()
 const route = useRoute()
 const postId = route.params.id
