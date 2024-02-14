@@ -21,7 +21,6 @@ public class ArticleController {
     private final TokenPayloadUtil tokenPayloadUtil;
 
     //게시글 조회
-    @Transactional(readOnly = true)
     @GetMapping("/{article_id}")
     public ResponseEntity<CommonResponse> getArticle(@PathVariable("article_id") Long articleId){
         return CommonResponse.ok(articleService.getArticle(articleId));

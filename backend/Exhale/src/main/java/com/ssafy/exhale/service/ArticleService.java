@@ -75,6 +75,8 @@ public class ArticleService {
     public ArticleResponse getArticle(Long articleId) {
         try {
             Article article = articleRepository.findByIdAndIsDelete(articleId, false);
+            article.addView();
+            articleRepository.save(article);
             return ArticleResponse.from(ArticleDto.from(article));
         } catch (NullPointerException e){
             throw new NoSuchDataException(e);

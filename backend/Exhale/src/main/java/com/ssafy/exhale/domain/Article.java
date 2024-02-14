@@ -49,4 +49,8 @@ public class Article {
         return new Article(id, title, content, view, thumbnail, nickname,
                 createDate, modifyDate, isDelete, board, member);
     }
+
+    public void addView(){
+        view += 1;
+    }
 }
