@@ -1,47 +1,175 @@
 <template>
-    <header>
-        <Headers />
-    </header>
-    <body>
-        <p>메인페이지 전용 내용</p>
-    </body>
-    <footer>
-        <Footers/>
-    </footer>
+    <Headers />
+    <div class="hello">
+      우리 반갑게 인사해볼까요?
+    </div>
+    <!-- <div class="maintext">
+      EXHALE
+    </div> -->
+    <img class="background" src="@/assets/background_circle.png" alt="">
+    <img class="cloud-character jello-horizontal" src="@/assets/character.png" alt="">
+
+    <STT_initialPage
+      v-model="sttText" 
+      @update:sttText="handleSttTextChange" 
+      @update:sttRunning="handleSttRunningChange" 
+      @update:volume="handleVolumeUpdate" 
+      class="sttcomponent1"
+    />
+    <SoundWave_InitialPage :volume="volume" class="soundwave_initial" />
+
+    <Footers/>
 
 </template>
 
-<script>
-import { ref, onMounted, onUnmounted, watch } from "vue";
-import { useRouter } from "vue-router";
+<script setup>
+import { ref, onMounted, onBeforeUnmount, computed  } from 'vue';
+import { logout } from '@/api/outhApi';
+import { useAuthStore } from '@/stores/auth';
 import Headers from "@/components/common/Headers.vue";
 import Footers from '@/components/common/Footers.vue';
-import { RouterView } from "vue-router";
+import STT_initialPage from '@/components/ARC/STT_initialPage.vue';
+import SoundWave_InitialPage from '@/components/ARC/SoundWave_InitialPage.vue';
 
-export default {
-  mounted() {
-    // URL에서 인가 코드 추출
-    const queryParams = new URLSearchParams(window.location.search);
-    const code = queryParams.get('code');
-    
-    if (code) {
-      // 인가 코드를 로컬 스토리지에 저장
-      localStorage.setItem('kakao_auth_code', code);
+// const authStore = useAuthStore()
+// const state = reactive({
+//   loggedIn: authStore.isLogIn,
+// })
 
-      // 추가적인 처리가 필요할 수 있음
-    }
-  }
-}
-const value = localStorage.getItem('kakao_auth_code')
+const volume = ref(0);
+
+const sttText = ref("");
+const sttRunning = ref(false);
+
+const handleVolumeUpdate = (newVolume) => {
+  volume.value = newVolume; // STT.vue로부터 전달받은 볼륨 데이터 업데이트
+};
+
+
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+
+.hello {
+  font-size: 25px;
+  position: fixed;
+  left: 41.5%;
+  top: 23%;
+  font-family: 'NotoSansKR';
+  font-weight: 900;
+  color: rgb(93, 93, 93);
+}
+.maintext {
+position: fixed;
+top: 47%;
+left: 2%;
+font-family: 'EF_Rebecca';
+font-size: 315px;
+color: #334F4E;
+// color: rgb(108, 159, 156);
+opacity: 50%;
+}
+
 body {
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
     text-align: center;
     margin-top: 200px;
 }
+
+.navbar-links {
+  margin-left: 45vw;
+  display: flex;
+  align-items: center;
+  border-bottom: none;
+  margin-right: -30vw;
+  width: 150%;
+}
+
+nav {
+  margin-bottom: -2vh;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-around; */
+  margin-left: 7vw;
+  margin-top: 2vh;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
+  display: inline-block;
+  margin-top: -22vh;
+}
+
+
+.nav-link:hover {
+  border-bottom: 2px solid rgb(108, 159, 156);
+  text-decoration: none;
+  color: black;
+  transition: 0.4s;
+  padding-bottom: 10px;
+}
+
+.background {
+  position: fixed;
+  top: 31%;
+  right: -4.5%;
+  opacity: 50%;
+  // box-shadow: 1px -30px 100px 15px rgb(108, 159, 156);
+  border-radius: 100%;
+  z-index: -50;
+  // &:hover {
+  //   animation: jello-horizontal 0.9s both;
+  // }
+}
+
+.soundwave_initial {
+  width: 100%;
+  // background-color: black;
+  position: fixed;
+  top: 65%;
+  left: 36%;
+  z-index: 200;
+}
+
+.cloud-character {
+  width: 10%;
+  position: absolute;
+  left: 29%;
+  top: 20%;
+  transform: rotate(-14deg);
+  opacity: 80%;
+}
+
+
+
+@keyframes jello-horizontal {
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
 </style>

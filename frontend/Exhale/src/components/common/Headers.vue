@@ -67,7 +67,7 @@ nav {
   border-bottom: 2px solid transparent;
   transition: border-color 0.3s;
   display: inline-block;
-  margin-top: -22vh;
+  margin-top: -26vh;
 }
 
 

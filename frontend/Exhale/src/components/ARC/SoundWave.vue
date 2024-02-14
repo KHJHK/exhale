@@ -72,7 +72,10 @@ const waveStyle = computed(() => {
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
   /* transform-origin: center; */
-  transform: scaleY(0.2);
+  /* transform: scaleY(0.2); */
+  animation: wave-animation 1s ease-in-out infinite; 
+  animation-play-state: paused;
+  max-height: 40px;
 }
 
 #box>label:nth-of-type(1){
