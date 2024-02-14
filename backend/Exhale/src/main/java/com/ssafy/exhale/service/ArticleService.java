@@ -157,7 +157,13 @@ public class ArticleService {
 
             pageSize = pageSize != null ? pageSize : PAGE_SIZE;
             PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
-            List<Article> articleEntityList = articleRepository.search(searchRequest, pageRequest);
+            List<Article> articleEntityList;
+            if(searchRequest.getBoardId() != 0) {
+                articleEntityList = articleRepository.search(searchRequest, pageRequest);
+            }
+            else {
+                articleEntityList = articleRepository.searchAll(searchRequest, pageRequest);
+            }
             Long articleTotalCount = articleRepository.countSearchedArticles(searchRequest);
             Long pageTotalCount = countTotalPage(articleTotalCount, pageSize);
 
