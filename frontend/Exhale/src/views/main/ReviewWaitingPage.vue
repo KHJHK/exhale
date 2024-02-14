@@ -16,7 +16,7 @@
     <p class="title">복습</p>
 
     <div class="mainbox">
-      <div v-for="course of courses" @click="toggleSubbox(course.course_id)" class="box1" :key="course.course_id">
+      <div v-for="course of courses" @click="toggleSubbox(course.course_id)" class="box" :key="course.course_id">
         {{course.course_name}}
       </div>
     </div>
