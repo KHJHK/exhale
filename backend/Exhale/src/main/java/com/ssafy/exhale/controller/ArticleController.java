@@ -7,7 +7,6 @@ import com.ssafy.exhale.service.ArticleService;
 import com.ssafy.exhale.util.TokenPayloadUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

@@ -88,7 +88,6 @@ public class ArticleService {
         try {
             Board board = boardRepository.getReferenceById(articleRequest.getBoardId());
             Member member = memberRepository.getReferenceById(memberId);
-            System.out.println(member.toString());
 
             ArticleDto articleDto = articleRequest.toDto(
                     BoardDto.from(board),
