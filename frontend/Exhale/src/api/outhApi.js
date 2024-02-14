@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/auth";
+const baseURL = import.meta.env.VITE_BASE_URL + "/api/";
+const kakaoApiKey = import.meta.env.VITE_KAKAO_API_APP_KEY;
+
 const formDataHeader = {"Content-Type":
 "multipart/form-data"};
 const accessToken = localStorage.getItem('JWT_token')
@@ -228,13 +231,10 @@ const KEY = localStorage.getItem('key')
                 
                     
                     const kakaoLogin = () => {
-                        const clientId = "64f53b3a322ebb16eabd9859392720c9"; // 클라이언트 ID를 문자열로 설정
-                        const redirectUri = 'http://localhost:5173/';
-                        const url = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`
+                        const redirectUri = `http://localhost:5173/signup`;
+                        const url = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${redirectUri}&response_type=code`
                         // 사용자를 카카오 로그인 페이지로 리디렉션
-                        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
-                        
-                        return kakaoLogin
+                        window.location.href = url;
                       };
                     
                     //   const logOut = async (key, refresh_token) => {
@@ -251,10 +251,14 @@ const KEY = localStorage.getItem('key')
                       
                         // router.push('/')
                     //   };
+                    const checkCode = async(code, type) => {
+                        // console.log(http+ `auth/kakao/${type}?code=${code}`)
+                        return axios.get(`http://localhost:8080/api/auth/kakao/${type}?code=${code}`);
+                    }
                     
                     export {
                         isIdDuplicated,
-                        
+                        checkCode,
                         emailVerifyRequest,
                         verifyNumberCreate,
                         signUp,

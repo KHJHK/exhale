@@ -18,7 +18,6 @@
       </div>
     </div>
   </header>
-
     <main>
         <div class="textbox">
             <h2>회원탈퇴</h2>
