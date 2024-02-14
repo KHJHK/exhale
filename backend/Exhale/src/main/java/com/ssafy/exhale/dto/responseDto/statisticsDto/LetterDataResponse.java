@@ -1,6 +1,7 @@
 package com.ssafy.exhale.dto.responseDto.statisticsDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ssafy.exhale.domain.LetterType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,5 @@ public class LetterDataResponse {
     private long correctCount;
     @JsonProperty("wrong_count")
     private long wrongCount;
+    private LetterType type;
 }
