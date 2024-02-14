@@ -29,6 +29,7 @@ public class S3Util {
         return uploadUrl + fullFileName;
     }
 
+    //테스트
     public String saveImage(MultipartFile multipartFile) {
         String extension = (multipartFile.getOriginalFilename().split("\\."))[1];
         String newFileName = UUID.randomUUID().toString();
