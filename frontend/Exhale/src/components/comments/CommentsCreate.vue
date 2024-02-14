@@ -16,7 +16,7 @@ import { useAuthStore } from '@/stores/auth';
 const route = useRoute()
 const postId = parseInt(route.params.id)
 const store = useAuthStore()
-const token = store.JWTtoken
+const token = store.jwtToken
 const router = useRouter()
 
 const newComment = ref('');

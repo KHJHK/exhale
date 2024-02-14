@@ -1,26 +1,20 @@
 import axios from "axios";
-import { useAuthStore } from "@/stores/auth";
-const formDataHeader = {"Content-Type":
-"multipart/form-data"};
-const accessToken = localStorage.getItem('JWT_token')
-const refreshToken = localStorage.getItem('refresh_token')
-const KEY = localStorage.getItem('key')
-const kakaoCode = localStorage.getItem('kakao_auth_code')
-    
 
-const isIdDuplicated = async (userId) => {
+
+const baseURL = import.meta.env.VITE_BASE_URL;
+const kakaoApiKey = import.meta.env.VITE_KAKAO_API_APP_KEY;
+    // 2 - 이미 존재하는 값
+    const isIdDuplicated = async (userId) => {
         
         try {
         const response = await axios.post('http://i10b208.p.ssafy.io/api/general/id', {
             login_id: userId
         });
-       
-        console.log("사용 가능한 아이디입니다.");
+    
         alert("사용 가능한 아이디입니다.");
         return false; 
     } catch (error) {
         if (error.response && error.response.status === 400) {
-            console.log("아이디가 이미 사용 중입니다.");
             alert("아이디가 이미 사용 중입니다.");
             return true; 
         } else {
@@ -30,244 +24,155 @@ const isIdDuplicated = async (userId) => {
     }
 };
 
-            const verifyNumberCreate = async (email_id, email_domain) => {
-                try {
-                    const response = await axios.post('http://i10b208.p.ssafy.io/api/email/certification', {
-                        email_id: email_id,
-                        email_domain : email_domain
-                    })
-                    if (response) {
-                    console.log('인증번호 전송완료!', response)}
-                } catch (error) {
-                    console.error(error)
-                    alert('이미 인증된 이메일입니다. 다른 이메일 계정으로 시도해주세요.')
+const verifyNumberCreate = async (email_id, email_domain) => {
+    try {
+        const response = await axios.post('http://i10b208.p.ssafy.io/api/email/certification', {
+            email_id: email_id,
+            email_domain : email_domain
+        })
+        if (response) {
+        console.log('인증번호 전송완료!', response)}
+    } catch (error) {
+        console.error(error)
+        alert('이미 인증된 이메일입니다. 다른 이메일 계정으로 시도해주세요.')
 
-                 }}; 
-            
-            const emailVerifyRequest = async (email_id,email_domain,code) => {
-                return await axios.post('http://i10b208.p.ssafy.io/api/email/check',  {
-                    email_id: email_id,
-                    email_domain:email_domain,
-                    code: code
-                })
-            };
+        }}; 
 
-            const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
-                try {
-                    const response = await axios.post('http://i10b208.p.ssafy.io/api/general/join', {
-                      login_id: userId,
-                      password: password,
-                      email_id: email_id,
-                      email_domain: email_domain,
-                      name: fullname,
-                      birth: birthdate,
-                      nickname: nickName
-                    });
-                    console.log('회원가입 성공:', response);
-                    alert('날숨의 가족이 되신것을 환영해요! 다시 로그인 해주세요');
-                    
-                    // return response.data; 
-                  } catch (error) {
-                    if (axios.isAxiosError(error)) {
-                      // 서버 응답 에러 처리
-                      console.error('서버 요청 에러:', error.response?.data || error.message);
-                      alert(`서버 에러 발생: ${error.response?.statusText || error.message}`);
-                    } else {
-                      // 그 외 에러 처리
-                      console.error('알 수 없는 에러:', error);
-                      alert('알 수 없는 에러가 발생했습니다.');
-                    }
-                  }
-                };
-            
-            // const sendKakaoCode = async () => {
-            //     return await axios.post('http://i10b208.p.ssafy.io/api/auth/kakao/join', {
-            //         code: kakaoCode
-            //     })
-            // };
-            
-            // 리디렉션 후에 호출되어야 하는 함수입니다
-const handleKakaoRedirect = async () => {
-    // URL 파라미터를 파싱
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    console.log('카카오 코드',code)
-    if (code) {
-      try {
-        // 백엔드로 코드를 보내는 함수를 호출합니다
-        const response = await axios.post('http://i10b208.p.ssafy.io/api/auth/kakao/join', {
-          code: code
+const emailVerifyRequest = async (email_id,email_domain,code) => {
+    return await axios.post('http://i10b208.p.ssafy.io/api/email/check',  {
+        email_id: email_id,
+        email_domain:email_domain,
+        code: code
+    })
+};
+
+
+
+
+const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
+    try {
+        const response = await axios.post('http://i10b208.p.ssafy.io/api/general/join', {
+            login_id: userId,
+            password: password,
+            email_id: email_id,
+            email_domain: email_domain,
+            name: fullname,
+            birth: birthdate,
+            nickname: nickName
         });
-        console.log('전송완료')
-      } catch (error) {
-        console.error(error);
+        // console.log('회원가입 성공:', response);
+        alert('날숨의 가족이 되신것을 환영해요! 다시 로그인 해주세요');
         
-      }
-    }
-  };
- 
-            const logIn = async (userId, password) => {
-                try {
-                    const response = await axios.post('http://i10b208.p.ssafy.io/api/general/login', {
-                        login_id: userId,
-                        password: password,
-                    }, {
-                        headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
-                        }
-                    });
-                    localStorage.setItem('JWT_token', response.data.response.token.access_token)
-                    localStorage.setItem('refresh_token', response.data.response.token.refresh_token)
-                    localStorage.setItem('key',response.data.response.token.key);
-                    console.log('로그인 성공:', response.data);
-                    alert(`${userId}님 환영합니다!`)
-                   
-            } catch (error) {
-                // 로그인 실패 시 에러 처리
-                if (axios.isAxiosError(error) && error.response) {
-                    console.error('로그인 실패:', error.response.data.message);
-                    alert(`로그인 실패: ${error.response.data.message}`);
-                } else {
-                    console.error('undefined user:', error);
-                    alert('등록되지 않은 아이디입니다.');
-                }
-                throw error;
-            }};
+        // return response.data; 
+        } catch (error) {
+        if (axios.isAxiosError(error)) {
+            // 서버 응답 에러 처리
+            console.error('서버 요청 에러:', error.response?.data || error.message);
+            alert(`서버 에러 발생: ${error.response?.statusText || error.message}`);
+        } else {
+            // 그 외 에러 처리
+            console.error('알 수 없는 에러:', error);
+            alert('알 수 없는 에러가 발생했습니다.');
+        }
+        }
+    };
 
-                    const tempPassword = async (userId, email_id, emailDomain) => {
-                        return await axios.post('http://i10b208.p.ssafy.io/api/users/temp-password',  {
-                            login_id: userId,
-                            email_id: email_id,
-                            email_domain: emailDomain
-                        })
-                    };
-                    
-                    const reName = async (nickName, accessToken) => { 
-                        return await axios.post('http://i10b208.p.ssafy.io/api/users/nickname',  {
-                            nickname: nickName
-                        }, {
-                            headers: {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        }) 
-                    };
-                    
-                    const changeProfileImg = async (file, accessToken) => {
-                        const formData = new FormData();
-                        formData.append('image', file)
-                        return await axios.post('http://i10b208.p.ssafy.io/api/users/profile-image', formData, {
-                            headers: {
-                                formDataHeader,
-                                'Authorization': `Bearer ${accessToken}`                
-                            }
-                        })
-                    };
-                    
-                    const checkPassword = async (password, accessToken) => {
-                        return await axios.post('http://i10b208.p.ssafy.io/api/users/check-password', {
-                            password: password 
-                        }, {
-                            headers: {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        })
-                    };
-                    
-                    const rePassword = async (password, accessToken) => {
-                        return await axios.post('http://i10b208.p.ssafy.io/api/users/repassword', {
-                            old_password: password,
-                            new_password: password
-                        }, {
-                            headers: {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        })
-                    };
-                    
-                    const reFresh = async (refresh_token, member_id) => {
-                        return await axios.post('http://i10b208.p.ssafy.io/api/users/refresh', {
-                            refresh_token : refresh_token,
-                            member_id : member_id
-                        }, {
-                            headers : {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                        })
-                    };
-                    
-                    const withDraw = async (accessToken) => {
-                        return await axios.get('http://i10b208.p.ssafy.io/api/users/withdraw', {
-                            None
-                        },{
-                            headers : {
-                                'Authorization': `Bearer ${accessToken}`
-                            }
-                            
-                        })
-                    };
-                    
-                    const logout = async () => {
-                        console.log('키', KEY)
-                        console.log('리프레시',refreshToken)
-                        try {
-                            const response = await axios.post('http://i10b208.p.ssafy.io/api/users/logout', {
-                               key : KEY
-                            },{
-                                headers : {
-                                    "Authorization" : refreshToken
-                                }
-                            })
-                            alert('로그아웃 되셨습니다. 또 만나요!')
-                            localStorage.removeItem('JWT_token')
-                            localStorage.removeItem('refresh_token')
-                            localStorage.removeItem('key')
-                            location.reload()
-                            router.push( "/")
-                             }  catch (error) {
-                             }};
-                
-                    
-                    const kakaoLogin = () => {
-                        // const clientId = "64f53b3a322ebb16eabd9859392720c9"; 
-                        const clientId = 'a1c1ca5ee0651d29efdddcf61a847865';
-                        const redirectUri = 'http://localhost:5173/mainpage';
-                        const url =`https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=http://i10b208.p.ssafy.io/api/auth/kakao/join&response_type=code`//리다렉트 url바꿔놓음
-                        // 사용자를 카카오 로그인 페이지로 리디렉션
-                        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=http://i10b208.p.ssafy.io/api/auth/kakao/join`;
-                        };
-                    
-                    //   const logOut = async (key, refresh_token) => {
-                    //     return await axios.get('http://i10b208.p.ssafy.io/api/users/logout') ,{
-                    //         key : key
-                    //     }, {
-                    //         headers : {
-                    //             'Authorization': `${refresh_token}`
-                    //         }
-                    //     }
-                     
-                        // localStorage.removeItem('JWT_token')
-                        // localStorage.removeItem('refresh_token')
-                      
-                        // router.push('/')
-                    //   };
-                    
-                    export {
-                        isIdDuplicated,
-                        
-                        emailVerifyRequest,
-                        verifyNumberCreate,
-                        signUp,
-                        
-                        logIn,
-                        tempPassword,
-                        reName,
-                        changeProfileImg,
-                        checkPassword,
-                        rePassword,
-                        reFresh,
-                        withDraw,
-                        logout,
-                        kakaoLogin,
-                        handleKakaoRedirect
-                        
-                    };
+
+const sendKakaoCode = async (kakaoCode) => {
+    return await axios.post('/api/outh/kakao/join', {
+        code: kakaoCode
+    })
+};
+
+const logIn = async (userId, password) => {
+    const response = await axios.post(`${baseURL}/api/general/login`, {
+        login_id: userId,
+        password: password,
+    }, {
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        }
+    });
+    return response.data;
+    
+};
+// todo 구현
+const tempPassword = async (userId, email_id, emailDomain) => {
+    return await axios.post('http://i10b208.p.ssafy.io/api/users/temp-password',  {
+        login_id: userId,
+        email_id: email_id,
+        email_domain: emailDomain
+    })
+};
+// todo 구현
+const reFresh = async (refresh_token, member_id) => {
+    return await axios.post('http://i10b208.p.ssafy.io/api/users/refresh', {
+        refresh_token : refresh_token,
+        member_id : member_id
+    }, {
+        headers : {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    })
+};
+
+const logout = async (key, refreshToken) => {
+    
+    return await axios.post(`${baseURL}/api/users/logout`, {
+        key : key
+    },{
+        headers : {
+            "Authorization" : refreshToken
+        }
+    })
+}
+
+// todo 구현
+const kakaoLogin = (type) => {
+    const redirectUri = `http://localhost:80/${type}`;
+    const url = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${redirectUri}&response_type=code`
+    // 사용자를 카카오 로그인 페이지로 리디렉션
+    window.location.href = url;
+  };
+
+//   const logOut = async (key, refresh_token) => {
+//     return await axios.get('http://i10b208.p.ssafy.io/api/users/logout') ,{
+//         key : key
+//     }, {
+//         headers : {
+//             'Authorization': `${refresh_token}`
+//         }
+//     }
+ 
+    // localStorage.removeItem('JWT_token')
+    // localStorage.removeItem('refresh_token')
+  
+    // router.push('/')
+//   };
+const checkCode = async(code, type) => {
+    try{
+        if(code !== null){
+        //code로 정보 요청
+            // return await axios.get(baseURL + `auth/kakao/${type}?code=${code}`);
+            return await axios.get("http://localhost:8080/api/" + `auth/kakao/${type}?code=${code}`);
+        }; 
+    } catch(error){
+        console.log(error)
+        if(error.response.data.dataStatus.code === 2) return 2;
+    }
+}
+
+export {
+    isIdDuplicated,
+    checkCode,
+    emailVerifyRequest,
+    verifyNumberCreate,
+    signUp,
+    sendKakaoCode,
+    logIn,
+    tempPassword,
+    reFresh,
+    logout,
+    kakaoLogin
+    
+};

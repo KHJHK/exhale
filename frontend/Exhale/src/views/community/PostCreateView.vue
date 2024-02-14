@@ -153,7 +153,8 @@ import { articleCreate, saveImg } from '@/api/boards';
 import { useAuthStore } from "@/stores/auth";
 import { render } from 'vue';
 const store = useAuthStore()
-const accessToken = store.JWTtoken
+const accessToken = store.jwtToken;
+
 const selectedCategory = ref('');
 const router = useRouter()
 const title = ref('');

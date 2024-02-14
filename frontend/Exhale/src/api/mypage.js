@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL + "/api/";
-const token = localStorage.getItem("JWT_token");
 
-const getProfile = () => {
+const getProfile = (token) => {
   return axios.get(baseURL + "users/profile", {
     headers: {
       Authorization: token,
@@ -11,7 +10,7 @@ const getProfile = () => {
   });
 };
 
-const checkPassword = (password) => {
+const checkPassword = (password, token) => {
   const data = {
     password: password,
   };
@@ -23,7 +22,7 @@ const checkPassword = (password) => {
   });
 };
 
-const rePassword = (old_password, new_password) => {
+const rePassword = (old_password, new_password, token) => {
   const data = {
     old_password: old_password,
     new_password: new_password,
@@ -36,4 +35,12 @@ const rePassword = (old_password, new_password) => {
   });
 };
 
-export { getProfile, checkPassword, rePassword };
+const withdraw = (token) => {
+  return axios.get(baseURL + "users/withdraw", {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+export { getProfile, checkPassword, rePassword, withdraw };

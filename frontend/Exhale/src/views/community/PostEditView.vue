@@ -145,7 +145,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useCrudStore } from '@/stores/crud';
 const store = useAuthStore()
 const crud = useCrudStore()
-const accessToken = store.JWTtoken
+const accessToken = store.jwtToken
 
 const route = useRoute()
 const router = useRouter()

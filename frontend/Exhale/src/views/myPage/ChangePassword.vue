@@ -13,7 +13,7 @@
           >
           >
           <!-- to를 자기 자신(ChangePassword)로  잡으면 에러남-->
-          <RouterLink class="breadlink" :to="{ name: 'PostWholeListView' }"
+          <RouterLink class="breadlink" :to="{ name: 'ARCReport' }"
             >회원정보수정</RouterLink
           >
         </div>
@@ -79,6 +79,12 @@ import Footers from "@/components/common/Footers.vue";
 
 import * as mypage from "@/api/mypage";
 
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "@/stores/auth";const authStore = useAuthStore();
+
+const { jwtToken } = storeToRefs(authStore);
+const token = jwtToken.value;
+
 const oldPassword = ref("");
 const newPassword = ref("");
 const newPasswordCheck = ref("");
@@ -90,7 +96,7 @@ const isSaveButtonDisabled = ref(true);
 const checkPassword = async () => {
   //여기서 try-catch를 해버리니까 console에 mypage 로직 처리중 발생한 에러 로그가 남음
   try {
-    const response = await mypage.checkPassword(oldPassword.value);
+    const response = await mypage.checkPassword(oldPassword.value, token);
     isOldInputDisabled.value = !isOldInputDisabled.value;
     isNewInputDisabled.value = !isNewInputDisabled.value;
   } catch (error) {
@@ -121,7 +127,8 @@ const checkPassword = async () => {
 const changePassword = async () => {
   const response = await mypage.rePassword(
     oldPassword.value,
-    newPassword.value
+    newPassword.value,
+    token
   );
 };
 
@@ -176,17 +183,19 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 600px;
+  height: 60vh;
 }
 
 main > h2 {
   font-weight: bolder;
   font-size: 45px;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 main > p {
   margin: 20px;
+  font-weight: bold;
+  color: #00000085;
 }
 
 .input-form {
@@ -197,7 +206,7 @@ main > p {
 }
 
 .input-form > * > * {
-  margin: 10px;
+  margin: 5px;
 }
 
 .old-password-textbox {

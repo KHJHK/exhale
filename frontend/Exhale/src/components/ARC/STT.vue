@@ -8,98 +8,38 @@
         <img src="@/assets/mic.svg" class="mic" >
       </button>
       <img src="@/assets/mic.svg" class="backcircle" >
-      <SoundWave :volume="volume" class="soundwave" />
+      
       <div class="message">{{ message }}</div>
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
-    <form @submit.prevent="onSubmit" ref="sttForm">
-
-      <input type="text" class="textarea" name="sttText" v-model="sttText">
-
+    <form @submit.prevent="onSubmit" ref="sttForm" class="textform">
+      <input type="text" class="textarea" v-model="sttText" readonly>
     </form>
   </div>
   </template>
   
-  <!-- <script setup>
-  import { ref, watch, defineEmits, defineProps } from 'vue';
-  const props = defineProps({
-    sttText: String,
-  });
-  const sttText = ref(props.sttText);
-  watch(props, () => {
-    sttText.value = props.sttText;
-  });
-  
-
-  const emit = defineEmits(["update:sttText"]);
-  
-  watch(sttText, () => {
-    emit('update:sttText', sttText.value);
-  });
-  
-  const message = ref("Click!"); // 초기값 변경
-  let sttTextValue = "";
-  
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const speechRecognition = new SpeechRecognition();
-  speechRecognition.lang = "ko-kr";
-  speechRecognition.continuous = true;
-  
-  const sttRunning = ref(false);
-  
-  const enableStt = () => {
-      sttTextValue = sttText.value;
-      speechRecognition.start();
-      message.value = "지금 듣고 있어요!";
-      sttRunning.value = true;
-  };
-  
-  const disableStt = () => {
-      speechRecognition.stop();
-      message.value = "Click!";
-      sttRunning.value = false;
-  };
-
-  
-  speechRecognition.onresult = (e) => {
-
-      const transcript = Array.from(e.results)
-          .map(result => result[0])
-          .map(speech => speech.transcript)
-          .join(' ');
-      console.log("transcript :", transcript);
-      disableStt();
-      sttText.value = transcript;
-  };
-  
-  speechRecognition.onerror = (e) => {
-      console.error(e);
-      disableStt();
-  };
-  
-  </script> -->
-
 <script setup>
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
-import SoundWave from './SoundWave.vue';
-const sttText = ref(''); 
+
 const sttRunning = ref(false);
-const emit = defineEmits(["update:sttText","update:sttRunning"]);
+const emit = defineEmits(["update:sttText","update:sttRunning","update:volume"]);
 
 const props = defineProps({
   sttText: String
 });
+const sttText = ref(props.sttText); 
 
 
 // props의 sttText 변경될 때마다 이벤트를 발생시킵니다.
-watch(() => props.sttText, (newValue) => {
-  emit("update:sttText", newValue);
+watch(() => props.sttText, () => {
+  sttText.value = props.sttText;
 });
 
 // textarea에 입력된 값을 sttText에 반영하는 함수
-const updateSttText = (event) => {
-  emit('update:sttText', event.target.value);
-};
+// const updateSttText = (event) => {
+//   // emit('update:sttText', event.target.value);
+// };
+
 
 watch(sttRunning, (value) => {
   emit("update:sttRunning", value);
@@ -107,9 +47,10 @@ watch(sttRunning, (value) => {
 
 
 // sttText 데이터가 변경될 때마다 부모 컴포넌트로 변경된 값을 emit하여 전달합니다.
-watch(sttText, () => {
-  emit('update:sttText', sttText.value);
-});
+// watch(sttText, () => {
+//   console.log(sttText)
+//   emit('update:sttText', sttText.value);
+// });
 
 const message = ref("Click!"); // 초기값 변경
 const volume = ref(0); // 볼륨 상태
@@ -150,12 +91,12 @@ const disableStt = () => {
 // };
 
 speechRecognition.onresult = (e) => {
-    console.log(e.results);
+    // console.log(e.results);
     const transcript = Array.from(e.results)
         .map(result => result[0])
         .map(speech => speech.transcript)
         .join(' ');
-    console.log("transcript :", transcript);
+    // console.log("transcript :", transcript);
     emit('update:sttText', transcript);
     disableStt();
     sttText.value = transcript;
@@ -195,6 +136,7 @@ const startVolumeMonitoring = () => {
                   }
                   let average = values / length;
                   volume.value = Math.round(average); // 볼륨 상태 업데이트
+                  emit('update:volume', volume.value); 
               };
           }
       }).catch((error) => {
@@ -238,5 +180,47 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/layout/_gamebackground.scss'
+.mic {
+  width: 60px;
+  box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
+  border-radius: 100%;
+  z-index: 20;
+}
+
+.backcircle {
+  position: absolute;
+  left: 0;
+  bottom: 10%;
+  width: 60px;
+  box-shadow: 1px 2px 7px 3px rgb(255, 255, 255);
+  border-radius: 100%;
+  z-index: -10;
+}
+
+.message {
+  position: absolute;
+  text-align: center;
+  left: 55%;
+  top: 120%;
+  width: 150px;
+  transform: translateX(-50%);
+  font-size: 100%;
+  opacity: 70%;
+}
+
+.textarea {
+  width: 27%;
+  position: fixed;
+  top: 40%;
+  left: 35%;
+  border-radius: 10px;
+  padding: 15px 17px;
+  text-align: center;
+  color: rgb(45, 45, 45);
+  font-family: 'NotoSansKR';
+  letter-spacing: 1px;
+  &:focus {
+    outline: none;
+  }
+}
 </style>
