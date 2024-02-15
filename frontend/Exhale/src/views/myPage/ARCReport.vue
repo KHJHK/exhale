@@ -60,7 +60,7 @@
         </button>
         </div>
         <div id="problem-data-list">
-          <div class="problem-data" v-for="item in select_problem_data_list" :key="item">
+          <div class="problem-data" v-for="item in filteredProblemDataList" :key="item.id">
             <!-- {{ item.course_id }} -->
             <p class="date">날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
             <p class="problemdetile">
@@ -135,7 +135,11 @@ const result4= ref('')
 const result5= ref('')
 
 
-const selectedButtonId = ref(null);
+const selectedButtonId = ref(1);
+
+const filteredProblemDataList = computed(() => {
+  return solvedDataList.value.filter(item => item.course_id === selectedButtonId.value);
+});
 
 const selectButton = (id) => {
   selectedButtonId.value = id;
@@ -195,6 +199,9 @@ const enlarge = () => {
     fontSize.value = 16
   };
 };
+
+
+
 
 
 </script>
@@ -321,8 +328,8 @@ const enlarge = () => {
 }
 
 #profile-img-tag {
-  width: 40%;
-  height: 40%;
+  width: 150px;
+  height: 150px;
   border: 20px solid rgb(227, 227, 227);
   border-radius: 50%;  
 }
@@ -423,5 +430,8 @@ const enlarge = () => {
   background: conic-gradient(#334F4E 0% 25%, #6C9F9C 25% 56%, #A6D4D1 56% 100%);
   border-radius: 50%;
 }
+
+
+
 
 </style>
