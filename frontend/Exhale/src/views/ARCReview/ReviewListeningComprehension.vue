@@ -8,7 +8,7 @@ import ResultDialog from '@/components/ARC/ResultDialog.vue'
 import { useRoute } from 'vue-router';
 import SoundWave_MatchingImage from '@/components/ARC/SoundWave_MatchingImage.vue';
 
-const overTime = import.meta.env.VITE_REVIEW_OVER_TIME;
+const overTime = import.meta.env.VITE_APP_REVIEW_OVER_TIME;
 const courseId = 3;
 
 const volume = ref(0);

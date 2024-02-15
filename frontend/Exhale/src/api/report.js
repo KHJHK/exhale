@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_BASE_URL + "/api/";
+const baseURL = import.meta.env.VITE_APP_BASE_URL + "/api/";
 
 const getLetterData = (token) => {
   return axios.get(baseURL + "statistics/letter", {

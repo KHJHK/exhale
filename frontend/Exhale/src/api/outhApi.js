@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_BASE_URL;
-const kakaoApiKey = import.meta.env.VITE_KAKAO_API_APP_KEY;
+const baseURL = import.meta.env.VITE_APP_BASE_URL;
+const kakaoApiKey = import.meta.env.VITE_APP_KAKAO_API_APP_KEY;
     // 2 - 이미 존재하는 값
     const isIdDuplicated = async (userId) => {
         

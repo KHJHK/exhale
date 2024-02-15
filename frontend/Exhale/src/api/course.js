@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_BASE_URL;
+const baseURL = import.meta.env.VITE_APP_BASE_URL;
   // 코스 조회
   const getCourseList = async () => {
     return await axios.get(baseURL + '/api/rehabilitation');
