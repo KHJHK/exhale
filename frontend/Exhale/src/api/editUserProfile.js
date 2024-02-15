@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_BASE_URL + "/api/";
+const baseURL = import.meta.env.VITE_APP_BASE_URL + "/api/";
 
 //닉네임 변경
 const editNickname = (nickname, token) => {

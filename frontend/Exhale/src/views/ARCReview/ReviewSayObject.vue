@@ -8,7 +8,7 @@ import ReviewResultDialog from '@/components/ARCReview/ReviewResultDialog.vue'
 import SoundWave from '@/components/ARC/SoundWave.vue';
 
 
-let overTime = 120;
+const overTime = import.meta.env.VITE_APP_REVIEW_OVER_TIME;
 let courseId = 1; 
 const volume = ref(0);
 
