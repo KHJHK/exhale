@@ -75,17 +75,20 @@ const props = defineProps({
   filter: brightness(110%);
   position: fixed;
   top: 18%;
-  left: 34.5%;
+  left: 35%;
   box-shadow: 1px 5px 4px 3px rgb(170, 169, 169);
   border-radius: 100%;
   width: 55px;
   z-index: 2;
+  &:hover {
+    opacity: 50%;
+  }
 }
 
 .tts-button2 {
   position: fixed;
   top: 18%;
-  left: 34.5%;
+  left: 35%;
   width: 55px;
   box-shadow: 1px -2px 10px -1px rgb(255, 255, 255);
   border-radius: 100%;

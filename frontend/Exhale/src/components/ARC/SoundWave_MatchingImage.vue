@@ -32,7 +32,7 @@
       <label :style="waveStyle"></label>
       <label :style="waveStyle"></label>
       <label :style="waveStyle"></label>
-      <label :style="waveStyle"></label>
+      <!-- <label :style="waveStyle"></label> -->
 
     </div>
   </div>

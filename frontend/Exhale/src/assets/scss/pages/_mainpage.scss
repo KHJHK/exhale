@@ -84,12 +84,12 @@
 
 .show {
   opacity: 1;
-  animation: slide-in-blurred-top 2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+  animation: slide-in-blurred-top 1s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
   // animation: fadeIn 0.5s forwards;
 }
 
 .hide {
-  animation: slide-in-blurred-bottom 2s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
+  animation: slide-in-blurred-bottom 1s cubic-bezier(0.230, 1.000, 0.320, 1.000) both;
   display: none !important;
   // animation: fadeOut 0.5s forwards;
 }

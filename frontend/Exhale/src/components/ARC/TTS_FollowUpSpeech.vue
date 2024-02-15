@@ -60,7 +60,7 @@ const props = defineProps({
 
 #tts-button {
   position: fixed;
-  top: 30%;
+  top: 32.5%;
   left: 41%;
   box-shadow: 1px 14px 15px 3px rgb(165, 165, 165);
   border-radius: 20px;
@@ -70,7 +70,7 @@ const props = defineProps({
 
 #tts-button2 {
   position: fixed;
-  top: 30%;
+  top: 32.5%;
   left: 40.9%;
   width: 21.3%;
   box-shadow: 1px -5px 20px 8px rgb(255, 255, 255);
