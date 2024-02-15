@@ -28,7 +28,7 @@ const submitComment = async () => {
     return;
   }
   try {
-    const response = await axios.post('http://i10b208.p.ssafy.io/api/comments' , {
+    const response = await axios.post('https://www.ssafyexhale.shop/api/comments' , {
       "article_id" : postId,
       "content" : newComment.value,
       

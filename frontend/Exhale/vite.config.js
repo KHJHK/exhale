@@ -15,7 +15,7 @@ export default defineConfig({
   // server: {
   //   proxy: {
   //     "/api": {
-  //       target: "http://i10b208.p.ssafy.io/api",
+  //       target: "https://www.ssafyexhale.shop/api",
   //       // rewrite: (path) => path.replace(/^\/api/, ""),
   //       changeOrigin: true,
   //     },

@@ -6,7 +6,7 @@ const kakaoApiKey = import.meta.env.VITE_APP_KAKAO_API_APP_KEY;
     const isIdDuplicated = async (userId) => {
         
         try {
-        const response = await axios.post('http://i10b208.p.ssafy.io/api/general/id', {
+        const response = await axios.post('https://www.ssafyexhale.shop/api/general/id', {
             login_id: userId
         });
     
@@ -25,7 +25,7 @@ const kakaoApiKey = import.meta.env.VITE_APP_KAKAO_API_APP_KEY;
 
 const verifyNumberCreate = async (email_id, email_domain) => {
     try {
-        const response = await axios.post('http://i10b208.p.ssafy.io/api/email/certification', {
+        const response = await axios.post('https://www.ssafyexhale.shop/api/email/certification', {
             email_id: email_id,
             email_domain : email_domain
         })
@@ -38,7 +38,7 @@ const verifyNumberCreate = async (email_id, email_domain) => {
         }}; 
 
 const emailVerifyRequest = async (email_id,email_domain,code) => {
-    return await axios.post('http://i10b208.p.ssafy.io/api/email/check',  {
+    return await axios.post('https://www.ssafyexhale.shop/api/email/check',  {
         email_id: email_id,
         email_domain:email_domain,
         code: code
@@ -47,7 +47,7 @@ const emailVerifyRequest = async (email_id,email_domain,code) => {
 
 const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
     try {
-        const response = await axios.post('http://i10b208.p.ssafy.io/api/general/join', {
+        const response = await axios.post('https://www.ssafyexhale.shop/api/general/join', {
             login_id: userId,
             password: password,
             email_id: email_id,
@@ -94,7 +94,7 @@ const logIn = async (userId, password) => {
 };
 // todo 구현
 const tempPassword = async (userId, email_id, emailDomain) => {
-    return await axios.post('http://i10b208.p.ssafy.io/api/users/temp-password',  {
+    return await axios.post('https://www.ssafyexhale.shop/api/users/temp-password',  {
         login_id: userId,
         email_id: email_id,
         email_domain: emailDomain
@@ -102,7 +102,7 @@ const tempPassword = async (userId, email_id, emailDomain) => {
 };
 // todo 구현
 const reFresh = async (refresh_token, member_id) => {
-    return await axios.post('http://i10b208.p.ssafy.io/api/users/refresh', {
+    return await axios.post('https://www.ssafyexhale.shop/api/users/refresh', {
         refresh_token : refresh_token,
         member_id : member_id
     }, {
@@ -125,14 +125,14 @@ const logout = async (key, refreshToken) => {
 
 // todo 구현
 const kakaoLogin = (type) => {
-    const redirectUri = `http://i10b208.p.ssafy.io/${type}`;
+    const redirectUri = `https://www.ssafyexhale.shop/${type}`;
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${redirectUri}&response_type=code`
     // 사용자를 카카오 로그인 페이지로 리디렉션
     window.location.href = url;
   };
 
 //   const logOut = async (key, refresh_token) => {
-//     return await axios.get('http://i10b208.p.ssafy.io/api/users/logout') ,{
+//     return await axios.get('https://www.ssafyexhale.shop/api/users/logout') ,{
 //         key : key
 //     }, {
 //         headers : {
@@ -150,7 +150,7 @@ const checkCode = async(code, type) => {
         if(code !== null){
         //code로 정보 요청
             // return await axios.get(baseURL + `auth/kakao/${type}?code=${code}`);
-            return await axios.get("http://i10b208.p.ssafy.io/api/" + `auth/kakao/${type}?code=${code}`);
+            return await axios.get("https://www.ssafyexhale.shop/api/" + `auth/kakao/${type}?code=${code}`);
         }; 
     } catch(error){
         console.log(error)

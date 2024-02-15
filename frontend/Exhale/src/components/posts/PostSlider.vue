@@ -37,7 +37,7 @@
       show-arrows
     >
       <v-slide-group-item
-        v-for="n in 15"
+        v-for="n in 10"
         :key="n"
         v-slot="{ isSelected, toggle, selectedClass }"
       >
@@ -77,9 +77,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { boardList } from '@/api/boards';
 
 const model = ref(null)
+
+onMounted( async () => {
+    const response = await boardList(1, 0);
+    console.log(response)
+})
 
 </script>
 

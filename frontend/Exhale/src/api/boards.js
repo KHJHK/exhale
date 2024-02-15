@@ -1,13 +1,14 @@
 import axios from "axios";
 
 const boardList = async (page, board_id) => {
-  return await axios.get(`http://i10b208.p.ssafy.io/api/boards/${board_id}?page=${page}`)
+  return await axios.get(`https://www.ssafyexhale.shop/api/boards/${board_id}?page=${page}`)
 }
 
 
 //게시글 검색 
 const boardSearch = async (board_id, searchType, searchContent, page) => {
-    return await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
+console.log('보드제이에스')
+    return await axios.post('https://www.ssafyexhale.shop/api/boards/search', {
         board_id : board_id,
         search_type : searchType, // title, content, author
         search_content : searchContent,
@@ -21,7 +22,7 @@ const boardSearch = async (board_id, searchType, searchContent, page) => {
 //글 상세 정보 조회 
 const boardDetail = async (article_id) => {
     
-    return await axios.get(`http://i10b208.p.ssafy.io/api/articles/${article_id}`, {
+    return await axios.get(`https://www.ssafyexhale.shop/api/articles/${article_id}`, {
     })  };
 
 
@@ -33,7 +34,7 @@ const articleCreate = async (title, content, thumbnail, board_id, accessToken) =
   }
   try {
     const response = await axios.post(
-      "http://i10b208.p.ssafy.io/api/articles",
+      "https://www.ssafyexhale.shop/api/articles",
       {
         title: title,
         content: content,
@@ -60,7 +61,7 @@ const articleCreate = async (title, content, thumbnail, board_id, accessToken) =
 const saveImg = async (file) => {
   console.log('찐함수',file)
  try {
-    const response = await axios.post('http://i10b208.p.ssafy.io/api/articles/image', {
+    const response = await axios.post('https://www.ssafyexhale.shop/api/articles/image', {
     file : file
   }, { 
     headers : {
@@ -75,7 +76,7 @@ const saveImg = async (file) => {
 //게시글 수정 
  const updatePost = async (title, content, thumbnail,accessToken, id) => {
     try {
-    const response =  await axios.put(`http://i10b208.p.ssafy.io/api/articles/${id}`,{
+    const response =  await axios.put(`https://www.ssafyexhale.shop/api/articles/${id}`,{
         title: title,
         content: content,
         thumbnail: null
@@ -95,7 +96,7 @@ const saveImg = async (file) => {
  // 게시글 삭제 
  const deletePost = async (id, token) => {
   try {
-    const response = await axios.delete(`http://i10b208.p.ssafy.io/api/articles/${id}`, {
+    const response = await axios.delete(`https://www.ssafyexhale.shop/api/articles/${id}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `${token}`
@@ -116,13 +117,13 @@ const saveImg = async (file) => {
 
 // 댓글목록
 const getComments = async (article_id) => {
-return await axios.get(`http://i10b208.p.ssafy.io/api/comments/list/${article_id}`)
+return await axios.get(`https://www.ssafyexhale.shop/api/comments/list/${article_id}`)
 };
 
 // 댓글수정
 const editComments = async (comment_id, content, token) => {
     try {
-      const response = await axios.put(`http://i10b208.p.ssafy.io/api/comments/${comment_id}`, {
+      const response = await axios.put(`https://www.ssafyexhale.shop/api/comments/${comment_id}`, {
         content: content
       }, {
         headers: {
@@ -141,7 +142,7 @@ const editComments = async (comment_id, content, token) => {
 
 // 댓글 삭제
 const deleteComments = async (comment_id, token) => {
-  return await axios.delete(`http://i10b208.p.ssafy.io/api/comments/${comment_id}`, { 
+  return await axios.delete(`https://www.ssafyexhale.shop/api/comments/${comment_id}`, { 
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `${token}`
@@ -153,7 +154,7 @@ const deleteComments = async (comment_id, token) => {
 
 //   try {
 //     const response = await axios.post(
-//       "http://i10b208.p.ssafy.io/api/articles/image/{article_id}",
+//       "https://www.ssafyexhale.shop/api/articles/image/{article_id}",
 //       {},
 //       {
 //         headers: {
