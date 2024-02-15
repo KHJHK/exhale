@@ -111,15 +111,11 @@ const memberId = store.memberId;
 const router = useRouter()
 const route = useRoute()
 const postId = route.params.id
-const post = ref({})
-
-const pic = post.thumbnail
-console.log('그림팔아요',pic)
 const show = ref(false)
 function toggleMenu() {
   show.value = !show.value
 }
-
+const post = ref([])
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
 const enlarge = () => {

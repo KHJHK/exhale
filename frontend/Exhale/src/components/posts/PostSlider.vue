@@ -60,11 +60,10 @@ const model = ref(null)
 const file = ref(null); // 선택된 파일을 저장할 ref 생성
 const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 
-console.log('이게되네', crud.posts)
 
 onMounted( async () => {
     const response = await boardList(1, 0);
-    console.log(response)
+
 })
 
 const props = defineProps({

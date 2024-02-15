@@ -192,16 +192,14 @@ const enlarge = () => {
     }
 }  
 
-
-const onClickTab = (tabName) => {
+const onClickTab = () => {
   crud.curPage = 1
-  crud.tab = tabName
 }
 
 onMounted( async () => {
-  // crud.tab = 'all'
-  await crud.board_list()
   
+  await crud.board_list()
+ 
   
 })
 

@@ -166,7 +166,7 @@ const content = ref('')
 const thumbnail = ref(null);
 const board_id = ref('')
 
-let pic = null
+
 const file = ref(null); // 선택된 파일을 저장할 ref 생성
 const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 
@@ -174,7 +174,6 @@ const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 const onFileChange = async (event) => {
     
   const files = event.target.files;
-  console.log(event.target.files)
     if (files.length > 0) {
         const file = files[0];
         const formData = new FormData();

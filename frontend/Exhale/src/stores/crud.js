@@ -66,10 +66,10 @@ export const useCrudStore = defineStore('crud', ()=> {
   }
 
 
-  watch (tab, (newValue)=> {
-      if (tab.value === newValue)
-      {curPage.value = 1}
-  })
+  // watch (tab, (newValue)=> {
+  //     if (tab.value === newValue)
+  //     {curPage.value = 1}
+  // })
 
 return {tab, curPage, setCurrentPage, ITEM_PER_PAGE, PAGE_PER_SECTION,totalPage,isLoading, board_list, board_search, posts}
 })

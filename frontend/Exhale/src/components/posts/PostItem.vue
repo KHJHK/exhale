@@ -6,7 +6,7 @@
         <p class="card-title">{{ title }}</p>
         <p class="card-content">{{ content }}</p>
         <p class="card-author">{{ author }}</p>
-        <p class="text-muted"><small class="text-body-secondary">{{ create_date }}</small></p>
+        <p class="text-muted"><small class="text-body-secondary">{{ create_date.substring(0, 10)}}</small></p>
     </div>
     <div class="card-image">
       <img v-if="props.thumbnail" :src="props.thumbnail" :alt="title">
@@ -36,7 +36,7 @@ const handleClick = () => {
 
 watchEffect(() => {
   imageUrl.value = props.thumbnail
-  console.log(imageUrl.value)
+  
   
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
 <div class="navbar">
     <nav v-if="isLogin">
-          <RouterLink  to="/">
+          <RouterLink  to="mainpage">
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
           </RouterLink>
           <nav class="navbar-links1">
