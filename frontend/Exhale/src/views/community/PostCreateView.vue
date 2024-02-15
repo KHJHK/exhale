@@ -17,7 +17,7 @@
             <input v-model="title" class="titleInput" id="title" placeholder="제목을 입력하세요">
         </div>
         <div class="author">
-            (작성자명) 
+            {{ nickname }} 
         </div>
     
 </div>
@@ -25,16 +25,15 @@
 <div class="category">
     <div class="dropdown">
     <a class="btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        카테고리 선택
+        {{ category_name }}
     </a>
-
     <select class="dropdown-menu" v-model="selectedCategory" @change="onCategoryChange">
         <option disabled value="">카테고리를 선택해주세요</option>
         <option value= 1 class="dropdown-item" >정보 글</option>
         <option value= 2 class="dropdown-item">치료 후기</option>
         <option value= 3 class="dropdown-item">환자 이야기</option>
     </select>
-    </div>
+</div>
 </div>
 
 <div class="contentBackground">
@@ -151,9 +150,14 @@ import { watch } from 'vue';
 import { mdiConsolidate, mdiGateArrowRight } from '@mdi/js';
 import { articleCreate, saveImg } from '@/api/boards';
 import { useAuthStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+import axios from "axios";
 import { render } from 'vue';
+
+const baseURL = import.meta.env.VITE_APP_BASE_URL;
 const store = useAuthStore()
 const accessToken = store.jwtToken;
+const { nickname } = storeToRefs(store);
 
 const selectedCategory = ref('');
 const router = useRouter()
@@ -167,13 +171,29 @@ const file = ref(null); // 선택된 파일을 저장할 ref 생성
 const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 
 // 파일이 선택되었을 때 호출될 메서드
-const onFileChange = (event) => {
+const onFileChange = async (event) => {
   const files = event.target.files;
-  if (files.length > 0) {
-    file.value = files[0]; // 첫 번째 선택된 파일을 저장
-    // 이미지 미리보기를 위한 URL 생성
-    imageUrl.value = URL.createObjectURL(file.value);
-  }
+    if (files.length > 0) {
+        const file = files[0];
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        const response = await axios.post(baseURL + `/api/articles/image`,
+        formData
+        );
+        imageUrl.value = response.data.response
+        thumbnail.value = response.data.response
+    }
+
+
+
+//   if (files.length > 0) {
+//     // 첫 번째 선택된 파일을 저장
+//     file.value = files[0];
+    
+//     // 이미지 미리보기를 위한 URL 생성
+//     imageUrl.value = URL.createObjectURL(file.value);
+//   }
 };
 const props = defineProps({
     tab: Number
@@ -230,6 +250,7 @@ const toggle_none = ref(null)
 const toggle_one = ref(0)
 const toggle_exclusive = ref(2)
 const toggle_multiple = ref([0, 1, 2])
+const category_name = ref("카테고리를 선택해주세요")
 
 
 
@@ -288,7 +309,17 @@ const article_create = async () => {
 
 // 게시물 종류 선택시 게시물 아이디 정해짐
 const onCategoryChange = () => {
-  board_id.value =  parseInt(selectedCategory.value, 10);
+    board_id.value = parseInt(selectedCategory.value, 10);
+    if(selectedCategory.value === '1'){
+        category_name.value = "정보 글"
+    }
+    if(selectedCategory.value === '2'){
+        category_name.value = "치료 후기"
+    }
+    if(selectedCategory.value === '3'){
+        category_name.value = "환자 이야기"
+    }
+    console.log(category_name.value)
 };
 
 
