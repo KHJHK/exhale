@@ -104,7 +104,10 @@ const router = createRouter({
         path: "/review-say-object",
         component: ReviewSayObject,
     },
-    { path: "/review-follow-up-speech", component: ReviewFollowUpSpeech},
+    { 
+      path: "/review-follow-up-speech", 
+    component: ReviewFollowUpSpeech
+   },
 
     // community
     {

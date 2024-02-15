@@ -4,10 +4,11 @@
           <RouterLink  to="/">
             <img src="@/assets/logo_green.png" alt="logo" class="navbar-logo" >
           </RouterLink>
-          <nav class="navbar-links">
-            <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link">커뮤니티</RouterLink>
-            <RouterLink :to="{name: 'ARCReport'}" class="nav-link">내 정보</RouterLink> 
-            <div class="nav-link" @click="clickLogout">로그아웃</div>
+          <nav class="navbar-links1">
+            <RouterLink :to="{name: ' ReviewWaitingPage'}" class="nav-link1">복습하기</RouterLink>
+            <RouterLink :to="{name: 'PostWholeListView'}" class="nav-link1">커뮤니티</RouterLink>
+            <RouterLink :to="{name: 'ARCReport'}" class="nav-link1">내 정보</RouterLink> 
+            <div class="nav-link1" @click="clickLogout">로그아웃</div>
           </nav>
     </nav>
     <nav v-else>
@@ -50,23 +51,30 @@ const clickLogout = async() => {
   await logout(key.value,refreshToken.value);    
   authStore.removeUserInfo();
   alert('로그아웃 되셨습니다. 또 만나요!')
-  router.push( "/mainpage")
+  router.push( "/")
 }
 </script>
 
 
 <style scoped>
 .navbar-links {
-  margin-left: 45vw;
-  display: flex;
-  align-items: center;
+  position: fixed;
+  top: 2%;
+  right: -0.4%;
   border-bottom: none;
-  margin-right: -30vw;
-  width: 150%;
+  width: 30%;
+}
+
+.navbar-links1 {
+  position: fixed;
+  top: 10%;
+  right: 0.3%;
+  border-bottom: none;
+  width: 50%;
 }
 
 nav {
-  margin-bottom: -2vh;
+  margin-bottom: 3vh;
 }
 
 .navbar {
@@ -83,12 +91,32 @@ nav {
   border-bottom: 2px solid transparent;
   transition: border-color 0.3s;
   display: inline-block;
-  margin-top: -26vh;
+  /* margin-top: -26vh; */
+  /* height: -100px; */
+}
+
+.nav-link1 {
+  text-decoration: none;
+  color: #333;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.3s;
+  display: inline-block;
+  margin-right: 15%;
+  /* margin-top: -26vh; */
+  /* height: -100px; */
 }
 
 
 .nav-link:hover {
-  border-bottom: 2px solid rgb(108, 159, 156);
+  border-bottom: 3px solid rgb(108, 159, 156);
+  text-decoration: none;
+  color: black;
+  transition: 0.4s;
+  padding-bottom: 10px;
+}
+
+.nav-link1:hover {
+  border-bottom: 3px solid rgb(108, 159, 156);
   text-decoration: none;
   color: black;
   transition: 0.4s;
