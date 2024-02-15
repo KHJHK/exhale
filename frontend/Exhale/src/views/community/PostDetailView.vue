@@ -45,7 +45,7 @@
         <p>{{ post.view }}</p>
         
         <p>{{ post.content }}</p>
-        <p class="text-muted">{{ post.create_date}}</p>
+        <p class="text-muted">{{ post.create_date.substring(0,10)}}</p>
       </div>
 
 

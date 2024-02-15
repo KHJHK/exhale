@@ -23,7 +23,7 @@ const props = defineProps({
   title: String,
   content: String,
   author: String,
-  create_date: [String, Date, Number],
+  create_date: String,
   id: Number,
 })
 const article_id = ref([props.id])
