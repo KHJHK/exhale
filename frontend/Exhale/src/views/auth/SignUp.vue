@@ -391,7 +391,6 @@ checkJoinCode()
 <style lang="scss" scoped>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
   @import "@/assets/scss/pages/_signup.scss";
-
   .input{
     width: 100%;
   }

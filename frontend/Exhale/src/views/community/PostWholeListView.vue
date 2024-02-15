@@ -91,7 +91,8 @@
         
         <section class="box-item">
           <article>
-          <div v-for="(post) in crud.posts" :key="post.id" >
+          <div v-for="post in crud.posts" :key="post.id" >
+  
               <PostItem
               :title="post.title"
               :content="post.content"

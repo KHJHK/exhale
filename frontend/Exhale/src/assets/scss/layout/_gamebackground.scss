@@ -99,6 +99,7 @@
   height: 300px;
   object-fit: cover;
   border-radius: 20px;
+  margin-top: 20px;
 }
 
 .answer {
@@ -158,4 +159,13 @@
   position: fixed;
   top: 77%;
   left: 35%;
+}
+
+.process-number{
+  display: flex;
+  justify-content: flex-end;
+  color:#6C9F9C;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 7px 0;
 }

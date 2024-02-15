@@ -51,7 +51,7 @@
           <button class="round-button" @click="select_button(4)">유창성</button>
         </div>
         <div id="problem-data-list">
-          <div class="problem-data" v-for="item in select_problem_data_list">
+          <div class="problem-data" v-for="item in select_problem_data_list" :key="item">
             {{ item.course_id }}
             <p>날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
             <p>
@@ -65,7 +65,7 @@
       <div id="letter">
         <div id="pie-chart"></div>
         <div id="letter-data-list">
-          <div class="letter-data" v-for="item in letterDataList">
+          <div class="letter-data" v-for="item in letterDataList" :key="item">
             {{ item }}
           </div>
         </div>

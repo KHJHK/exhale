@@ -5,7 +5,7 @@
         :scrim="false"
         transition="dialog-bottom-transition"
       >        
-        <template id="stopBtns" v-slot:activator="{ props }">
+        <template v-slot:activator="{ }">
           <button class="finishBtn" @click="isExit=true; dialog=true;">
             <img src="@/assets/quit.svg" class="quit">
             복습 종료</button>

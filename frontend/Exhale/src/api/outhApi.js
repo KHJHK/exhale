@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const baseURL = import.meta.env.VITE_BASE_URL;
 const kakaoApiKey = import.meta.env.VITE_KAKAO_API_APP_KEY;
     // 2 - 이미 존재하는 값
@@ -45,9 +44,6 @@ const emailVerifyRequest = async (email_id,email_domain,code) => {
         code: code
     })
 };
-
-
-
 
 const signUp = async (userId, email_id, email_domain, fullname, birthdate, password, nickName) => {      
     try {
