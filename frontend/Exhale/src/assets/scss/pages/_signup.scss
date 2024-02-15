@@ -7,7 +7,7 @@
 }
 
 .kakao {
-  margin-top: 10px;
+  margin-top: 3px;
 }
 
 .btn-bottom {
@@ -37,48 +37,50 @@
   // margin-top: 100px;
   // }
   
-  .enlarge {
-  width: 105px;
-  height: 33px;
-  font-size: 15px;
-  position: fixed;
-  top: 5%;
-  right: 85%;
-  border-radius: 20px;
-  border: rgb(108, 159, 156) solid 2px;
-  background-color: none;
-  // transform: scale(1);
-  // transition: 5s ease-in;
-  // transition-delay: 0.2s;
-  }
-
   // .enlarge {
-  //   color: gray;
-  //   width: 105px;
-  //   padding: 2px 0px;
-  //   margin-right: 4vw;
-  //   border-radius: 20px;
-  //   border: rgb(159, 159, 159) solid 3px;
-  //   font-family: 'NotoSansKR';
-  //   &:hover {
-  //     color: rgb(108, 159, 156);
-  //     border: rgb(108, 159, 156) solid 3px;
-  //     & .plus {
-  //       width: 0px;
-  //     }
-  //   }
-  //   & .plus {
-  //     width: 19px;
-  //     padding-bottom: 3px;
-  //     padding-right: 2px;
-  //     opacity: 80%;
-  //   }
+  // width: 105px;
+  // height: 33px;
+  // font-size: 15px;
+  // position: fixed;
+  // top: 5%;
+  // right: 85%;
+  // border-radius: 20px;
+  // border: rgb(108, 159, 156) solid 2px;
+  // background-color: none;
+  // // transform: scale(1);
+  // // transition: 5s ease-in;
+  // // transition-delay: 0.2s;
   // }
+
+  .enlarge {
+    position: fixed;
+    color: gray;
+    top: 5%;
+    left: 5%;
+    width: 105px;
+    padding: 2px 0px;
+    border-radius: 20px;
+    border: rgb(159, 159, 159) solid 3px;
+    font-family: 'NotoSansKR';
+    &:hover {
+      color: rgb(108, 159, 156);
+      border: rgb(108, 159, 156) solid 3px;
+      & .plus {
+        width: 0px;
+      }
+    }
+    & .plus {
+      width: 19px;
+      padding-bottom: 3px;
+      padding-right: 2px;
+      opacity: 80%;
+    }
+  }
 
   .eye-icon {
   position: absolute;
   right: 30px;
-  top: 43px;
+  top: 37px;
   // margin-left: 140px;
   // margin-top: 13px;
   transform: translateY(-115%);
@@ -131,7 +133,7 @@
   min-height: 100vh;
   padding-right: 0;
   padding-left: 0;
-  margin-left: 5vw;
+  margin-left: 4vw;
   margin-right: 0;
   }
   
@@ -154,18 +156,20 @@
   }
   
   .form {
-  padding: 30px 70px;
-  padding-bottom: 40px;
-  background-color: var(--white);
-  border-radius: 1.5rem;
-  box-shadow: rgba(71, 71, 71, 0.35) 25px 20px 25px;
-  transform: scale(0);
-  // transition: 2s ease-in-out;
-  // transition-delay: 0.2s;
-  margin-bottom: 1vh;
-  margin-top: -73vh;
-  background-color: #ffffff;
-  transition: transform 0.1s ease-in;
+    font-size: 80%;
+    padding: 30px 70px;
+    padding-bottom: 40px;
+    background-color: var(--white);
+    border-radius: 1.5rem;
+    box-shadow: rgba(71, 71, 71, 0.35) 25px 20px 25px;
+    transform: scale(0);
+    // transition: 2s ease-in-out;
+    // transition-delay: 0.2s;
+    margin-bottom: 1vh;
+    margin-top: -90vh;
+    margin-left: -2vw;
+    background-color: #ffffff;
+    transition: transform 0.1s ease-in;
   }
 
 
@@ -174,7 +178,7 @@
     display: flex;
     align-items: center; /* 세로 중앙 정렬 */
     justify-content: space-between; /* 내부 요소 사이의 공간을 균등하게 배분 */
-    gap: 30px; /* 요소 사이의 간격 */
+    gap: 10px; /* 요소 사이의 간격 */
   }
   
   .input {
@@ -186,7 +190,7 @@
 
   #birthdate {
     color: gray;
-    width: 86.5%;
+    width: 85.2%;
   }
 
   .doubleCheck {
@@ -208,11 +212,12 @@
   
   .input-group {
   position: relative;
-  width: 90%;
+  width: 98%;
   // margin: 6% 2%;
   // display: flex;
   // justify-content: center;
   // align-items: center;
+  margin-bottom: 3%;
   }
   
   .input-group i {
@@ -221,6 +226,7 @@
   // transform: translateY(-50%);
   // font-size: 1.4rem;
   color: var(--gray-2);
+
 }
 
 .input-group input {
@@ -259,7 +265,7 @@
   }
   
  .submit1 {
-  font-size: 17px;
+  font-size: 98%;
  }
 
   .form p {
@@ -291,7 +297,7 @@
   
   .container .form.sign-up .input-group
   {
-    height: 6vh;
+    height: 4vh;
   }
   
   .content-row {
@@ -365,7 +371,26 @@
   transform: translateX(0);
   }
 
-  
+  .undertext1 {
+    color: rgb(161, 161, 161);
+    font-size: 100%;
+    font-family: 'NotoSansKR';
+
+}
+.undertext1 > span {
+    color: gray;
+    font-family: 'NotoSansKR';
+    margin-right: 5%;
+}
+
+.undertext1 > .pointer {
+    color: gray;
+    font-family: 'NotoSansKR';
+    letter-spacing: 1px;
+    color: rgb(108, 159, 156);
+}
+
+
   /* BACKGROUND */
   
   .container::before {
@@ -375,7 +400,7 @@
   right: 0;
   height: 100vh;
   width: 200vw;
-  transform: translate(35%, 0);
+  transform: translate(30%, 0);
   background-color: rgb(108, 159, 156);
   /* background-image: linear-gradient(-45deg, var(--primary-color) 0%, var(--secondary-color) 100%); */
   transition: 2s ease-in-out;
@@ -392,7 +417,7 @@
   
   .container.sign-up::before {
   transform: translate(100%, 0);
-  right: 20%;
+  right: 35%;
   }
   
   
@@ -483,9 +508,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40%;
-  height: 40%;
-  margin-left: 2100px;
+  width: 32%;
+  height: 32%;
+  margin-left: 1500px;
   margin-top: 500px;
   // padding-top: 46%;
   // margin-top: 500px;
