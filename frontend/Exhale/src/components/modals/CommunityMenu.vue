@@ -70,7 +70,7 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   z-index: 1002;
   animation: fadeIn 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   position: fixed;
-  top: 20vh;
+  top: 23vh;
   right: 5vw;
   flex-direction: column;
   display: flex;
@@ -91,8 +91,8 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   top: 0;
   right: 0;
   width: 100vw;
-  height: 84vh;
-  margin-top: 16vh;
+  height: 80vh;
+  margin-top: 20vh;
   background-color: rgba(108, 159, 156, 0.8);
   z-index: 1000;
   animation: fadeIn 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
@@ -100,16 +100,17 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 
 .hamburgerMenu {
   position: fixed;
-  top: 39px;
+  top: 59px;
   right: 180px;
   z-index: 1001;
   animation: scale-up-hor-right2 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 .navbar-logo {
-  position: fixed;
+  // position: fixed;
   top: 0;
   left: 0;
+  margin-top: -1vh;
   z-index: 1001;
 }
 
@@ -136,7 +137,7 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   z-index: 1000;
   background-color: rgba(255, 255, 255, 0.8);
   margin-bottom: 87vh;
-  height: 16vh;
+  height: 20vh;
 }
 
 @keyframes rotate-center {
@@ -212,7 +213,7 @@ animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   transform-origin: 100% 100%;
 }
 100% {
-  transform: scaleX(5.4);
+  transform: scaleX(5.1);
   transform-origin: 100% 100%;
 }
 }

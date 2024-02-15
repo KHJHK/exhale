@@ -6,15 +6,15 @@
 
 .hamburgerMenu {
   position: relative;
-  margin-top: 39px;
-  margin-right: 60px;
+  margin-top: 50px;
+  margin-right: 90px;
   animation: scale-up-hor-right 2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
 .Menutext {
   display: flex;
   justify-content: center;
-  margin-right: -6.5vw;
+  margin-right: -4vw;
   font-family: 'NotoSerifKR';
   color: rgb(108, 159, 156);
   font-weight: 700;

@@ -81,7 +81,7 @@ onMounted(() => {
 .maintext {
 position: fixed;
 top: 23%;
-left: 37.4%;
+left: 37%;
 text-align: center;
 font-family: 'NotoSansKR-Bold';
 font-size: 25px;

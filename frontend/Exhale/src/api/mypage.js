@@ -3,6 +3,7 @@ import axios from "axios";
 const baseURL = import.meta.env.VITE_APP_BASE_URL + "/api/";
 
 const getProfile = (token) => {
+  
   return axios.get(baseURL + "users/profile", {
     headers: {
       Authorization: token,

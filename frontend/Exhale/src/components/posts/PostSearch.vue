@@ -52,7 +52,7 @@ watch(router.currentRoute, (newRoute) => {
   display: flex;
   color: gray;
   position: absolute;
-  margin-left: 15px;
+  margin-left: 20px;
   margin-top: -14px;
 }
 
@@ -67,7 +67,7 @@ watch(router.currentRoute, (newRoute) => {
 
 select {
   /* display: flex; */
-  padding-left: 10px;
+  padding-left: 0px;
   margin-bottom: -15px;
   border: none;
   outline: none;
@@ -79,7 +79,7 @@ select {
 
 .search-icon2 {
   color: gray;
-  margin-right: 20px;
+  margin-right: 30px;
   margin-left: -25px;
   z-index: -1;
 }

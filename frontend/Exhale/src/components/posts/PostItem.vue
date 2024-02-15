@@ -8,11 +8,13 @@
         <p class="card-author">{{ author }}</p>
         <p class="text-muted"><small class="text-body-secondary">{{ create_date.substring(0, 10)}}</small></p>
     </div>
+    <div class="card-image-container">
     <div class="card-image">
-      <img v-if="props.thumbnail" :src="props.thumbnail" :alt="title" style="width: 200px; height:190px; border-radius: 10%; border: 2px solid rgb(108, 159, 156);" >
+      <img v-if="props.thumbnail" :src="props.thumbnail" :alt="title" style="width: 200px; height: 190px; border-radius: 10%; border: 2px solid rgb(108, 159, 156);" >
      <!-- :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center' }" > -->
       <img v-if="props.thumbnail === null" src="@/assets/dog3.jpg">
     </div>
+  </div>
 </div>
 </template>
 
@@ -43,4 +45,32 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
   @import "@/assets/scss/layout/_forms.scss";
+  .postcard {
+  display: flex;
+  // flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  margin-top: -4vh;
+  margin-bottom: 5vh;
+}
+
+.card-body {
+  width: 120vw;
+  margin-top: 16vh;
+}
+
+.card-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0px 10px;
+}
+
+.card-image {
+  flex: 0 1 auto; 
+  padding-top: 7vw;
+  padding-left: 3vw;
+  padding-right: 15vw;
+}
 </style>

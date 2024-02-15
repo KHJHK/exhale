@@ -20,10 +20,8 @@
           <RouterLink class="breadlink" :to="{name: 'MainPage'}">메인 홈</RouterLink>
           >
           <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">커뮤니티</RouterLink>
-          >
-          <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
         </div>
-        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <button class="enlarge" @click="enlarge" style="margin-right: 84px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
         {{ msg }}
         </button> 
@@ -41,7 +39,7 @@
         <p>{{nickname}}</p>
         <p class="text-muted">{{view}}</p>
         <br>
-        <h3>{{content}}</h3>
+        <h3 class="contentDetail">{{content}}</h3>
         
         <p class="text-muted">{{create_date.substring(0,10)}}</p>
       </div>
@@ -81,6 +79,8 @@
   
  
 </div>
+
+<Footers style="margin-bottom: 5vh; margin-left: 1vw;" />
 </template>
 
 <script setup>

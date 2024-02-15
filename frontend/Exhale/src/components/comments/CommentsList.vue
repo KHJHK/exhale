@@ -6,21 +6,22 @@
     <button @click="submitEdit" >저장</button> |
     <button @click="cancelEdit">취소</button>
   </div>
-  <div v-else>
-    <hr>
-    <div>
-      <h4 style="display: inline; margin-left: 10px;">{{ list.nickname }} </h4> <br>
-      <p style="display: inline; margin-left: 15px;">{{ list.content }}</p>
-      <br>
-      <small style="margin-left: 10px;">{{ list.createDate.substring(0, 10) }}</small>
-      <br>
-      <div v-if="memberId == list.memberId">
-        <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
-        <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
-      </div>
-    </div>
-    <hr>
+  <div class="commentContent"  v-else>
+    <div class="mainComment">
+    <h4 style="display: inline; font-size: 100%; color: rgb(170, 170, 170); margin-bottom: 20px; margin-right: 20px;">{{ list.id }}</h4>
+    
+    <h4 style="display: inline;">{{ list.content }}</h4>
+    <br>
+    <p style="margin-top: 15px; color: gray;">{{ list.createDate.substring(0, 10) }}</p>
+    
+    <br>
   </div>
+    <div class="editDelete" v-if="memberId == list.memberId">
+      <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
+      <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
+    </div>
+  </div>
+    <hr style="width: 70%; margin-left: 15vw;">
 
   </div>
 </div>
@@ -96,4 +97,15 @@ const submitEdit = async () => {
 
 <style lang="scss" scoped>
 
+
+.commentContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  // align-items: center;
+  margin-bottom: 3vh;
+  margin-top: 5vh;
+  width: 93%;
+  margin-left: 4.5vw;
+}
 </style>

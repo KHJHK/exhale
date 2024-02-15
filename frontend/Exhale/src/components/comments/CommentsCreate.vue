@@ -91,7 +91,7 @@ const submitComment = async () => {
   /* background-color: lightgray; */
   border: 1px solid lightgray;
   border-radius: 30px;
-  width: 50px;
+  width: 100px;
 }
 
 .submitBtn:hover {

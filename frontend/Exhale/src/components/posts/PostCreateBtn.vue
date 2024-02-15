@@ -21,6 +21,8 @@
     border: 2px solid gray;
     border-radius: 20px;
     padding: 5px 20px;
+    margin-top: 2vh;
+    margin-right: -1vw;
     font-family: 'NotoSansKR';
   }
 
