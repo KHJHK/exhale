@@ -17,6 +17,7 @@ public class CommentResponse {
     Boolean isDelete;
     LocalDateTime createDate;
     LocalDateTime modifyDate;
+    String nickname;
     Long articleId;
     Long memberId;
     Long parentCommentId;
@@ -25,9 +26,9 @@ public class CommentResponse {
     public static CommentResponse of(Long id, String content, Boolean isDelete,
                                      LocalDateTime createDate, LocalDateTime modifyDate,
                                      Long articleId, Long memberId, Long parentCommentId,
-                                     List<CommentResponse> childCommentList){
+                                     List<CommentResponse> childCommentList, String nickname){
         return new CommentResponse(id, content, isDelete, createDate, modifyDate,
-                articleId, memberId, parentCommentId, childCommentList);
+                nickname, articleId, memberId, parentCommentId, childCommentList);
     }
 
     public static CommentResponse from(CommentDto dto, List<CommentResponse> childCommentList){
@@ -38,6 +39,7 @@ public class CommentResponse {
                     dto.getIsDelete(),
                     dto.getCreateDate(),
                     dto.getModifyDate(),
+                    dto.getMemberDto().getNickname(),
                     dto.getArticleDto().getId(),
                     dto.getMemberDto().getId(),
                     dto.getParentCommentDto().getId(),
@@ -50,6 +52,7 @@ public class CommentResponse {
                 dto.getIsDelete(),
                 dto.getCreateDate(),
                 dto.getModifyDate(),
+                dto.getMemberDto().getNickname(),
                 dto.getArticleDto().getId(),
                 dto.getMemberDto().getId(),
                 null,
