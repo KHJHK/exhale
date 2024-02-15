@@ -93,6 +93,7 @@
           <article>
           <div v-for="post in crud.posts" :key="post.id"  >
               <PostItem
+              :thumbnail="post.thumbnail"
               :title="post.title"
               :content="post.content"
               :create_date="post.create_date"

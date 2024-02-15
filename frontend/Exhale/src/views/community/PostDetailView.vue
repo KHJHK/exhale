@@ -31,7 +31,11 @@
 
 
       <svg-icon type="mdi" :path="path"></svg-icon>
-      <PostSlider class="postslider" />
+      <PostSlider class="postslider"
+      
+
+      
+      />
 
       <img src="@/assets/double-quote.svg" class="double-quote" >
 
@@ -101,28 +105,16 @@ import { storeToRefs } from 'pinia'
 import PostEditView from './PostEditView.vue';
 import axios from 'axios';
 const crud = useCrudStore()
-const {posts} = storeToRefs(crud)
 const store = useAuthStore()
 const token = store.jwtToken
 const memberId = store.memberId;
 const router = useRouter()
 const route = useRoute()
 const postId = route.params.id
-//url의 id앞에 콜론 제거
-// postId.value = postId.value.slice(1)
-
-
-// const post = ref({
-//     id : response.value.id,
-//     content: response.value.content,
-//     create_date: response.value.create_date,
-//     view:response.value.view,
-//     nickname:response.value.nickname,
-//     title: response.value.title
-// })
-
 const post = ref({})
 
+const pic = post.thumbnail
+console.log('그림팔아요',pic)
 const show = ref(false)
 function toggleMenu() {
   show.value = !show.value
@@ -145,26 +137,10 @@ onMounted(async () => {
 
 });
 
-// const fetchPost = async (postId) => {
-//   try {
-//     const { data } = await getPostById(postId)
-  
-//     post.value = data
-//     setPost(data)
-//   } catch (error) {
-//     console.error(error);
-//   }  
-// };
-
-// const setPost = ({title, content, create_date }) => {
-//     post.value.title = title
-//     post.value.content = content
-//     post.value.create_date = create_date
-// }
 
 
+// 게시글 삭제
 const remove = async () => {
-   
     try {
         if (confirm('삭제 하시겠습니까?') === false) {
             return
@@ -176,56 +152,41 @@ const remove = async () => {
     }
 }
 
-const fetchComments = async (postId) => {
-  try {
-    const response = await getComments(postId);
-    comments.value = response.data
-   
-  } catch (error) {
-    console.error('댓글을 불러오던 중 강도를 만났어요',error);
-  }
-};
 
-
-const navigateToPost = (direction) => {
-    if (posts.value && posts.value.length > 0) {
-  const currentIndex = posts.value.findIndex((p) => p.id === postId);
-  const nextIndex = currentIndex + direction;
+// const navigateToPost = (direction) => {
+//     if (posts.value && posts.value.length > 0) {
+//   const currentIndex = posts.value.findIndex((p) => p.id === postId);
+//   const nextIndex = currentIndex + direction;
   
   
-  if (nextIndex >= 0 && nextIndex < posts.value.length) {
-    router.push({ name: 'PostDetailView', params: { id: posts.value[nextIndex].id } });
-  }
-  if (currentIndex === -1) {
-    console.error('현재 게시글을 찾을 수 없습니다.');
-    return;
-  }
+//   if (nextIndex >= 0 && nextIndex < posts.value.length) {
+//     router.push({ name: 'PostDetailView', params: { id: posts.value[nextIndex].id } });
+//   }
+//   if (currentIndex === -1) {
+//     console.error('현재 게시글을 찾을 수 없습니다.');
+//     return;
+//   }
 
-  if (nextIndex < 0) {
-    alert('첫 번째 게시물입니다.');
-  } else if (nextIndex >= posts.value.length) {
-    alert('마지막 게시물입니다.');
-  } else {
-    router.push({ name: 'PostDetailView', params: { id: posts.value[nextIndex].id } });
-  }
-};
-};
+//   if (nextIndex < 0) {
+//     alert('첫 번째 게시물입니다.');
+//   } else if (nextIndex >= posts.value.length) {
+//     alert('마지막 게시물입니다.');
+//   } else {
+//     router.push({ name: 'PostDetailView', params: { id: posts.value[nextIndex].id } });
+//   }
+// };
+// };
 
+//목록 클릭시 게시글목록페이지로 이동
 const goListPage = () => router.push({name: 'PostWholeListView'})
+
+//수정 클릭시 수정페이지로 이동
 const goEditPage = () => {
   const id = post.value.id || postId
   router.push({ name: 'PostEditView', params: { postId } })
 }
 
-// watch(() => route.params.id, async (newId) => {
-//   await fetchPost(newId);
-//   await fetchComments(newId);
-// }, { immediate: true });
-// onMounted(() => {
-//   fetchPost(postId.value);
-//   fetchComments(postId.value)
-// });
-// provide('post', post)
+
 
 </script>
 

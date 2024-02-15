@@ -43,13 +43,16 @@
       >
         
         <v-card
+        :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center' }"
           color="#E0E0E0"
           class="v-card"
           :class="[selectedClass]"
           height="230"
           width="230"
           @click="toggle"
+
         >
+        
           <div class="d-flex fill-height align-center justify-center">
             
             <div>

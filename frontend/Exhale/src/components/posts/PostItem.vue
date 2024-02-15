@@ -18,6 +18,7 @@
 import { defineProps, defineEmits, ref } from 'vue'
 
 const props = defineProps({
+  thumbnail: String,
   title: String,
   content: String,
   author: String,
