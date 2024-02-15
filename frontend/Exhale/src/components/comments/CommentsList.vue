@@ -8,7 +8,7 @@
   </div>
   <div class="commentContent"  v-else>
     <div class="mainComment">
-    <h4 style="display: inline; font-size: 100%; color: rgb(170, 170, 170); margin-bottom: 20px; margin-right: 20px;">{{ list.id }}</h4>
+    <h4 style="display: inline; font-size: 100%; color: rgb(170, 170, 170); margin-bottom: 20px; margin-right: 20px;">{{ list.nickname }}</h4>
     
     <h4 style="display: inline; font-size: 120%;">{{ list.content }}</h4>
     <br>
