@@ -40,12 +40,13 @@
       <img src="@/assets/double-quote.svg" class="double-quote" >
 
       <div class="box-container">
-        <h2>{{ post.title }}</h2>
-        <h3>{{ post.nickname }}</h3>
-        <p>{{ post.view }}</p>
+        <h2>{{title}}</h2>
+        <p>{{nickname}}</p>
+        <p class="text-muted">{{view}}</p>
+        <br>
+        <h3>{{content}}</h3>
         
-        <p>{{ post.content }}</p>
-        <p class="text-muted">{{ post.create_date.substring(0,10)}}</p>
+        <p class="text-muted">{{create_date.substring(0,10)}}</p>
       </div>
 
 
@@ -53,10 +54,10 @@
         <button class="btn" @click="goListPage">
           <img src="@/assets/list.svg" class="list" >
           목록</button>
-        <button v-if="post.member_id==memberId" class="btn" @click="goEditPage">
+        <button  class="btn" @click="goEditPage" v-if="member_id ===memberId">
           <img src="@/assets/edit.svg" class="edit" >
           수정</button>
-        <button v-if="post.member_id==memberId" class="btn" @click="remove" >
+        <button  v-if="member_id ===memberId" class="btn" @click="remove" >
           <img src="@/assets/delete.svg" class="delete" >
           삭제</button>
       </div>
@@ -115,7 +116,17 @@ const show = ref(false)
 function toggleMenu() {
   show.value = !show.value
 }
-const post = ref([])
+
+
+
+
+
+const title = ref('')
+const nickname = ref('')
+const view = ref('')
+const content = ref('')
+const create_date = ref('')
+const member_id = ref('')
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
 const enlarge = () => {
@@ -128,7 +139,12 @@ const enlarge = () => {
 // 페이지 렌더링 시 detail요청으로 바로 내용 받아오기
 onMounted(async () => {
   await boardDetail(route.params.id).then((res) => {
-    post.value = res.data.response
+    title.value = res.data.response.title
+    content.value = res.data.response.content
+    nickname.value = res.data.response.nickname
+    view.value = res.data.response.view
+    create_date.value = res.data.response.create_date
+    member_id.value = res.data.response.member_ids
   })
 
 });

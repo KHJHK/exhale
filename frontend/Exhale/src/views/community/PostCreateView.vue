@@ -21,8 +21,18 @@
         </div>
     
 </div>
+<!-- <div class="dropdown">
+    <button class=" dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"  @change="onCategoryChange">
+      {{ category_name }}
+    </button>
+    <ul class="dropdown-menu" >
+      <li><a class="dropdown-item"  @click.prevent="selectCategory('정보 글', 1)">정보 글</a></li>
+      <li><a class="dropdown-item"  @click.prevent="selectCategory('치료 후기', 2)">치료 후기</a></li>
+      <li><a class="dropdown-item"  @click.prevent="selectCategory('환자 이야기', 3)">환자 이야기</a></li>
+    </ul>
+  </div> -->
 
-<div class="category">
+<!-- <div class="category">
     <div class="dropdown">
     <a class="btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         {{ category_name }}
@@ -34,7 +44,7 @@
         <option value= 3 class="dropdown-item">환자 이야기</option>
     </select>
 </div>
-</div>
+</div> -->
 
 <div class="contentBackground">
     <div>
@@ -154,6 +164,18 @@ import { storeToRefs } from "pinia";
 import axios from "axios";
 import { render } from 'vue';
 
+const category_name = ref("카테고리를 선택해주세요");
+const isOpen = ref(false);
+
+function toggleDropdown() {
+  isOpen.value = !isOpen.value;
+}
+
+function setCategory(name) {
+  category_name.value = name;
+  isOpen.value = false; // 선택 후 드롭다운 닫기
+}
+
 const baseURL = import.meta.env.VITE_APP_BASE_URL;
 const store = useAuthStore()
 const accessToken = store.jwtToken;
@@ -166,7 +188,7 @@ const content = ref('')
 const thumbnail = ref(null);
 const board_id = ref('')
 
-
+let pic = null
 const file = ref(null); // 선택된 파일을 저장할 ref 생성
 const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 
@@ -174,6 +196,7 @@ const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 const onFileChange = async (event) => {
     
   const files = event.target.files;
+
     if (files.length > 0) {
         const file = files[0];
         const formData = new FormData();
@@ -229,8 +252,6 @@ const emit = defineEmits(['update:tab'])
 const save_img = async() => {
     const formData = new FormData();
     formData.append('image',  imageUrl.value)
-    console.log('이게 돼야해',formData)
-    console.log('넌 그냥 쩌리',imageUrl.value)
     await saveImg(
         formData
     )}
@@ -251,7 +272,7 @@ const toggle_none = ref(null)
 const toggle_one = ref(0)
 const toggle_exclusive = ref(2)
 const toggle_multiple = ref([0, 1, 2])
-const category_name = ref("카테고리를 선택해주세요")
+
 
 
 

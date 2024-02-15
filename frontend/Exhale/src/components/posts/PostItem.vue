@@ -9,7 +9,7 @@
         <p class="text-muted"><small class="text-body-secondary">{{ create_date.substring(0, 10)}}</small></p>
     </div>
     <div class="card-image">
-      <img v-if="props.thumbnail" :src="props.thumbnail" :alt="title">
+      <img v-if="props.thumbnail" :src="props.thumbnail" :alt="title" style="width: 200px; height:190px; border-radius: 10%; border: 2px solid rgb(108, 159, 156);" >
      <!-- :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center' }" > -->
       <img v-if="props.thumbnail === null" src="@/assets/dog3.jpg">
     </div>

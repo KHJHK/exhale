@@ -52,11 +52,11 @@
 
               <p class="undertext1">
                 <b>
-                  <RouterLink to="forgot-id" class="forgot"
+                  <RouterLink class="forgot"
                     >아이디 찾기</RouterLink
                   >
                   /
-                  <RouterLink to="forgot-password" class="forgot"
+                  <RouterLink  class="forgot"
                     >비밀번호 찾기</RouterLink
                   >
                 </b>

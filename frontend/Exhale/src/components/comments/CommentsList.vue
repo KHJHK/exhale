@@ -12,6 +12,7 @@
     <h4 style="display: inline;">{{ list.content }}</h4>
     <br>
     <small>{{ list.createDate.substring(0, 10) }}</small>
+    
     <br>
     <div v-if="memberId == list.memberId">
       <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
