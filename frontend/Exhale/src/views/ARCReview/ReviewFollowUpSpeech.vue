@@ -9,7 +9,7 @@ import ReviewResultDialog from '@/components/ARCReview/ReviewResultDialog.vue'
 import { generateStatistics } from '@/components/ARC/StatisticsMorpheme.js';
 import SoundWave from '@/components/ARC/SoundWave.vue';
 
-const overTime = 120;
+const overTime = import.meta.env.VITE_APP_REVIEW_OVER_TIME;
 const courseId = 2;
 const volume = ref(0);
 

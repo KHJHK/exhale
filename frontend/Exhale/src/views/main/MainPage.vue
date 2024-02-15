@@ -135,7 +135,7 @@ const navigateToReview = (category) => {
       target = 'fluency';
       break;
   }
-  window.open(`${appURL}${target}/${category.category_id}/${category.over_time_sec}`);
+  window.open(`${appURL}/${target}/${category.category_id}/${category.over_time_sec}`);
   
 }
 // const navigateToReview2 = (category) => {

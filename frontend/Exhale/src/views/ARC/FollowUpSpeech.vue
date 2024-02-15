@@ -344,8 +344,8 @@ const enlarge = () => {
               <label class="numbering">
                 {{ no }}.
               </label>
-              &nbsp; &nbsp; 듣고 따라 말해 보세요. </div>
-              <div class="process-number" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx}} /{{ problemSet.length }}</div>
+              &nbsp; &nbsp; 클릭 후 듣고 따라 말해 보세요. </div>
+              <div id="process-number1" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx}} /{{ problemSet.length }}</div>
               <TTS_FollowUpSpeech 
                   :text="problem.question.value"
                   :isReading="isReading"
@@ -372,4 +372,15 @@ const enlarge = () => {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/layout/gamebackground.scss';
+
+#process-number1 {
+  display: flex;
+  justify-content: flex-end;
+  color: rgb(108, 159, 156);
+  font-weight: 500;
+  font-size: 16px;
+  margin: 5px -6px;
+  font-family: 'NotoSansKR';
+} 
+
 </style>

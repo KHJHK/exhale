@@ -7,7 +7,12 @@
       EXHALE
     </div> -->
     <img class="background" src="@/assets/background_circle.png" alt="">
-    <img class="cloud-character jello-horizontal" src="@/assets/character.png" alt="">
+    <transition name="fade">
+    <div class="maintext jello-horizontal" v-if="showMainText">반가워요,<br> 당신의 아름다운 목소리를 들려주세요 :)</div>
+  </transition>
+  <transition name="fade">
+    <img class="cloud-character jello-horizontal" src="@/assets/character.png" alt="" v-if="showCloudCharacter"/>
+  </transition>
 
     <STT_initialPage
       v-model="sttText" 
@@ -45,6 +50,20 @@ const handleVolumeUpdate = (newVolume) => {
 };
 
 
+const showMainText = ref(true);
+const showCloudCharacter = ref(false);
+
+onMounted(() => {
+  const intervalId = setInterval(() => {
+    showMainText.value = !showMainText.value;
+    showCloudCharacter.value = !showCloudCharacter.value;
+  }, 2000);
+
+  onUnmounted(() => {
+    clearInterval(intervalId);
+  });
+});
+
 </script>
 
 <style lang="scss" scoped>
@@ -60,13 +79,16 @@ const handleVolumeUpdate = (newVolume) => {
 }
 .maintext {
 position: fixed;
-top: 47%;
-left: 2%;
-font-family: 'EF_Rebecca';
-font-size: 315px;
-color: #334F4E;
+top: 23%;
+left: 37.4%;
+text-align: center;
+font-family: 'NotoSansKR-Bold';
+font-size: 25px;
+font-weight: 900;
+// color: #334F4E;
 // color: rgb(108, 159, 156);
-opacity: 50%;
+color: gray;
+// opacity: 50%;
 }
 
 body {
@@ -115,7 +137,7 @@ nav {
 
 .background {
   position: fixed;
-  top: 31%;
+  top: 36%;
   right: -4.5%;
   opacity: 50%;
   // box-shadow: 1px -30px 100px 15px rgb(108, 159, 156);
@@ -136,15 +158,23 @@ nav {
 }
 
 .cloud-character {
-  width: 8%;
+  width: 9%;
   position: absolute;
-  left: 46.5%;
-  top: 18%;
+  left: 46%;
+  top: 21.4%;
   // transform: rotate(-14deg);
   opacity: 80%;
+  &:hover {
+    animation: jello-horizontal 0.9s both;
+  }
 }
 
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
 
 @keyframes jello-horizontal {
   0% {

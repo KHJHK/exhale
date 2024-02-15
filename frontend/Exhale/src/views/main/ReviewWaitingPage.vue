@@ -73,7 +73,7 @@ const toggleSubbox = async (courseId) => {
       target = 'review-listening-comprehension';
       break;
   }
-  window.open(`${appURL}${target}`);
+  window.open(`${appURL}/${target}`);
 
 }
 

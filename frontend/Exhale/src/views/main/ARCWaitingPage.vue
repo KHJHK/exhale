@@ -18,21 +18,21 @@
 //   }
 // };
 // getCourses();
-
+const appURL = import.meta.env.VITE_APP_API_URL;
 const newWidow = () => {
-    window.open('http://localhost:5173/say-object');
+    window.open(`${appURL}/say-object`);
 }
 const openFluency = () => {
-    window.open('http://localhost:5173/fluency');
+    window.open(`${appURL}/fluency`);
 }
 const openFollowUp = () => {
-    window.open('http://localhost:5173/follow-up-speech');
+    window.open(`${appURL}/follow-up-speech`);
 }
 const openMatchingImage = () => {
-    window.open('http://localhost:5173/matching-image');
+    window.open(`${appURL}/matching-image`);
 }
 const openMatchingText = () => {
-    window.open('http://localhost:5173/matching-text');
+    window.open(`${appURL}/matching-text`);
 }
 </script>
 
