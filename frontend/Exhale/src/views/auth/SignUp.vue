@@ -9,7 +9,7 @@
   </transition>
   <div :style="{ fontSize: fontSize + 'px' }">
     <div  class="container" ref="container">
-      <button class="enlarge" @click="enlarge" style="z-index: 10;">
+      <button class="enlarge" @click="enlarge">
         <img src="@/assets/plus.svg" class="plus">
         {{ msg }}
       </button> 
@@ -89,7 +89,7 @@
                 </div>
               </div>
               
-              <p>
+              <p class="undertext1">
                 <span>
                   이미 계정이 있으신가요?
                 </span>

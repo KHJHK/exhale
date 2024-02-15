@@ -1,5 +1,5 @@
 <template>
-  <div class="speak">
+   <div class="speak">
     <div class="speakBtn">
       <button @click="enableStt" v-show="!sttRunning">
         <img src="@/assets/mic.svg" class="mic" >
@@ -13,6 +13,7 @@
       <!-- <div class="volume">Volume: {{ volume }}</div> -->
     </div>
     <form @submit.prevent="onSubmit" ref="sttForm" class="textform">
+      <img src="@/assets/double-quote.svg" class="double-quote" >
       <input type="text" class="textarea" v-model="sttText" readonly>
     </form>
   </div>
@@ -22,7 +23,7 @@
 import { ref, watch, defineProps, defineEmits, onMounted, onUnmounted } from 'vue';
 
 const sttRunning = ref(false);
-const emit = defineEmits(["update:sttText","update:sttRunning","update:volume"]);
+const emit = defineEmits(["update:sttText","update:sttRunning"]);
 
 const props = defineProps({
   sttText: String
@@ -181,6 +182,9 @@ onUnmounted(() => {
 
 <style lang="scss" scoped>
 .mic {
+  position: fixed;
+  top: 58%;
+  left: 48.4%;
   width: 60px;
   box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
   border-radius: 100%;
@@ -188,43 +192,54 @@ onUnmounted(() => {
   &:hover {
     opacity: 50%;
   }
+
 }
 
 .backcircle {
   position: absolute;
-  left: 0;
+  top: 58%;
+  left: 48.4%;
   bottom: 10%;
   width: 60px;
   box-shadow: 1px 2px 7px 3px rgb(255, 255, 255);
   border-radius: 100%;
   z-index: -10;
-  filter: brightness(200%)
 }
 
 .message {
   position: absolute;
   text-align: center;
-  left: 55%;
-  top: 120%;
+  left: 45.5%;
+  top: 69%;
   width: 150px;
-  transform: translateX(-50%);
   font-size: 100%;
   opacity: 70%;
+  color: gray;
 }
 
 .textarea {
   width: 27%;
   position: fixed;
-  top: 40%;
-  left: 35%;
+  top: 49%;
+  left: 37%;
+  background-color: transparent;
   border-radius: 10px;
   padding: 15px 17px;
   text-align: center;
-  color: rgb(45, 45, 45);
+  color: rgb(108, 159, 156);
   font-family: 'NotoSansKR';
   letter-spacing: 1px;
   &:focus {
     outline: none;
   }
 }
+
+.double-quote {
+  position: fixed;
+  left: 48.7%;
+  top: 43%;
+  width: 3%;
+
+}
+
 </style>

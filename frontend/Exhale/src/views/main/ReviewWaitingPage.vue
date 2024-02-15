@@ -70,7 +70,7 @@ const toggleSubbox = async (courseId) => {
       target = 'review-follow-up-speech';
       break;
     case 3:
-      target = 'review-listening-comperhension';
+      target = 'review-listening-comprehension';
       break;
   }
   window.open(`${appURL}${target}`);
