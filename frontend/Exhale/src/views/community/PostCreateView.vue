@@ -109,7 +109,7 @@
             
             <div class="twoButton">
                 <button class="buttons" type="button" @click="goListPage">목록</button>
-                <button class="buttons" type="button" @click="save_img">저장</button>
+                <button class="buttons" type="button" @click="article_create">저장</button>
             </div>
         </div>
 

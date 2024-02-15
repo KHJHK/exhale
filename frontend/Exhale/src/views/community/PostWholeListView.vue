@@ -91,7 +91,7 @@
         
         <section class="box-item">
           <article>
-          <div v-for="(post, index) in crud.posts" :key="post.id" >
+          <div v-for="(post) in crud.posts" :key="post.id" >
               <PostItem
               :title="post.title"
               :content="post.content"
@@ -136,11 +136,6 @@ import PostSearch from '@/components/posts/PostSearch.vue'
 import PostCreateBtn from '@/components/posts/PostCreateBtn.vue'
 import Footers from '@/components/common/Footers.vue'
 import {boardDetail, boardSearch} from '@/api/boards' 
-import {useCounterStore} from '@/stores/counter.js'
-import PostInfoListView from './PostInfoListView.vue'
-import PostReviewListView from './PostReviewListView.vue'
-import PostStoryListView from './PostStoryListView.vue'
-import { tempPassword } from '@/api/outhApi'
 import { useAuthStore } from "@/stores/auth";
 import { useCrudStore } from '@/stores/crud';
 import scrollTop from '@/components/functions/scrollTop.vue'
@@ -152,8 +147,8 @@ const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoadin
 const accessToken =store.accessToken
 
 
-const searchOption = ref(null);
-const searchKeyword = ref('');
+// const searchOption = ref(null);
+// const searchKeyword = ref('');
 
 
 
@@ -161,11 +156,12 @@ const handleSearch = async({ option, keyword }) => {
   searchOption.value = option;
   searchKeyword.value = keyword;
   // 필터링된 포스트 가져오는 로직
+  console.log('ar')
   await boardSearch(
-    tab.value,
+    crud.tab,
     searchOption.value,
     searchKeyword.value,
-    curPage.value,
+    crud.curPage
   )
 };
 
@@ -253,7 +249,6 @@ onMounted( async () => {
   
 })
 
-console.log('ASD@@@@@@@', crud.curPage)
   onUnmounted( async () => {
     await crud.board_list()
   })

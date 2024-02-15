@@ -5,22 +5,18 @@ const boardList = async (page, board_id) => {
 }
 
 
-//게시글 검색 x
+//게시글 검색 
 const boardSearch = async (board_id, searchType, searchContent, page) => {
-  try {
-    console.log('as!!!!!!!!!!!', board_id, searchType, searchContent, page)
-    const response = await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
+console.log('보드제이에스')
+    return await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
         board_id : board_id,
         search_type : searchType, // title, content, author
         search_content : searchContent,
         page : page // int 
+})};
 
-    }) 
-    console.log(response)
-   
-    } catch (error) {
-        console.error('검색을 완료하지 못했습니다.', error)
-    }}
+    
+
 
 
 //글 상세 정보 조회 

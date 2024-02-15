@@ -13,7 +13,11 @@ export const useCrudStore = defineStore('crud', ()=> {
   const totalPage = ref('')
   const isLoading = ref(false)
   const posts = ref([])
-    
+  const selectedOption = ref('title')
+  const keyword = ref('') 
+
+
+
   const board_list = async () => {
     try {
       const response = await boardList(
@@ -41,13 +45,18 @@ export const useCrudStore = defineStore('crud', ()=> {
   const board_search = async () => {
     try {
       const response = await boardSearch(
+        tab.value,
+        selectedOption.value,
+        keyword.value,
+      
         curPage.value,
-        tab.value
       )
       posts.value = response.data.response.article_list
       totalPage.value = response.data.response.article_total_count
       ITEM_PER_PAGE.value = response.data.response.page_size
       PAGE_PER_SECTION.value = response.data.response.page_total_count
+      
+      console.log('요청보냄', response)
       } catch (err) {
         console.log(err)
       }
@@ -62,7 +71,7 @@ export const useCrudStore = defineStore('crud', ()=> {
 
 
   watch (tab, (newValue)=> {
-      if (tab.value !== newValue)
+      if (tab.value === newValue)
       {curPage.value = 1}
   })
 
