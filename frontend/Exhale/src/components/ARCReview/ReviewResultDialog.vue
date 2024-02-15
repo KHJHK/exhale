@@ -39,6 +39,9 @@
                   <img v-if="!isRight" src="../../assets/wrong.svg"/>
                 </div>
               </div>
+              <div class="sttText" v-if="!isExit && !isComplete && !isPause">
+                <div :class="isRight? 'right':'wrong'">{{ sttText }}</div>
+              </div>
               <div class="buttons">
                 <div v-if="isExit">
                   <button @click="isClose = true; isExit=false; dialog=false;">종료하기</button>
@@ -70,6 +73,7 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
           isPause: Boolean,
           isReturn: Boolean,
           isComplete: Boolean,
+          sttText: String,
         });  
         const dialog = ref(props.dialog);
         const isRight = ref(props.isRight);
@@ -79,6 +83,7 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
         const nextTick = ref(false);
         const reviewTick = ref(props.reviewTick);
         const againTick = ref(props.againTick);
+        const sttText = ref(props.sttText);
 
         const isExit = ref(false);
         const isClose = ref(false);
@@ -126,6 +131,10 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
             isReturn.value = props.isReturn;
             isComplete.value = props.isComplete;
         });
+        watch(()=>props.sttText, () => {
+          console.log(props)
+          sttText.value = props.sttText;
+        })
     </script>
 
   <style lang="scss" scoped>
@@ -194,7 +203,25 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
     width: 21px;
     padding-bottom: 3px;
     opacity: 40%;
+    }
   }
+
+  .sttText{
+    display: flex;
+    justify-content: center;
+    color: rgba(255, 255, 255);
+    font-family: 'NotoSansKR';
+    font-size: 18px;
+    font-weight: 900;
+
+  }
+  .wrong{
+    color : rgba(231, 170, 170, 0.9);
+    font-size: 150%;
+  }
+  .right{
+    color : rgba(166, 247, 186, 0.9);
+    font-size: 150%;
   }
 
   </style>

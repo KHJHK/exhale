@@ -83,7 +83,12 @@ const getProblems = async () => {
       // todo api 응답 예외 처리
       return;
     }
+
     problemSet = data.response;
+    if(problemSet.length === 0){
+      alert("복습할 문제가 없습니다!")
+      window.close()
+    }
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.answer.value = problemSet[problemIdx].answer;

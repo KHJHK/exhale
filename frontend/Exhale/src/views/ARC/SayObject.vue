@@ -14,6 +14,7 @@ const route = useRoute()
 const overTime = route.params.time;
 const categoryId = route.params.id; 
 const volume = ref(0);
+const question = ref('')
 
 const authStore = useAuthStore();
 const { jwtToken } = storeToRefs(authStore);
@@ -21,7 +22,7 @@ const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;
-let no = ref(1);
+const no = ref(1);
 // 다이어로그
 const resultDialog = ref(false);
 const isRight = ref(false);
@@ -83,8 +84,19 @@ const getProblems = async () => {
       // todo api 응답 예외 처리
       return;
     }
+    console.log("category", categoryId)
+    if(categoryId === '1'){
+      question.value = "행동을"
+    }
+    if(categoryId === '2'){
+      question.value = "단어를"
+    }
+    if(categoryId === '3'){
+      question.value = "장소를"
+    }
     problemIdx = data.response.first_problem_index;
     problemSet = data.response.problemResponseList;
+    no.value = problemIdx + 1
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.answer.value = problemSet[problemIdx].answer;
@@ -299,7 +311,7 @@ const enlarge = () => {
               <label class="numbering">
                 {{ no }}.
               </label>
-              &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 단어를 말하세요. </div>
+              &nbsp; &nbsp; 아래 이미지가 나타내는 적합한 {{ question }} 말하세요. </div>
               <div class="process-number" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
               <STT 
             v-model="sttText" 

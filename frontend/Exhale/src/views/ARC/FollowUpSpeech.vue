@@ -21,7 +21,7 @@ const token = jwtToken.value;
 
 let problemIdx=0;
 let problemSet=null;
-let no = ref(1);
+const no = ref(1);
 
 // 다이어로그
 const resultDialog = ref(false);
@@ -81,12 +81,15 @@ clearInterval(timerId);
 const getProblems = async () => {
   try {
     const { data } = await getProblem(categoryId, token);
+
     if(data.dataStatus.code!=1){
       // todo api 응답 예외 처리
       return;
     }
+
     problemIdx = data.response.first_problem_index;
     problemSet = data.response.problemResponseList;
+    no.value = problemIdx + 1
 
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
@@ -345,7 +348,7 @@ const enlarge = () => {
                 {{ no }}.
               </label>
               &nbsp; &nbsp; 클릭 후 듣고 따라 말해 보세요. </div>
-              <div id="process-number1" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx}} /{{ problemSet.length }}</div>
+              <div id="process-number1" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx + 1}} /{{ problemSet.length }}</div>
               <TTS_FollowUpSpeech 
                   :text="problem.question.value"
                   :isReading="isReading"
