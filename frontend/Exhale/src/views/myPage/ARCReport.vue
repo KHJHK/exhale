@@ -100,7 +100,7 @@
     </div>
 
 
-    <Footers_mypage class="footer1" />
+    <Footers_mypage class="footer1" style="margin-bottom: 100vh;" />
 
   </div>
 
