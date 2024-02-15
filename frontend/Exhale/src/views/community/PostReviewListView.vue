@@ -113,9 +113,6 @@
     
   </div>
   
-  <footer class="footer">
-    <Footers/>
-  </footer>
 </div>
 <scrollTop/>
 </template>

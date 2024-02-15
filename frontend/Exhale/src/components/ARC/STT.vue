@@ -185,6 +185,9 @@ onUnmounted(() => {
   box-shadow: 1px 5px 4px 3px rgb(193, 193, 193);
   border-radius: 100%;
   z-index: 20;
+  &:hover {
+    opacity: 50%;
+  }
 }
 
 .backcircle {
@@ -195,6 +198,7 @@ onUnmounted(() => {
   box-shadow: 1px 2px 7px 3px rgb(255, 255, 255);
   border-radius: 100%;
   z-index: -10;
+  filter: brightness(200%)
 }
 
 .message {

@@ -93,7 +93,7 @@
 
 .imgurl {
   position: fixed;
-  top: 28%;
+  top: 29%;
   left: 35%;
   width: 500px;
   height: 300px;
@@ -118,7 +118,7 @@
 .hintBtn {
   font-size: 86%;
   position: fixed;
-  top: 78%;
+  top: 79%;
   left: 63.5%;
   color: white;
   border: 3px solid white;
@@ -142,7 +142,7 @@
 
 .soundwave {
   position: fixed;
-  top: 88%;
+  top: 89%;
   left: 54%;
   transform: translate(-50%, -50%);
   width: 30%;
@@ -157,15 +157,16 @@
 
 .sttcomponent1 {
   position: fixed;
-  top: 77%;
+  top: 78%;
   left: 35%;
 }
 
 .process-number{
   display: flex;
   justify-content: flex-end;
-  color:#6C9F9C;
-  font-weight: 400;
+  color: rgb(108, 159, 156);
+  font-weight: 500;
   font-size: 16px;
-  margin: 7px 0;
+  margin: 7px -9px;
+  font-family: 'NotoSansKR';
 }
