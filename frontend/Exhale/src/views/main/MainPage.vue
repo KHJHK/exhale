@@ -191,7 +191,6 @@ const categoryList = async (courseId) => {
 
 onMounted(()=> {
   courseList()
-  document.addEventListener('click', onBodyClick);
 })
 
 onUnmounted(() => {

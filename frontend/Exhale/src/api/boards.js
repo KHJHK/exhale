@@ -5,22 +5,18 @@ const boardList = async (page, board_id) => {
 }
 
 
-//게시글 검색 x
+//게시글 검색 
 const boardSearch = async (board_id, searchType, searchContent, page) => {
-  try {
-    console.log('as!!!!!!!!!!!', board_id, searchType, searchContent, page)
-    const response = await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
+console.log('보드제이에스')
+    return await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
         board_id : board_id,
         search_type : searchType, // title, content, author
         search_content : searchContent,
         page : page // int 
+})};
 
-    }) 
-    console.log(response)
-   
-    } catch (error) {
-        console.error('검색을 완료하지 못했습니다.', error)
-    }}
+    
+
 
 
 //글 상세 정보 조회 
@@ -32,6 +28,10 @@ const boardDetail = async (article_id) => {
 
 //게시글 생성 
 const articleCreate = async (title, content, thumbnail, board_id, accessToken) => {
+  if (!title && content && board_id ) {
+    alert('게시물 내용을 확인해주세요.')
+    return
+  }
   try {
     const response = await axios.post(
       "http://i10b208.p.ssafy.io/api/articles",
@@ -50,6 +50,7 @@ const articleCreate = async (title, content, thumbnail, board_id, accessToken) =
     if (response.status === 200) {
       alert("게시글 등록 완료!");
     }
+
   } catch (error) {
     console.error("게시글 등록에 실패하였습니다.", error);
     alert("로그인 후 이용해주세요."); // 원래는 status분기를 갈라서 다른 에러메시지를 출력해야함.

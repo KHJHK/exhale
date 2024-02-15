@@ -12,7 +12,7 @@
     <div id="container" class="container" ref="container">
       <!-- FORM SECTION -->
       <form @submit.prevent="submit">
-        <!-- <p>날;숨입니다. 여러분의 회복을 기원합니다.</p> -->
+        <!-- <p>날;숨입니다. 여러분의 회 복을 기원합니다.</p> -->
         <!-- SIGN IN -->
         <div class="col align-items-center flex-col sign-in">
           <img src="@/assets/logo_white.png" class="intro-logo" />
