@@ -368,6 +368,7 @@ const container = ref(null);
       }
     }, 300)
 })
+const appURL = import.meta.env.VITE_APP_API_URL;
 
 const checkJoinCode = async() => {
   let url = new URL(window.location.href);
@@ -375,7 +376,7 @@ const checkJoinCode = async() => {
   if(code !== null){
     const response = await checkCode(code, 'join');
     if(response === 2){
-      alert("이미 존재하는 회원입니다.", window.location.href = `http://localhost:80/signup`)
+      alert("이미 존재하는 회원입니다.", window.location.href = `${appURL}/signup`)
     }
     const data = response.data.response;
     isVerifying.value=true;
