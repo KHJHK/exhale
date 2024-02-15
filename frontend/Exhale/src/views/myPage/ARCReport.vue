@@ -38,16 +38,26 @@
       <div id="solved">
         <p class="data-title">문제 풀이 통계</p>
         <div id="problem-category-list">
-          <button class="round-button" @click="select_button(1)">
+          <button class="round-button" 
+          :class="{ 'selected': selectedButtonId === 1 }"
+          @click="selectButton(1)">
             이름 대기
           </button>
-          <button class="round-button" @click="select_button(2)">
+          <button class="round-button" 
+          :class="{ 'selected': selectedButtonId === 2 }"
+          @click="selectButton(2)">
             따라 말하기
           </button>
-          <button class="round-button" @click="select_button(3)">
+          <button class="round-button"
+          :class="{ 'selected': selectedButtonId === 3 }"
+          @click="selectButton(3)">
             듣기 이해력
           </button>
-          <button class="round-button" @click="select_button(4)">유창성</button>
+          <button class="round-button" 
+          :class="{ 'selected': selectedButtonId === 4 }"
+          @click="selectButton(4)">
+          유창성
+        </button>
         </div>
         <div id="problem-data-list">
           <div class="problem-data" v-for="item in select_problem_data_list" :key="item">
@@ -62,18 +72,30 @@
         </div>
       </div>
       <div id="letter">
+        <p class="data-title">많이 틀린 다섯가지</p>
         <div id="letter-data-list">
           <div class="letter-data" v-for="(item, index) in letterDataList" :key="index">
-           <div style="display: flex; flex-direction: column;">
-             <p>{{ item.letter }}</p>
-             <p>{{ item.type }}</p>
-             <p>{{item.wrong_count / item.count * 100}} </p>  
+            <div class="bar-container">
+              <div class="bar-background"></div>
+              <div class="bar" :style="{height: item.wrong_count / item.count * 100 + '%'}"></div>
             </div>
-            
-      
-            
+              <div class="label">
+                <p>
+                  {{ 
+                    item.type === 'CONSONANT_LETTER' ? '초성' :
+                    item.type === 'MIDDLE_VOWEL_LETTER' ? '중성' :
+                    item.type === 'LAST_CONSONANT_LETTER' ? '종성' :
+                    item.type
+                  }}
+                </p>
+                <p class="sublabel">
+                  {{ item.letter }}
+                </p>
+              </div>
           </div>
         </div>
+
+
       </div>
     </div>
 
@@ -113,7 +135,11 @@ const result4= ref('')
 const result5= ref('')
 
 
+const selectedButtonId = ref(null);
 
+const selectButton = (id) => {
+  selectedButtonId.value = id;
+};
 
 
 
@@ -176,9 +202,70 @@ const enlarge = () => {
 <style lang="scss" scoped>
 @import "@/assets/scss/pages/_mainpage.scss";
 
-* {
-  font-family: 'NotoSansKR';
+
+
+.sub-nav1 {
+  margin-top: -2vh;
 }
+
+#problem-data-list {
+  padding-left: 1vw;
+}
+
+#letter-data-list {
+  display: flex;
+  justify-content: center;
+  flex-direction: row; 
+  align-items: flex-end; 
+  gap: 30px; 
+  padding: 20px; 
+  background-color: #f1f6f5; 
+  border-radius: 10px; 
+  width: 95%;
+  height: 75%; 
+  margin: auto; 
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 180px;
+  width: 100%;
+  position: relative;
+  background-color: rgb(226, 226, 226); 
+  border-radius: 20px;
+}
+
+.bar-background {
+  position: absolute;
+  width: 80%; 
+  height: 80%;
+  background-color: rgb(226, 226, 226); 
+  bottom: 0;
+  border-radius: 20px;
+}
+
+.bar {
+  width: 100%; 
+  background-color: #334F4E; 
+  border-bottom-right-radius: 5px; 
+  border-bottom-left-radius: 5px; 
+  position: absolute; 
+  bottom: 0; 
+}
+
+.label {
+  text-align: center; 
+  margin-top: 50%; 
+  font-family: 'NotoSansKR-Bold';
+}
+
+.sublabel {
+  margin-top: -30%;
+}
+
 
 .footer1 {
   position: fixed;
@@ -197,12 +284,10 @@ const enlarge = () => {
   margin-top: 23px;
 }
 
-.problemdetile {
-
-}
 
 .problem-data {
   margin-left: 15px;
+  margin-top: 5vh;
 }
 
 #page {
@@ -231,31 +316,35 @@ const enlarge = () => {
   display: flex;
   justify-content: center;
   margin-top: 60px;
+  margin-left: 50px;
+  border-radius: 100%;
 }
 
 #profile-img-tag {
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 40%;
+  height: 40%;
+  border: 20px solid rgb(227, 227, 227);
+  border-radius: 50%;  
 }
 
 #nickname-p-tag {
-  margin: 10px 0px;
+  margin: 30px 0px;
   font-size: 20px;
   text-align: center;
   color: white;
+  margin-left: 50px;
 }
 
 //main 관련
 #main {
-  min-height: 90%;
+  min-height: 100%;
   width: 80%;
   height: 80%;
   //background-color: aquamarine;
-  margin-left: 20%;
+  margin-left: 30%;
   display: flex;
-  justify-content: space-evenly;
+  gap: 5%;
+  margin-top: -3vh;
   align-items: center;
   margin-bottom: -5vh;
   max-height: 100%;
@@ -263,23 +352,26 @@ const enlarge = () => {
 } 
 
 #solved {
-  width: 50%;
-  height: 50%;
+  width: 40%;
+  height: 55%;
   margin-bottom: 30vh;
   background-color: #F1F6F5;
   color: #334F4E;
   border: none;
   border-radius: 30px;
   padding: 2%;
+  
 }
 
 
 #letter {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  height: 50%;
+  width: 30%;
+  height: 55%;
+  padding-top: 3vh;
   margin-bottom: 30vh;
   background-color: #F1F6F5;
   border: none;
@@ -288,30 +380,38 @@ const enlarge = () => {
 
 .data-title {
   margin-top: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
   font-weight: 700;
   text-align: center;
-  font-size: 30px;
+  font-size: 160%;
+  color: #334F4E;
 }
 
 //solved-data 관련
 #problem-category-list {
   display: flex;
+
 }
 
 .round-button {
-  border: 3px solid rgb(201, 201, 201);
-  color: gray;
+  border: none;
   background-color: transparent;
-  border-radius: 10px;
+  border-radius: 15px;
+  background-color: lightgray;
+  color: #334F4E;
+  font-weight: 600;
   font-size: 16px;
-  padding: 10px 20px;
-  margin: 0 10px;
+  padding: 10px 11px;
+  margin: 0px 7px;
   &:hover {
     color: white;
-    background-color: #6C9F9C;
-    border: 3px solid #6C9F9C;
+    background-color: #334F4E;
   }
+}
+
+.selected {
+  color: white;
+  background-color: #334F4E !important;
 }
 
 //letter-data 관련
