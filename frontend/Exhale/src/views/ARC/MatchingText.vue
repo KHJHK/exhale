@@ -303,7 +303,7 @@ const enlarge = () => {
                 />
                 <p class="click">Click!</p>
                 <SoundWave_MatchingImage :isActive="isReading" class="soundwave_matchingimage" />
-                <div class="process-number" style="margin-top: 30px;" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
+                <div class="process-number1" style="margin-top: 37px;" v-if="problemSet">진행 현황&nbsp;: &nbsp; {{problemIdx+1}} /{{ problemSet.length }}</div>
 
                 <img src="@/assets/triangle_left.svg" class="triangle_left">
                 <div class="options-grid">
@@ -344,19 +344,19 @@ const enlarge = () => {
 .soundwave_matchingimage {
   position: fixed;
   top: 22%;
-  left: 54%;
+  left: 53.8%;
   transform: translate(-50%, -50%);
   border-radius: 10px;
   padding: 15px 17px;
   // background-color: rgb(255, 255, 255);
-  width: 26%;
+  width: 25%;
   height: 60px;
 }
 
 .triangle_left {
   position: fixed;
   top: 20.5%;
-  left: 40%;
+  left: 40.5%;
   width: 20px;
 }
 
@@ -416,8 +416,10 @@ const enlarge = () => {
   padding-right: 15px;
   text-shadow: 5px 2px 7px rgb(171, 171, 171);
   box-shadow: 1px 2px 5px rgb(211, 211, 211);
+  &:hover {
+    opacity: 50%;
 }
-
+}
 .hint2 {
   position: fixed;
   text-align: center;
@@ -432,9 +434,19 @@ const enlarge = () => {
 .click {
   position: fixed;
   top: 27%;
-  left: 35%;
+  left: 35.6%;
   color: rgb(108, 159, 156);
   font-size: 70%;
+}
+
+.process-number1 {
+  display: flex;
+  justify-content: flex-end;
+  color: rgb(108, 159, 156);
+  font-weight: 500;
+  font-size: 16px;
+  margin: 5px 5px;
+  font-family: 'NotoSansKR';  
 }
 
 </style>
