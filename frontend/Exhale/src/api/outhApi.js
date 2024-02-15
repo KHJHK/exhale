@@ -125,7 +125,7 @@ const logout = async (key, refreshToken) => {
 
 // todo 구현
 const kakaoLogin = (type) => {
-    const redirectUri = `http://localhost:80/${type}`;
+    const redirectUri = `http://i10b208.p.ssafy.io/${type}`;
     const url = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoApiKey}&redirect_uri=${redirectUri}&response_type=code`
     // 사용자를 카카오 로그인 페이지로 리디렉션
     window.location.href = url;
@@ -150,7 +150,7 @@ const checkCode = async(code, type) => {
         if(code !== null){
         //code로 정보 요청
             // return await axios.get(baseURL + `auth/kakao/${type}?code=${code}`);
-            return await axios.get("http://localhost:8080/api/" + `auth/kakao/${type}?code=${code}`);
+            return await axios.get("http://i10b208.p.ssafy.io/api/" + `auth/kakao/${type}?code=${code}`);
         }; 
     } catch(error){
         console.log(error)
