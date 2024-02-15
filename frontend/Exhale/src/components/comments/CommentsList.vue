@@ -10,15 +10,15 @@
     <div class="mainComment">
     <h4 style="display: inline; font-size: 100%; color: rgb(170, 170, 170); margin-bottom: 20px; margin-right: 20px;">{{ list.id }}</h4>
     
-    <h4 style="display: inline;">{{ list.content }}</h4>
+    <h4 style="display: inline; font-size: 120%;">{{ list.content }}</h4>
     <br>
     <p style="margin-top: 15px; color: gray;">{{ list.createDate.substring(0, 10) }}</p>
     
     <br>
   </div>
-    <div class="editDelete" v-if="memberId == list.memberId">
-      <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
-      <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
+    <div class="editDelete" style="display: flex;" v-if="memberId == list.memberId">
+      <a @click="startEdit(list)" style="cursor: pointer; margin-right: 1vw;">수정</a> | 
+      <p @click="delete_Comments(list)" style="display: inline; cursor: pointer; margin-left: 1vw;" >삭제</p>
     </div>
   </div>
     <hr style="width: 70%; margin-left: 15vw;">
