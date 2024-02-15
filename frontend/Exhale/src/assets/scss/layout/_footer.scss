@@ -1,21 +1,19 @@
 footer {
   display: flex;
   flex-direction: column;
-  // margin-top: 200px;
-  // height: 20vh;
-  position: fixed;
   color: rgb(188, 188, 188);
-  top: 85%;
-  left: 35.5%;
+  width: 100%;
   font-size: 90%;
-  // transform: translateY(-100%);
-  & a{
+  padding: 20px 0;
+  box-sizing: border-box;
+  margin-top: auto;
+  & a {
     text-decoration: none;
-    color: rgb(188, 188, 188);
+    color: rgb(133, 133, 133);
     font-family: 'NotoSansKR';
   }
-  & span{
-    color: rgb(188, 188, 188);
+  & span {
+    color: rgb(133, 133, 133);
     font-family: 'NotoSansKR';
   }
   & .footer-contact {
