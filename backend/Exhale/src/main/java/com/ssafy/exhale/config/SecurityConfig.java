@@ -52,7 +52,7 @@ public class SecurityConfig {
                         //configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://i10b208.p.ssafy.io:80"));
 //                        // 요청이 온 Origin 헤더 확인
 //                        String origin = request.getHeader("Origin");
-//
+//                        System.out.println(origin);
 //                        // localhost:5173 출처에 대한 CORS 정책 설정
 //                        if ("http://localhost:5173".equals(origin)) {
 //                            configuration.setAllowedOrigins(Collections.singletonList(origin));
