@@ -23,8 +23,9 @@
     />
     <SoundWave_InitialPage :volume="volume" class="soundwave_initial" />
 
+    <footer>
     <Footers/>
-
+  </footer>
 </template>
 
 <script setup> 
@@ -167,6 +168,22 @@ nav {
   &:hover {
     animation: jello-horizontal 0.9s both;
   }
+}
+
+
+footer {
+  position: fixed;
+  top: 80%;
+  bottom: 0; 
+  left: 0; 
+  width: 100%; 
+  background-color: #fff; 
+  color: rgb(188, 188, 188); 
+  font-size: 90%;
+  text-align: center; 
+  padding: 10px 0; 
+  box-sizing: border-box; 
+  z-index: -100;
 }
 
 .fade-enter-active, .fade-leave-active {
