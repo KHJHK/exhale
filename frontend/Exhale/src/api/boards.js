@@ -38,7 +38,7 @@ const articleCreate = async (title, content, thumbnail, board_id, accessToken) =
       {
         title: title,
         content: content,
-        thumbnail: null,
+        thumbnail: thumbnail,
         board_id: board_id,
       },
       {
