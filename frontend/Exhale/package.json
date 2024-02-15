@@ -7,7 +7,7 @@
     "dev": "vite",
     "dev:production" : "Vite --mode production",
     "build": "vite build",
-    "build:production": "vite build --mode production",
+    "build:production": "vite build --mode production --envFile .env.production",
     "preview": "vite preview",
     "db": "json-server --watch db.json --port 5000"
   },
