@@ -77,9 +77,7 @@
     <img src="@/assets/right-arrow.svg" class="right-arrow" @click="navigateToPost(1)">
   </div>
   
-  <footer class="footer">
-    <Footers/>
-  </footer>
+ 
 </div>
 </template>
 

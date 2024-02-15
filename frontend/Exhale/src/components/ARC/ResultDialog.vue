@@ -215,10 +215,12 @@ import { ref, defineProps ,defineEmits, watch} from 'vue';
 
   }
   .wrong{
-    color : rgba(233, 64, 64, 0.9);
+    color : rgba(231, 170, 170, 0.9);
+    font-size: 150%;
   }
   .right{
-    color : rgba(64, 233, 106, 0.9);
+    color : rgba(166, 247, 186, 0.9);
+    font-size: 150%;
   }
 
   </style>
