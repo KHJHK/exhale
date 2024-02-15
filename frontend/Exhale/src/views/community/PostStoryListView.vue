@@ -160,7 +160,6 @@ function toggleMenu() {
 }
 
 const board_detail = async (article_id) => {
-    console.log('정체',article_id)
     try {
       const response = await boardDetail(
         article_id

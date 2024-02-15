@@ -172,7 +172,9 @@ const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
 
 // 파일이 선택되었을 때 호출될 메서드
 const onFileChange = async (event) => {
+    
   const files = event.target.files;
+  console.log(event.target.files)
     if (files.length > 0) {
         const file = files[0];
         const formData = new FormData();

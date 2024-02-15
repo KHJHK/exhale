@@ -80,12 +80,14 @@
       <div class="box-container">
         
         <section>
-          <PostSlider />
+          <PostSlider 
+          
+          />
         </section>
         
         <section class="box-item sub-nav3">
           <label><PostCreateBtn /></label> 
-          <label><PostSearch @search="handleSearch" /></label>
+          <label><PostSearch/></label>
           <label>최신순</label>
         </section>
         
@@ -145,7 +147,6 @@ const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoadin
 
 const accessToken =store.accessToken
 
-
 const searchOption = ref(null);
 const searchKeyword = ref('');
 
@@ -180,7 +181,6 @@ const enlarge = () => {
 };
 
   const board_detail = async (article_id) => {
-    console.log('정체',article_id)
     try {
       const response = await boardDetail(
         article_id
@@ -199,13 +199,15 @@ const onClickTab = (tabName) => {
 }
 
 onMounted( async () => {
-    // crud.tab = 'all'
-    await crud.board_list()
+  // crud.tab = 'all'
+  await crud.board_list()
+  
   
 })
 
   onUnmounted( async () => {
     await crud.board_list()
+    
   })
 
 </script>

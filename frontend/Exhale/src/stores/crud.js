@@ -5,7 +5,6 @@ import { boardList, boardSearch  } from "@/api/boards";
 
 
 export const useCrudStore = defineStore('crud', ()=> {
-  const router = useRouter()
   const tab = ref('all')
   const curPage = ref(1)
   const ITEM_PER_PAGE = ref(10);
@@ -13,8 +12,8 @@ export const useCrudStore = defineStore('crud', ()=> {
   const totalPage = ref('')
   const isLoading = ref(false)
   const posts = ref([])
-  const selectedOption = ref('title')
-  const keyword = ref('') 
+
+  const thumbnails = ref([])
 
 
 

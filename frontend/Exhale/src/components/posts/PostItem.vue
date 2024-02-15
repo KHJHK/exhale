@@ -9,14 +9,15 @@
         <p class="text-muted"><small class="text-body-secondary">{{ create_date }}</small></p>
     </div>
     <div class="card-image">
-        <img src="@/assets/dog3.jpg">
+      <img v-if="props.thumbnail" :src="props.thumbnail" :alt="title">
+     <!-- :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center' }" > -->
+      <img v-if="props.thumbnail === null" src="@/assets/dog3.jpg">
     </div>
 </div>
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref } from 'vue'
-
+import { defineProps, defineEmits, ref , watchEffect } from 'vue'
 const props = defineProps({
   thumbnail: String,
   title: String,
@@ -26,12 +27,18 @@ const props = defineProps({
   id: Number,
 })
 const article_id = ref([props.id])
-
+const imageUrl = ref('')
 
 const emit = defineEmits(['board_detail'])
 const handleClick = () => {
   emit('board_detail', article_id)
 }
+
+watchEffect(() => {
+  imageUrl.value = props.thumbnail
+  console.log(imageUrl.value)
+  
+})
 </script>
 
 <style lang="scss" scoped>

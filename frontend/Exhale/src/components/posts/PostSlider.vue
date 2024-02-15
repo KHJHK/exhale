@@ -1,32 +1,4 @@
 <template>
-<!-- <div id="carouselExample" class="carousel slide">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="@/assets/dog1.jpg" alt="...">
-      <img src="@/assets/dog3.jpg" alt="...">
-      <img src="@/assets/dog1.jpg" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="@/assets/dog2.jpg" alt="...">
-      <img src="@/assets/dog2.jpg" alt="...">
-      <img src="@/assets/dog2.jpg" class="d-block w-50" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="@/assets/dog3.jpg" alt="...">
-      <img src="@/assets/dog3.jpg" alt="...">
-    </div>
-  </div>
-  
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div> -->
-
 <v-sheet
     class="mx-auto"
     width="100%"
@@ -36,27 +8,28 @@
       class="v-slide-group"
       show-arrows
     >
-      <v-slide-group-item
-        v-for="n in 10"
-        :key="n"
+      <!-- <v-slide-group-item
+      
+      v-for="slot in 10"
+      :key = slot
         v-slot="{ isSelected, toggle, selectedClass }"
       >
-        
+     -->
+     <v-slide-group-item v-for="(post, index) in crud.posts" :key="index">
         <v-card
-        :style="{ backgroundImage: 'url(' + imageUrl + ')' , backgroundSize: 'cover', backgroundPosition: 'center' }"
+        :style="{ backgroundImage: 'url(' + getThumbnail(post.thumbnail) + ')', backgroundSize: 'cover', backgroundPosition: 'center' }"
           color="#E0E0E0"
           class="v-card"
           :class="[selectedClass]"
           height="230"
           width="230"
           @click="toggle"
-
         >
         
           <div class="d-flex fill-height align-center justify-center">
             
             <div>
-              <p class="card-text">title</p>
+              <p class="card-text"></p>
             </div>  
 
             <v-scale-transition>
@@ -77,16 +50,33 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
+import {storeToRefs} from 'pinia'
 import { boardList } from '@/api/boards';
+import { useCrudStore } from '@/stores/crud';
+const crud = useCrudStore()
 
 const model = ref(null)
+const file = ref(null); // 선택된 파일을 저장할 ref 생성
+const imageUrl = ref(''); // 이미지 URL을 저장할 ref 생성
+
+console.log('이게되네', crud.posts)
 
 onMounted( async () => {
     const response = await boardList(1, 0);
     console.log(response)
 })
 
+const props = defineProps({
+  thumbnail: String,
+})
+
+
+
+
+function getThumbnail(thumbnail) {
+  return thumbnail || '@/assets/dog3.jpg'; // thumbnail이 없는 경우 기본 이미지 경로 반환
+}
 </script>
 
 <style scoped>
