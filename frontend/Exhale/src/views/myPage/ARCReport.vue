@@ -1,6 +1,9 @@
 <template>
+  <div :style="{ fontSize: fontSize + 'px' }">
+
   <div id="page">
     <MyPageHeader />
+
     <section class="sub-nav1">
       <div id="breadcrum" style="color: white">
         <RouterLink
@@ -17,14 +20,10 @@
           >마이페이지</RouterLink
         >
       </div>
-      <button
-        class="enlarge"
-        @click="enlarge"
-        style="position: absolute; right: 0px; z-index: 10; border-color: white"
-      >
-        <img src="@/assets/plus.svg" class="plus" />
+     <button class="enlarge" @click="enlarge">
+        <img src="@/assets/plus_white.png" class="plus">
         {{ msg }}
-      </button>
+        </button> 
     </section>
 
     <div id="sidebar">
@@ -52,9 +51,9 @@
         </div>
         <div id="problem-data-list">
           <div class="problem-data" v-for="item in select_problem_data_list" :key="item">
-            {{ item.course_id }}
-            <p>날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
-            <p>
+            <!-- {{ item.course_id }} -->
+            <p class="date">날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
+            <p class="problemdetile">
               푼 문제 : <span>{{ item.correct_count + item.wrong_count }}</span
               >, 맞춘 문제 : <span>{{ item.correct_count }}</span> , 틀린 문제 :
               <span>{{ item.wrong_count }}</span>
@@ -63,22 +62,33 @@
         </div>
       </div>
       <div id="letter">
-        <div id="pie-chart"></div>
         <div id="letter-data-list">
-          <div class="letter-data" v-for="item in letterDataList" :key="item">
-            {{ item }}
+          <div class="letter-data" v-for="(item, index) in letterDataList" :key="index">
+           <div style="display: flex; flex-direction: column;">
+             <p>{{ item.letter }}</p>
+             <p>{{ item.type }}</p>
+             <p>{{item.wrong_count / item.count * 100}} </p>  
+            </div>
+            
+      
+            
           </div>
         </div>
       </div>
     </div>
-    <Footers />
+
+
+    <Footers_mypage class="footer1" />
+
   </div>
+
+</div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import MyPageHeader from "@/components/common/MyPageHeader.vue";
-import Footers from "@/components/common/Footers.vue";
+import Footers_mypage from "@/components/common/Footers_mypage.vue";
 
 import * as mypage from "@/api/mypage";
 import * as report from "@/api/report";
@@ -93,6 +103,20 @@ const nickname = ref("");
 const image = ref("");
 const letterDataList = ref([]);
 const solvedDataList = ref([]);
+
+
+
+const result1 = ref('')
+const result2 = ref('')
+const result3= ref('')
+const result4= ref('')
+const result5= ref('')
+
+
+
+
+
+
 
 const select_course_id = ref(4);
 const select_button = (course_id) => {
@@ -117,11 +141,18 @@ const getProfile = async () => {
 const getSolvedData = async () => {
   const response = await report.getSolvedData(token);
   solvedDataList.value = response.data.response;
+  
 };
 
 const getLetterData = async () => {
   const response = await report.getLetterData(token);
   letterDataList.value = response.data.response;
+  result1.value =(letterDataList.value[0].wrong_count / letterDataList.value[0].count *100)
+  result2.value =(letterDataList.value[1].wrong_count / letterDataList.value[1].count *100)
+  result3.value =(letterDataList.value[2].wrong_count / letterDataList.value[2].count *100)
+  result4.value =(letterDataList.value[3].wrong_count / letterDataList.value[3].count *100)
+  result5.value =(letterDataList.value[4].wrong_count / letterDataList.value[4].count *100)
+
 };
 
 onMounted(() => {
@@ -129,25 +160,71 @@ onMounted(() => {
   getLetterData();
   getSolvedData();
 });
+
+const fontSize = ref(16);
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+const enlarge = () => {
+  fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  };
+};
+
+
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/pages/_mainpage.scss";
 
+* {
+  font-family: 'NotoSansKR';
+}
+
+.footer1 {
+  position: fixed;
+  left: -8%;
+  top: 125%;
+  margin-top: -40vh;
+}
+
+.enlarge {
+  color: white;
+  border: 3px solid white;
+  margin-right: 11vw;
+}
+
+.date {
+  margin-top: 23px;
+}
+
+.problemdetile {
+
+}
+
+.problem-data {
+  margin-left: 15px;
+}
+
 #page {
-  width: 100vw;
   height: 100vh;
   background-color: #6c9f9c;
+  overflow: hidden;
+  margin: 0;
 }
 
 //sidebar 관련
 #sidebar {
+  flex: 1;
   min-height: 80%;
-  width: 20%;
-  padding: 0% 7%;
+  width: 30%;
+  height: 80%;
+  padding: 0% 1%;
   //background-color: rgb(169, 170, 170);
   position: absolute;
   left: 0;
+  margin-bottom: -5vh;
+  max-height: 100%;
+  overflow: auto;
 }
 
 #profile-image {
@@ -172,29 +249,47 @@ onMounted(() => {
 
 //main 관련
 #main {
-  min-height: 80%;
+  min-height: 90%;
   width: 80%;
+  height: 80%;
   //background-color: aquamarine;
   margin-left: 20%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-}
+  margin-bottom: -5vh;
+  max-height: 100%;
+  overflow: auto;
+} 
 
 #solved {
-  width: 40%;
-  height: 600px;
-  background-color: white;
+  width: 50%;
+  height: 50%;
+  margin-bottom: 30vh;
+  background-color: #F1F6F5;
+  color: #334F4E;
+  border: none;
+  border-radius: 30px;
+  padding: 2%;
 }
 
+
 #letter {
-  width: 40%;
-  height: 600px;
-  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25%;
+  height: 50%;
+  margin-bottom: 30vh;
+  background-color: #F1F6F5;
+  border: none;
+  border-radius: 30px;
 }
 
 .data-title {
-  margin-top: 35px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-weight: 700;
   text-align: center;
   font-size: 30px;
 }
@@ -205,20 +300,28 @@ onMounted(() => {
 }
 
 .round-button {
-  border: 2px solid #555;
-  background-color: #fff;
+  border: 3px solid rgb(201, 201, 201);
+  color: gray;
+  background-color: transparent;
+  border-radius: 10px;
   font-size: 16px;
   padding: 10px 20px;
   margin: 0 10px;
+  &:hover {
+    color: white;
+    background-color: #6C9F9C;
+    border: 3px solid #6C9F9C;
+  }
 }
 
 //letter-data 관련
 #pie-chart {
   display: inline-block;
-  position: relative;
+  position: absolute;
   width: 200px;
   height: 200px;
-  background: conic-gradient(#8b22ff 0% 25%, #ffc33b 25% 56%, #21f3d6 56% 100%);
+  background: conic-gradient(#334F4E 0% 25%, #6C9F9C 25% 56%, #A6D4D1 56% 100%);
   border-radius: 50%;
 }
+
 </style>
