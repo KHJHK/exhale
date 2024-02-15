@@ -1,6 +1,9 @@
 <template>
+  <div :style="{ fontSize: fontSize + 'px' }">
+
   <div id="page">
     <MyPageHeader />
+
     <section class="sub-nav1">
       <div id="breadcrum" style="color: white">
         <RouterLink
@@ -17,14 +20,10 @@
           >마이페이지</RouterLink
         >
       </div>
-      <button
-        class="enlarge"
-        @click="enlarge"
-        style="position: absolute; right: 0px; z-index: 10; border-color: white"
-      >
-        <img src="@/assets/plus.svg" class="plus" />
+     <button class="enlarge" @click="enlarge">
+        <img src="@/assets/plus_white.png" class="plus">
         {{ msg }}
-      </button>
+        </button> 
     </section>
 
     <div id="sidebar">
@@ -39,22 +38,32 @@
       <div id="solved">
         <p class="data-title">문제 풀이 통계</p>
         <div id="problem-category-list">
-          <button class="round-button" @click="select_button(1)">
+          <button class="round-button" 
+          :class="{ 'selected': selectedButtonId === 1 }"
+          @click="selectButton(1)">
             이름 대기
           </button>
-          <button class="round-button" @click="select_button(2)">
+          <button class="round-button" 
+          :class="{ 'selected': selectedButtonId === 2 }"
+          @click="selectButton(2)">
             따라 말하기
           </button>
-          <button class="round-button" @click="select_button(3)">
+          <button class="round-button"
+          :class="{ 'selected': selectedButtonId === 3 }"
+          @click="selectButton(3)">
             듣기 이해력
           </button>
-          <button class="round-button" @click="select_button(4)">유창성</button>
+          <button class="round-button" 
+          :class="{ 'selected': selectedButtonId === 4 }"
+          @click="selectButton(4)">
+          유창성
+        </button>
         </div>
         <div id="problem-data-list">
           <div class="problem-data" v-for="item in select_problem_data_list" :key="item">
-            {{ item.course_id }}
-            <p>날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
-            <p>
+            <!-- {{ item.course_id }} -->
+            <p class="date">날짜 : {{ item.start_of_week }} ~ {{ item.end_of_week }}</p>
+            <p class="problemdetile">
               푼 문제 : <span>{{ item.correct_count + item.wrong_count }}</span
               >, 맞춘 문제 : <span>{{ item.correct_count }}</span> , 틀린 문제 :
               <span>{{ item.wrong_count }}</span>
@@ -63,22 +72,45 @@
         </div>
       </div>
       <div id="letter">
-        <div id="pie-chart"></div>
+        <p class="data-title">많이 틀린 다섯가지</p>
         <div id="letter-data-list">
-          <div class="letter-data" v-for="item in letterDataList" :key="item">
-            {{ item }}
+          <div class="letter-data" v-for="(item, index) in letterDataList" :key="index">
+            <div class="bar-container">
+              <div class="bar-background"></div>
+              <div class="bar" :style="{height: item.wrong_count / item.count * 100 + '%'}"></div>
+            </div>
+              <div class="label">
+                <p>
+                  {{ 
+                    item.type === 'CONSONANT_LETTER' ? '초성' :
+                    item.type === 'MIDDLE_VOWEL_LETTER' ? '중성' :
+                    item.type === 'LAST_CONSONANT_LETTER' ? '종성' :
+                    item.type
+                  }}
+                </p>
+                <p class="sublabel">
+                  {{ item.letter }}
+                </p>
+              </div>
           </div>
         </div>
+
+
       </div>
     </div>
-    <Footers />
+
+
+    <Footers_mypage class="footer1" />
+
   </div>
+
+</div>
 </template>
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import MyPageHeader from "@/components/common/MyPageHeader.vue";
-import Footers from "@/components/common/Footers.vue";
+import Footers_mypage from "@/components/common/Footers_mypage.vue";
 
 import * as mypage from "@/api/mypage";
 import * as report from "@/api/report";
@@ -93,6 +125,24 @@ const nickname = ref("");
 const image = ref("");
 const letterDataList = ref([]);
 const solvedDataList = ref([]);
+
+
+
+const result1 = ref('')
+const result2 = ref('')
+const result3= ref('')
+const result4= ref('')
+const result5= ref('')
+
+
+const selectedButtonId = ref(null);
+
+const selectButton = (id) => {
+  selectedButtonId.value = id;
+};
+
+
+
 
 const select_course_id = ref(4);
 const select_button = (course_id) => {
@@ -117,11 +167,18 @@ const getProfile = async () => {
 const getSolvedData = async () => {
   const response = await report.getSolvedData(token);
   solvedDataList.value = response.data.response;
+  
 };
 
 const getLetterData = async () => {
   const response = await report.getLetterData(token);
   letterDataList.value = response.data.response;
+  result1.value =(letterDataList.value[0].wrong_count / letterDataList.value[0].count *100)
+  result2.value =(letterDataList.value[1].wrong_count / letterDataList.value[1].count *100)
+  result3.value =(letterDataList.value[2].wrong_count / letterDataList.value[2].count *100)
+  result4.value =(letterDataList.value[3].wrong_count / letterDataList.value[3].count *100)
+  result5.value =(letterDataList.value[4].wrong_count / letterDataList.value[4].count *100)
+
 };
 
 onMounted(() => {
@@ -129,96 +186,242 @@ onMounted(() => {
   getLetterData();
   getSolvedData();
 });
+
+const fontSize = ref(16);
+const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
+const enlarge = () => {
+  fontSize.value ++;
+  if (fontSize.value > 22) {
+    fontSize.value = 16
+  };
+};
+
+
 </script>
 
 <style lang="scss" scoped>
 @import "@/assets/scss/pages/_mainpage.scss";
 
+
+
+.sub-nav1 {
+  margin-top: -2vh;
+}
+
+#problem-data-list {
+  padding-left: 1vw;
+}
+
+#letter-data-list {
+  display: flex;
+  justify-content: center;
+  flex-direction: row; 
+  align-items: flex-end; 
+  gap: 30px; 
+  padding: 20px; 
+  background-color: #f1f6f5; 
+  border-radius: 10px; 
+  width: 95%;
+  height: 75%; 
+  margin: auto; 
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  height: 180px;
+  width: 100%;
+  position: relative;
+  background-color: rgb(226, 226, 226); 
+  border-radius: 20px;
+}
+
+.bar-background {
+  position: absolute;
+  width: 80%; 
+  height: 80%;
+  background-color: rgb(226, 226, 226); 
+  bottom: 0;
+  border-radius: 20px;
+}
+
+.bar {
+  width: 100%; 
+  background-color: #334F4E; 
+  border-bottom-right-radius: 5px; 
+  border-bottom-left-radius: 5px; 
+  position: absolute; 
+  bottom: 0; 
+}
+
+.label {
+  text-align: center; 
+  margin-top: 50%; 
+  font-family: 'NotoSansKR-Bold';
+}
+
+.sublabel {
+  margin-top: -30%;
+}
+
+
+.footer1 {
+  position: fixed;
+  left: -8%;
+  top: 125%;
+  margin-top: -40vh;
+}
+
+.enlarge {
+  color: white;
+  border: 3px solid white;
+  margin-right: 11vw;
+}
+
+.date {
+  margin-top: 23px;
+}
+
+
+.problem-data {
+  margin-left: 15px;
+  margin-top: 5vh;
+}
+
 #page {
-  width: 100vw;
   height: 100vh;
   background-color: #6c9f9c;
+  overflow: hidden;
+  margin: 0;
 }
 
 //sidebar 관련
 #sidebar {
+  flex: 1;
   min-height: 80%;
-  width: 20%;
-  padding: 0% 7%;
+  width: 30%;
+  height: 80%;
+  padding: 0% 1%;
   //background-color: rgb(169, 170, 170);
   position: absolute;
   left: 0;
+  margin-bottom: -5vh;
+  max-height: 100%;
+  overflow: auto;
 }
 
 #profile-image {
   display: flex;
   justify-content: center;
   margin-top: 60px;
+  margin-left: 50px;
+  border-radius: 100%;
 }
 
 #profile-img-tag {
-  width: 170px;
-  height: 170px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 40%;
+  height: 40%;
+  border: 20px solid rgb(227, 227, 227);
+  border-radius: 50%;  
 }
 
 #nickname-p-tag {
-  margin: 10px 0px;
+  margin: 30px 0px;
   font-size: 20px;
   text-align: center;
   color: white;
+  margin-left: 50px;
 }
 
 //main 관련
 #main {
-  min-height: 80%;
+  min-height: 100%;
   width: 80%;
+  height: 80%;
   //background-color: aquamarine;
-  margin-left: 20%;
+  margin-left: 30%;
   display: flex;
-  justify-content: space-around;
+  gap: 5%;
+  margin-top: -3vh;
   align-items: center;
-}
+  margin-bottom: -5vh;
+  max-height: 100%;
+  overflow: auto;
+} 
 
 #solved {
   width: 40%;
-  height: 600px;
-  background-color: white;
+  height: 55%;
+  margin-bottom: 30vh;
+  background-color: #F1F6F5;
+  color: #334F4E;
+  border: none;
+  border-radius: 30px;
+  padding: 2%;
+  
 }
 
+
 #letter {
-  width: 40%;
-  height: 600px;
-  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 55%;
+  padding-top: 3vh;
+  margin-bottom: 30vh;
+  background-color: #F1F6F5;
+  border: none;
+  border-radius: 30px;
 }
 
 .data-title {
-  margin-top: 35px;
+  margin-top: 20px;
+  margin-bottom: 35px;
+  font-weight: 700;
   text-align: center;
-  font-size: 30px;
+  font-size: 160%;
+  color: #334F4E;
 }
 
 //solved-data 관련
 #problem-category-list {
   display: flex;
+
 }
 
 .round-button {
-  border: 2px solid #555;
-  background-color: #fff;
+  border: none;
+  background-color: transparent;
+  border-radius: 15px;
+  background-color: lightgray;
+  color: #334F4E;
+  font-weight: 600;
   font-size: 16px;
-  padding: 10px 20px;
-  margin: 0 10px;
+  padding: 10px 11px;
+  margin: 0px 7px;
+  &:hover {
+    color: white;
+    background-color: #334F4E;
+  }
+}
+
+.selected {
+  color: white;
+  background-color: #334F4E !important;
 }
 
 //letter-data 관련
 #pie-chart {
   display: inline-block;
-  position: relative;
+  position: absolute;
   width: 200px;
   height: 200px;
-  background: conic-gradient(#8b22ff 0% 25%, #ffc33b 25% 56%, #21f3d6 56% 100%);
+  background: conic-gradient(#334F4E 0% 25%, #6C9F9C 25% 56%, #A6D4D1 56% 100%);
   border-radius: 50%;
 }
+
 </style>
