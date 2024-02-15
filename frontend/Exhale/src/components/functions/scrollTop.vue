@@ -1,5 +1,7 @@
 <template>
-  <button @click="scrollToTop" class="scroll-to-top">↑</button>
+  <button @click="scrollToTop" class="scroll-to-top">
+  <img src="@/assets/uparrow.png" class="arrow" alt="">
+  </button>
 </template>
 
 <script setup>
@@ -14,14 +16,18 @@ function scrollToTop() {
 
 <style scoped>
 .scroll-to-top {
+  width: 75px;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #6C9F9C; /* 배경색 */
+  bottom: 30px;
+  right: 5%;
   color: white; /* 아이콘 색상 */
-  border: none; /* 테두리 없앰 */
-  padding: 10px; /* 패딩 */
-  border-radius: 5px; /* 모서리 둥글게 */
+  border: 2px solid rgb(108, 159, 156); /* 테두리 없앰 */
+  padding: 20px 20px; /* 패딩 */
+  border-radius: 50%; /* 모서리 둥글게 */
   cursor: pointer; /* 마우스 오버시 커서 변경 */
+}
+
+.arrow {
+  width: 80%;
 }
 </style>

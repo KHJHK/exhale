@@ -213,6 +213,7 @@ const enlarge = () => {
 
 .sub-nav1 {
   margin-top: -2vh;
+  margin-left: 2.7vw;
 }
 
 #problem-data-list {
@@ -278,7 +279,9 @@ const enlarge = () => {
   position: fixed;
   left: -8%;
   top: 125%;
-  margin-top: -40vh;
+  margin-top: -38vh;
+  font-size: 80%;
+  opacity: 70%;
 }
 
 .enlarge {
@@ -390,7 +393,7 @@ const enlarge = () => {
   margin-bottom: 35px;
   font-weight: 700;
   text-align: center;
-  font-size: 160%;
+  font-size: 140%;
   color: #334F4E;
 }
 
@@ -407,8 +410,8 @@ const enlarge = () => {
   background-color: lightgray;
   color: #334F4E;
   font-weight: 600;
-  font-size: 16px;
-  padding: 10px 11px;
+  font-size: 13px;
+  padding: 10px 16.5px;
   margin: 0px 7px;
   &:hover {
     color: white;

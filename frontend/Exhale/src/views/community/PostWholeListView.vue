@@ -23,7 +23,7 @@
           >
           <RouterLink class="breadlink" :to="{name: 'PostWholeListView'}">전체</RouterLink>
         </div>
-        <button class="enlarge" @click="enlarge" style="position: fixed; right: 0px; z-index: 10;">
+        <button class="enlarge" @click="enlarge" style="margin-right: 84px; z-index: 10;">
         <img src="@/assets/plus.svg" class="plus">
         {{ msg }}
         </button> 
@@ -122,6 +122,10 @@
   
 </div>
 <scrollTop/>
+
+
+<Footers style="margin-bottom: 5vh; margin-left: 1vw;" />
+
 </template>
 
 <script setup>

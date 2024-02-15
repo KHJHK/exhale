@@ -1,5 +1,5 @@
 <template>
-	<div style="display: flex; align-items: center;">
+	<div style="display: flex; align-items: center; margin-bottom: 10vh;">
 		<span>
 			<a id="move"
 				@click="
