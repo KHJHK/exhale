@@ -86,6 +86,11 @@ const getProblems = async () => {
     }
     problemSet = data.response;
 
+    if(problemSet.length === 0){
+      alert("복습할 문제가 없습니다!")
+      window.close()
+    }
+
     problem.problemId.value = problemSet[problemIdx].problem_id;
     problem.question.value = problemSet[problemIdx].question;
     problem.categoryId.value = problemSet[problemIdx].category_id;
