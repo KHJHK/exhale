@@ -32,19 +32,17 @@
     </ul>
   </div> -->
 
-<!-- <div class="category">
-    <div class="dropdown">
-    <a class="btn dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        {{ category_name }}
-    </a>
-    <select class="dropdown-menu" v-model="selectedCategory" @change="onCategoryChange">
-        <option disabled value="">카테고리를 선택해주세요</option>
-        <option value= 1 class="dropdown-item" >정보 글</option>
-        <option value= 2 class="dropdown-item">치료 후기</option>
-        <option value= 3 class="dropdown-item">환자 이야기</option>
-    </select>
+
+<div class="category">
+    <div role="button" class="dropdown-toggle" aria-expanded="false" aria-placeholder="categoty_name">
+        <select v-model="selectedCategory" @change="onCategoryChange">
+            <option disabled value="">카테고리를 선택해주세요</option>
+            <option value= 1 class="dropdown-item" >정보 글</option>
+            <option value= 2 class="dropdown-item">치료 후기</option>
+            <option value= 3 class="dropdown-item">환자 이야기</option>
+        </select>
 </div>
-</div> -->
+</div>
 
 <div class="contentBackground">
     <div>
