@@ -1,4 +1,9 @@
 <template>
+  <html>
+    <head>
+      <title>날;숨</title>
+    </head>
+  </html>
   <div class="head">
     <main>
       <RouterView/>

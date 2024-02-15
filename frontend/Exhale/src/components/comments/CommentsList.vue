@@ -7,24 +7,25 @@
     <button @click="cancelEdit">취소</button>
   </div>
   <div v-else>
-        <h4 style="display: inline;">{{ list.id }}</h4>
-    
-    <h4 style="display: inline;">{{ list.content }}</h4>
-    <br>
-    <small>{{ list.createDate.substring(0, 10) }}</small>
-    
-    <br>
-    <div v-if="memberId == list.memberId">
-      <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
-      <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
-    </div>
-  </div>
     <hr>
+    <div>
+      <h4 style="display: inline; margin-left: 10px;">{{ list.nickname }} </h4> <br>
+      <p style="display: inline; margin-left: 15px;">{{ list.content }}</p>
+      <br>
+      <small style="margin-left: 10px;">{{ list.createDate.substring(0, 10) }}</small>
+      <br>
+      <div v-if="memberId == list.memberId">
+        <a @click="startEdit(list)" style="cursor: pointer;">수정</a> | 
+        <p @click="delete_Comments(list)" style="display: inline; cursor: pointer;" >삭제</p>
+      </div>
+    </div>
+    <hr>
+  </div>
 
   </div>
 </div>
   <div v-else>
-    <h4 style="text-align: center;">아직 댓글이 없습니다. 댓글을 남겨보세요!</h4>
+    <p style="text-align: center;">아직 댓글이 없습니다. 댓글을 남겨보세요!</p>
     <hr>
   </div>
 </template>
@@ -47,19 +48,21 @@ onMounted(async () => {
   try {
     const response = await getComments(article_id);
     lists.value = response.data.response;  
+   
     console.log(lists.value)
   } 
   catch (error) {
     console.error('댓글을 불러오는데 실패했습니다', error);
   }
 });
-// editComments()
+
 const startEdit = (comment) => {
   editMode.value = true;
   currentComment.id = comment.id;
   currentComment.content = comment.content;
 };
 
+// 댓글 삭제
 const delete_Comments = async (comment) => {
   if(confirm('댓글을 삭제하시겠습니까?')){
     try{

@@ -7,7 +7,6 @@ const boardList = async (page, board_id) => {
 
 //게시글 검색 
 const boardSearch = async (board_id, searchType, searchContent, page) => {
-console.log('보드제이에스')
     return await axios.post('https://www.ssafyexhale.shop/api/boards/search', {
         board_id : board_id,
         search_type : searchType, // title, content, author
@@ -16,14 +15,11 @@ console.log('보드제이에스')
 })};
 
     
-
-
-
 //글 상세 정보 조회 
 const boardDetail = async (article_id) => {
-    
+    console.log('디테일호출',article_id)
     return await axios.get(`https://www.ssafyexhale.shop/api/articles/${article_id}`, {
-    })  };
+    })};
 
 
 //게시글 생성 
@@ -59,7 +55,6 @@ const articleCreate = async (title, content, thumbnail, board_id, accessToken) =
 
 //이미지 저장 x
 const saveImg = async (file) => {
-  console.log('찐함수',file)
  try {
     const response = await axios.post('https://www.ssafyexhale.shop/api/articles/image', {
     file : file

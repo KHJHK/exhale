@@ -80,9 +80,11 @@
       <div class="box-container">
         
         <section>
-          <PostSlider 
+         
+            <PostSlider 
+           
+            />
           
-          />
         </section>
         
         <section class="box-item sub-nav3">

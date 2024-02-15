@@ -32,9 +32,6 @@
 
       <svg-icon type="mdi" :path="path"></svg-icon>
       <PostSlider class="postslider"
-      
-
-      
       />
 
       <img src="@/assets/double-quote.svg" class="double-quote" >
@@ -144,12 +141,11 @@ onMounted(async () => {
     nickname.value = res.data.response.nickname
     view.value = res.data.response.view
     create_date.value = res.data.response.create_date
-    member_id.value = res.data.response.member_ids
+    member_id.value = res.data.response.member_id
+
   })
 
 });
-
-
 
 // 게시글 삭제
 const remove = async () => {
