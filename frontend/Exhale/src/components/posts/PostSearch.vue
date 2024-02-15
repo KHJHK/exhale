@@ -6,64 +6,34 @@
         <option id="content" value="content">내용</option>
         <option id="author" value="author">작성자</option>
       </select>
-      <button @click.prevent="onSearch">
+      <button >
         <font-awesome-icon icon="chevron-down" class="search-icon2" />
       </button>
 
       <input class="keyword" v-model="keyword" type="text" name="search" maxlength="255" value="" autocomplete="off">
 
-      <button class="img-button" type="submit" name="click" value="" @click.prevent="onSearch">
+      <button class="img-button" type="submit" name="click" >
         <font-awesome-icon icon="magnifying-glass" class="search-icon"/>
       </button>
 
     </form>
-    
-    <!-- 기존코드
-    <div v-show="modalActive" id="search-modal-search">
-      <div id="search-modal-search-box">
-        <input 
-        type="text" 
-        @keyup="searchInput" 
-        placeholder="" 
-        id="search-modal-search--input"
-        >
-      </div>
-      <font-awesome-icon icon="magnifying-glass" class="search-icon"/>
-      div v-show="modalActive" @click="modalActiveTogle" id="search-modal"></div>
-    </div> -->
-    <!-- @keyup.esc="modalActiveTogle"  -->
-    
-    <!-- 모달 배경 -->
-    <!-- <div v-if="modalActive" @click="modalActiveTogle" id="search-modal-bg"></div> -->
-
-      <!-- 홈화면에 보이는 검색창 -->
-      <!-- <span id="home-search">
-        <span id="home-search-box"> -->
-          <!-- 검색창은 비활성화 -->
-          <!-- <input placeholder="SEARCH" type="text" id="search--input" readonly>
-        </span>
-      </span> -->
-      
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { defineEmits } from 'vue'
-import { boardSearch } from '@/api/boards';
 import { useCrudStore } from '@/stores/crud';
 const crud = useCrudStore()
 const selectedOption = ref('title') // 기본값으로 'title'을 선택
 const keyword = ref('') // 입력된 검색어를 저장할 ref 생성
-const emit = defineEmits(['search'])
 const router = useRouter()
-const bSearch = ref('')
 
 const onSearch = async() => {
-  crud.selectedOption = selectedOption.value
-  crud.keyword = keyword.value
-  await crud.board_search()
-  console.log('보냈다')
+  const key = keyword.value
+  const select = selectedOption.value
+  await crud.board_search(select, key)
+
 };
 
 
@@ -73,34 +43,6 @@ watch(router.currentRoute, (newRoute) => {
   selectedOption.value = newRoute.query.searchBy || 'title'
   keyword.value = newRoute.query.keyword || ''
 });
-
-
-// import { ref } from 'vue'
-
-
-
-// const modalActive = ref(true)
-// const ableSearch = ref(true)
-// const searchInputData = ref(null)
-
-// const modalActiveTogle = () => {
-//   modalActive.value = !modalActive.value
-//   setTimeout(() => {
-//     const searchModalInputTag = document.querySelector('#search-modal-search--input')
-//     searchModalInputTag.focus()
-//   }, 200)
-// }
-
-// const searchInput = () => {
-//   if (ableSearch.value) {
-//     ableSearch.value = false
-//     const searchModalInputTag = document.querySelector('#search-modal-search--input')
-//     setTimeout(() => {
-//       searchInputData.value = searchModalInputTag.value
-//       ableSearch.value = true
-//     }, 1000)
-//   }
-// }
 
 
 </script>

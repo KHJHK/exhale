@@ -7,7 +7,6 @@ const boardList = async (page, board_id) => {
 
 //게시글 검색 
 const boardSearch = async (board_id, searchType, searchContent, page) => {
-console.log('보드제이에스')
     return await axios.post('http://i10b208.p.ssafy.io/api/boards/search', {
         board_id : board_id,
         search_type : searchType, // title, content, author
@@ -28,7 +27,7 @@ const boardDetail = async (article_id) => {
 
 //게시글 생성 
 const articleCreate = async (title, content, thumbnail, board_id, accessToken) => {
-  if (!title && content && board_id ) {
+  if (!title && !content && !board_id ) {
     alert('게시물 내용을 확인해주세요.')
     return
   }

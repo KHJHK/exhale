@@ -19,7 +19,9 @@
         <p>이러한 문제를 인식하여 환자에게 좀 더 실질적인 도움을 줄 수 있는 사회공헌적인 성격의 해당 서비스를 기획하였습니다.</p>
    </div>
    <hr>
+   
    <footer>
+    <br>
     <footers/>
    </footer>
 </template>
@@ -34,6 +36,7 @@ h1 {
     color: rgb(108,159,156)
 }
 footer {
-    margin-top: 50px
+    margin-top: 100px
+    
 }
 </style>

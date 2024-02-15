@@ -15,9 +15,9 @@
     <hr style="border: 1.5px solid white; width: 85vw; margin-top: -25px; opacity: 90;">
     <RouterLink class="movelink" :to="{name: 'PostWholeListView'}">복습하기</RouterLink>
     <hr style="border: 1.5px solid white; width: 85vw; margin-top: -25px; opacity: 90;">
-    <RouterLink class="movelink" :to="{name: 'PostStoryListView'}">내 정보</RouterLink>
+    <RouterLink class="movelink" :to="{name: 'ARCReport'}">내 정보</RouterLink>
     <hr style="border: 1.5px solid white; width: 85vw; margin-top: -25px; opacity: 90;">
-    <RouterLink class="movelink" :to="{name: 'PostStoryListView'}">로그아웃</RouterLink>
+    <RouterLink class="movelink" :to="{name: 'PostWholeListView'}">로그아웃</RouterLink>
     <hr style="border: 1.5px solid white; width: 85vw; margin-top: -25px; opacity: 90;">
   </div>
 

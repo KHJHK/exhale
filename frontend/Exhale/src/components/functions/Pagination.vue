@@ -56,14 +56,6 @@ const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoadin
 
 const leftmostPage = ref(1);
 
-// const props = defineProps({
-// 	curPage: Number,
-// 	totalPage: Number,
-// })
-// const posts = ref(props.posts)
-// const postsLength = posts.length
-
-
 
 
 const getPaginationArray = (left) => {
@@ -80,15 +72,8 @@ const getPaginationArray = (left) => {
 
 const onChangeCurPage = async (page) => {
   crud.curPage = page; // 현재 페이지 업데이트
-
   await crud.board_list()
 }
-
-// watch(() => totalPage, (newValue) => {
-//   if (newValue !== undefined) {
-//     totalPage.value = newValue;
-//   }
-// }, { immediate: true });
 
 </script>
 

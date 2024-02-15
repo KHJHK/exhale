@@ -42,21 +42,18 @@ export const useCrudStore = defineStore('crud', ()=> {
     }
   }
 
-  const board_search = async () => {
+  const board_search = async (select, key) => {
     try {
       const response = await boardSearch(
         tab.value,
-        selectedOption.value,
-        keyword.value,
-      
+        select,
+        key,
         curPage.value,
       )
       posts.value = response.data.response.article_list
       totalPage.value = response.data.response.article_total_count
       ITEM_PER_PAGE.value = response.data.response.page_size
       PAGE_PER_SECTION.value = response.data.response.page_total_count
-      
-      console.log('요청보냄', response)
       } catch (err) {
         console.log(err)
       }

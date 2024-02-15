@@ -72,10 +72,10 @@
         </div>
   </div>
   
-  <div class="arrows">
+  <!-- <div class="arrows">
     <img src="@/assets/left-arrow.svg" class="left-arrow" @click="navigateToPost(-1)">
     <img src="@/assets/right-arrow.svg" class="right-arrow" @click="navigateToPost(1)">
-  </div>
+  </div> -->
   
  
 </div>

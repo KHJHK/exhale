@@ -46,6 +46,7 @@ onMounted(async () => {
   try {
     const response = await getComments(article_id);
     lists.value = response.data.response;  
+    console.log(lists.value)
   } 
   catch (error) {
     console.error('댓글을 불러오는데 실패했습니다', error);

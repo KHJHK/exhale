@@ -91,8 +91,7 @@
         
         <section class="box-item">
           <article>
-          <div v-for="post in crud.posts" :key="post.id" >
-  
+          <div v-for="post in crud.posts" :key="post.id"  >
               <PostItem
               :title="post.title"
               :content="post.content"
@@ -100,6 +99,7 @@
               :id="post.id"
               @click="board_detail(post.id)"
               ></PostItem>
+              
             </div>
           </article>
         </section>
@@ -145,25 +145,8 @@ const {posts, curPage, tab, ITEM_PER_PAGE, PAGE_PER_SECTION, totalPage, isLoadin
 const accessToken =store.accessToken
 
 
-// const searchOption = ref(null);
-// const searchKeyword = ref('');
-
-
-
-const handleSearch = async({ option, keyword }) => {
-  searchOption.value = option;
-  searchKeyword.value = keyword;
-  // 필터링된 포스트 가져오는 로직
-  console.log('ar')
-  await boardSearch(
-    crud.tab,
-    searchOption.value,
-    searchKeyword.value,
-    crud.curPage
-  )
-};
-
-
+const searchOption = ref(null);
+const searchKeyword = ref('');
 
 
 const filteredPosts = computed(() => {
@@ -177,19 +160,7 @@ const filteredPosts = computed(() => {
 });
 
 
-// const board_search = async() => {
-//   await boardSearch(
-//   crud.tab,
-//   searchOption.value,
-//   searchKeyword.value,
-//   crud.curPage
-//   )
-// }
-
-
-
 const show = ref(false)
-
 function toggleMenu() {
   show.value = !show.value
 }
@@ -198,8 +169,6 @@ function toggleMenu() {
 
 const route = useRoute()
 const router = useRouter()
-
-
 const fontSize = ref(16);
 const msg = computed(() => fontSize.value > 21 ? '원래대로' : '글자확대');
 const enlarge = () => {
@@ -208,16 +177,6 @@ const enlarge = () => {
     fontSize.value = 16
   };
 };
-
-// for (let i = 0; i < articles.length; i++) {
-  //   articles[i] = `Article ${i + 1}`;
-  // }
-  
-
-  //   const onChangePage = (data) => {
-    // curPage.value = data;
-    // };
- 
 
   const board_detail = async (article_id) => {
     console.log('정체',article_id)
@@ -232,9 +191,6 @@ const enlarge = () => {
     }
 }  
 
-// const changePage = async(newPage) => {
-//   await crud.board_list(newPage);
-// }
 
 const onClickTab = (tabName) => {
   crud.curPage = 1
