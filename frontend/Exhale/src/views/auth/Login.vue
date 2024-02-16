@@ -1,4 +1,4 @@
-<template>
+ <template>
   <button
     class="enlarge"
     @click="enlarge"
@@ -52,11 +52,11 @@
 
               <p class="undertext1">
                 <b>
-                  <RouterLink class="forgot"
+                  <RouterLink :to="{name:'ForgotId'}" class="forgot"
                     >아이디 찾기</RouterLink
                   >
                   /
-                  <RouterLink  class="forgot"
+                  <RouterLink  :to="{name:'ForgotPassword'}"  class="forgot"
                     >비밀번호 찾기</RouterLink
                   >
                 </b>
