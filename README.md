@@ -140,11 +140,14 @@
 ## ERD
 ![캡처](https://github.com/gunjoon98/readme/assets/48176143/ff3702d6-b316-47f2-9b9e-98175a89c009)
 
+## 와이어프레임
+![와이어프레임](https://github.com/hana-nana/Exhale/assets/80585489/77b273bb-77ac-4b11-9f5c-afa141a5fbe4)
+
 ## 팀원 소개 및 역할
 | 이름   | 기능 및 역할 |
 | ----|--------------------------------------------------------------------------- |
 | 정건준 |  팀장, Backend </br> PM, 인프라(docker, CI/CD), 재활 게임 API, 통계 API, S3, ChatGPT 적용|
 | 김희중 |  팀원, Backend </br> API 명세, 소셜로그인, 커뮤니티 API
-| 나하나 |  팀원, Frontend </br> UI,UX 설계 및 디자인, 웹 퍼블리싱(HTML, CSS, CS), 게시판 CRUD |
+| 나하나 |  팀원, Frontend </br> 기능 구현(게시판 CRUD), UI/UX 설계 및 디자인, 와이어프레임, 퍼블리싱(HTML, CSS, JS) |
 | 신예지 |  팀원, Backend </br> DB, Spring Security(인증,인가), 사용자 관련 API, 재활 코스 기능 구현 |
 | 조상민 |  팀원, Frontend </br> 기능 구현(회원가입, 로그인, 게시판), 컴포넌트 구조 설계, API 요청, UCC 제작|
