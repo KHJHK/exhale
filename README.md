@@ -30,7 +30,7 @@
 
 ## 서비스 화면
 ### 메인 화면
-![메인화면](https://github.com/gunjoon98/readme/assets/48176143/42c6119c-bf8b-4458-b7bf-730fc976a98e)
+![메인화면](img/메인화면.git)
 
 ### 로그인 화면
 ![로그인](https://github.com/gunjoon98/readme/assets/48176143/9c1b2083-9805-452b-b94c-3e8574eada25)
